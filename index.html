@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<link rel="stylesheet" type="text/css" href="minireset.min.css">
+<link rel="stylesheet" type="text/css" href="style.css">
+<script src="code.js"></script>
+
+<head>
+  <title>WFRP 4th Edition Random Character Generator</title>
+</head>
+
+<body>
+
+  <h1>Generate character</h1>
+  <h2>WFRP 4th Edition Random character</h2>
+  <div id="menu_bar">
+    <button type="button" onclick="generateChar(-1)">Generate Now!</button>
+    <button type="button" onclick="generateChar(1)">Generate Human!</button>
+    <button type="button" onclick="generateChar(2)">Generate Dwarf!</button>
+    <button type="button" onclick="generateChar(3)">Generate Halfling!</button>
+    <button type="button" onclick="generateChar(4)">Generate Hight Elf!</button>
+    <button type="button" onclick="generateChar(5)">Generate Wood Elf!</button>
+  </div>
+  <br>
+  <table>
+    <tr>
+      <td>
+        Ask Reroll Stats: </td>
+      <td><input type="checkbox" id="reRollCheck">
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Ask Reroll Career: </td>
+      <td><input type="checkbox" id="careerCheck">
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Ask Simple Choices:</td>
+      <td><input type="checkbox" id="choiceCheck">
+      </td>
+    </tr>
+  </table>
+  <table>
+    <tr>
+      <td>
+        <h3><span title='Your name you can change it later'>Name</span></h3>
+        <p id="nameB">.</p>
+      </td>
+      <td>
+        <h3><span title='One of the playable species of the Old World'>Species</span></h3>
+        <p id="speciesB">.</p>
+      </td>
+    </tr>
+  </table>
+  <table>
+    <tr>
+      <td>
+        <h3><span title='Your Class determines your general place in society'>Class</span> and <span title='Your Career determines your current job and Status'>Career</span></h3>
+        <p id="careerB">.</p>
+      </td>
+      <td>
+        <h3>XP</h3>
+        <p id="xpB">0/0</p>
+      </td>
+    </tr>
+  </table>
+  <h3>Characteristics</h3>
+  <p id="statsB"></p>
+  <h3><span title="Your Fate represents your destiny, and is tied with your Fortune">Fate</span> and <span title="Your Resilience represnts your inner strength, and is reltate with your Resolve">Resilience</span></h3>
+  <p id="fateresilienceB"></p>
+  <h3>Skills</h3>
+  <p id="skillsB"></p>
+  <h3>Talents</h3>
+  <p id="talentsB"></p>
+  <h3>Trappings</h3>
+  <p id="trappingsB"></p>
+
+  <p id="Acknowledgements">Code: Francisco Mu&ntilde;oz 2018.
+    <br>Skill advance selection and misc data: Jay Alexander Hafner 2018
+    <br>Skill description: Ryan Graham 2018
+    <br>Game: Games Worshop and Cubicle 7</p>
+
+</body>
+
+</html>
