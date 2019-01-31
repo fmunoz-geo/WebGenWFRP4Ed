@@ -1,17 +1,11 @@
 html,
 body {
-  width: 60%;
+  min-width: 60ch;
+  max-width: 60%;
   height: 100%;
-  margin: auto;
-  padding: 0em
+  margin: auto
 }
 
-body {
-  /* border-left: 0.2em solid black; */
-  /* border-right: 0.2em solid black; */
-  background-color: #eee;
-  box-shadow: 0em 0em 0.4em
-}
 
 html {
   background-color: #fff
@@ -36,6 +30,11 @@ button {
   border: none;
 }
 
+button:hover {
+  background-color: red;
+  color: black;
+}
+
 p#Acknowledgements {
   position: absolute;
   bottom: 0;
@@ -47,5 +46,52 @@ p#Acknowledgements {
   display: flex;
   justify-content: space-evenly;
   flex-wrap: wrap;
+  margin: 0.5em
+}
 
+
+
+#options {
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  margin: 0.5em
+}
+
+#generate {
+  background-color: #eee;
+  box-shadow: 0em 0em 0.2em 0em;
+  border-radius: 0.05em;
+  border-left: 0.2em solid red;
+  padding: 0.2em;
+  margin: 1em
+}
+
+h2 {
+  margin: auto
+}
+
+#stat_block {
+  background-color: #eee;
+  box-shadow: 0em 0em 0.2em 0em;
+  border-radius: 0.1em;
+  margin: 1em
+}
+
+#stat_header {
+  background-color: black;
+  color: white;
+  border-radius: 0.2em 0.2em 0 0;
+  padding: 0.4em;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+#skill_header {
+  background-color: black;
+  color: white;
+  padding: 0.4em;
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0.4em 0 0.4em 0;
 }
