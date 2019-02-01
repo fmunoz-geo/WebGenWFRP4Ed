@@ -1,9 +1,13 @@
+@import url('https://fonts.googleapis.com/css?family=Germania+One|Space+Mono');
+
 html,
 body {
   min-width: 60ch;
   max-width: 60%;
   height: 100%;
-  margin: auto
+  margin: auto;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.9em
 }
 
 
@@ -11,9 +15,16 @@ html {
   background-color: #fff
 }
 
+h1 {
+  font-family: 'Germania One', cursive;
+  font-size: 3em;
+  text-align: center
+}
+
 th,
 td {
   padding: 0.4em;
+  text-align: center
 }
 
 th {
@@ -24,8 +35,8 @@ th {
 button {
   background-color: black;
   color: white;
-  padding: 0.4em;
-  margin: 0.4em;
+  padding: 0.8em;
+  margin: 0.8em;
   border-radius: 0.2em;
   border: none;
 }
@@ -46,52 +57,64 @@ p#Acknowledgements {
   display: flex;
   justify-content: space-evenly;
   flex-wrap: wrap;
-  margin: 0.5em
+  margin: 0.4em
 }
-
-
 
 #options {
   display: flex;
   justify-content: space-evenly;
   flex-wrap: wrap;
-  margin: 0.5em
 }
 
 #generate {
   background-color: #eee;
   box-shadow: 0em 0em 0.2em 0em;
   border-radius: 0.05em;
-  border-left: 0.2em solid red;
-  padding: 0.2em;
+  padding: 0.8em;
   margin: 1em
-}
-
-h2 {
-  margin: auto
 }
 
 #stat_block {
   background-color: #eee;
   box-shadow: 0em 0em 0.2em 0em;
   border-radius: 0.1em;
-  margin: 1em
+  margin: 1em;
 }
 
 #stat_header {
   background-color: black;
   color: white;
   border-radius: 0.2em 0.2em 0 0;
-  padding: 0.4em;
+  padding: 0.8em;
   display: flex;
   flex-wrap: wrap;
+  font-weight: bold;
+  font-size: 1em
 }
 
 #skill_header {
   background-color: black;
   color: white;
-  padding: 0.4em;
+  padding: 0.8em;
   display: flex;
   flex-wrap: wrap;
   margin: 0.4em 0 0.4em 0;
+  font-weight: bold;
+  font-size: 1em
+}
+
+#skillsB,
+#trappingsB,
+#talentsB,
+#xpB,
+#fateresilienceB {
+  padding: 0.8em;
+}
+
+table {
+  width: 100%;
+}
+
+span {
+  line-height: 1.4em
 }
