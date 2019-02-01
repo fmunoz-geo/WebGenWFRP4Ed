@@ -82,25 +82,26 @@ p#Acknowledgements {
 }
 
 #stat_header {
+  font-family: 'Germania One', cursive;
+  font-size: 2em;
   background-color: black;
   color: white;
   border-radius: 0.2em 0.2em 0 0;
-  padding: 0.8em;
+  padding: 0.4em;
   display: flex;
   flex-wrap: wrap;
   font-weight: bold;
-  font-size: 1em
 }
 
 #skill_header {
   background-color: black;
   color: white;
-  padding: 0.8em;
+  padding: 0.6em;
   display: flex;
   flex-wrap: wrap;
   margin: 0.4em 0 0.4em 0;
   font-weight: bold;
-  font-size: 1em
+  font-size: 1.2em
 }
 
 #skillsB,
@@ -108,7 +109,7 @@ p#Acknowledgements {
 #talentsB,
 #xpB,
 #fateresilienceB {
-  padding: 0.8em;
+  padding: 1em;
 }
 
 table {
