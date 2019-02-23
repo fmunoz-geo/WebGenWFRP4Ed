@@ -390,7 +390,7 @@ var SkillStartWElf = ["Athletics",
 "Outdoor Survival",
 "Perception",
 "Ranged (Bow)",
-"Stealth (Rural or Urban)",
+"Stealth (Rural)",
 "Track"];
 
 var SkillStartAll = [SkillStartHuman,
@@ -404,7 +404,7 @@ var SkillValues = [];
 
 var TalentStartHuman = ["Doomed","Savvy or Suave","Random","Random","Random" ];
 var TalentStartDwarf = ["Magic Resistance","Night Vision","Read/Write or Relentless","Resolute or Strong-Minded","Sturdy"];
-var TalentStartHalfling = ["Acute Sense (Taste)", "Night Vision", "Resistance (Chaos)", "Small", "Random"];
+var TalentStartHalfling = ["Acute Sense (Taste)", "Night Vision", "Resistance (Chaos)", "Small", "Random", "Random"];
 var TalentStartHElf = ["Acute Sense (Vision)", "Coolheaded or Savvy", "Night Vision", "Second Sight or Sixth Sense", "Read/Write"];
 var TalentStartWElf = ["Acute Sense (Vision)", "Hardy or Second Sight", "Night Vision", "Read/Write or Very Resilient", "Rover"];
 
@@ -438,7 +438,7 @@ var TalentRandomName = ["Acute Sense (Any one)",
 "Orientation",
 "Perfect Pitch",
 "Pure Soul",
-"Quick-Witted",
+"Read/Write",
 "Resistance (Any one)",
 "Savvy",
 "Sharp",
@@ -453,13 +453,13 @@ var TalentRandomName = ["Acute Sense (Any one)",
 
 
 var CareerTalents = [ ["Concoct","Craftsman (Apothecary)","Etiquette (Scholar)","Read/Write"],
-["Artist","Gunner","Read/Write","Tinker"],
+["Artistic","Gunner","Read/Write","Tinker"],
 ["Blather","Etiquette (Scholar)","Read/Write","Speedreader"],
 ["Bless (Any one)","Stone Soup","Panhandle","Read/Write"],
 ["Bookish","Field Dressing","Read/Write","Strike to Stun"],
 ["Bless (Any one)","Holy Visions","Read/Write","Suave"],
 ["Carouser","Read/Write","Savvy","Super Numerate"],
-["Aethyric Attunement","Petty Magic (Any one)","Read/Write","Second Sight"],
+["Aethyric Attunement","Petty Magic","Read/Write","Second Sight"],
 ["Blather","Gregarious","Panhandle","Read/Write"],
 ["Artistic","Craftsman (Any one)","Strong Back","Very Strong"],
 ["Panhandle","Resistance (Disease)","Stone Soup","Very Resilient"],
@@ -494,20 +494,22 @@ var CareerTalents = [ ["Concoct","Craftsman (Apothecary)","Etiquette (Scholar)",
 ["Coolheaded","Menacing","Read/Write","Resolute"],
 ["Dirty Fighting","Fisherman","Strong Back","Strong Swimmer"],
 ["Fisherman","Night Vision","Orientation","Waterman"],
-["Fisherman","Gregarious","Strider (Marshes)","Strong Swimmer"],
 ["Strong Swimmer","Strong Back","Very Strong","Waterman"],
+["Fisherman","Gregarious","Strider (Marshes)","Strong Swimmer"],
 ["Fisherman","Strider (Coastal)","Strong Back","Strong Swimmer"],
 ["Criminal","Fisherman","Strider (Marshes)","Strong Back"],
 ["Dirty Fighting","Strong Back","Sturdy","Very Strong"],
 ["Break and Enter","Criminal","Fisherman","Strong Back"],
+//Class Rogues
 ["Attractive","Alley Cat","Blather","Gregarious"],
 ["Cardsharp","Diceman","Etiquette (Any one)","Luck"],
 ["Alley Cat","Cardsharp","Dealmaker","Gregarious"],
 ["Alley Cat","Criminal","Flee!","Strong Back"],
 ["Combat Aware","Criminal","Rover","Flee!"],
-["Alley Cat","Criminal","Etiquette (Criminals)","Flee!"],
 ["Criminal","Etiquette (Criminals)","Menacing","Strike Mighty Blow"],
+["Alley Cat","Criminal","Etiquette (Criminals)","Flee!"],
 ["Criminal","Menacing","Petty Magic","Instinctive Diction"],
+//Class Warriors
 ["Combat Aware","Crack the Whip","Lightning Reflexes","Roughrider"],
 ["Diceman","Etiquette (Servants)","Strike to Stun","Tenacious"],
 ["Etiquette (Any one)","Roughrider","Sturdy","Warrior Born"],
@@ -518,6 +520,7 @@ var CareerTalents = [ ["Concoct","Craftsman (Apothecary)","Etiquette (Scholar)",
 ["Bless (Any one)","Etiquette (Cultists)","Read/Write","Strong-minded"] ];
 
 var CareerSkill = [
+//Class Academics
 ["Consume Alcohol","Heal","Language (Classical)","Lore (Chemistry)","Lore (Medicine)","Lore (Plants)","Trade (Apothecary)","Trade (Poisoner)"],
 ["Consume Alcohol","Cool","Endurance","Language (Classical)","Lore (Science)","Perception","Ranged (Blackpowder)","Trade (Engineer)"],
 ["Consume Alcohol","Endurance","Haggle","Language (Classical)","Lore (Law)","Lore (Theology)","Perception","Research"],
@@ -533,7 +536,7 @@ var CareerSkill = [
 ["Animal Care","Bribery","Charm","Consume Alcohol","Drive","Gamble","Gossip","Haggle"],
 ["Athletics","Animal Training (Dog)","Charm Animal","Consume Alcohol","Endurance","Melee (Basic)","Ranged (Sling)","Stealth (Underground or Urban)"],
 ["Charm","Climb","Consume Alcohol","Drive","Dodge","Gamble","Gossip","Haggle"],
-["Athletics","Climb","Consume Alcohol","Dodge","Endurance","Gamble","Melee","Perception"],
+["Athletics","Climb","Consume Alcohol","Dodge","Endurance","Gamble","Melee (Basic)","Perception"],
 ["Bribery","Consume Alcohol","Endurance","Gossip","Haggle","Language (Classical)","Lore (Politics)","Perception"],
 ["Art (Any one)","Cool","Consume Alcohol","Evaluate","Endurance","Gossip","Perception","Stealth (Urban)"],
 ["Athletics","Dodge","Endurance","Heal","Intuition","Language (Classical)","Melee (Any one)","Perception"],
@@ -569,11 +572,12 @@ var CareerSkill = [
 ["Bribery","Charm","Consume Alcohol","Entertain (Any one)","Gamble","Gossip","Haggle","Intimidate"],
 ["Bribery","Consume Alcohol","Charm","Entertain (Storytelling)","Gamble","Gossip","Haggle","Sleight of Hand"],
 ["Charm","Dodge","Evaluate","Gamble","Gamble","Gossip","Haggle","Melee (Basic)"],
-["Climb","Cool","Dodge","Endurance","Gossip","Intuition","Perception","Stealth (Any one)"],
+["Climb","Cool","Dodge","Drive","Gossip","Intuition","Perception","Stealth (Any one)"],
 ["Athletics","Consume Alcohol","Cool","Endurance","Gamble","Intimidate","Melee (Basic)","Outdoor Survival"],
 ["Athletics","Climb","Cool","Dodge","Endurance","Intuition","Perception","Stealth (Urban)"],
 ["Consume Alcohol","Cool","Dodge","Endurance","Intimidate","Lore (Local)","Melee (Brawling)","Stealth (Urban)"],
 ["Channelling","Cool","Endurance","Gossip","Intimidate","Language (Magick)","Sleight of Hand","Stealth (Rural)"],
+//Class Warriors
 ["Animal Care","Charm Animal","Endurance","Language (Battle)","Melee (Basic)","Outdoor Survival","Perception","Ride (Horse)"],
 ["Consume Alcohol","Endurance","Entertain (Storytelling)","Gamble","Gossip","Intuition","Melee (Basic)","Perception"],
 ["Athletics","Animal Care","Charm Animal","Heal","Lore (Heraldry)","Melee (Cavalry)","Ride (Horse)","Trade (Farrier)"],
@@ -595,14 +599,16 @@ var TrappingClass = ["Clothing, Dagger, Pouch, Sling Bag containing Writing Kit 
 "Clothing, Dagger, Pouch, Sling Bag containing 2 Candles, 1d10 Matches, a Hood or Mask",
 "Clothing, Hand Weapon, Dagger, Pouch"];
 
-var TrappingCareer = ["Book (Blank), Healing Draft, Leather Jerkin, Pestle and Mortar",
+var TrappingCareer = [
+ //Class Academics
+"Book (Blank), Healing Draft, Leather Jerkin, Pestle and Mortar",
 "Book (Engineer), Hammer and Spikes",
 "Book (Law), Magnifying Glass",
 "Religious Symbol, Robes",
 "Bandages, Healing Draught",
 "Religious Symbol, Robes",
 "Alcohol, Book, Opinions, Writing Kit",
-"Grimoire, Staff",
+"Grimoire, Quarterstaff",
 "Writing Kit, Hammer and Nails, Pile of Leaflets",
 "Chalk, Leather Jerkin, 1d10 rags",
 "Poor Quality Blanket, Cup",
@@ -622,7 +628,7 @@ var TrappingCareer = ["Book (Blank), Healing Draft, Leather Jerkin, Pestle and M
 "Hand Weapon, Small Lock Box",
 "d10 Lucky Charms, Quarterstaff, Backpack",
 "Boots, Cloak, Sling Bag containing an Assortment of Herbs",
-"Selection of Animal Traps, Hand Weapon, Sturdy Boots and Cloak",
+"Selection of Animal Traps, Hand Weapon, Sling with 10 Stone Bullets, Sturdy Boots and Cloak",
 "Charcoal Stick, Crude Map, Pan, Spade",
 "Deck of Cards or Set of Dice, Chep Jewellery",
 "Hand Weapon, Leather Jack, Sturdy Boots and Cloak, Rope",
@@ -643,14 +649,15 @@ var TrappingCareer = ["Book (Blank), Healing Draft, Leather Jerkin, Pestle and M
 "Large Sack, Mask or Scarves, Tinderbox, Storm Lantern and Oil",
 "Hand Weapon (Boat Hook), Leather Gloves",
 "Crowbar, Large Sack, Leather Gloves",
+//Class Rogues
 "Flask of Spirits",
-"Backpack, 2 sets of Clothing, Deck of Cards, Dice",
 "Hand Weapon, Stolen goods worth 3d10 Shillings",
 "Crowbar, Handcart, Hooded Cloak, Tarpaulin",
 "Bedroll, Hand Weapon, Leather Jerkin, Tinderbox",
 "Crowbar, Leather Jerkin, Sack",
 "Brass Knuckles, Leather Jack",
 "Candles, Chalk, Doll, Pins",
+//Class Warriors
 "Hand Weapon, Leather Jack, Riding Horse with Saddle and Tack",
 "Hand Weapon, Leather Jerkin, Storm Lantern with Oil",
 "Leather Jack, Mail Shirt, Riding Horse with Saddle and Tack, Shield and Trade Tools (Farrier)",
@@ -678,10 +685,10 @@ var AnyTalents = [ ["Acute Sense (Any one)","Acute Sense (Vision)","Acute Sense 
 "Craftsman (Mason)","Craftsman (Smithing)","Craftsman (Carpentry)","Craftsman (Cook)","Craftsman (Engineering)"],
 ["Etiquette (Any one)","Etiquette (Criminals)","Etiquette (Cultists)","Etiquette (Guilders)","Etiquette (Nobles)","Etiquette (Scholar)","Etiquette (Servants)","Etiquette (Soldiers)"],
 ["Fearless (Any one)", "Fearless (Beastmen)", "Fearless (Greenskins)", "Fearless (Outlaws)", "Fearless (Vampires)", "Fearless (Watchmen)", "Fearless (Witches)"],
-["Hatred (Any one)","Hatred ()"],
-["Master Tradesman (Any one)","Master Tradesman ()"],
+["Hatred (Any one)","Hatred (Goblinoids)","Hatred (Beastmen)"],
+["Master Tradesman (Any one)","Master Tradesman (Apthecary)","Master Tradesman (Cook)"],
 ["Resistance (Any one)", "Resistance(Chaos)", "Resistance(Disease)", "Resistance(Poison)"] ,
-["Savant (Any one)", "Savant ()"],
+["Savant (Any one)", "Savant (Medicine)", "Savant (Law)"],
 ["Strider (Any one)", "Strider (Coastal)", "Strider (Deserts)", "Strider (Marshes)", "Strider (Rocky)", "Strider (Tundra)", "Strider (Woodlands)"]
 ];
 
