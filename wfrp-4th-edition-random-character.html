@@ -1235,7 +1235,7 @@ console.log(SkillNames);
 
 TalentNames = TalentStartAll [ SpeciesN - 1 ];
 TalentNames = parseInicialTalent (TalentNames);
-TalentValues = [1,1,1,1,1];
+TalentValues = Array(TalentNames.length).fill(1);
 
 var CareerSpecies = CareerSpeciesAll [ SpeciesN - 1 ];
 
