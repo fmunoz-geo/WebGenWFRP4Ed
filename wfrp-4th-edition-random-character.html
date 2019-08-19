@@ -11,20 +11,16 @@ th {
 padding
 </style>
 <head><title>WFRP 4th Edition Random character</title>
-
 <script>
 //<![CDATA[
-
 function roll1d10(){
 "use strict";
  return Math.floor(Math.random() * 10) + 1;
 }
-
 function roll2d10(){
 "use strict";
  return Math.floor(Math.random() * 10) + Math.floor(Math.random() * 10) + 2;
 }
-
 function rollXd10(x){
 "use strict";
     var j;
@@ -34,27 +30,21 @@ function rollXd10(x){
     }
     return roll;
 }
-
 function roll1d100(){
 "use strict";
  return Math.floor(Math.random() * 100) + 1;
 }
-
 function generateChar(SpeciesChoice) {
 "use strict";
 var Name = "";
 var NameTxt = "";
-
 var xp = 0;
 var xpSpend = 0;
 var XpTxt = "";
-
 var SpeciesTxt ="";
 var SpeciesN;
-var SpeciesAll = ["Human","Dwarf","Halfling","High Elf","Wood Elf"];
-
+var SpeciesAll = ["Human","Dwarf","Halfling","High Elf","Wood Elf","Gnome"];
 var Sex = 0;
-
 var NamesHumanMale = ["Armin", "Adolf", "Adolphus", "Albrecht", "Alexander", "Aldred", "Alfred",
 "Anders", "Anton", "Axel", "Bernard", "Bernd", "Bert", "Boris", "Bruno", 
 "Chedwic", "Christian", "Christoph", "Claus", "Clemons", "Conrad", "Konrad", 
@@ -112,7 +102,8 @@ var NamesElfMale = ["Adran", "Aelar", "Aramil", "Arannis", "Aust", "Beiro",
 "Heian", "Himo", "Immeral", "Ivellios", "Laucian", "Mindartis", "Paelias",
 "Peren", "Quarion", "Riardol", "Rolen", "Soveliss", "Thamior", "Tharivol",
 "Theren", "Varis"];
-
+var NamesGnomeMale = ["Breward", "Daveth", "Gwinear", "Mawnan", "Meriasek", "Nivet",
+"Talan", "Ytel"];
 var NamesHumanFemale = ["Andrea", "Angelika", "Anita", "Anna-Lise", "Astrid", "Brigid", "Brigitte",
 "Camilla", "Celeste", "Charlotte", "Christa", "Christiane", "Clementine",
 "Cordula", "Daniele", "Doris", "Eva", "Edda", "Edith", "Elga", "Elisabeth",
@@ -152,21 +143,18 @@ var NamesDwarfFemale = ["Amber", "Artin", "Audhild", "Bardryn", "Dagnal",
 var NamesHalflingFemale = ["Andry", "Bree", "Callie", "Cora", "Euphemia", "Jillian", "Kithri", "Lavinia",
 "Lidda", "Meda", "Nedda", "Paela", "Portia", "Seraphina", "Shaena", "Trym",
 "Vani", "Verna", "Antoniella", "Esmerelda", "Thomasina"];
-
 var NamesElfFemale = ["Adrie", "Althaea", "Anastrianna,", "Andraste", "Antinua",
 "Bethrynna", "Birel", "Caelynn,", "Drusilia", "Enna", "Felosial", "Ielenia",
 "Jelenneth", "Keyleth", "Leshanna", "Lia", "Meriele", "Mialee", "Naivara",
 "Quelenna", "Quillathe", "Sariel", "Shanairra", "Shava", "Silaqui",
 "Theirastra", "Thia", "Vadania", "Valanthe", "Xanaphia"];
-
+var NamesGnomeFemale = ["Elowen", "Ia", "Kerra", "Ladoca", "Metheven", "Morren",
+"Steren", "Tryfena"];
 var NamesAllMale = [ NamesHumanMale, NamesDwarfMale, NamesHalflingMale,
- NamesElfMale, NamesElfMale];
-
+ NamesElfMale, NamesElfMale, NamesGnomeMale];
 var NamesAllFemale = [ NamesHumanFemale, NamesDwarfFemale, NamesHalflingFemale,
- NamesElfFemale, NamesElfFemale];
-
+ NamesElfFemale, NamesElfFemale,  NamesGnomeFemale];
 var NamesAll = [NamesAllMale, NamesAllFemale];
-
 var SurnamesHuman = ["Abel", "Abend", "Abendrot", "Achenbach", "Ackermann", "Adler", "Albers",
 "Alendorf", "Alsheimer", "Alt", "Arndt", "Aschendorf", "Baer", "Baumann",
 "Berger", "Biedenkopf", "Blacher", "Blech", "Blum", "Bockenheim", "Bohm",
@@ -224,13 +212,13 @@ var SurnamesElf = ["Amakiir(Gemflower)","Amastacia(Starflower)",
 "Siannodel(Moonbrook)", "Xiloscient(Goldpetal)", "Emberfell", "Fireborn",
 "Foamheart", "Goldenhair", "Silverspray", "Spellsign", "Fleetriver",
 "Shadowstalker", "Treeshaper", "Weavewatcher", "Willowlimb", "Windrunner"];
-var SurnamesAll = [ SurnamesHuman, SurnamesDwarf, SurnamesHalfling, SurnamesElf, SurnamesElf];
-
+var SurnamesGnome = ["annearil", "Fraine", "Hawken", "Landweth", "Peddlar", "Scantleburn",
+"Thorne", "Trethewey"];
+var SurnamesAll = [ SurnamesHuman, SurnamesDwarf, SurnamesHalfling, SurnamesElf, SurnamesElf, SurnamesGnome];
 var SurnameSuffixHumanNoble = ["burg","berg","stein","stock","wald"];
 var SurnameSuffixDwarvenMale = ["sson","sson","sson","snev"];
 var SurnameSuffixDwarvenFemale = ["sdottir","sdottir","sdottir","sniz"];
 var SurnameSuffixDwarvenAll = [SurnameSuffixDwarvenMale, SurnameSuffixDwarvenFemale];
-
 var ClassN;
 var ClassAll = ["Academic","Burgher","Courtier","Peasant","Ranger","Riverfolk",
 "Rogue","Warrior"];
@@ -249,7 +237,7 @@ var CareerAll = ["Apothecary","Engineer","Lawyer","Nun",
 "Boatman","Huffer","Riverwoman","Riverwarden",
 "Seaman","Smuggler","Stevedore","Wrecker",
 "Bawd","Charlatan","Fence","Grave Robber",
-"Outlaw","Thief","Racketeer","Witch",
+"Outlaw","Racketeer","Thief","Witch",
 "Cavalryman","Guard","Knight","Pit Fighter",
 "Protagonist","Soldier","Troll Slayer","Warrior Priest"];
 var CareerHuman = [1,2,3,5,6,11,13,14,15,17,19,20,21,23,26,27,28,29,30,31,32,35,
@@ -267,7 +255,16 @@ var CareerHElf = [2,-1,6,-1,8,-1,12,16,-1,19,-1,21,26,-1,28,29,31,32,34,37,40,-1
 var CareerWElf = [-1,-1,-1,-1,-1,-1,1,5,-1,10,-1,-1,-1,-1,-1,-1,14,18,-1,25,31,
 -1,35,-1,-1,-1,42,53,-1,57,68,-1,70,-1,78,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,
 79,-1,-1,-1,-1,85,-1,-1,-1,90,92,94,96,-1,100,-1,-1];
-var CareerSpeciesAll = [CareerHuman, CareerDwarf, CareerHalfling, CareerHElf, CareerWElf];
+var CareerGnome = [
+1,-1,2,-1,4,5,7,14,
+15,17,18,19,21,22,28,29,
+30,31,-1,32,33,35,40,42,
+43,-1,44,46,54,-1,58,62,
+63,-1,68,-1,69,75,-1,-1,
+76,-1,80,-1,-1,83,-1,-1,
+85,90,91,-1,92,94,98,-1,
+-1,99,-1,-1,-1,100,-1,-1];
+var CareerSpeciesAll = [CareerHuman, CareerDwarf, CareerHalfling, CareerHElf, CareerWElf, CareerGnome];
 var CareerSpecies = [];
 var CareerTxt ="";
 var CareerAdvance = [ [3,6,7],[1,6,7],[5,6,7],[6,7,9],
@@ -303,8 +300,6 @@ var CareerSocial = ["Brass 3","Brass 4","Brass 4","Brass 1",
 "Brass 1","Brass 1","Brass 3","Brass 1",
 "Silver 2","Silver 1","Silver 3","Brass 4",
 "Brass 2","Brass 2","Silver 1","Brass 2"];
-
-
 var StatsTxt = "";
 var StatsName = ["WS","BS","S","T","AG","I","DEX","INT","WP","FEL"];
 var StatsR = [0,0,0,0,0,0,0,0,0,0];
@@ -313,12 +308,12 @@ var StatsDwarf = [30,20,20,30,10,20,30,20,40,10];
 var StatsHalfling = [10,30,10,20,20,20,30,20,30,30];
 var StatsHElf = [30,30,20,20,30,40,30,30,30,20];
 var StatsWElf = [30,30,20,20,30,40,30,30,30,20];
-var StatsAll = [StatsHuman, StatsDwarf, StatsHalfling, StatsHElf, StatsWElf];
+var StatsGnome = [20,10,10,15,30,30,30,30,40,15];
+var StatsAll = [StatsHuman, StatsDwarf, StatsHalfling, StatsHElf, StatsWElf, StatsGnome];
 var StatsCareer = [0,0,0,0,0,0,0,0,0,0];
 var StatsAdvance = [0,0,0,0,0,0,0,0,0,0];
 var StatsBase = [0,0,0,0,0,0,0,0,0,0];
 var StatsTalents  = [0,0,0,0,0,0,0,0,0,0];
-
 var FateResilienceTxt = "";
 var StatsExtraName = ["W","M","Fate","Resilience", "Extra"];
 var StatsExtraHuman = [ 0, 4, 2, 1, 3];
@@ -326,10 +321,10 @@ var StatsExtraDwarf = [ 0, 3, 0, 2, 2];
 var StatsExtraHalfling = [ 0, 3, 0, 2, 3];
 var StatsExtraHElf = [ 0, 5, 0, 0, 2];
 var StatsExtraWElf  = [ 0, 5, 0, 0, 2];
-var StatsExtraAll = [StatsExtraHuman, StatsExtraDwarf, StatsExtraHalfling, StatsExtraHElf, StatsExtraWElf];
+var StatsExtraGnome  = [ 0, 3, 2, 0, 2];
+var StatsExtraAll = [StatsExtraHuman, StatsExtraDwarf, StatsExtraHalfling, StatsExtraHElf, StatsExtraWElf, StatsExtraGnome];
 var StatsExtraBase = [ 0, 0, 0, 0, 0 ];
 var StatsExtra = [ 0, 0, 0, 0, 0 ];
-
 var SkillStartHuman= ["Animal Care",
 "Charm", 
 "Cool",
@@ -341,7 +336,6 @@ var SkillStartHuman= ["Animal Care",
 "Lore (Reikland)",
 "Melee (Basic)", 
 "Ranged (Bow)"];
-
 var SkillStartDwarf = ["Consume Alcohol",
 "Cool",
 "Endurance",
@@ -354,7 +348,6 @@ var SkillStartDwarf = ["Consume Alcohol",
 "Lore (Metallurgy)",
 "Melee (Basic)",
 "Trade (Any one)"];
-
 var SkillStartHalfling = ["Charm",
 "Consume Alcohol",
 "Dodge",
@@ -367,7 +360,6 @@ var SkillStartHalfling = ["Charm",
 "Sleight of Hand",
 "Stealth (Any one)",
 "Trade (Cook)"];
-
 var SkillStartHElf = ["Cool",
 "Entertain (Sing)",
 "Evaluate",
@@ -392,32 +384,40 @@ var SkillStartWElf = ["Athletics",
 "Ranged (Bow)",
 "Stealth (Rural)",
 "Track"];
-
-var SkillStartAll = [SkillStartHuman,
- SkillStartDwarf,SkillStartHalfling,
- SkillStartHElf,SkillStartWElf];
-
+var SkillStartGnome = ["Channeling (Ulgu)",
+"Charm",
+"Consume Alcohol",
+"Dodge",
+"Entertain (Any one)",
+"Gossip",
+"Haggle",
+"Language (Ghassally)",
+"Language (Magick)",
+"Language (Wastelander)",
+"Outdoor Survival",
+"Stealth (Any one)"];
+var SkillStartAll = [SkillStartHuman, 
+ SkillStartDwarf, SkillStartHalfling, 
+ SkillStartHElf, SkillStartWElf, 
+ SkillStartGnome];
 var SkillTxt ="";
 var SkillStart;
 var SkillNames = [];
 var SkillValues = [];
-
 var TalentStartHuman = ["Doomed","Savvy or Suave","Random","Random","Random" ];
 var TalentStartDwarf = ["Magic Resistance","Night Vision","Read/Write or Relentless","Resolute or Strong-Minded","Sturdy"];
 var TalentStartHalfling = ["Acute Sense (Taste)", "Night Vision", "Resistance (Chaos)", "Small", "Random", "Random"];
 var TalentStartHElf = ["Acute Sense (Vision)", "Coolheaded or Savvy", "Night Vision", "Second Sight or Sixth Sense", "Read/Write"];
 var TalentStartWElf = ["Acute Sense (Vision)", "Hardy or Second Sight", "Night Vision", "Read/Write or Very Resilient", "Rover"];
-
+var TalentStartGnome = ["Beneath Notice or Suffuse with Ulgu", "Luck or Mimic", "Night Vision", "Fisherman or Read/Write", "Second Sight or Sixth Sense", "Small"];
 var TalentStartAll = [TalentStartHuman,
  TalentStartDwarf,TalentStartHalfling,
- TalentStartHElf,TalentStartWElf];
-
+ TalentStartHElf,TalentStartWElf,
+ TalentStartGnome];
 var TalentTxt ="";
 var TalentNames = [];
 var TalentValues = [];
-
 var TalentRandom = [3, 6, 9, 12, 15, 18, 21, 24, 28, 31, 34, 38, 41, 44, 47, 50, 52, 55, 58, 62, 65, 68, 71, 74, 78, 81, 84, 87, 91, 94, 97, 100];
-
 var TalentRandomName = ["Acute Sense (Any one)",
 "Ambidextrous",
 "Animal Affinity",
@@ -450,8 +450,6 @@ var TalentRandomName = ["Acute Sense (Any one)",
 "Very Resilient",
 "Very Strong",
 "Warrior Born"];
-
-
 var CareerTalents = [ ["Concoct","Craftsman (Apothecary)","Etiquette (Scholar)","Read/Write"],
 ["Artistic","Gunner","Read/Write","Tinker"],
 ["Blather","Etiquette (Scholar)","Read/Write","Speedreader"],
@@ -518,7 +516,6 @@ var CareerTalents = [ ["Concoct","Craftsman (Apothecary)","Etiquette (Scholar)",
 ["Diceman","Marksman","Strong Back","Warrior Born"],
 ["Duel Wielder","Fearless (Everything)","Frenzy","Slayer"],
 ["Bless (Any one)","Etiquette (Cultists)","Read/Write","Strong-minded"] ];
-
 var CareerSkill = [
 //Class Academics
 ["Consume Alcohol","Heal","Language (Classical)","Lore (Chemistry)","Lore (Medicine)","Lore (Plants)","Trade (Apothecary)","Trade (Poisoner)"],
@@ -587,9 +584,7 @@ var CareerSkill = [
 ["Consume Alcohol","Cool","Dodge","Endurance","Gamble","Heal","Lore (Trolls)","Melee (Basic)"],
 ["Cool","Dodge","Endurance","Heal","Leadership","Lore (Theology)","Melee (Any one)","Pray"]
 ];
-
 var TrappingTxt = "";
-
 var TrappingClass = ["Clothing, Dagger, Pouch, Sling Bag containing Writing Kit and 1d10 sheets of Parchment",
 "Cloak, Clothing, Dagger, Hat, Pouch, Sling Bag containing Lunch",
 "Fine Clothing, Dagger, Pouch containing Tweezers, Ear Pick and a Comb",
@@ -598,7 +593,6 @@ var TrappingClass = ["Clothing, Dagger, Pouch, Sling Bag containing Writing Kit 
 "Cloak, Clothing, Dagger, Pouch, Sling Bag containing a Flask of Spirits",
 "Clothing, Dagger, Pouch, Sling Bag containing 2 Candles, 1d10 Matches, a Hood or Mask",
 "Clothing, Hand Weapon, Dagger, Pouch"];
-
 var TrappingCareer = [
  //Class Academics
 "Book (Blank), Healing Draft, Leather Jerkin, Pestle and Mortar",
@@ -666,9 +660,7 @@ var TrappingCareer = [
 "Axe, Flask of Spirits, Shame, Tattoos",
 "Hand Weapon (Sword), Leather Armor, Uniform",
 "Book (Religion), Leather Jerkin, Religious Symbol, Robes, Weapon (Any one)"];
-
 /* Grouped Talents to select random group*/
-
 var AnyTalents = [ ["Acute Sense (Any one)","Acute Sense (Vision)","Acute Sense (Taste)","Acute Sense (Touch)", "Acute Sense (Hearing)", "Acute Sense (Smell)"],
 ["Bless (Any one)","Bless (Manann)","Bless (Morr)","Bless (Myrmidia)",
 "Bless (Ranald)","Bless (Taal)","Bless (Shallya)","Bless (Sigmar)","Bless (Ulric)","Bless (Verena)",
@@ -691,9 +683,7 @@ var AnyTalents = [ ["Acute Sense (Any one)","Acute Sense (Vision)","Acute Sense 
 ["Savant (Any one)", "Savant (Medicine)", "Savant (Law)"],
 ["Strider (Any one)", "Strider (Coastal)", "Strider (Deserts)", "Strider (Marshes)", "Strider (Rocky)", "Strider (Tundra)", "Strider (Woodlands)"]
 ];
-
 /* Grouped skills to select random group*/
-
 var AnySkills = [ 
 ["Art (Any one)", "Art (Calligraphy)", "Art (Writing)",  "Art (Sculpture)", "Art (Painting)", "Art (Weaving)", "Art (Tatoo)", "Art (Mosaics)"],
 ["Entertain (Any one)","Entertain (Fortune Telling)", "Entertain (Sing)", "Entertain (Acting)", "Entertain (Comedy)",
@@ -715,7 +705,6 @@ var AnySkills = [
 ["Perform (Any one)", "Perform (Acrobatics)", "Perform (Firebrathing)"],
 ["Stealth (Any one)", "Stealth (Urban)", "Stealth (Rural)", "Stealth (Underground)"]
 ];
-
 var mouseoverSkills = ["Art (Basic, Grouped), Dex, Create works of Art in your chosen medium.",
 "Athletics (Basic), Ag, Impacts on your movement abilities in combat.",
 "Bribery (Basic), Fel, Will tell you if a target may be bribed and allow you to guess a target number.",
@@ -761,7 +750,6 @@ var mouseoverSkills = ["Art (Basic, Grouped), Dex, Create works of Art in your c
 "Swim (Advanced), S, How well you can swim without drowning.",
 "Track (Advanced), I, Ability to follow trails and signs left by others.",
 "Trade (Advanced, Grouped), Dex, Earn money with your service"];
-
 var dataTalents = [["Accurate Shot","BSB","+1 dmg on all ranged weapons."],
 ["Acute Sense","IB","Perception; Choose 1 sense. Perception test using sense to spot imperceptible detail."],
 ["Aethyric Attunement","IB","Channeling; No miscast if double rolled on successful channel test."],
@@ -908,7 +896,8 @@ var dataTalents = [["Accurate Shot","BSB","+1 dmg on all ranged weapons."],
 ["Strong Minded","WPB","Add Strong Minded level to maximum resolve pool."],
 ["Stout Hearted","WPB","Cool Tests to remove broken May attempt cool test at the end of each of your turns as well as at the end of the round."],
 ["Sturdy","SB","Strength test when lifting; Increase Encumbrance points by sturdy *2."],
-["Suave","1","Permanent +5 to starting fellowship."],
+["Suave","1","Permanent +5 to starting Fellowship."],
+["Suffuse with Ulgu","1","Sthealth (Any); Can use Channelling (Ulgu) instead of Stealth skill."],
 ["Super Numerate","IB","Evaluate, Gamble; You may use a simple calculator to represent what your PC is capable of mentally thinking."],
 ["Supportive","FelB","Social test to influence superior Use either SL or units rolled to influence superior."],
 ["Sure Shot","IB","You may ignore armour points == Sure shot level."],
@@ -934,9 +923,7 @@ var mouseoverTalents =[];
 for (i in dataTalents) {
  mouseoverTalents.push(dataTalents[i][0]+" (Max "+dataTalents[i][1]+") "+dataTalents[i][2]);
 }
-
 /*----------functions-----------*/
-
 function randomTalent(){
      var TalentRoll = roll1d100();
      var i = 0;
@@ -945,7 +932,6 @@ function randomTalent(){
      }
      return TalentRandomName[i];
 }
-
 function parseInicialTalent(TalentArray) {
 /* Get Initial Talents */
      var x;
@@ -968,12 +954,10 @@ function parseInicialTalent(TalentArray) {
      }
      return TalentArray;
 }
-
 function splitFateResilience ( extraPoints ) {
     var x = Math.floor(Math.random() * extraPoints ) +1;
     return [ x, extraPoints - x ]
 }
-
 function parseTalent2Stats (TalentArray) {
     var x;
     /* var StatsName = ["WS","BS","S","T","AG","I","DEX","INT","WP","FEL"]; */
@@ -1019,7 +1003,6 @@ function parseTalent2Stats (TalentArray) {
     }
     return stat;
 }
-
 function parseTalentAny (TalentArray) {
     var x;
     var y;
@@ -1048,7 +1031,6 @@ function parseSkillAny (SkillArray) {
     }
     return SkillArray;
 }
-
 function dedupeNameValue(NameArray,ValueArray) {
     var i;
     var j;
@@ -1070,7 +1052,6 @@ function dedupeNameValue(NameArray,ValueArray) {
     var CombinedArray = [NameArray, ValueArray];
     return CombinedArray;
 }
-
 function parseOrParenthesis(NameArray) {
      var i;
      var Pick;
@@ -1092,7 +1073,6 @@ function parseOrParenthesis(NameArray) {
      }
      return NameArray;
 }
-
 function rollTrappings(TrapString) {
    if (TrapString.indexOf("d10") > -1) {
         var r1d10st = roll1d10() +" ";
@@ -1111,7 +1091,6 @@ function rollTrappings(TrapString) {
    }
    return TrapString;
 }
-
 function rollMoney (SocialString) {
     var money = "";
     var ParsedSocial = SocialString.split(" ");
@@ -1130,7 +1109,6 @@ function rollMoney (SocialString) {
     }
     return money;
 }
-
 function getMouseOverText(Name, MOArray){
     var NameBase = "";
     console.log(Name.split(" (")); 
@@ -1149,7 +1127,6 @@ function getMouseOverText(Name, MOArray){
     }
     return MOTxt;
 }
-
 function refreshCharacterDisplay () {
     document.getElementById("nameB").innerHTML = NameTxt;
     document.getElementById("speciesB").innerHTML = SpeciesTxt;
@@ -1161,18 +1138,15 @@ function refreshCharacterDisplay () {
     document.getElementById("talentsB").innerHTML = TalentTxt;
     document.getElementById("trappingsB").innerHTML = TrappingTxt;
 }
-
 /*------ Start Rolling--------*/
-
 refreshCharacterDisplay ();
-
 var SpeciesRoll = roll1d100();
-
 var i;
 var x;
-
-if (SpeciesRoll <= 90) {
+if (SpeciesRoll <= 89) {
      SpeciesN = 1;
+} else if (SpeciesRoll <= 90) {
+     SpeciesN = 6;
 } else if (SpeciesRoll <= 95) {
      SpeciesN = 2;
 } else if (SpeciesRoll <= 98) {
@@ -1182,24 +1156,17 @@ if (SpeciesRoll <= 90) {
 } else {
      SpeciesN = 5;
 }
-
 if  (SpeciesChoice>0) {
     SpeciesN = SpeciesChoice;
 } else {
     xp += 20;
 }
-
 console.log(SpeciesN);
-
 SpeciesTxt = SpeciesAll[ SpeciesN - 1 ];
-
 console.log(SpeciesTxt);
-
 Sex = Math.floor(Math.random() * 2);
-
 var NamesSpecies = NamesAll[Sex][SpeciesN - 1 ];
 var SurnamesSpecies;
-
 /* Dwarves could get Icelandic style surnames, but from either 66% MAle 33% female */
 if ((SpeciesN == 2) && (Math.random() > .5)) {
     SurnamesSpecies = NamesAll[Math.floor(Math.random() * 3 / 2)][SpeciesN - 1 ].slice();
@@ -1210,14 +1177,10 @@ if ((SpeciesN == 2) && (Math.random() > .5)) {
 } else {
     SurnamesSpecies  = SurnamesAll[SpeciesN - 1 ];
 }
-
 NameTxt = NamesSpecies[ Math.floor(Math.random() * NamesSpecies.length) ] + " " 
     +  SurnamesSpecies[ Math.floor(Math.random() * SurnamesSpecies.length) ] ;
-
 SkillStart = SkillStartAll[ SpeciesN - 1 ];
-
 console.log(SkillStart);
-
 for (i = 0; i < 6; i += 1) {
      var skrandom = Math.floor(Math.random() * SkillStart.length);
      SkillNames.push ( SkillStart.splice (skrandom , 1)[0] );
@@ -1229,29 +1192,20 @@ for (i = 0; i < 6; i += 1) {
      }
      SkillValues.push ( skvar );
 }
-
 console.log(SkillStart);
 console.log(SkillNames);
-
 TalentNames = TalentStartAll [ SpeciesN - 1 ];
 TalentNames = parseInicialTalent (TalentNames);
 TalentValues = Array(TalentNames.length).fill(1);
-
 var CareerSpecies = CareerSpeciesAll [ SpeciesN - 1 ];
-
 var CareerRoll = roll1d100();
 i = 0;
 while (CareerSpecies[i] < CareerRoll ) {
      i += 1;
 }
-
 CareerN = i;
-
 CareerName = CareerAll[CareerN];
-
 /*If we agree keep the 1st career so no changes just less xp*/
-
-
 if ((document.getElementById("careerCheck").checked == true) ) {
     refreshCharacterDisplay ();
     if ( !confirm("Keep career as " + SpeciesTxt + " " + CareerName) ) {
@@ -1259,7 +1213,6 @@ if ((document.getElementById("careerCheck").checked == true) ) {
         var newCareerN = [CareerN,0,0];
         var newCareerName = [CareerName,"",""];
         var x;
-
         for (i=1;i<3; i += 1) {
             newCareerRoll[i] = roll1d100();
             x = 0;
@@ -1269,7 +1222,6 @@ if ((document.getElementById("careerCheck").checked == true) ) {
             newCareerN[i] = x;
             newCareerName[i] = CareerAll[x];
         }
-
         if (!confirm("Keep first from " + newCareerName.toString())) {
             if (confirm("Keep second from " + newCareerName.toString())) {
                 CareerRoll = newCareerRoll[1];
@@ -1288,20 +1240,15 @@ if ((document.getElementById("careerCheck").checked == true) ) {
 } else {
         xp += 50;
 }
-
 ClassN = Math.floor(CareerN / 8);
-
 StatsCareer[ CareerAdvance[CareerN][0] ] = 1;
 StatsCareer[ CareerAdvance[CareerN][1] ] = 1;
 StatsCareer[ CareerAdvance[CareerN][2] ] = 1;
-
 StatsBase = StatsAll [ SpeciesN - 1 ];
 StatsExtraBase = StatsExtraAll [ SpeciesN - 1 ];
-
 for (i in StatsR) {
      StatsR[i] = roll2d10();
 }
-
 if ((document.getElementById("reRollCheck").checked == true) ) {
     refreshCharacterDisplay ();
     if ( !confirm(StatsR) ) {
@@ -1316,7 +1263,6 @@ if ((document.getElementById("reRollCheck").checked == true) ) {
 } else {
         xp += 50;
 }
-
 /* Advance stats*/
 var sta = CareerAdvance[CareerN];
 var randadvChoice = [ [5,0,0],
@@ -1325,17 +1271,14 @@ var randadvChoice = [ [5,0,0],
 [3,2,0],
 [2,2,1] ];
 var randAdv = randadvChoice[ Math.floor(Math.random() * 5) ];
-
 for (i = 0; i < 3; i += 1) {
     var statrand = Math.floor(Math.random() * sta.length);
     StatsAdvance [  sta.splice (statrand , 1) ] = randAdv[i];
 }
-
 /* Split the extra fate/resilience */
 var FateResilienceRoll = splitFateResilience(StatsExtraBase[4]);
 StatsExtraBase[2] += FateResilienceRoll[0];
 StatsExtraBase[3] += FateResilienceRoll[1];
-
 var ski = CareerSkill[CareerN];
 var randskiChoice =  [
 [5,5,5,5,5,5,5,5],
@@ -1350,65 +1293,48 @@ var randskiChoice =  [
 [10,10,10,10,0,0,0,0]
 ];
 var randSki = randskiChoice[ Math.floor(Math.random() * randskiChoice.length ) ];
-
 for (i = 0; i < 8; i += 1) {
      var skirand = Math.floor(Math.random() * ski.length);
      SkillNames.push ( ski.splice (skirand , 1)[0] );
      var skvar = randSki[i]; 
      SkillValues.push ( skvar );
 }
-
 console.log(SkillNames);
-
 var randTalent = Math.floor(Math.random() * 4);
 TalentNames.push( CareerTalents[CareerN][randTalent]);
 TalentValues.push(1);
-
 StatsTalents = parseTalent2Stats(TalentNames);
  
 TalentNames = parseTalentAny(TalentNames).slice(0);
-
 SkillNames = parseOrParenthesis(SkillNames).slice(0);
 console.log(SkillNames);
-
 SkillNames = parseSkillAny(SkillNames).slice(0);
  console.log(SkillNames);
-
 var TalentNamesValue = dedupeNameValue(TalentNames, TalentValues );
 TalentNames = TalentNamesValue[0].slice(0);
 TalentValues = TalentNamesValue[1].slice(0);
-
 /* After getting talents we check if we are an human noble or have nobleblood*/
 /*SurnameSuffixHumanNoble*/
 if ((SpeciesN == 1) && ((CareerName == "Noble") || (TalentNames.includes("Noble Blood")))) {
     NameTxt = NameTxt.replace(" "," von ") + SurnameSuffixHumanNoble[Math.floor(Math.random() * SurnameSuffixHumanNoble.length)];
 };
-
 var SkillNamesValue = dedupeNameValue(SkillNames, SkillValues );
 SkillNames = SkillNamesValue[0].slice(0);
 SkillValues = SkillNamesValue[1].slice(0);
 console.log(SkillNames);
-
 var Trapping = rollTrappings(TrappingClass[ClassN] + ", " + TrappingCareer[CareerN]);
-
 var Money = rollMoney(CareerSocial [ CareerN ]);
-
 /* Generate the final strings */
-
 CareerTxt ="(" + ClassAll [ ClassN ] + ") " + CareerName + ", Social Level "+ CareerSocial [ CareerN ] ;
-
 XpTxt = "<b>XP:</b> " + xp + "/" + xpSpend;
-
 for (i = 0; i < SkillNames.length ; i += 1) {
     var MouseOverTxt = getMouseOverText (SkillNames[i],mouseoverSkills);
     SkillTxt += "<span title = '" + MouseOverTxt + "'>" + SkillNames[i] + ":" + SkillValues[i] + "</span>; ";
 }
-
 for (i = 0; i < TalentNames.length ; i += 1) {
     var MouseOverTxt = getMouseOverText (TalentNames[i],mouseoverTalents);
      TalentTxt += "<span title = '" + MouseOverTxt + "'>" + TalentNames[i] + ":" + TalentValues[i] + "</span>; ";
 }
-
 StatsTxt = "<table><tr>";
 for (i in StatsName) {
     StatsTxt += "<th><B>" + StatsName[i] +"</B></th>";
@@ -1428,21 +1354,16 @@ for (i in StatsAdvance) {
     StatsTxt += "<td>" + ( StatsR[i] + StatsBase[i] + StatsTalents[i] + StatsAdvance[i] ) + "</td>";
 }
 StatsTxt += "</tr></table>";
-
 FateResilienceTxt = "Fate: "+ StatsExtraBase[2] + " Resilience: " + StatsExtraBase[3];
-
 TrappingTxt = Trapping + ".<br>" + Money;
-
 /* Put all shit in the screen */
 refreshCharacterDisplay ();
-
 return 1;
 }
 //]]>
 </script>
 </head>
 <body>
-
 <h1>Generate character</h1>
 <h2>WFRP 4th Edition Random character</h2>
 <button type="button" onclick="generateChar(-1)">Generate Now!</button><br>
@@ -1451,6 +1372,7 @@ return 1;
 <button type="button" onclick="generateChar(3)">Generate Halfling!</button>
 <button type="button" onclick="generateChar(4)">Generate Hight Elf!</button>
 <button type="button" onclick="generateChar(5)">Generate Wood Elf!</button>
+<button type="button" onclick="generateChar(6)">Generate Gnome!</button>
 <br>
 <table><tr><td>
 Ask Reroll Stats: </td><td><input type="checkbox" id="reRollCheck">
@@ -1486,11 +1408,10 @@ Ask Simple Choices:</td><td><input type="checkbox" id="choiceCheck">
 <p id="talentsB"></p>
 <h3>Trappings</h3>
 <p id="trappingsB"></p>
-
+<p id="Links">Check also my <a href="https://pacomiscelaneousstuff.blogspot.com/2019/08/treasure-generator.html">WFRP Treasure Generator</a></p>
 <p id="Acknowledgements">Code: Francisco Mu&ntilde;oz 2018.
 <br>Skill advance selection and misc data: Jay Alexander Hafner 2018
 <br>Skill description: Ryan Graham 2018
 <br>Game: Games Worshop and Cubicle 7</p>
-
 </body>
 </html>
