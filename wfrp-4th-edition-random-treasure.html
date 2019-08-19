@@ -1,0 +1,1138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><title>WFRP 4th Edition Random Treasure</title>
+<script>
+
+
+var FUR = [
+["white wolf fur", 300],
+["ermine", 250],
+["wolf fur", 100],
+["fox fur", 25],
+["$COLOUR fur", 25],
+["squirel fur", 0],
+["fur", 0],
+["mangy fur",-25]
+];
+
+var TRIMMING = [
+["ermine", 50],
+["fox fur", 25],
+["squirel fur", 0],
+["fur", 0],
+["mangy fur",-25]
+];
+
+var FIERCEANIMAL = [
+["gryphon", 50],
+["dragon", 25],
+["lion", 25],
+["eagle", 0],
+["panther", 0],
+["bear", 0],
+["wolf", 0],
+["boar", -10]
+];
+
+var ANIMAL = [
+["snake",0],
+["fish",0],
+["horse",0],
+["dog",0],
+["frog",0],
+["seagull",0],
+["pig", -25],
+["$FIERCEANIMAL",0],
+["$FIERCEANIMAL",0],
+["$FIERCEANIMAL",0]
+];
+
+var RAREMETAL = [
+["meteoric iron", 200],
+["Nuln's steel", 200],
+["ithilmar", 2500],
+["Ggromril", 2500]
+];
+
+var METALTRIMS = [
+["gold", 600],
+["gold", 600],
+["silver", 100],
+["silver", 100],
+["tarnished silver", 50],
+["brass", 0],
+["pitted metal", -25],
+["$RAREMETAL", 0]
+];
+
+var METALFITTING = [
+["gilded", 10],
+["gilded", 10],
+["brass", 0],
+["brass", 0],
+["steel", 0],
+["steel", 0],
+["$METALTRIMS", 0]
+];
+
+var METALMATERIAL = [
+["$METALTRIMS", 25],
+["$METALTRIMS", 25],
+["$METALTRIMS", 25],
+["Nuln steel",200],
+["steel", 50],
+["iron", 0],
+["iron", 0],
+["pewter", 0],
+["rusted iron", -25]
+];
+
+var WOODMATERIAL = [
+["oak wood",25],
+["ashwood",25],
+["wood",0],
+["wood",0]
+];
+
+var STONEMATERIAL = [
+["obsidian", 200],
+["marble", 100],
+["$COLOUR stone", 0],
+["stone", 0],
+["clay", -25]
+];
+
+ANYMATERIAL = [
+["$METALMATERIAL", 0],
+["$STONEMATERIAL", -50],
+["$WOODMATERIAL", -75]
+];
+
+
+var SCABBARDMAT = [
+["$WOODMATERIAL", 0],
+["leather", 0],
+["laced", 0],
+["polished leather", 0],
+["oiled leather", 0],
+["$COLOUR painted wood",0]
+];
+
+var INLAYGEMS = [
+["pearl", 200],
+["sapphire", 200],
+["garnet", 300],
+["emeral", 300],
+["diamond", 500],
+["$MAYBECOLOUR coloured glass", -25]
+];
+
+var DEITY = [
+["Sigmar",50],
+["Ulric",25],
+["Shaylla",0],
+["Morr",0],
+["Manaan",0],
+["Taal",0],
+["Rhya",0],
+["Ranald",0]
+];
+
+var MAYBECOLOUR = [
+["$COLOUR", 0],
+["",0]
+];
+
+var COLOUR = [
+["purple", 50],
+["red",25],
+["blue",25],
+["white",25],
+["dark gray", 0],
+["yellow",0],
+["tan", 0],
+["green", 0],
+["brown", 0],
+["brownish", -25],
+["greenish", -25]
+];
+
+var STAINS = [
+["badly stained",-10],
+["mud-caked", -10],
+["blood-speckled",-25],
+["mouldering",-25],
+["filthy, mud-caked, blood-drenched",-50],
+["fire damaged",-50]
+];
+
+var PAPERDAMAGED = [
+["sun-bleached",-10],
+["sun-faded",-10],
+["weathered",-10],
+["well read",-10],
+["worm eaten",-15],
+["water damaged",-15],
+["water-warped",-20],
+["$STAINS", 0],
+["$STAINS", 0],
+["$STAINS", 0],
+["$STAINS", 0],
+["$STAINS", 0]
+];
+var WRITTING = [
+["etched", 0],
+["inscribed", 0],
+["engraved", 0]
+];
+
+
+var EMBROIDED = [
+["embroided", 25],
+["embroided", 25],
+["embroided", 25],
+["painted", 0]
+];
+
+var PROVINCE = [
+["Altdorf",0],
+["Averland",0],
+["Hotchland",0],
+["Middenheim",0],
+["Middenland",0],
+["Nordland",0],
+["Nuln",0],
+["Nuln",0],
+["Ostermark",0],
+["Ostland",0],
+["Reikland",0],
+["Sylvania",0],
+["Stirland",0],
+["Talabecland",0],
+["Talabheim",0],
+["Wissenland",0]
+];
+
+var CITY = [
+["Altdorf",0],
+["Nuln",0],
+["Talabheim",0],
+["Middenheim",0],
+["Carroburg",0],
+["Ubersreik",0]
+];
+
+var PLACE = [
+["$PROVINCE",0],
+["$PROVINCE",0],
+["$PROVINCE",0],
+["$CITY",0],
+["$CITY",0],
+["Kislev",0],
+["Wasteland",0],
+["Estalia",0],
+["Tilea",0],
+["Araby",0]
+];
+
+var GOODCLOTH = [ 
+["fashionable", 0],
+["embroidered", 0],
+["richly decorated", 0]
+];
+
+
+var BADCLOTH = [ 
+["badly stiched", 0],
+["full of holes", 0],
+["threadbare", 0],
+["moth-eaten", 0],
+["ragged", 0]
+];
+
+var GOODORBADCLOTH = [
+["$GOODCLOTH", 20],
+["$BADCLOTH", -20]
+];
+
+var DECORATION = [
+["of presumably great value",100],
+["$WRITTING with $OATH the Emperor",50],
+["$WRITTING with $OATH $DEITY always", 25],
+["$WRITTING with $OATH $DEITY always", 25],
+["$WRITTING with runes", 25],
+["$WRITTING with a vengenful prayer", 10],
+["$WRITTING with a prayer to protect the bearer who has faith in $DEITY", 10],
+["$WRITTING with the image of crossed swords",0],
+["$WRITTING with the image of a nude dancer",0],
+["$WRITTING with $SHAPE",0]
+];
+
+
+var CLOTHDECORATION = [
+["sewn with $COLOUR silk",50],
+["$EMBROIDED with $OATH the Emperor",50],
+["$EMBROIDED with $OATH $DEITY always", 25],
+["$EMBROIDED with $OATH $DEITY", 25],
+["$EMBROIDED with runes", 25],
+["stitched with $MINORMOD $COLOUR and $COLOUR $PATTERN",20],
+["sewn with small $ANYMATERIAL beads",10],
+["$EMBROIDED with the image of a $MAYBECOLOUR nude dancer",0],
+["$EMBROIDED with $SHAPE",0],
+["$EMBROIDED with the arms of $PROVINCE",0],
+["$EMBROIDED with the arms of $CITY",0]
+];
+
+
+var OATH = [
+["a sacred oath of obedience to", 0],
+["a sacred oath to", 0],
+["a sacred devotions to", 0]
+];
+
+var FOLLOWERS = [
+["worshippers", 0],
+["followers", 0],
+["the church", 0],
+["the cult", 0]
+];
+
+var SHAPE = [
+["the symbol of the four seasons",20],
+["the symbol of the eight winds of magic",20],
+["a twin-tailed comet",20],
+["an hourglass", 20],
+["a gothic cross", 20],
+["a crowned skull", 20],
+["a skull", 20],
+["a set of scales", 20],
+["the 'U' symbol used by $FOLLOWERS of Ulric",20],
+["the wolf's head symbol used by $FOLLOWERS of Ulric",20],
+["the hammer symbol used by $FOLLOWERS of Sigmar",20],
+["the twin-tailed comet symbol used by $FOLLOWERS of Sigmar",20],
+["a heart", 10],
+["a hammer", 10],
+["a $ANIMAL", 10],
+["a $ANIMAL's head", 10],
+["the arms of $PROVINCE",10],
+["the arms of $CITY",10],
+["a grimacing face", 0],
+["a crescent moon", 0],
+["a bone", 0],
+["a wreath",0],
+["a leaf",0]
+];
+
+var JEWELSTRING = [
+["hemp cord", -25],
+["leather cord", 0],
+["$COLOUR string", 0],
+["$COLOUR silk cord", 100],
+["silver chain", 100],
+["gold chain", 300],
+["fine $METALTRIMS chain", 50]
+];
+
+var PATTERN = [
+["diamond checks", 0],
+["checks", 0],
+["flames", 0],
+["chevrons", 0 ],
+["stripes", 0 ]
+];
+
+var LANGUAGE = [
+["Reiklander",0],
+["Bretonnian",0],
+["Kislevite",0],
+["Wastelander",0],
+["Arabian",10],
+["Albionesse",10],
+["Khazalid",10],
+["Eltharin",10],
+["Nehekharan hieroglyphics",20],
+["Slann Pictograms",20]
+];
+
+var QUALITY = [
+["delicate", 30],
+["big", 50],
+["ornate", 30],
+["",0],
+["small", -30]
+];
+
+
+var MINORMOD = [
+["delicate", 10],
+["ornate", 10],
+["",0],
+["",0],
+["",0],
+["",0],
+["",0],
+["simple", -10],
+["plain", -10],
+["crude", -10]
+];
+
+var SWORD = [
+["sword", 0],
+["sword", 0],
+["broadsword", 0],
+["arming sword", 0],
+["katzbalger (<i>sword</i>)", 0],
+["falchion", 0],
+["messer (<i>sword</i>)", 0],
+["dussack (<i>sword</i>)", 0],
+["cinquedea (<i>sword</i>)", 0]
+];
+
+var DAGGER = [
+["dagger", 0],
+["dagger", 0],
+["leaf-bladed dagger", 0],
+["curved dagger", 0],
+["stiletto", 0],
+["rondel dagger", 0],
+["bollock dagger", 0],
+["poniard (<i>dagger</i>)", 0],
+["anelace (<i>dagger</i>)", 0]
+];
+
+var HANDWEAPON = [
+["axe", 0],
+["axe", 0],
+["battle axe", 0],
+["battle axe", 0],
+["mace", 0],
+["mace", 0],
+["warhammer (<i>hand weapon</i>)", 0],
+["warhammer (<i>hand weapon</i>)", 0],
+["military hammer (<i>hand weapon</i>)", 0],
+["morning star (<i>hand weapon</i>)", 0],
+["reinforced club (<i>hand weapon</i>)", 0]
+];
+
+var FENCING = [
+["foil", 0],
+["rapier", 0]
+];
+
+var GOODQUALITY = [
+["<I>fine</I>", 0],
+["<I>durable</I>", 0],
+["<I>practical</I>", 0],
+["<I>lightweight</I>", 0]
+];
+
+var BADQUALITY = [
+["<I>ugly</I>", 0],
+["<I>shoddy</I>", 0],
+["<I>unrealible</I>", 0],
+["<I>bulky</I>", 0]
+];
+
+var GOODBLADEDECO = [
+["with a pattern-welded blade",0],
+["made with good quality steel",0],
+["$DECORATION",0],
+["$DECORATION",0]
+];
+
+var BADBLADEDECO = [
+["saltwater-corroded",0],
+["dented",0],
+["pitted",0],
+["rusted",0],
+["bent",0],
+["badly repaired",0]
+];
+
+var GOODWEAPONPREFIX = [
+["nicely crafted",0],
+["well-made",0],
+["superior",0],
+["superior",0],
+["excelent",0],
+["elegant",0],
+["$NEUTRALWEAPONPREFIX",0],
+["",0]
+];
+
+var GOODWOODENPREFIX = [
+["reinforced",0],
+["robust",0],
+["iron-shod",0],
+["$NEUTRALWEAPONPREFIX",0],
+["",0]
+];
+
+var BADWOODENPREFIX = [
+["splintered",0],
+["rotten",0],
+["craked",0],
+["warped",0],
+["$NEUTRALWEAPONPREFIX",0],
+["",0]
+];
+
+var NEUTRALWEAPONPREFIX = [
+["well-used",0],
+["battle-proven",0],
+["slighly scratched",0],
+["",0],
+["",0],
+["",0]
+];
+
+var DANGLING = [
+["a string of oyster shells",0],
+["a string of snail shells",0],
+["a string of small bells",0],
+["a single small bell",0],
+["some prayer ribbons to $DEITY",0],
+["a pewter statuette of $DEITY",0],
+["a few eagle feathers",0],
+["an owl feather",0],
+["a string of wolf's teeth",0],
+["a few $COLOUR feathers",0],
+["a tuff of horse hair",0]
+];
+
+var POMMELHILTSCABBARD = [
+["a $METALFITTING hilt and pommel",0],
+["a $METALFITTING hilt and pommel",0],
+["$DANGLING tied to the pommel",0],
+["$DANGLING tied to the pommel",0],
+["a $METALFITTING pommel in the shape of a two-headed $FIERCEANIMAL",0],
+["a $METALFITTING pommel in the shape of a $SHAPE",0],
+["a $METALFITTING round pommel with an icon of $DEITY",0]
+["a $METALFITTING round pommel",0],
+["a $METALFITTING disc pommel",0],
+["a $METALFITTING fishtail pommel",0],
+["a $METALFITTING scent stopper pommel",0],
+["a $INLAYGEMS-studded pommel",0],
+["a $METALFITTING hilt",0],
+["a $METALFITTING sidering attached to the hilt",0],
+["a $METALFITTING finger-ring attached to the hilt",0],
+["a $METALFITTING nagel attached to the hilt",0],
+["a $METALFITTING knuckle-bow",0],
+["a $METALFITTING shell guard",0],
+["a $METALFITTING S-shaped hilt",0],
+["a $METALFITTING cruciform hilt",0],
+["a $METALFITTING hilt $DECORATION",0],
+["a $METALFITTING hilt $DECORATION",0],
+["a $SCABBARDMAT scabbard $DECORATION",0],
+["a $SCABBARDMAT scabbard $DECORATION",0],
+["a $MINORMOD $SCABBARDMAT scabbard $DECORATION",0],
+["a $SCABBARDMAT scabbard",0],
+["a $SCABBARDMAT scabbard",0],
+["a $MINORMOD $SCABBARDMAT scabbard",0]
+];
+
+var POMMELHANDLE = [
+["$DANGLING tied to the pommel",0],
+["$DANGLING tied to the handle",0],
+["a $METALFITTING pommel in the shape of a two-headed $FIERCEANIMAL",0],
+["a $METALFITTING pommel in the shape of a $SHAPE",0],
+["a $METALFITTING round pommel with an icon of $DEITY",0]
+["a $METALFITTING round pommel",0],
+["a $METALFITTING disc pommel",0],
+["a $METALFITTING fishtail pommel",0],
+["a $METALFITTING scent stopper pommel",0],
+["a steel-reinforced $WOODMATERIAL handle",0],
+["a $WOODMATERIAL handle $DECORATION",0],
+["a $WOODMATERIAL handle $DECORATION",0],
+["a $MAYBECOLOUR sling-strap",0],
+["a $MAYBECOLOUR leather sling-strap",0]
+];
+
+var WITHPAULDRONSANDTASSETS = [
+["", 0],
+["", 0],
+["", 0],
+["with pauldrons", 0],
+["with pauldrons", 0],
+["with spaulders", 0],
+["with munnions", 0],
+["with ailettes", 0],
+["with solid tassets", 0],
+["with articulated tassets", 0],
+["with pauldrons and tassets", 0],
+["with pauldrons and tassets", 0],
+];
+
+var ALLSTRINGS = [
+["$SWORD",SWORD],
+["$DAGGER",DAGGER],
+["$HANDWEAPON",HANDWEAPON],
+["$FENCING",FENCING],
+["$GOODBLADEDECO",GOODBLADEDECO],
+["$BADBLADEDECO",BADBLADEDECO],
+["$GOODWEAPONPREFIX",GOODWEAPONPREFIX],
+["$GOODWOODENPREFIX",GOODWOODENPREFIX],
+["$BADWOODENPREFIX",BADWOODENPREFIX],
+["$NEUTRALWEAPONPREFIX",NEUTRALWEAPONPREFIX],
+["$POMMELHILTSCABBARD",POMMELHILTSCABBARD],
+["$POMMELHANDLE",POMMELHANDLE],
+["$DANGLING",DANGLING],
+["$CLOTHDECORATION",CLOTHDECORATION],
+["$DECORATION",DECORATION],
+["$SHAPE",SHAPE],
+["$FOLLOWERS",FOLLOWERS],
+["$ANIMAL",ANIMAL],
+["$FIERCEANIMAL",FIERCEANIMAL],
+["$JEWELSTRING",JEWELSTRING],
+["$ANYMATERIAL",ANYMATERIAL],
+["$METALMATERIAL",METALMATERIAL],
+["$METALFITTING",METALFITTING],
+["$METALTRIMS",METALTRIMS],
+["$RAREMETAL",RAREMETAL],
+["$SCABBARDMAT",SCABBARDMAT],
+["$WOODMATERIAL",WOODMATERIAL],
+["$STONEMATERIAL",WOODMATERIAL],
+["$INLAYGEMS",INLAYGEMS],
+["$DEITY",DEITY],
+["$PAPERDAMAGED",PAPERDAMAGED],
+["$STAINS",STAINS],
+["$FUR",FUR],
+["$TRIMMING",TRIMMING],
+["$PATTERN", PATTERN],
+["$OATH",OATH],
+["$GOODORBADCLOTH",GOODORBADCLOTH],
+["$GOODCLOTH",GOODCLOTH],
+["$BADCLOTH",BADCLOTH],
+["$MAYBECOLOUR",MAYBECOLOUR],
+["$COLOUR",COLOUR],
+["$PLACE",PLACE],
+["$PROVINCE",PROVINCE],
+["$LANGUAGE",LANGUAGE],
+["$CITY",CITY],
+["$WRITTING",WRITTING],
+["$EMBROIDED",EMBROIDED],
+["$MINORMOD",MINORMOD],
+["$QUALITY",QUALITY],
+["$WITHPAULDRONSANDTASSETS",WITHPAULDRONSANDTASSETS],
+["$GOODQUALITY",GOODQUALITY],
+["$BADQUALITY",BADQUALITY]
+];
+
+//Treasure, value in shillings
+var TreasureJewels = [
+["A $MINORMOD $MAYBEFINE dwarf's $METALTRIMS beard-clasp.", 5,0],
+["A $MINORMOD $MAYBEFINE dwarf's $METALMATERIAL beard-clasp.", 5,0],
+
+["A $MINORMOD $MAYBEFINE elven $METALTRIMS head band with a $INLAYGEMS set in the front.", 10,0],
+
+["A $MINORMOD $MAYBEFINE $METALTRIMS cloak clasp.",4,0],
+["A $METALTRIMS $MAYBEFINE cloak clasp in the shape of $SHAPE.",5,0],
+
+["A $MINORMOD $METALTRIMS $MAYBEFINE belt bucke.", 4,0],
+["A $QUALITY $METALTRIMS $MAYBEFINE belt bucke.", 8,0],
+["A $METALMATERIAL $MAYBEFINE belt buckle shaped like a $FIERCEANIMAL's head.", 6,0],
+["A $METALMATERIAL $MAYBEFINE belt buckle in the shape of $SHAPE.", 5,0],
+
+["A $METALTRIMS $MAYBEFINE bracelet $DECORATION.", 20,0],
+["A $METALTRIMS $MAYBEFINE bracelet inset with $INLAYGEMS.", 6,0],
+["A $METALMATERIAL $MAYBEFINE bracelet with $METALTRIMS highlights.", 5,0],
+
+["A $MINORMOD  $METALMATERIAL ring.", 3,0],
+["A $METALMATERIAL $MAYBEFINE ring $DECORATION.", 4,0],
+["A $METALMATERIAL $MAYBEFINE ring with a $INLAYGEMS inset.", 5,0],
+["A $METALTRIMS $MAYBEFINE signet ring with an intrincated design.", 50,0],
+
+["A $MINORMOD $MAYBEFINE $METALTRIMS necklace.", 20,0],
+["A $METALMATERIAL $MAYBEFINE pendant in the shape of $SHAPE.", 6] ,
+["A $METALMATERIAL $MAYBEFINE pendant in the shape of $SHAPE, strung from a $JEWELSTRING necklace.", 6,0],
+["A $ANYMATERIAL $MAYBEFINE pendant on a $JEWELSTRING.", 4,0],
+
+["A $MINORMOD $MAYBEFINE $METALMATERIAL earring.", 3,0],
+["An earring made of $METALMATERIAL and $DECORATION.", 3,0],
+["A $INLAYGEMS-studded $MAYBEFINE earring.", 4,0],
+["A $MINORMOD $MAYBEFINE pair of earrings made of $METALMATERIAL.", 6,0],
+["An $MAYBEFINE earring made of $METALTRIMS with a $INLAYGEMS inset.", 4,0],
+
+["A $MINORMOD $MAYBEFINE $ANYMATERIAL symbol of $DEITY.", 6,0],
+["A $QUALITY $MAYBEFINE $ANYMATERIAL statuette of the god $DEITY.", 6,0],
+
+["A rare $METALMATERIAL coin $DECORATION.", 2,0],
+["A set of "+ (roll=(roll1d10()+4)) +" $METALMATERIAL buttons each mounted with a $INLAYGEMS.", roll/2,0],
+
+["An ingot of $METALMATERIAL.", 10, 1],
+["An ingot of $METALMATERIAL stamped with a seal of $PLACE authorities.", 10, 1]
+
+];
+var TreasureClothing = [
+["A <I>fine</I> $FUR cloak with $TRIMMING trimmings.", 20, 1],
+["A <I>fine</I> warm $FUR cloak with $TRIMMING trimmings.", 22, 1],
+["A <I>fine</I> $COLOUR cloak $EMBROIDED with $COLOUR $PATTERN.", 20, 1],
+["A $MINORMOD $FUR cloak.", 15, 1],
+["A $COLOUR cloak with $TRIMMING trimmings.", 12, 1],
+["A $MINORMOD $COLOUR cloak.", 10, 1],
+["A $COLOUR cloak. It has a $JEWELSTRING to tie it.", 10, 1],
+["A $COLOUR cloak $EMBROIDED with the shape of $SHAPE.", 10, 1],
+["An <I>ugly</I> $COLOUR cloak.", 5, 1],
+["A $BADCLOTH <I>shoddy</I> $COLOUR cloak.", 5, 1],
+
+["A <I>fine</I> $FUR coat.", 36, 1],
+["A <I>fine</I> warm $FUR coat with $TRIMMING trimmings.", 38, 1],
+["A $GOODCLOTH <I>fine</I> $COLOUR coat.", 36, 1],
+["A <I>fine</I> $COLOUR coat. It's $CLOTHDECORATION.", 36, 1],
+["A $FUR coat with $TRIMMING trimmings.", 24, 1],
+["A $MINORMOD $FUR coat.", 24, 1],
+["A $MINORMOD $COLOUR coat.", 18, 1],
+["A $COLOUR coat with $TRIMMING trimmings.", 18, 1],
+["A <I>bulky</I> $COLOUR coat, with large pockets and ill sewn.", 9, 1],
+["An <I>ugly</I> $COLOUR coat.", 9, 1],
+["A $BADCLOTH <I>shoddy</I> $COLOUR coat.", 9, 1],
+
+["A $GOODCLOTH <I>fine</I> set of $COLOUR ornate robes.It's $CLOTHDECORATION.",80, 1],
+["A $GOODCLOTH <I>fine</I> set of silky $COLOUR ornate robes.",80, 1],
+["A $MINORMOD set of $COLOUR robes.",40, 1],
+["A set of $COLOUR robes. It's $EMBROIDED with the shape of $SHAPE.",40, 1],
+["A set of $COLOUR robes. It's $CLOTHDECORATION.",40, 1],
+["A priestly set of $COLOUR robes. It's $EMBROIDED with prayers to $DEITY.",40, 1],
+["A <I>bulky</I> set of $COLOUR robes. It has sewn $ANYMATERIAL beads of all over it.",20, 1],
+["An <I>ugly</I> set of $COLOUR robes.",20, 1],
+
+["A $GOODCLOTH <I>fine</I> pair of $COLOUR gloves.", 8,0],
+["A <I>fine</I> pair of $COLOUR dyed leather gloves.", 8,0],
+["A pair of $COLOUR gloves.", 4,0],
+["A $MINORMOD pair of $COLOUR gloves.", 4,0],
+["A pair of $COLOUR dyed leather gloves.", 6,0],
+["A $BADCLOTH <I>shoddy</I> pair of $COLOUR gloves.", 2,0],
+["A $BADCLOTH <I>ugly</I> pair of $COLOUR gloves.", 2,0],
+
+["A pair of $GOODCLOTH <I>fine</I> $COLOUR shoes. Made by a renowed master artisan from $CITY.", 10,0],
+["A $MINORMOD pair of $COLOUR shoes.", 5,0],
+["A pair of $COLOUR dyed leather shoes.", 5,0],
+["A pair of wellworn but serviceable $MAYBECOLOUR leather shoes.", 5,0],
+["A pair of $MAYBECOLOUR leather shoes with $METALMATERIAL buckles.", 6,0],
+["A pair of $BADCLOTH <I>shoddy</I> leather shoes.", 2.5,0],
+
+["A pair of $GOODCLOTH <I>fine</I> $COLOUR boots. Made by a renowed master artisan from $CITY.", 10, 1],
+["A pair of $COLOUR dyed leather boots.", 5, 1],
+["A pair of $COLOUR dyed leather boots with wide cuffs.", 6, 1],
+["A pair of $MAYBECOLOUR leather boots with $METALMATERIAL buckles.", 6, 1],
+["A $STAINS pair of $COLOUR dyed leather boots.", 5, 1],
+["A pair of army boots with button-back cuffs. The buttons are $METALMATERIAL.",5, 1],
+["A <I>bulky</I> pair of leather boots with $METALMATERIAL buckles.", 2.5, 1],
+
+["A <I>fine</I> $COLOUR shirt and a $COLOUR vest and pants.", 12, 1],
+["A $MINORMOD matching $COLOUR shirt, vest and pants.", 6, 1],
+["A $MINORMOD white shirt and a $COLOUR vest and pants.", 6, 1],
+["A $STAINS matching $COLOUR shirt, vest and pants.", 5, 1],
+
+["A $MINORMOD $COLOUR hood.", 5, 0],
+["A $BADCLOTH <I>ugly</I> $COLOUR hood.", 2.5, 0],
+
+
+["A $GOODCLOTH <I>fine</I> $COLOUR hat.", 8, 0],
+["A $GOODCLOTH <I>fine</I> $COLOUR and $COLOUR hat.", 8, 0],
+["A $COLOUR hat with three $COLOUR feathers.", 5, 0],
+["A $MINORMOD hunter's cap with a $COLOUR feather.", 4, 0],
+["A $MINORMOD $COLOUR hat.", 4, 0],
+["A $BADCLOTH <I>ugly</I> $COLOUR hat.", 2, 0],
+["An oversized <I>bulky</I> $COLOUR hat with too many $MINORMOD $MAYBECOLOUR feathers.", 2, 0],
+
+["A $GOODCLOTH <I>fine</I> $COLOUR uniform with $COLOUR accents.",44, 1],
+["An army officer <I>fine</I> $COLOUR and $COLOUR uniform.",44, 1],
+["A $MINORMOD $COLOUR uniform.",22, 1],
+["A $COLOUR and $COLOUR uniform.",22, 1],
+["A $COLOUR and $COLOUR military uniform.",22, 1],
+["A $STAINS $COLOUR uniform.", 18, 1],
+["An <I>ugly</I> $COLOUR servant's uniform.",11, 1],
+["A <I>bulky</I> $COLOUR and $COLOUR militia uniform.",11, 1],
+["A $BADCLOTH <I>shoddy</I> $COLOUR militia uniform.",11, 1],
+["A $STAINS and $BADCLOTH <I>shoddy</I> $COLOUR uniform.",11, 0]
+
+];
+
+var TreasureCoins = [
+["A $GOODWOODENPREFIX $WOODMATERIAL chest with coins. It has "+(roll2d10()+2)+" gold crowns, "+(roll2d10()*roll2d10()+1)+" silver shillings and "+(roll2d10()*roll2d10()+10)+" pennies.", 8 , 2],
+["A $GOODWOODENPREFIX $WOODMATERIAL chest with coins. It has "+(roll2d10()+2)+" gold crowns, "+(roll2d10()*roll2d10()+1)+" silver shillings and "+(roll2d10()*roll2d10()+10)+" pennies.", 8 , 2],
+["A $GOODWOODENPREFIX $WOODMATERIAL chest with coins. It has "+(roll2d10()+2)+" gold crowns, "+(roll2d10()*roll2d10()+1)+" silver shillings and "+(roll2d10()*roll2d10()+10)+" pennies.", 8 , 2],
+["A $GOODWOODENPREFIX $WOODMATERIAL chest with coins. It has "+(roll2d10()+2)+" gold crowns, "+(roll2d10()*roll2d10()+1)+" silver shillings and "+(roll2d10()*roll2d10()+10)+" pennies.", 8 , 2],
+["A $GOODWOODENPREFIX $WOODMATERIAL chest with coins. It has "+(roll2d10()+2)+" gold crowns, "+(roll2d10()*roll2d10()+1)+" silver shillings and "+(roll2d10()*roll2d10()+10)+" pennies.", 8 , 2],
+["A $GOODWOODENPREFIX $WOODMATERIAL chest with coins. It has "+(roll2d10()+2)+" gold crowns, "+(roll2d10()*roll2d10()+1)+" silver shillings and "+(roll2d10()*roll2d10()+10)+" pennies.", 8 , 2],
+["A $GOODWOODENPREFIX $WOODMATERIAL chest with coins. It has "+(roll2d10()+2)+" gold crowns, "+(roll2d10()*roll2d10()+1)+" silver shillings and "+(roll2d10()*roll2d10()+10)+" pennies.", 8 , 2],
+["A $GOODWOODENPREFIX $WOODMATERIAL chest with coins. It has "+(roll2d10()+2)+" gold crowns, "+(roll2d10()*roll2d10()+1)+" silver shillings and "+(roll2d10()*roll2d10()+10)+" pennies.", 8 , 2],
+["A $GOODWOODENPREFIX $WOODMATERIAL chest with coins. It has "+(roll2d10()+2)+" gold crowns, "+(roll2d10()*roll2d10()+1)+" silver shillings and "+(roll2d10()*roll2d10()+10)+" pennies.", 8 , 2],
+["A secure $METALMATERIAL coin-box hanging on a chain necklace. It contains "+(roll1d10()+2)+" gold crowns, "+(roll2d10()+10)+" tarnished shillings and several brass pennies.", 12 , 1],
+["A coin box with "+(roll2d10()+10)+" Crowns.", 2 , 0],
+["A heavy <I>fine</I> $MAYBECOLOUR pouch filled with "+(roll1d10()+2) + " Gold Crowns.", 8/12 , 0],
+
+["A $MINORMOD $MAYBECOLOUR box full with "+(roll1d10()+24) +" silver coins.", 1, 0],
+["A small $MAYBECOLOUR box with "+(roll2d10()+12) +" silver coins.", 1, 0],
+["A $WOODMATERIAL box with "+ (roll2d10()+3) +" silver coins.", 2, 0],
+["A $GOODORBADCLOTH purse with "+ (roll1d10()+9) +" silver coins.", 4/12, 0],
+
+["A sack with "+ (roll2d10()*roll1d10()+ 10)  + " slightly rusted pennies.", 1/12, 2],
+["A $MINORMOD purse with a "+(roll1d10()+1) +" silver shillings and " + (roll2d10()+3) + " pennies.", 4/12, 0],
+["A $GOODORBADCLOTH $MAYBECOLOUR purse with a " + (roll2d10()+24) +" brass pennies.", 2/12, 0],
+["A knotted piece of $MAYBECOLOUR cloth with " + (roll2d10()+12) +" brass pennies.", 2/12, 0],
+["A $STAINS $MAYBECOLOUR pouch with a " + (roll2d10()+6) +" pennies.", 4/12, 0],
+["A $BADCLOTH knotted piece of $MAYBECOLOUR cloth with " + (roll2d10()+5) +" brass pennies.",  2/12, 0],
+["A $BADCLOTH purse with " + (roll2d10()+2) +" pennies.", 2/12, 0],
+["A bit of string with " + (roll1d10()+2) +" pierced pennies in it.", 1/12, 0]
+];
+
+var TreasureOthers = [
+["A $STAINS and $GOODORBADCLOTH flag in the colours of the city of $CITY.", 200, 3],
+["A $STAINS and $GOODORBADCLOTH flag in the colours of $PROVINCE.", 200, 3],
+
+["A <I>lightweight</I> $COLOUR dyed leather backpack.", 10, 2],
+["A $MINORMOD leather backpack.", 4.85, 2],
+["A $MINORMOD $COLOUR canvas backpack.", 4.85, 2],
+["A $BADCLOTH <I>shoddy</I> $COLOUR canvas backpack.", 2.5, 2],
+["A <I>bulky</I> backpack made of $COLOUR cloth and $WOODMATERIAL.", 2.4, 2],
+
+["A $MINORMOD leather sling bag.", 1, 1],
+["A $MINORMOD $COLOUR canvas sling bag.", 1, 1],
+["A $BADCLOTH <I>shoddy</I> $COLOUR canvas sling bag.", 0.5, 1],
+
+["A <I>fine</i> telescope with $METALTRIMS decorations.", 100, 0],
+["A $MINORMOD brass telescope.", 100, 0],
+
+["A $MINORMOD bottle of perfume.", 10, 0],
+["A $QUALITY bottle of expensive <I>fine</i> perfume.", 10,0],
+
+["A $MAYBEFINE $MINORMOD writting kit in a $ANYMATERIAL box.", 40, 0],
+["An <I>unrealible</i> writting kit in bad condition. It's stored in a $ANYMATERIAL box.", 20, 0],
+
+["A $MINORMOD map of $PLACE.", 60, 0],
+["A <I>fine</i> detailed map map of $PLACE. It's full of inscriptions in $LANGUAGE.", 120, 0],
+["A $PAPERDAMAGED map of $PLACE.", 55, 0],
+["A colorfull but <I>unrealible</i> map of $PLACE.", 30, 0],
+
+["A $MINORMOD pair of bone dice.", 0.85, 0],
+["A pair of <I>fine</i>  ivory  dice with their pips painted $COLOUR.", 1.65, 0],
+["Two pairs of bone dice, one of them loaded.", 2, 0],
+
+["A $MINORMOD deck of cards. Their backs are $COLOUR.", 1, 0],
+["A $PAPERDAMAGED deck of cards. Their backs are $COLOUR.", 1, 0],
+
+["A couple of dozen sheets (24) of $PAPERDAMAGED parchment.",24, 0],
+["A stack of "+(roll=(roll1d10()+5))+" sheets of blank parchment.",roll, 0],
+["A $PAPERDAMAGED stack of "+(roll=(roll1d10()+5))+" sheets of blank parchment.",roll/2, 0],
+["A two-score (40) bunch of parchments.",40, 0],
+["A stack of "+(roll=(roll1d10()+3))+" sheets of <I>fine</i> parchment.",roll*2, 0],
+
+["A $PAPERDAMAGED sheet with some text in $LANGUAGE.", 1, 0],
+
+["A $QUALITY bone comb.", 2, 0],
+["A $MINORMOD  <I>fine</i> silver comb.", 4, 0],
+["A <I>fine</i> silver comb  $DECORATION", 4, 0],
+
+["A $MAYBECOLOUR jar with poultice made from Faxtoryll.", 15, 0],
+["A Healing Draught in a $MINORMOD $MAYBECOLOUR glass bottle.", 10, 0],
+
+["A human skull $DECORATION.", 4, 1],
+["A $MINORMOD ball of $COLOUR wool yarn.", 0.25, 0],
+["A pebble painted $COLOUR.", 0.13, 0]
+];
+
+var TreasureWeapons = [
+["A $NEUTRALWEAPONPREFIX $MINORMOD $HANDWEAPON.", 20, 1],
+["A $MINORMOD $HANDWEAPON $DECORATION.", 20, 1],
+["A $MINORMOD $HANDWEAPON $DECORATION. It has a $POMMELHANDLE.", 20, 1],
+["A $GOODWEAPONPREFIX $GOODQUALITY $HANDWEAPON. It has a $POMMELHANDLE.", 40, 1],
+["A $BADQUALITY $HANDWEAPON.", 10, 1],
+
+["A $NEUTRALWEAPONPREFIX $MINORMOD $HANDWEAPON.", 20, 1],
+["A $MINORMOD $HANDWEAPON $DECORATION.", 20, 1],
+["A $MINORMOD $HANDWEAPON $DECORATION. It has a $POMMELHANDLE.", 20, 1],
+["A $GOODWEAPONPREFIX $GOODQUALITY $HANDWEAPON. It has a $POMMELHANDLE.", 40, 1],
+["A $BADQUALITY $HANDWEAPON.", 10, 1],
+
+["A $NEUTRALWEAPONPREFIX $MINORMOD $SWORD.", 20, 1],
+["A $MINORMOD $SWORD $DECORATION.", 20, 1],
+["A $MINORMOD $SWORD $DECORATION. It has a $POMMELHILTSCABBARD.", 20, 1],
+["A $GOODQUALITY $SWORD $GOODBLADEDECO. It has a $POMMELHILTSCABBARD.", 40, 1],
+["A $BADBLADEDECO $BADQUALITY $SWORD.", 10, 1],
+
+["A $NEUTRALWEAPONPREFIX $MINORMOD $DAGGER.", 16, 0],
+["A $MINORMOD $DAGGER $DECORATION.", 16, 0],
+["A $MINORMOD $DAGGER $DECORATION. It has a $POMMELHILTSCABBARD.", 16, 0],
+["A $GOODQUALITY $DAGGER $GOODBLADEDECO. It has a $POMMELHILTSCABBARD.", 32, 0],
+["A $BADBLADEDECO $BADQUALITY $DAGGER.", 8, 0],
+
+["A $MINORMOD knife. More an eating utensil than a weapon.", 8, 0],
+["A $MINORMOD cheese knife. It's $WRITTING with the Edelpilzen town's Cheese Maker Guild sign.", 8, 0],
+["A $GOODWEAPONPREFIX <I>practical</I> utility knife. A good cutting tool with a $WOODMATERIAL handle.", 16, 0],
+["A <I>bulky</I> short butcher knife with a reinforced $WOODMATERIAL handle.", 4, 0],
+
+
+["A $NEUTRALWEAPONPREFIX $MINORMOD $FENCING.", 100, 1],
+["A $MINORMOD $FENCING $DECORATION.", 100, 1],
+["A $MINORMOD $FENCING $DECORATION. It has a $POMMELHILTSCABBARD.", 100, 1],
+["A $GOODQUALITY $FENCING $GOODBLADEDECO. It has a $POMMELHILTSCABBARD.", 200, 1],
+["A $BADBLADEDECO $BADQUALITY $FENCING.", 50, 1],
+
+
+["A $NEUTRALWEAPONPREFIX $MINORMOD Zweihander.", 200, 3],
+["A $MINORMOD Zweihander $DECORATION.", 200, 3],
+["A $MINORMOD Zweihander $DECORATION. It has a $POMMELHILTSCABBARD.", 200, 3],
+["A $GOODQUALITY Zweihander $GOODBLADEDECO. It has a $POMMELHILTSCABBARD.", 400, 3],
+["A $BADBLADEDECO $BADQUALITY Zweihander.", 100, 3],
+
+["A $NEUTRALWEAPONPREFIX $MINORMOD Great Axe.", 80, 3],
+["A $MINORMOD Great Axe $DECORATION.", 80, 3],
+["A $MINORMOD Great Axe $DECORATION. It has a $POMMELHANDLE.", 80, 3],
+["A $GOODWEAPONPREFIX $GOODQUALITY Great Axe $GOODBLADEDECO. It has a $POMMELHANDLE.", 160, 3],
+["A $BADBLADEDECO $BADQUALITY Great Axe.", 40, 3],
+
+["A $NEUTRALWEAPONPREFIX $MINORMOD Quater Staff with $DANGLING tied to its $METALFITTING tip.", 3, 2],
+["A $NEUTRALWEAPONPREFIX $MINORMOD Quater Staff $DECORATION.", 3, 2],
+["A $GOODWEAPONPREFIX $GOODQUALITY Quater Staff $DECORATION.", 6, 2],
+["A $BADWOODENPREFIX $BADQUALITY Quater Staff $DECORATION.", 1.5, 2],
+
+["A $NEUTRALWEAPONPREFIX $MINORMOD bow.", 80, 2],
+["A $MINORMOD bow $DECORATION.", 80, 2],
+["A $MINORMOD bow $DECORATION plus a bunch of "+(roll=roll1d10()+4)+" arrows.", 80 + roll*5/12, 2],
+["A $GOODWEAPONPREFIX $GOODQUALITY bow.", 160, 2],
+["A $BADQUALITY bow.", 40, 2],
+
+["A $NEUTRALWEAPONPREFIX $MINORMOD bow.", 80, 2],
+["A $MINORMOD bow $DECORATION.", 80, 2],
+["A $MINORMOD bow $DECORATION plus a bunch of "+(roll=roll1d10()+4)+" arrows.", 80 + roll*5/12, 2],
+["A $GOODWEAPONPREFIX $GOODQUALITY bow.", 160, 2],
+["A warped $BADQUALITY bow.", 40, 2],
+
+["A $NEUTRALWEAPONPREFIX $MINORMOD longbow.", 100, 3],
+["A $MINORMOD longbow $DECORATION.", 100, 3],
+["A $MINORMOD longbow $DECORATION plus a bunch of "+(roll=roll1d10()+4)+" arrows.", 100 + roll*5/12, 3],
+["A $GOODWEAPONPREFIX $GOODQUALITY longbow.", 200, 3],
+["A $BADQUALITY longbow.", 50, 3],
+
+["A $NEUTRALWEAPONPREFIX $MINORMOD shortbow.", 60, 1],
+["A $MINORMOD shortbow $DECORATION.", 60, 1],
+["A $MINORMOD shortbow $DECORATION plus a bunch of "+(roll=roll1d10()+4)+" arrows.", 60 + roll*5/12, 1],
+["A $GOODWEAPONPREFIX $GOODQUALITY shortbow.", 120, 1],
+["A $BADQUALITY shortbow.", 30, 1],
+
+["A $NEUTRALWEAPONPREFIX $MINORMOD crossbow.", 100, 2],
+["A $MINORMOD crossbow $DECORATION.", 100, 2],
+["A $MINORMOD crossbow $DECORATION plus a bunch of "+(roll=roll1d10()+4)+" bolts.", 100 + roll*5/12, 2],
+["A $GOODQUALITY crossbow.", 200, 2],
+["A $NEUTRALWEAPONPREFIX $BADQUALITY crossbow.", 50, 2],
+
+["A $MINORMOD elfbow decorated with $COLOUR silk ribbons plus a bundle of "+(roll=roll1d10()+3)+" $COLOUR feathered elf arrows.", 60 + roll*6/12, 2],
+["A $GOODWEAPONPREFIX $GOODQUALITY elfbow. It's $INLAYGEMS-studded and has $METALFITTING tips and handle decorations.", 400, 2],
+["A $NEUTRALWEAPONPREFIX $BADQUALITY elfbow.", 100, 2],
+
+["A powder horn $DECORATION and carrying "+(roll=roll2d10()+5)+" shots of gunpowder and a $MAYBECOLOUR bag with as many leaden bullets.",1+(3.25)*roll/12, 0],
+["A powder flask $DECORATION and carrying "+(roll=roll2d10())+" shots of gunpowder and a $MAYBECOLOUR bag with as many leaden bullets.",2+(3.25)*roll/12,0]
+
+];
+
+var TreasureArmour = [
+["A $MAYBECOLOUR leather jerkin.",10, 1],
+["A $GOODORBADCLOTH $MAYBECOLOUR leather jerkin.",10, 1],
+["A $BADQUALITY $BADCLOTH $MAYBECOLOUR leather jerkin.", 5, 1],
+["A $MAYBECOLOUR leather leggings.",14, 1],
+["A $GOODORBADCLOTH $MAYBECOLOUR leather leggings.",14, 1],
+["A $MAYBECOLOUR leather jack.",12, 1],
+["A $GOODORBADCLOTH $MAYBECOLOUR leather jack.",12, 1],
+["A $BADQUALITY $BADCLOTH $MAYBECOLOUR leather jack.", 6, 1],
+["A $MINORMOD $MAYBECOLOUR leather skullcap.",8, 0],
+["A $GOODORBADCLOTH $MINORMOD $MAYBECOLOUR leather skullcap.",8, 0],
+["A $MAYBECOLOUR full set of leather armour (<I>leather jack, leggins and skullcap</I>).",34, 2],
+["A $MAYBECOLOUR boiled leather breastplate.",18, 2],
+["A $GOODQUALITY $MAYBECOLOUR boiled leather breastplate $DECORATION.",36, 2],
+["A mail shirt.",40,2],
+["A mail coat.",60,3],
+["A set of mail chausses.",40,3],
+["A long mail coat.",100, 4],
+["A breastplate $WITHPAULDRONSANDTASSETS.",200,3],
+["A $GOODQUALITY breastplate $WITHPAULDRONSANDTASSETS $DECORATION.",400,3],
+["A set of bracers.",160,3],
+["A $GOODQUALITY set of metal bracers $DECORATION.",320,3],
+["An open helm.",40, 1],
+["A helm.",60,2],
+["A $MAYBECOLOUR buckler",18+2/12, 0],
+["A buckler painted $COLOUR and $COLOUR.",18+2/12, 0],
+["A $MAYBECOLOUR shield.",40, 1],
+["A $GOODWOODENPREFIX $GOODQUALITY shield painted $COLOUR with $COLOUR $PATTERN.",80, 1],
+["A $MAYBECOLOUR large shield.",60, 3],
+["A $GOODWOODENPREFIX $GOODQUALITY large shield painted $COLOUR with $COLOUR $PATTERN.",120, 3]
+];
+
+var TreasureAll = [
+TreasureJewels,
+TreasureClothing,
+TreasureCoins,
+TreasureOthers,
+TreasureWeapons,
+TreasureArmour
+];
+
+
+
+function parseCoinage( silver) {
+	var coinagebits = [];
+  if (silver >= 20){
+		gold = Math.floor(silver/20);
+		if (gold == 1) { coinagebits.push("a single Gold Crown")} 
+			else { coinagebits.push(gold+" Gold Crowns")};
+		silver = silver - gold * 20;
+	};
+	if (silver >= 1) {
+		if (Math.floor(silver) == 1) { coinagebits.push("a single Silver Shilling")} 
+			else { coinagebits.push(Math.floor(silver)+" Silver Shillings")};
+		silver = silver - Math.floor(silver);
+	};
+	if ( Math.floor(silver * 12) > 0 ) {
+		brass = Math.floor(silver * 12);
+		if (brass == 1) { coinagebits.push("a single Brass Penny")} 
+			else { coinagebits.push(Math.floor(brass)+" Brass Pennies")};
+	};
+	return coinagebits.join(" and ");
+}
+
+function roll1d10(){
+"use strict";
+ return Math.floor(Math.random() * 10) + 1;
+}
+function roll2d10(){
+"use strict";
+ return Math.floor(Math.random() * 10) + Math.floor(Math.random() * 10) + 2;
+}
+function rollXd10(x){
+"use strict";
+    var j;
+    var roll= 0;
+    for (j = 0; j < x; j += 1) {
+        roll += roll1d10();
+    }
+    return roll;
+}
+function roll1d100(){
+"use strict";
+ return Math.floor(Math.random() * 100) + 1;
+};
+
+function removedoublespaces (str) {
+"use strict";
+ return str.replace(/ +(?= )/g,'');
+};
+
+function aanmanagement( str) {
+"use strict";
+ var strnew = str.replace(/\b(a)\s([aeiou])/ig,'$1n $2');
+ strnew = strnew.replace(/\b(a)\s<I>([aeiou])/ig,'$1n <I>$2');
+ return strnew;
+};
+
+function randomTreasure(TreasureType){
+	if (TreasureType == -1) {
+		TreasureType = Math.floor(Math.random() * TreasureAll.length) + 1;
+	}; 
+	treasure = TreasureAll[TreasureType-1][ Math.floor(Math.random() * TreasureAll[TreasureType-1].length) ];
+	
+	return treasure;
+};
+
+function parsemaybefine (parsedstr, valuemultiplier) {
+	var lookingfor = "$MAYBEFINE";
+	if (parsedstr.includes(lookingfor) == true) {
+		if (valuemultiplier>200) { parsedstr = parsedstr.replace(lookingfor,"<I>fine</i>");} else 
+		{parsedstr = parsedstr.replace(lookingfor,"");};
+	};
+	return parsedstr
+};
+
+function parseencumbrance (parsedstr, encumbrance) {
+	var badlookingfor = "<I>bulky</I>";
+	var goodlookingfor = "<I>lightweight</I>";
+	if (parsedstr.includes(badlookingfor) == true) {
+		encumbrance = encumbrance + 1 };
+	if (parsedstr.includes(goodlookingfor) == true) {
+		encumbrance = Math.max( 0 , encumbrance - 1) };
+	return encumbrance
+};
+
+
+function parsequalities(originalString) {
+    var valuemultiplier = 100;
+    for(var i=0; i < ALLSTRINGS.length; i++){
+            var lookingfor = ALLSTRINGS[i][0];
+            var strings =  ALLSTRINGS[i][1];
+            var randomnumber =  Math.floor(Math.random() * strings.length) ;
+            var replacement =  strings[ randomnumber ][0];
+            if (originalString.includes(lookingfor) == true) { valuemultiplier = valuemultiplier + strings[ randomnumber ][1]};
+            var originalString = originalString.replace( lookingfor , replacement);
+     };
+ 
+    for(var i=0; i < ALLSTRINGS.length; i++){
+            var lookingfor = ALLSTRINGS[i][0];
+            var strings =  ALLSTRINGS[i][1];
+            var randomnumber =  Math.floor(Math.random() * strings.length) ;
+            var replacement =  strings[ randomnumber ][0];
+            if (originalString.includes(lookingfor) == true) { valuemultiplier = valuemultiplier + strings[ randomnumber ][1]};
+            var originalString = originalString.replace( lookingfor , replacement);
+     };
+    var parsedString = aanmanagement(removedoublespaces(parsemaybefine(originalString,valuemultiplier)));
+    return [ parsedString, Math.max(valuemultiplier/100,0.1)];
+};
+
+function generateTreasure( tt) {
+	var amount = amountInput.value;
+	if (isNaN(amount)) { 
+		amount = 5;
+	} else {
+		amount = Math.min(parseInt(amount,10), 15);
+		amount = Math.max(amount, 1);
+	};
+	document.getElementById("amountInput").value = amount;
+	
+    for(j=0; j < amount; j++){
+		var treasure = randomTreasure(tt);
+		var parsedtreasure = parsequalities(treasure[0]);
+		
+		var treasureTargetText = "Treasure"+(j+1);
+		
+		var finalString = parsedtreasure[0] + 
+			" It seems to worth " + parseCoinage(treasure[1]*parsedtreasure[1]) + "." +
+			" It weighs " +parseencumbrance(parsedtreasure[0],treasure[2])+ " Encumbrance Points."
+		document.getElementById(treasureTargetText).innerHTML = finalString;
+	};
+};
+
+</script>
+</head>
+<body>
+    <h1>Generate Treasure</h1>
+    <h2>WFRP 4th Edition Random treasure</h2>
+	<p>This is a simple treasure generator, currently it creates 5 random pieces of jewelry or clothes but the plan it so make it more flexible and with a larger set of items.</p>
+    <button type="button" onclick="generateTreasure(-1)">Generate Now!</button> <label>Amount : <input type="text" maxlength="2" value= "10" size="2" id="amountInput"/></label><br>
+	<button type="button" onclick="generateTreasure(1)">Generate Jewels!</button>
+	<button type="button" onclick="generateTreasure(2)">Generate Clothing!</button>
+	<button type="button" onclick="generateTreasure(3)">Generate Coins!</button>
+	<button type="button" onclick="generateTreasure(4)">Generate Others!</button>
+	<button type="button" onclick="generateTreasure(5)">Generate Weapons!</button>
+	<button type="button" onclick="generateTreasure(6)">Generate Armours!</button>
+    <p id="Treasure1"></p>
+    <p id="Treasure2"></p>
+    <p id="Treasure3"></p>
+    <p id="Treasure4"></p>
+    <p id="Treasure5"></p>
+    <p id="Treasure6"></p>
+    <p id="Treasure7"></p>
+    <p id="Treasure8"></p>
+    <p id="Treasure9"></p>
+    <p id="Treasure10"></p>
+    <p id="Treasure11"></p>
+    <p id="Treasure12"></p>
+    <p id="Treasure13"></p>
+    <p id="Treasure14"></p>
+    <p id="Treasure15"></p>
+<p id="Acknowledgements">Code: Francisco Mu&ntilde;oz 2019.
+<br>Inspiration: <a href="http://www.windsofchaos.com/wp-content/uploads/encroachment/html/generator-random-treasure-01.html">Encroatchment of Chaos, Treasure Generator by Dave Graffam</a>.
+<br>Inspiration: <a href="http://orteil.dashnet.org/randomgen/?gen=https://pastebin.com/raw/JcxC8pMx">WFRP 4e Equipment Generator</a>.
+<br>Inspiration: <a href="https://ratujmywfrp2pl.files.wordpress.com/2010/01/treasure-tables.pdf">Dan White's WFRP RANDOM TREASURE GENERATION</a>.
+<br>Game: Games Worshop and Cubicle 7</p>
+
+</body>
+</html>
