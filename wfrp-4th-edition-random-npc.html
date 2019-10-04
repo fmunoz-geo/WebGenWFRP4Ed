@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><title>WFRP 4th Edition Random NPC</title>
+<script>
+//<![CDATA[
+function roll1d10(){
+"use strict";
+ return Math.floor(Math.random() * 10) + 1;
+}
+function roll2d10(){
+"use strict";
+ return Math.floor(Math.random() * 10) + Math.floor(Math.random() * 10) + 2;
+}
+function rollXd10(x){
+"use strict";
+    var j;
+    var roll= 0;
+    for (j = 0; j < x; j += 1) {
+        roll += roll1d10();
+    }
+    return roll;
+}
+function roll1d100(){
+"use strict";
+ return Math.floor(Math.random() * 100) + 1;
+}
+
+function generateNPC(SpeciesChoice) {
+"use strict";
+var i;
+var Name = "";
+var NameTxt = "";
+var Name = "";
+var NameTxt = "";
+var SpeciesTxt ="";
+var SpeciesN;
+var SpeciesAll = ["Human","Dwarf","Halfling","Elf","Gnome"];
+var Sex = 0;
+var NamesHumanMale = ["Armin", "Adolf", "Adolphus", "Albrecht", "Alexander", "Aldred", "Alfred",
+"Anders", "Anton", "Axel", "Bernard", "Bernd", "Bert", "Boris", "Bruno", 
+"Chedwic", "Christian", "Christoph", "Claus", "Clemons", "Conrad", "Konrad", 
+"Dahlbert", "Detlef", "Dieter", "Dirk", "Erberhardt", "Erik", "Erich",
+"Ernst", "Erwin", "Erzbet", "Felix", "Franz", "Friedrich", "Fredrick",
+"Fritz", "Georg", "Gerd", "Gotz", "Gregor", "Gunter", "Gunther", "Gustav",
+"Hannes", "Hans", "Hanzi", "Heiner", "Heinrich", "Heinz", "Hieronymus",
+"Helmut", "Henri", "Holger", "Ingo", "Jens", "Joachim", "Johann", "Johannes",
+"Jonas", "Jorg", "Josef", "Jurgen", "Kaster", "Karl", "Klaus", "Knud",
+"Konrad", "Kurt", "Lou", "Luitpold", "Manfred", "Marius", "Max (Maximilian)",
+"Mathieu", "Matthias", "Mikhail", "Mortmore", "Nathaniel", "Nicholas",
+"Nicholaus", "Nikolaus", "Norbert", "Oswald", "Otto", "Paulus", "Peter",
+"Rainer", "Reiner", "Rolf", "Rudger", "Rudolf", "Rudolph", "Ruy", "Sepp",
+"Siegfried", "Stefan", "Sven", "Thadius", "Theodor", "Udo", "Ulrich", "Ulrike",
+"Volker", "Werner", "Wiesel", "Wilhelm", "Wim", "Wolf", "Wolfgang", "Adalbert",
+"Adam", "Adolf", "Adolphus", "Albert", "Albrecht", "Aldred", "Alexander",
+"Axel", "Alfons", "Alfred", "Alois", "Aloisius", "Andreas", "Anders", "Anton",
+"Antonius", "Armin", "Arnold", "Arthur", "August", "Augustus", "Balthasar",
+"Benedikt", "Bernhard", "Benno", "Bernd", "Berthold", "Bartolomeus", "Bertram",
+"Bonifatius", "Clemens", "Cyrilus", "Daniel", "David", "Detlef", "Dettel",
+"Dieter", "Dieterich", "Dirk", "Eberhard", "Edgar", "Edler", "Edmund", "Eduard",
+"Ede", "Egolf", "Egon", "Eitel", "Elmar", "Elmer", "Emil", "Emilius", "Erhard",
+"Erich", "Erik", "Ernst", "Erwin", "Eugen", "Fabian", "Felix", "Ferdinand",
+"Ferdl", "Florian", "Frank", "Franz", "Francius", "Friedrich", "Frieder",
+"Fritz", "Gabriel", "Georg", "Gerhard", "Gerd", "Götz", "Gregor", "Gunter",
+"Gustav", "Gustavus", "Harald", "Heinrich", "Heiner", "Heinz", "Herbert",
+"Heribert", "Hermann", "Arminius", "Hieronymus", "Holger", "Hubert", "Hugo",
+"Ignaz", "Ignatius", "Isidor", "Jakob", "Jacobus", "Joachim", "Achim", "Jochen",
+"Johannes", "Hans", "Hannes", "Jonas", "Jonathan", "Jorg", "Josef", "Josephus",
+"Sepp", "Julius", "Jurgen", "Karl", "Carolus", "Kasimir", "Kaster", "Castor",
+"Kaspar", "Kasper", "Caspar", "Knut", "Konrad", "Conrad", "Konz", "Konstantin",
+"Kurt", "Laurenz", "Lorenz", "Laurentius", "Leonhard", "Leo", "Ludwig",
+"Lodeweik", "Luitpold", "Lutz", "Manfred", "Marius", "Markus", "Martin",
+"Mathias", "Mattheus", "Maximilian", "Max", "Melchior", "Michael", "Michel",
+"Moritz", "Nathan", "Nikolaus", "Niklas", "Klaus", "Norbert", "Olaf", "Oskar",
+"Oswald", "Otto", "Paul", "Paulus", "Peter", "Petrus", "Philipp", "Philippus",
+"Pius", "Raimund", "Reimund", "Rainer", "Reiner", "Richard", "Robert", "Bert",
+"Roland", "Rudiger", "Rudger", "Roger", "Rudolf", "Rolf", "Rudi", "Ruprecht",
+"Rupert", "Samuel", "Siegfried", "Silvester", "Simon", "Stefan", "Stephan",
+"Steffen", "Sven", "Thadeus", "Theodor", "Theo", "Thomas", "Timotheus",
+"Titus", "Tobias", "Udo", "Ulrich", "Valentin", "Veit", "Viktor", "Volkmar",
+"Volker", "Walter", "Wendel", "Werner", "Wolfgang", "Wolf", "Wilhelm", "Wili",
+"Zacharias"];
+var NamesDwarfMale = ["Adrik","Alberich","Baern","Barendd", "Brouor", "Bruenor",
+"Dain", "Darrak", "Delg", "Eberk", "Einkil", "Fargrim", "Flint", "Gardain",
+"Harbek", "Kildrak", "Morgran", "Orsik", "Oskar", "Rangrim", "Rurik", "Taklinn",
+"Thoradin", "Thorin", "Tordek", "Traubon", "Travok", "Ulfgar", "Veit", "Vondal",
+ "Alrik", "Bronda", "Dimzad", "Fenna", "Gottri", "Gudrun", "Snorri"];
+var NamesHalflingMale = ["Alton","Ander","Cade","Corrin", "Eldon", "Errich,",
+"Finnan", "Garret", "Lindal", "Lyle", "Merrie", "Milo", "Osborn", "Perrin",
+"Reed", "Roscoe", "Wellby", "Ferdinand", "Heironymus", "Maximillian",
+"Theodosius"];
+var NamesElfMale = ["Adran", "Aelar", "Aramil", "Arannis", "Aust", "Beiro",
+"Berrian", "Carrie", "Enialis", "Erdan", "Erevan", "Galinndan", "Hadarai",
+"Heian", "Himo", "Immeral", "Ivellios", "Laucian", "Mindartis", "Paelias",
+"Peren", "Quarion", "Riardol", "Rolen", "Soveliss", "Thamior", "Tharivol",
+"Theren", "Varis"];
+var NamesGnomeMale = ["Breward", "Daveth", "Gwinear", "Mawnan", "Meriasek", "Nivet",
+"Talan", "Ytel"];
+var NamesHumanFemale = ["Andrea", "Angelika", "Anita", "Anna-Lise", "Astrid", "Brigid", "Brigitte",
+"Camilla", "Celeste", "Charlotte", "Christa", "Christiane", "Clementine",
+"Cordula", "Daniele", "Doris", "Eva", "Edda", "Edith", "Elga", "Elisabeth",
+"Elixabet", "Ellen", "Etti", "Frances", "Frieda", "Gabriel e", "Gaby", "Gerd",
+"Gertrud", "Gisela", "Gloria", "Hanna", "Hanni", "Hannelore", "Heidi", "Helena",
+"Helene", "Helga", "Helke", "Helma", "Henriette", "Ingrid", "Karin", "Karina",
+"Katharina", "Kathe", "Katrin", "Julianne", "Lena", "Lile", "Lilian", "Lisa",
+"Liv", "Magdalene", "Margret", "Margarethe", "Magrit", "Maria", "Mariann",
+"Marianne", "Marlene", "Marthe", "Mel ory", "Monika", "Nadja", "Nastassja",
+"Natja", "Oliva", "Rena", "Rosa", "Ruth", "Sybil e", "Tatjana", "Uli", "Ursula",
+"Vera", "Veronika", "Winifred", "Yella", "Yvette", "Dagmar", "Adelheid",
+"Heide", "Agathe", "Agatha", "Agnes", "Alexandra", "Alexa", "Alix", "Andrea",
+"Angelika", "Anna", "Anne", "Anneliese", "Annette", "Antonia", "Augusta",
+"Beata", "Beate", "Bertha", "Berthe", "Brigitte", "Gitte", "Britta", "Cacilie",
+"Camila", "Carola", "Karola", "Charlotte", "Lotte", "Claudia", "Clementine",
+"Cordula", "Cornelia", "Kornelia", "Daniela", "Dora", "Doris", "Dorothea",
+"Edda", "Edith", "Eleonore", "Elisabeth", "Elsbeth", "Elsa", "Lisbeth", "Elke",
+"Elen", "Else", "Elvira", "Emilie", "Emilia", "Erika", "Esther", "Eugenie",
+"Eva", "Felicitas", "Franka", "Franza", "Franziska", "Franzi", "Frieda",
+"Friederike", "Gabriele", "Gerda", "Gertraud", "Gertraut", "Gertrude",
+"Gisela", "Gloria", "Hanna", "Hannelore", "Hedwig", "Helene", "Helena",
+"Helga", "Helma", "Henriette", "Hildegard", "Hilde", "Ida", "Ilse", "Ina",
+"Ingrid", "Isabela", "Isadora", "Isolde", "Johanna", "Josephine", "Judith",
+"Jutta", "Juliane", "Julia", "Karin", "Karla", "Karoline", "Katharina", "Kathe",
+"Kathrin", "Leonore", "Liliane", "Lore", "Luise", "Luzia", "Magda",
+"Magdalene", "Lene", "Lena", "Margarete", "Margareta", "Gretel", "Margit",
+"Margot", "Marie", "Marianne", "Marion", "Marlene", "Martha", "Marthe",
+"Mathilde", "Michaela", "Monika", "Nadja", "Ottilie", "Paula", "Petra",
+"Rebekka", "Regina", "Regine", "Renate", "Renata", "Rikarda", "Rosa", "Ruth",
+"Sabine", "Sibyle", "Silvia", "Sophie", "Stefanie", "Stephanie", "Susanne",
+"Susanna", "Therese", "Ulrike", "Ursula", "Ursel", "Valentina", "Verena",
+"Vera", "Veronika", "Viktoria", "Wilhelmine", "Winifred"];
+var NamesDwarfFemale = ["Amber", "Artin", "Audhild", "Bardryn", "Dagnal",
+"Diesa", "Eldeth", "Falkrunn", "Finellen", "Gunnloda", "Gurdis", "Helja",
+"Hlin", "Kathra", "Kristryd", "Hilde", "Liftrasa", "Mardred", "Riswynn",
+"Sannl", "Torbera", "Torgga", "Vistra"];
+var NamesHalflingFemale = ["Andry", "Bree", "Callie", "Cora", "Euphemia", "Jillian", "Kithri", "Lavinia",
+"Lidda", "Meda", "Nedda", "Paela", "Portia", "Seraphina", "Shaena", "Trym",
+"Vani", "Verna", "Antoniella", "Esmerelda", "Thomasina"];
+var NamesElfFemale = ["Adrie", "Althaea", "Anastrianna,", "Andraste", "Antinua",
+"Bethrynna", "Birel", "Caelynn,", "Drusilia", "Enna", "Felosial", "Ielenia",
+"Jelenneth", "Keyleth", "Leshanna", "Lia", "Meriele", "Mialee", "Naivara",
+"Quelenna", "Quillathe", "Sariel", "Shanairra", "Shava", "Silaqui",
+"Theirastra", "Thia", "Vadania", "Valanthe", "Xanaphia"];
+var NamesGnomeFemale = ["Elowen", "Ia", "Kerra", "Ladoca", "Metheven", "Morren",
+"Steren", "Tryfena"];
+var NamesAllMale = [ NamesHumanMale, NamesDwarfMale, NamesHalflingMale,
+ NamesElfMale, NamesGnomeMale];
+var NamesAllFemale = [ NamesHumanFemale, NamesDwarfFemale, NamesHalflingFemale,
+ NamesElfFemale, NamesGnomeFemale];
+var NamesAll = [NamesAllMale, NamesAllFemale];
+var SurnamesHuman = ["Abel", "Abend", "Abendrot", "Achenbach", "Ackermann", "Adler", "Albers",
+"Alendorf", "Alsheimer", "Alt", "Arndt", "Aschendorf", "Baer", "Baumann",
+"Berger", "Biedenkopf", "Blacher", "Blech", "Blum", "Bockenheim", "Bohm",
+"Bohne", "Bohnen", "Bol", "Bormann", "Bornheim", "Brandauer", "Brahms",
+"Bratsch", "Braun", "Bremer", "Bruck", "Brunkhorst", "Brustelin", "Buchwald",
+"Carow", "Castel", "Clausewitz", "Clemm", "Cloos", "Delschaft", "Dickopf",
+"Dietrich", "Diffring", "Dissel", "Dornbusch", "Dreckspatz", "Dabisch", "Damm",
+"Datz", "Daube", "Denker", "Diestelmeyer", "Dippel", "Dirnbach", "Dolinger",
+"Donner", "Dreyer", "Duster", "Dastein", "Eberlein", "Ebert", "Eckstein",
+"Edel", "Eibl", "Eifer", "Eiferer", "Eigenbrot", "Eckmann", "Emmel", "Engels",
+"Ensslin", "Erbach", "Eschenheim", "Fabel", "Faler", "Fassbinder", "Fassnacht",
+"Feder", "Feiler", "Feldmann", "Feuerbach", "Feyerabend", "Fischer",
+"Fleischer", "Frei", "Freihof", "Fritsch", "Fuchs", "Ganz", "Gehweiler",
+"Geissler", "Gickel", "Glaubrecht", "Goetz", "Goldstein", "Gottschalk",
+"Grau", "Grasser", "Griem", "Grobschnitt", "Gronemeyer", "Gschwendtner",
+"Guhne", "Gunzberg", "Gutmann", "Haak", "Hack", "Harnisch", "Hartwig",
+"Hasen", "Hasener", "Hassel", "Heinemann", "Helfrich", "Hermann", "Hinfalig",
+"Hintz", "Hockschwarzer", "Hofbauer", "Hoffmann", "Hoger", "Holzkrug", "Holt",
+"Horn", "Jaeger", "Jackel", "Junghans", "Kahl", "Kannicher", "Kant", "Karge",
+"Kaufmann", "Keler", "Keush", "Keilgeld", "Kier", "Klammer", "Kleist", "Kluge",
+"Knopp", "Kochel", "Kohl", "Konigs", "Kopp", "Korff", "Korte", "Kortner",
+"Krauss", "Kreuzer", "Kroetz", "Kronenhof", "Kruck", "Krug", "Kruger", "Kummer",
+"Ladengast", "Lang", "Langen", "Laubrich", "Lauschen", "Leinweber", "Leipnitz",
+"Lenz", "Lesch", "Liebenfels", "Lochner", "Lommel", "Lupenrein", "Mack",
+"Macken", "Magen", "Maier", "Mankau", "Manzel", "Marx", "Mattes", "Meier",
+"Melinger", "Messner", "Moseke", "Moos", "Moser", "Muler", "Murnau", "Nagel",
+"Nass", "Neubauer", "Nieden", "Nol", "Nutzniesser", "Oberlander", "Offen",
+"Olbricht", "Oldenhaler", "Osten", "Otterbach", "Pabst", "Palenberg", "Panke",
+"Patzer", "Peilstock", "Pfeffer", "Plotz", "Pommer", "Praunheim", "Raab",
+"Rabeneck", "Radmacher", "Reich", "Reitsmann", "Reitz", "Reusse", "Rommel",
+"Rotlander", "Rudiger", "Rupp", "Sagebrecht", "Sander", "Sauber", "Schaden",
+"Schaake", "Schauble", "Schenk", "Scheydt", "Schnel", "Schondorff", "Schubert",
+"Schmidt", "Schwanenheim", "Semmelrogge", "Sierck", "Silber", "Sinkel",
+"Speilhalter", "Steinhoff", "Stratz", "Stumpfnase", "Tauber", "Tetzel",
+"Tiele", "Tietmeyer", "Tischer", "Trapp", "Treuer", "Trommler", "Ulmann",
+"Uebele", "Ulbricht", "Unverzagt", "Unzeit", "Veigl", "Vieweg", "Viertel",
+"Vocken", "Vogel", "Vogler", "Wagner", "Weinrich", "Weizsacker", "Wennemann",
+"Wegener", "Weyrauch", "Wiene", "Winkler", "Winterstein", "Witzen",
+"Wolkenstein", "Zech", "Zieren", "Zimmermann", "Zischer", "Zopf", "Zweifel",
+"Klauen", "Karge", "Shcatten", "Mittel", "Drakens", "Grau", "Axtschlagpass",
+"Gross", "Reik", "Meut", "Niderreik", "Dunkelfeuerpass", "Schwarz", "Duster",
+"Dach", "Welten"];
+var SurnamesDwarf = ["Balderk", "Battlehammer", "Brawnanvil", "Dankil", "Fireforge", "Frostbeard", 
+"Gorunn", "Holderhek", "Ironfist", "Loderr", "Lutgehr", "Rumnaheim", 
+"Strakelin", "Torunn", "Ungart", "Baragraz", "Durak", "Galazil", "Gnoldok", 
+"Nazril", "Okri", "Ardrungan", "Bryntok", "Gazani", "Gromheld", "Harrazlings", 
+"Unboki", "Dokkintroll", "Ganvalgger", "Kvitang", "Thrungtak", "Wyrgrinti", 
+"Zankonk"];
+var SurnamesHalfling = ["Brushgather","Goodbarrel","Greenbottle","High-hill",
+"Hilltopple", "Leagallow", "Tealeaf", "Thorngage", "Tosscobble", "Underbough",
+"Ashfield", "Brandysnap", "Hayfoot", "Rumster", "Shortbottom", "Thorncobble"];
+var SurnamesElf = ["Amakiir(Gemflower)","Amastacia(Starflower)",
+"Galanodel(Moonwhisper)","Holimion(Diamonddew)", "Ilphelkiir(Gemblossom)",
+"Liadon(Silverfrond)", "Meliamne(Oakenheel)", "Natlo(Nightbreeze)",
+"Siannodel(Moonbrook)", "Xiloscient(Goldpetal)", "Emberfell", "Fireborn",
+"Foamheart", "Goldenhair", "Silverspray", "Spellsign", "Fleetriver",
+"Shadowstalker", "Treeshaper", "Weavewatcher", "Willowlimb", "Windrunner"];
+var SurnamesGnome = ["annearil", "Fraine", "Hawken", "Landweth", "Peddlar", "Scantleburn",
+"Thorne", "Trethewey"];
+var SurnamesAll = [ SurnamesHuman, SurnamesDwarf, SurnamesHalfling, SurnamesElf, SurnamesGnome];
+var SurnameSuffixHumanNoble = ["burg","berg","stein","stock","wald"];
+var SurnameSuffixDwarvenMale = ["sson","sson","sson","snev"];
+var SurnameSuffixDwarvenFemale = ["sdottir","sdottir","sdottir","sniz"];
+var SurnameSuffixDwarvenAll = [SurnameSuffixDwarvenMale, SurnameSuffixDwarvenFemale];
+
+var StatsTxt = "";
+var StatsName = ["WS","BS","S","T","AG","I","DEX","INT","WP","FEL","M","W"];
+var StatsR =      [0,0,0,0,0,0,0,0,0,0,0,0];
+var StatsHuman = [20,20,20,20,20,20,20,20,20,20,4,0];
+var StatsDwarf = [30,20,20,30,10,20,30,20,40,10,3,0];
+var StatsHalfling = [10,30,10,20,20,20,30,20,30,30,3,0];
+var StatsElf =   [30,30,20,20,30,40,30,30,30,20,5,0];
+var StatsGnome = [20,10,10,15,30,30,30,30,40,15,3,0];
+var StatsAll = [StatsHuman, StatsDwarf, StatsHalfling, StatsElf, StatsGnome];
+var StatsAdvance = [0,0,0,0,0,0,0,0,0,0,0,0];
+var StatsBase =    [0,0,0,0,0,0,0,0,0,0,0,0];
+var StatsTraits  = [0,0,0,0,0,0,0,0,0,0,0,0];
+
+var TraitTxt ="";
+var TraitNames = [];
+var TraitStartHuman = [];
+var TraitStartDwarf = ["Night Vision"];
+var TraitStartHalfling = ["Size(Small)","Night Vision"];
+var TraitStartElf = ["Night Vision"];
+var TraitStartGnome = ["Size(Small)","Night Vision"];
+
+var TraitStartAll = [TraitStartHuman,
+ TraitStartDwarf,TraitStartHalfling,
+ TraitStartElf,
+ TraitStartGnome];
+ 
+var CareerAll =
+["Merchant",
+"Soldier",
+"Guard",
+"Scholar",
+"Charlatan",
+"Commoner",
+"Noble",
+"Bandit"];
+
+var CareerSkill = [
+["Haggle", "Evaluate","Bribery","Gossip"],
+["Melee", "Endurance","Cool","Athletics","Dodge","Ranged"],
+["Melee", "Perception","Intuition","Bribery","Gossip"],
+["Lore (Any one)", "Research", "Lore (Any one)", "Gossip"],
+["Gossip", "Dodge", "Gamble", "Sleight of Hand","Entertain (Any one)","Play (Any one)"],
+["Gossip", "Lore (Local)","Consume Alcohol","Melee (Brawling)"],
+["Charm", "Consume Alcohol", "Gamble", "Intimidate", "Leadership", "Lore (Heraldry)", "Melee (Fencing)"],
+["Stealh", "Melee", "Ranged","Intimidate", "Bribery"]
+];
+
+var CareerSocial = ["Silver 3","Silver 1","Brass 4","Silver 1",
+"Brass 4","Brass 2","Gold 1","Brass 2"];
+
+var CareerTraits = [
+["Cunning","Clever","Leader"],
+["Brute","Leader","Tough","Elite","Champion","Hardy"],
+["Brute","Prejudice (Criminals)","Big","Cunning","Leader","Elite"],
+["Clever","Cunning"],
+["Cunning","Leader","Stealthy","Fast"],
+["Prejudice (Foreigners)","Stupid","Tough","Brute","Big","Hardy"],
+["Cunning","Leader","Clever"],
+["Brute","Prejudice (Guards)","Stealthy","Big","Cunning","Leader","Hardy"]
+];
+
+var CareerN;
+var CareerName;
+
+var SkillTxt = "";
+var TrappingTxt = "";
+var SkillNames = [];
+var SkillValues = [];
+
+var SexAll = ["Male","Female"];
+var SexTxt;
+
+var CareerWeapon = [
+["Dagger SB+2","Knife SB+1 (Undamaging)","Unarmed SB+0 (Undamaging)","Unarmed SB+0 (Undamaging)"],
+["Spear SB+4 (Impale)","Halberd SB+4 (Defensive, Hack, Impale)","Sword SB+4","Sword SB+4, Shield (Shield 2, Defensive, Undamaging)","Axe SB+4","Mace SB+4","Zweihander SB+5 (Damaging, Hack)"],
+["Sword SB+4", "Reinforced Club SB+4"],
+["Dagger SB+2","Knife SB+1 (Undamaging)","Unarmed SB+0 (Undamaging)","Unarmed SB+0 (Undamaging)"],
+["Dagger SB+2","Dagger SB+2","Knife SB+1 (Undamaging)","Unarmed SB+0 (Undamaging)"],
+["Dagger SB+2","Knife SB+1 (Undamaging)","Unarmed SB+0 (Undamaging)","Handaxe SB+4"],
+["Rapier SB+4 (Fast, Impale)","Foil SB+3 (Fast, Impale, Precise, Undamaging)","Dagger SB+2 (Undamaging)"],
+["Spear SB+4 (Impale)","Sword SB+4","Sword SB+4, Shield (Shield 2, Defensive, Undamaging)","Axe SB+4","Mace SB+4"]
+];
+
+var CareerRanged = [
+[""],
+["Crossbow +9 (60, Reload 1, Impale)","Handgun +9 (50, Dangerous, Reload 3, Impale, Penetrating)"],
+["Crossbow +9 (60, Reload 1, Impale)"],
+[""],
+["Throwing Knife SB+2"],
+["Sling +6 (Pummel)"],
+[""],
+["Bow SB+3 (Impale)","Sling +6 (Pummel)"]
+];
+
+
+var CareerArmour = [
+[""],
+["Leather Armour (1)","Mail Armour (2)","Plate Armour (3)"],
+["Leather Jack (body, arms, 1), Pot Helm (head, 2) (Partial)","Leather Armour (1)","Mail Armour (2)"],
+[""],
+["Leather Jerkin (body, 1)","Leather Jack (body, arms, 1)","","",""],
+["Leather Jerkin (body, 1)","Leather Jack (body, arms, 1)","","",""],
+["Courtly Garb"],
+["Leather Jerkin (body, 1)","Leather Jack (body, arms, 1)","Leather Armour (1)",""]
+];
+
+/* Grouped skills to select random group*/
+var AnySkills = [ 
+["Art (Any one)", "Art (Calligraphy)", "Art (Writing)",  "Art (Sculpture)", "Art (Painting)", "Art (Weaving)", "Art (Tatoo)", "Art (Mosaics)"],
+["Entertain (Any one)","Entertain (Fortune Telling)", "Entertain (Sing)", "Entertain (Acting)", "Entertain (Comedy)",
+"Entertain (Storytelling)","Entertain (Taunt)",
+/* Duplicate to get more common stuff*/
+"Entertain (Acting)", "Entertain (Sing)"
+],
+["Melee (Any one)", "Melee (Parry)", "Melee (Polearm)", "Melee (Fencing)", "Melee (Two-handed)", "Melee (Flail)", "Melee (Cavalry)", "Melee (Brawling)",
+/* Duplicate to get more common stuff, No Melee (Basic) */
+ "Melee (Parry)", "Melee (Polearm)", "Melee (Fencing)", "Melee (Two-handed)"
+],
+["Play (Any one)","Play (Drum)","Play (Fife)","Play (Lute)","Play (Bagpipes)"],
+["Trade (Any one)","Trade (Apothecary)","Trade (Cook)","Trade (Charms)","Trade (Engineer)",
+"Trade (Farrier)","Trade (Printing)", "Trade (Poisoner)", "Trade (Smithing)","Trade (Carpentry)"],
+["Lore (Any one)", "Lore (Reikland)", "Lore (Dwarfs)", "Lore (Geology)", "Lore (Metallurgy)", "Lore (Chemistry)", 
+"Lore (Medicine)", "Lore (Plants)", "Lore (Science)", "Lore (Law)", "Lore (Theology)","Lore (Magic)", "Lore (Politics)",
+"Lore (Heraldry)", "Lore (Folklore)", "Lore (Herbs)", "Lore (Beasts)", "Lore (Local)", "Lore (Torture)",
+"Lore (Riverways)", "Lore (Trolls)","Lore (History)", "Lore (Elves)"],
+["Perform (Any one)", "Perform (Acrobatics)", "Perform (Firebrathing)"],
+["Stealth (Any one)", "Stealth (Urban)", "Stealth (Rural)", "Stealth (Underground)"]
+];
+
+var DistinguisingMarks =
+/*WFRP 2ed Core*/
+["pox marks",
+"ruddy faced",
+"scar",
+"tattoo",
+"earring",
+"ragged "+((Math.random()>0.5)?"left":"right")+" ear",
+"nose ring",
+"wart",
+"broken nose",
+"large mole",
+"huge nose",
+"missing tooth",
+"snaggle teeth",
+"lazy "+((Math.random()>0.5)?"left":"right")+" eye",
+"missing "+((Math.random()>0.5)?"left":"right")+" eyebrow",
+"missing Digit on "+((Math.random()>0.5)?"left":"right")+" hand",
+"missing nail on "+((Math.random()>0.5)?"left":"right")+" hand",
+"distinctive gait",
+"curious smell",
+"small bald patch",
+"strange coloured "+((Math.random()>0.5)?"left":"right")+" eye",
+/*Extra*/
+"large ears",
+"long fingers"
+];
+var DescriptionTxt = "";
+
+var SpeciesBaseHeight = [5*12,4*12,3.25*12,5.25*12,3.25*12];
+var SpeciesBuild = [0,1,-1,1,-1];
+var Build = ["Slim","Trim","Average","Stocky","Corpulent"];
+
+
+function rollHeight (Base) {
+ var roll = roll2d10();
+ var height = Base+roll;
+    var HeightTxt = Math.floor(height/12)+"'"+(height-Math.floor(height/12)*12)+"''";
+ return HeightTxt;
+}
+
+function rollMoney (SocialString) {
+    var money = "";
+    var ParsedSocial = SocialString.split(" ");
+    switch (ParsedSocial[0]) {
+        case "Gold":
+            money =    ParsedSocial[1] + " Gold Crowns.";
+            break;
+        case "Silver":
+            money =   rollXd10(ParsedSocial[1]) + " Silver Shillings.";
+            break;
+        case "Brass":
+            money =   rollXd10(ParsedSocial[1]*2) + " Brass Pennies.";
+            break;
+        default:
+            money =  "Not a single coin.";
+    }
+    return money;
+}
+
+
+function parseTrait2Stats (TraitArray) {
+    var x;
+    /* var StatsName = [0"WS",1"BS",2"S",3"T",4"AG",5"I",6"DEX",7"INT",8"WP",9"FEL",10 "M",11 "W"]; */
+    var stat = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    for (x in TraitArray) {
+        console.log(TraitArray[x]); 
+        console.log(x); 
+        switch (TraitArray[x][0]) {
+            case "Big":
+                stat[2] += 10;
+                stat[3] += 10;
+                stat[4] += -5;
+                break;
+            case "Brute":
+                stat[2] += 10;
+                stat[3] += 10;
+                stat[4] += -10;
+                stat[10] += -1;
+                break;
+            case "Clever": 
+                stat[5] += 10;
+                stat[7] += 20;
+                break;
+            case "Cunning":
+                stat[5] += 10;
+                stat[7] += 10;
+                stat[9] += 10;
+                break;
+            case "Elite":
+                stat[0] += 20;
+                stat[1] += 20;
+                stat[8] += 20;
+                break;
+            case "Fast":
+                stat[4] += 10;
+                stat[10] += 1;
+                break;
+            case "Hardy": /*This will be reparsed later*/
+                stat[11] += 3;
+                break;
+            case "Leader":
+                stat[8] += 10;
+                stat[9] += 10;
+                break;
+            case "Tough":
+                stat[3] += 10;
+                stat[8] += 10;
+                break;
+            default:
+        }
+    }
+    return stat;
+}
+function parseSkillAny (SkillArray) { 
+    var x;
+    var y;
+    for (x in SkillArray) {
+        if (SkillArray[x][0].indexOf("(Any one)") > -1) {
+           for (y in AnySkills) {
+               if ((SkillArray[x][0]).localeCompare(AnySkills[y][0]) == 0 ) {
+                SkillArray[x] = AnySkills[y][ Math.floor( Math.random() * ( AnySkills[y].length - 1 ) + 1 ) ];
+                }
+           }
+       }
+    }
+    return SkillArray;
+}
+
+function parseSBDamage (StringsArray, SB) {
+    var x;
+ for (x in StringsArray) {
+  StringsArray.splice(x,1, StringsArray[x].replace(" SB+0"," +"+(SB)));
+  StringsArray.splice(x,1, StringsArray[x].replace(" SB+1"," +"+(SB+1)));
+  StringsArray.splice(x,1, StringsArray[x].replace(" SB+2"," +"+(SB+2)));
+  StringsArray.splice(x,1, StringsArray[x].replace(" SB+3"," +"+(SB+3)));
+  StringsArray.splice(x,1, StringsArray[x].replace(" SB+4"," +"+(SB+4)));
+  StringsArray.splice(x,1, StringsArray[x].replace(" SB+5"," +"+(SB+5)));
+ }
+ return StringsArray
+};
+
+function refreshCharacterDisplay () {
+    document.getElementById("nameB").innerHTML = NameTxt;
+    document.getElementById("speciessexcarredB").innerHTML = SpeciesTxt + " " + SexTxt + " " + CareerName;
+    document.getElementById("statsB").innerHTML = StatsTxt;
+    document.getElementById("skillsB").innerHTML = SkillTxt;
+    document.getElementById("traitsB").innerHTML = TraitTxt;
+    document.getElementById("trappingsB").innerHTML = TrappingTxt;
+    document.getElementById("descriptionB").innerHTML = DescriptionTxt;
+}
+
+/*------ Start Rolling--------*/
+
+var SpeciesRoll = roll1d100();
+
+if  (SpeciesChoice>0) {
+    SpeciesN = SpeciesChoice;
+} else {
+ if (SpeciesRoll <= 89) {
+   SpeciesN = 1; /*Human*/
+ } else if (SpeciesRoll <= 90) {
+   SpeciesN = 5; /*Gnome*/
+ } else if (SpeciesRoll <= 95) {
+   SpeciesN = 2;
+ } else if (SpeciesRoll <= 98) {
+   SpeciesN = 3;
+ } else {
+   SpeciesN = 4; /*Elf*/
+ }
+}
+
+
+SpeciesTxt = SpeciesAll[ SpeciesN - 1 ];
+Sex = Math.floor(Math.random() * 2);
+SexTxt = SexAll[ Sex ];
+
+var CareerNRadio;
+for (CareerNRadio=0;CareerNRadio<document.CareerSelection.Career.length;CareerNRadio++){ 
+       if (document.CareerSelection.Career[CareerNRadio].checked) 
+          break; 
+} 
+CareerN = document.CareerSelection.Career[CareerNRadio].value;
+
+if ( CareerN == -1 ) {
+    CareerN = Math.floor(Math.random()*CareerAll.length);
+};
+
+CareerName = CareerAll[CareerN];
+
+var NamesSpecies = NamesAll[Sex][SpeciesN - 1 ];
+var SurnamesSpecies;
+/* Dwarves could get Icelandic style surnames, but from either 66% MAle 33% female */
+if ((SpeciesN == 2) && (Math.random() > .5)) {
+    SurnamesSpecies = NamesAll[Math.floor(Math.random() * 3 / 2)][SpeciesN - 1 ].slice();
+    var suffix = SurnameSuffixDwarvenAll[Sex][ Math.floor(Math.random() * SurnameSuffixDwarvenAll[Sex].length)];
+        for(i=0;i<SurnamesSpecies.length;i++){
+            SurnamesSpecies[i] = SurnamesSpecies[i] + suffix;
+        }   
+} else {
+    SurnamesSpecies  = SurnamesAll[SpeciesN - 1 ];
+}
+NameTxt = NamesSpecies[ Math.floor(Math.random() * NamesSpecies.length) ] + " " 
+    +  SurnamesSpecies[ Math.floor(Math.random() * SurnamesSpecies.length) ] ;
+
+if ((SpeciesN == 1) && (CareerName == "Noble")) {
+    NameTxt = NameTxt.replace(" "," von ") + SurnameSuffixHumanNoble[Math.floor(Math.random() * SurnameSuffixHumanNoble.length)];
+};
+
+StatsBase = StatsAll [ SpeciesN - 1 ];
+for (i in StatsR) {
+     StatsR[i] = roll1d10()+5;
+}
+/* No random M nor W*/
+StatsR[StatsR.length-1] = 0;
+StatsR[StatsR.length-2] = 0;
+
+
+SkillNames.push(CareerSkill[CareerN].splice(0,1));
+SkillValues.push(Math.floor(Math.random()*3+1)*5);
+
+if (Math.random()> 0.5) {
+   var randSkill = Math.floor(Math.random() * CareerSkill[CareerN].length );
+    SkillNames.push( CareerSkill[CareerN].splice(randSkill,1));
+    SkillValues.push(Math.floor(Math.random()*3+1)*5);
+    if (Math.random()> 0.5) {
+       var randSkill = Math.floor(Math.random() * CareerSkill[CareerN].length );
+      SkillNames.push( CareerSkill[CareerN].splice(randSkill,1));
+      SkillValues.push(Math.floor(Math.random()*2+1)*5);
+    };
+};
+SkillNames = parseSkillAny(SkillNames).slice(0);
+
+TraitNames = TraitStartAll[SpeciesN - 1];
+/*Zero, 1 or 2 extra Traits*/
+if (Math.random()> 0.5) {
+    var randTrait = Math.floor(Math.random() * CareerTraits[CareerN].length );
+    TraitNames.push( CareerTraits[CareerN].splice(randTrait,1));
+        if (Math.random()> 0.5) {
+        var randTrait = Math.floor(Math.random() * CareerTraits[CareerN].length );
+        TraitNames.push( CareerTraits[CareerN].splice(randTrait,1));
+    }
+}
+
+StatsTraits = parseTrait2Stats(TraitNames);
+
+/*Parse Wounds*/
+if (StatsTraits[11]>0) {
+    StatsTraits[11] = Math.floor((StatsR[3] + StatsBase[3] + StatsTraits[3])/10);
+};
+
+StatsBase[11] = Math.floor((StatsR[3] + StatsBase[3] + StatsTraits[3])/10) * 2 +
+        Math.floor((StatsR[2] + StatsBase[2] + StatsTraits[2])/10)+
+        Math.floor((StatsR[8] + StatsBase[8] + StatsTraits[8])/10);
+
+if (TraitNames[1]=="Size(Small)") {
+    StatsTraits[11] -= Math.floor((StatsR[2] + StatsBase[2] + StatsTraits[2])/10);
+};
+
+
+var Trappings = [ CareerWeapon[CareerN][Math.floor(Math.random() * CareerWeapon[CareerN].length )] ];
+
+var hasRanged = 0;
+for (i in SkillNames) { 
+ if (SkillNames[i]=="Ranged") {hasRanged=1;};
+};
+if (hasRanged || Math.random() < .1) {
+ Trappings.push(CareerRanged[CareerN][Math.floor(Math.random() * CareerRanged[CareerN].length )]);
+};
+Trappings.push(CareerArmour[CareerN][Math.floor(Math.random() * CareerArmour[CareerN].length )]);
+
+Trappings = Trappings.filter(function(value){return value != ""});
+
+Trappings = parseSBDamage (Trappings, Math.floor((StatsR[2] + StatsBase[2] + StatsTraits[2])/10));
+
+var Money = rollMoney(CareerSocial [ CareerN ]);
+
+StatsTxt = "<table><tr>";
+for (i in StatsName) {
+    StatsTxt += "<th><B>" + StatsName[i] +"</B></th>";
+}
+StatsTxt += "</tr><tr style='text-align: right'>";
+for (i in StatsAdvance) {
+     var star = "";
+     if (StatsTraits[i]) { star = "*";}
+    StatsTxt += "<td>" + ( StatsR[i] + StatsBase[i] + StatsTraits[i]  ) + star + "</td>";
+}
+StatsTxt += "</tr></table>";
+
+for (i = 0; i < TraitNames.length ; i += 1) {
+    var MouseOverTxt = ""; /*getMouseOverText (TraitNames[i],mouseoverTraits);*/
+     TraitTxt += "<span title = '" + MouseOverTxt + "'>" + TraitNames[i] + "</span>; ";
+}
+
+for (i = 0; i < SkillNames.length ; i += 1) {
+    var MouseOverTxt = ""; /*getMouseOverText (SkillNames[i],mouseoverSkills);*/
+    SkillTxt += "<span title = '" + MouseOverTxt + "'>" + SkillNames[i] + ":" + SkillValues[i] + "</span>; ";
+}
+
+TrappingTxt = Trappings.join("<br>")+ "<br>"+ Money;
+
+
+
+DescriptionTxt += (Sex?"She":"He")+" is "+rollHeight(SpeciesBaseHeight[SpeciesN-1])+" tall.<br>";
+DescriptionTxt += (Sex?"Her":"His")+" most distinguising feature is " + (Sex?"her":"his") + " " + DistinguisingMarks[Math.floor(Math.random()*DistinguisingMarks.length)]+".";
+
+
+refreshCharacterDisplay ();
+
+return 1;
+};
+
+//]]>
+</script>
+</head>
+<body>
+    <h1>Generate NPCs</h1>
+    <h2>WFRP 4th Edition Random Simple NPCs</h2>
+ <p>This is a simple NPC generator, it creates the kind on people you might meet in a tavern of the Old World. It uses the Traits mechanism and add a few relevant skills and trappings.<br>
+If you need a more dangerous set you might check my <a href="https://pacomiscelaneousstuff.blogspot.com/2019/08/monster-generator.html">Monster Generator</a> to create Mutants, Orcs, Goblins or worse.<br>
+To have a more detailed Old Worlders you can use the list of my <a href="https://pacomiscelaneousstuff.blogspot.com/2018/09/generic-npc-stats-for-4th-edition.html">Generic NPCs stats for 4th edition</a>.<br>
+You can also create the loot carried by them using my <a href="https://pacomiscelaneousstuff.blogspot.com/2019/08/treasure-generator.html">Random Treasure Generator</a>.
+</p>
+    <button type="button" onclick="generateNPC(-1)">Generate Now!</button><br>
+ <button type="button" onclick="generateNPC(1)">Generate Human!</button>
+ <button type="button" onclick="generateNPC(2)">Generate Dwarf!</button>
+ <button type="button" onclick="generateNPC(3)">Generate Halfling!</button>
+ <button type="button" onclick="generateNPC(4)">Generate Elf!</button><br>
+ <button type="button" onclick="generateNPC(5)">Generate Gnome!</button>
+ <br>
+<form name="CareerSelection">
+  <input type="radio" name="Career" id="Career" value="0"> Merchant
+  <input type="radio" name="Career" id="Career" value="1"> Soldier
+  <input type="radio" name="Career" id="Career" value="2"> Guard
+  <input type="radio" name="Career" id="Career" value="3"> Scholar
+  <input type="radio" name="Career" id="Career" value="4"> Charlatan
+  <input type="radio" name="Career" id="Career" value="5"> Commoner
+  <input type="radio" name="Career" id="Career" value="6"> Noble
+  <input type="radio" name="Career" id="Career" value="7"> Bandit
+  <input type="radio" name="Career" id="Career" value="-1" checked="checked" > Random
+</form>
+
+<h3><p id="nameB">.</p></h3>
+<h4><p id="speciessexcarredB"></p></h4>
+
+<h3>Characteristics</h3>
+<p id="statsB"></p>
+<h3>Skills</h3>
+<p id="skillsB"></p>
+<h3>Traits</h3>
+<p id="traitsB"></p>
+<h3>Trappings</h3>
+<p id="trappingsB"></p>
+<h3>Description</h3>
+<p id="descriptionB"></p>
+
+<p id="Acknowledgements">Code: Francisco Mu&ntilde;oz 2019.
+<br>Inspiration: <a href="http://www.windsofchaos.com/wp-content/uploads/encroachment/html/generator-random-treasure-01.html">Encroatchment of Chaos, Treasure Generator by Dave Graffam</a>.
+<br>Inspiration: <a href="http://orteil.dashnet.org/randomgen/?gen=https://pastebin.com/raw/JcxC8pMx">WFRP 4e Equipment Generator</a>.
+<br>Inspiration: <a href="http://www.grimnirstavern.com">Grimnir's Tavern, Random NPC Generator for WFRP 4e</a>.
+<br>Game: Games Worshop and Cubicle 7
+<br>Other random generators: <a href="https://randroll.com/archive/warhammer-fantasy-roleplay-generators-guide/">https://randroll.com/archive/warhammer-fantasy-roleplay-generators-guide/</a>
+<br>Core WFRP 4th edition book: <a href="https://www.drivethrurpg.com/product/248284/Warhammer-Fantasy-Roleplay-Fourth-Edition-Rulebook">Warhammer Fantasy Roleplay Fourth Edition Rulebook</a>
+</p>
+
+</body>
+</html>
