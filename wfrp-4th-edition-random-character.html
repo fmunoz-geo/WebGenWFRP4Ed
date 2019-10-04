@@ -3,12 +3,12 @@
 <style>
 th, td {
     padding: 5px;
+  text-align: center;
 }
 th {
     background-color: black;
     color: white;
 }
-padding
 </style>
 <head><title>WFRP 4th Edition Random character</title>
 <script>
@@ -34,6 +34,12 @@ function roll1d100(){
 "use strict";
  return Math.floor(Math.random() * 100) + 1;
 }
+function randPick(myArray) {
+    var l = myArray.length;
+    var i = Math.floor(Math.random() * l);
+    return myArray[i];
+}
+
 function generateChar(SpeciesChoice) {
 "use strict";
 var Name = "";
@@ -584,6 +590,251 @@ var CareerSkill = [
 ["Consume Alcohol","Cool","Dodge","Endurance","Gamble","Heal","Lore (Trolls)","Melee (Basic)"],
 ["Cool","Dodge","Endurance","Heal","Leadership","Lore (Theology)","Melee (Any one)","Pray"]
 ];
+
+var ThyDemise = [
+    "thy death",
+    "thy demise",
+    "thy destruction",
+    "thy dying",
+    "thy doom",
+    "thy downfall",
+    "thine end",
+    "thy fall"
+];
+var ThyDemiseUpper = [
+    "Thy death",
+    "Thy demise",
+    "Thy destruction",
+    "Thy dying",
+    "Thy doom",
+    "Thy downfall",
+    "Thine end",
+    "Thy fall"
+];
+var ShallBe = [
+    "shall be",
+    "shall be",
+    "shall be",
+    "shall annunce",
+    "shall mark",
+    "shall herald"
+];
+
+var DoomingTxt = "";
+  var DoomingsAll = [
+  //List from http://www.bindslet.dk/rpg/wfrpdoom.html
+   randPick(ThyDemiseUpper)+" shalt be a sticky one.","Briny waters are poison to thy tongue"
+   ,"When abandoned and alone, Morr shalt befriend thee.","Beasts of the field have eyes for thee."
+   ,"Workings of the Witchling Star are "+randPick(ThyDemise)+".","A stalled blade bringeth a sharp end."
+   ,"The written word shall spell "+randPick(ThyDemise)+".","Thy body shalt break after thy spirit is crushed."
+   ,"Be not curious, only in ignorance art thou safe.","Lack of breath fills thy last moments."
+   ,"Tie not the ribbon, nor the feather wear; yea, the peacock is thine enemy."
+   ,"Be not like Gnuthus, for thy master counts thy days.","Three is thy number."
+   ,"A beast of brass bellows for thee.","Ulric's cold hand shall lead thee to Morr."
+   ,"Watch for the cloven hoof, it is thine enemy.","Eat neither the chitterlings nor the meat with tubes."
+   ,"As thee began, so shalt thou end.",""+randPick(ThyDemiseUpper)+" already knows thee, though knows it not."
+   ,"A stranger shalt bring thee more than a gift.","Beware the young, the child, yea, even the babe."
+   ,"Take heed of Mammit and Mummit, for both see to lay thee low."
+   ,"Beware the purse, the sack, the velvet bag.","The raven answers to Verena's call, yea, but Her scales are weighted."
+   ,"The tiniest of Taal's children shalt feast upon thy gut."
+   ,"The limner's line shalt be false.","The holy day "+randPick(ShallBe)+" thy last day."
+   ,"Thou shalt die in bed, but not thine own!","Thou shalt feed the barren soil with thy blood."
+   ,"When thy need is greatest, Shallya shalt turn Her back to thee.","The scythe shall reap thy flesh."
+   ,"Thy soul, consumed with anger, shall be blinded to the unseen enemy."
+   ,"A friend in need brings "+randPick(ThyDemise)+" with speed.","Thy last breath is drawn by Morrleib's light."
+   ,"Rats wearing the Horns of Taal shalt bite at thy heels.","The sword shalt bring no justice, only suffering."
+   ,"The twin-tailed comet doth soar as thou dost fall.","Water of all kinds is thy nemesis. "
+   ,""+randPick(ThyDemiseUpper)+" lieth hidden in the gloaming.","High places promise a low end."
+   ,"Thy last exclamation is love.","Beware the man that is not a man!","Beware the Blind Maiden for Her scales shalt weight thy soul."
+   ,"Thy broken cart shalt herald "+randPick(ThyDemise)+".","The bun, the pastry, and the pie, yea, they art Morr's dishes!"
+   ,"When the bell doth toll, it doth toll for thee.","The laurel wreath hides a poisoned thorn."
+   ,"Longer not upon the privvie, nor the long drop neither.","Cacklefax grips tight to coins of they doom."
+   ,"The hourglass shatters before thy last grain falls. ","From the darkness cometh the raven."
+   ,"High-born blood shalt spill thine own.","From above comes "+randPick(ThyDemise)+"."
+   ,"Plague and dark disease shalt bring thee to thine knees."
+   ,"Beware skin of green, it shalt afflict thee."
+   ,"Beware the verdant depths, within doth lie disaster."
+   ,"Be like the dancer for rude words bring Morr to thy side."
+   ,"The darkest rot shall eat thee from within."
+   ,"The Gods watch over "+randPick(ThyDemise)+"."
+   ,"Heed not the smith, in his artifice lies "+randPick(ThyDemise)+"."
+   ,"Wear not Grugni's baldric, for it shall carry "+randPick(ThyDemise)+"."
+   ,"Ready your coins on the thirteenth chime."
+   ,"The drummer beats out "+randPick(ThyDemise)+"."
+   ,"Katya's eye and vanity shalt speed thee to death."
+   ,""+randPick(ThyDemiseUpper)+" burns with flames unseen."
+   ,"An ill reputation shalt an ill man make."
+   ,"Morr finds thee naked as the day of thy birth."
+   ,"One bullock is safe, two bullocks bringeth the raven."
+   ,"Thirst not for blood, for it thirst for thee."
+   ,"In thy surest moment, thou shalt fail."
+   ,"Beware the beast in the wood, it is Morr's Messenger."
+   ,"Thou shalt sup from the cup of corruption."
+   ,"Fear the workings of the bonesaw, they are the source of "+randPick(ThyDemise)+"."
+   ,"Thy generosity bringeth tuppence and a sword in return."
+   ,"The withering eye is thy reward, and "+randPick(ThyDemise)+"."
+   ,"Torture and pain echo "+randPick(ThyDemise)+"."
+   ,"Follow not the steps of Dragomas."
+   ,""+randPick(ThyDemiseUpper)+" is wrought of violence."
+   ,"Those born of Rhy's cauldron shalt build thee a ravenstone."
+   ,"Absence makes thy heart grow weaker."
+   ,"The Mymidian spring is thy poison."
+   ,"Beware the crow, honour the raven."
+   ,"A greased goat is safer than keeping secrets."
+   ,"Manann's folk shalt love thee not."
+   ,"When thou art thrice haunted, Morr brings peace."
+   ,"Walk with Vobist, for certainty shall take thy breath."
+   ,"Beware the Lord of Murder's barb - it awaits to strike at thee from the darkness."
+   ,"The flashing blade shalt carve "+randPick(ThyDemise)+"."
+   ,"Fearsome engines belch forth fires of "+randPick(ThyDemise)+"."
+   ,"Thy end is not the end!"
+   , ""+randPick(ThyDemiseUpper)+" is not "+randPick(ThyDemise)+"!"
+   ,"As the piper plays his tune thy heart shall break."
+   ,"Green shalt undo thee."
+   ,"As dark news comes knocking, Morr shalt surely follow."
+   ,"Thou shalt stand like Wymund until Shallya courts thy enemies."
+   ,"Ranald shalt abandon thee."
+   ,"Think not beyond thy station, for change is the herald of Morr."
+   ,"Morr sends a maiden."
+   ,"Without the big cross, thou shalt make the wrong decision."
+   ,"Just before he uttered your doom, the doomsayer died, his face frozen in a mask of horror."
+   // added
+   ,"When the beasts fall silent, "+randPick(ThyDemise)+" is near."
+   // from http://www.windsofchaos.com/wp-content/uploads/encroachment/expanded-characters-module.pdf
+   ,"A beast shall end thee, but the beast shall die first."
+   ,"A blunt knife will cause "+randPick(ThyDemise)+"."
+   ,"A child shall be Morr's herald."
+   ,"A consequence of lust will end ye."
+   ,"A curse "+randPick(ShallBe)+" "+randPick(ThyDemise)+"."
+   ,"A drunken blunder shall end your comedy."
+   ,"A four legged beast "+randPick(ShallBe)+" "+randPick(ThyDemise)+"."
+   ,"A helmet "+randPick(ShallBe)+" your undoing."
+   ,"A hero slays thee and with a good reason."
+   ,"A kiss shall end thy days."
+   ,"A passion that is forbidden to you "+randPick(ShallBe)+" your undoing."
+   ,"A raging fire shall claim thee."
+   ,"As sharp sting and then nothing."
+   ,"A short life but a merry one."
+   ,"A slip, a trip or a fall."
+   ,"A small misfortune leads to a bigger misfortune which leads to "+randPick(ThyDemise)+"."
+   ,"A spear will pass through your belly and you will linger long in pain before "+randPick(ThyDemise)+"."
+   ,"A sweet song accompanies thy dying breath."
+   ,"A terrible stench precedes "+randPick(ThyDemise)+"."
+   ,"A warriors's death, be thee warrior or not."
+   ,"Absence makes thy heart grow weaker."
+   ,"Accidents will happen."
+   ,"All is not as it seems."
+   ,"A great celebration you shall leave this world."
+   ,"An unmarked grave shall house thy bone."
+   ,"Arrogance will provide "+randPick(ThyDemise)+"."
+   ,"As dark clous gather, "+randPick(ThyDemise)+" looms over thee."
+   ,"As the leaves fall, so shall you."
+   // http://www.windsofchaos.com Chargens
+   ,"A black cat."
+   ,"A blunt knife will cause "+randPick(ThyDemise)+"."
+   ,""+randPick(ThyDemise)+", a brutal finish."
+   ,"A child shall be Morr's herald."
+   ,"A consequence of lust shall end thee."
+   ,"A coward's death, you shall suffer."
+   ,"A drunken blunder shall end thy comedy."
+   ,"A fear unnamed shall claim you."
+   ,"A filthy rat-thing "+randPick(ShallBe)+" "+randPick(ThyDemise)+"."
+   ,"A forbidden passion shall lay thee low."
+   ,"A great fish "+randPick(ShallBe)+" "+randPick(ThyDemise)+"."
+   ,"A green-skinned defiler "+randPick(ShallBe)+" "+randPick(ThyDemise)+"."
+   ,"A hero slays thee, and with good reason."
+   ,"A howling in the night announces "+randPick(ThyDemise)+"."
+   ,"Among a great celebration shall you leave this world."
+   ,"An ancient horror shall drag thee to madness before death."
+   ,"Another shall die so that you may live, but it is for nought."
+   ,"An unmarked grave is to be yours."
+   ,"A person of virtue shall slay thee."
+   ,"A profanity "+randPick(ShallBe)+" "+randPick(ThyDemise)+"."
+   ,"A raging fire "+randPick(ShallBe)+" "+randPick(ThyDemise)+".","A rope will break."
+   ,"Arrogance will steal your life."
+   ,"As dark clouds gather, "+randPick(ThyDemise)+" looms."
+   ,"A small misfortune shall lead you to ruin."
+   ,"A song on the wind shall lure thee to thy grave."
+   ,"A spotted dog "+randPick(ShallBe)+" "+randPick(ThyDemise)+"."
+   ,"As the leaves fall, so dost thou."
+   ,"As the snow falls, so dost thou."
+   ,"As the sun is rising, you shall forever rest."
+   ,"As the sun is setting, so shall you rest."
+   ,"A terrible pain in thy entrails."
+   ,"A thing so black, it has no name."
+   ,"A thing that gazes with no eye."
+   ,"A thing that should not be."
+   ,"A turning wheel shall break thee."
+   ,"A tusked beast "+randPick(ShallBe)+" "+randPick(ThyDemise)+"."
+   ,"A warrior's death shall be yours."
+   ,"A white cat shall be "+randPick(ThyDemise)+"."
+   ,"Beware the stench of death, else you will join it."
+   ,"Carried off on a sea of blood."
+   ,"Cold hands shall drag thee away."
+   ,"Death comes from above."
+   ,"Death comes from below."
+   ,"Death comes packaged as a gift."
+   ,"Death sings sweetly."
+   ,"Death strikes unseen."
+   ,"Death waits at the river's side."
+   ,"Death wears a black hat."
+   ,"Drowning, but not in water."
+   ,"Executed by the order of law."
+   ,"First, you shall be buried. Only later shall you die."
+   ,"Honeyed words shall curdle thy soul."
+   ,"Ill-gotten treasures."
+   ,"Indulgence in thy dark desires shall end thee."
+   ,"Manaan shall abandon thee."
+   ,"Misplaced faith "+randPick(ShallBe)+" "+randPick(ThyDemise)+"."
+   ,"Murdered by a stranger."
+   ,"Murdered by one you hold dear."
+   ,"One drink too many."
+   ,"On the battlefield."
+   ,"Pierced with countless blades."
+   ,"Poison in thy cup."
+   ,"Ranald shall forsake thee."
+   ,"Rhya shall forsake thee."
+   ,"Something too horrible to name."
+   ,"The gods shall forsake thee."
+   ,"The heirs of Sigmar shall perish, and you with them."
+   ,"The rains of spring bring with them disease and death."
+   ,"The summer sun shall bleach your bones."
+   ,"The walking dead will walk thou to death."
+   ,"The whisper of a foreigner shall undo you."
+   ,"They shall not know what to do with thy remains."
+   ,"Thou shalt be offered immortality, but 'tis a swindle."
+   ,"Thou shalt die from lack while surrounded by plenty."
+   ,"Thou shalt fall under the weight of thine own gold."
+   ,"Thou shalt share thy grave with a dog."
+   ,"Thrice shall the bell ring. There shall not be a fourth."
+   ,"Through a chink in thy armour."
+   ,"Through a window it comes."
+   ,""+randPick(ThyDemiseUpper)+" shall mirror thy birth."
+   ,""+randPick(ThyDemiseUpper)+" is so terrible, it cannot be uttered."
+   ,"Thy god shall abandon thee."
+   ,"Thy own faith shall end thee."
+   ,"Thy own strength shall end thee."
+   ,"Thy own weakness shall end thee."
+   ,"Under a cloudy sky, it comes."
+   ,"Under an oak shall you find "+randPick(ThyDemise)+"."
+   ,"Verena shall abandon thee."
+   ,"Vermin in multitudes."
+   ,"When all seems lost, it will be."
+   ,"Your blood shall pay for a forgotten debt."
+   ,""+randPick(ThyDemiseUpper)+" will come at the time you choose."
+   ,"Your father's sins shall doom you."
+   ,"Your final breath shall be of mountain air."
+   ,"Your remains shall never be found."
+   ,"You shall die many times before "+randPick(ThyDemise)+"."
+   ,"You shall have the last laugh."
+   ,"You shall perish amid gun smoke."
+   ,"You shall stray from a path and never return."
+   ,"You shall be ordered to "+randPick(ThyDemise)+"."
+   ,"You shall be within sight of salvation when the end comes."
+   ,"You will die so that another may live."
+   ,"You will linger long in the knowledge of "+randPick(ThyDemise)+"."
+];
+
 var TrappingTxt = "";
 var TrappingClass = ["Clothing, Dagger, Pouch, Sling Bag containing Writing Kit and 1d10 sheets of Parchment",
 "Cloak, Clothing, Dagger, Hat, Pouch, Sling Bag containing Lunch",
@@ -761,7 +1012,7 @@ var dataTalents = [["Accurate Shot","BSB","+1 dmg on all ranged weapons."],
 ["Artistic","DexB","Trade (Artist); Produce precise sketches. Add Trade (Artist) to any career."],
 ["Attractive","FelB","Charm (to attracted); Choose either rolled SL or number rolled onunits die."],
 ["Battle Rage","WPB","Melee (Frenzied); You can end your Frenzy with successful Cool Test at end of round."],
-["Beneath Notice","FelB","Stealth (in plain sight); Higher status tier ignore you / don’t get advantage in combat with you."],
+["Beneath Notice","FelB","Stealth (in plain sight); Higher status tier ignore you / don't get advantage in combat with you."],
 ["Beat Blade","WSB","Melee (fencing); Before attack, perform Melee(fencing) test. Opponent - 1 Advantage (extra per SL)."],
 ["Berserk Charge","SB","Melee; + 1 damage on charge per times taken."],
 ["Blather","FelB","Charm (to blather); Opposed Blather/ intelligence to giveopponent stunned condition."],
@@ -785,7 +1036,7 @@ var dataTalents = [["Accurate Shot","BSB","+1 dmg on all ranged weapons."],
 ["Crack the whip","DexB","Drive / Ride; Fleeing/running animal +1 Movement with whip."],
 ["Craftsman (Trade)","DexB","Trade; Add trade skill or -5xp cost to career"],
 ["Criminal","None) Take money as income."],
-["Deadeye Shot","1","Don’t reverse die for location, pick."],
+["Deadeye Shot","1","Don't reverse die for location, pick."],
 ["Dealmaker","FelB","Haggle Reduce or increase price 10%."],
 ["Detect Artefact","IntB","Intuition test determines if item is magical."],
 ["Diceman","IntB","Gamble / Sleight of Hand; Use either rolled SL or number on units die for success."],
@@ -880,7 +1131,7 @@ var dataTalents = [["Accurate Shot","BSB","+1 dmg on all ranged weapons."],
 ["Sharpshooter","IB","Ignore size penalties to ranged tests."],
 ["Shieldsman","AgiB","Parry test with shield When using Melee(Parry) with shield, you gain advantage equal to this talent if you lose."],
 ["Sixth Sense","IB","Intuition You get a strange feeling when you are in danger. You may ignore surprise on Intuition Test."],
-["Slayer","1","On dmg SB is increased to opponent’s TB if lower."],
+["Slayer","1","On dmg SB is increased to opponent's TB if lower."],
 ["Small","1","You are small."],
 ["Sniper","4","Ranged No penalties for long range, 1/2 penalties for extreme range."],
 ["Speed reader","IntB","Language Research and language Read and understand number of pages == SL + speed reader level."],
@@ -1318,6 +1569,11 @@ TalentValues = TalentNamesValue[1].slice(0);
 if ((SpeciesN == 1) && ((CareerName == "Noble") || (TalentNames.includes("Noble Blood")))) {
     NameTxt = NameTxt.replace(" "," von ") + SurnameSuffixHumanNoble[Math.floor(Math.random() * SurnameSuffixHumanNoble.length)];
 };
+/*Dooming*/
+if (TalentNames.includes("Doomed")) {
+ DoomingTxt = DoomingsAll[Math.floor(Math.random() * DoomingsAll.length)];
+};
+
 var SkillNamesValue = dedupeNameValue(SkillNames, SkillValues );
 SkillNames = SkillNamesValue[0].slice(0);
 SkillValues = SkillNamesValue[1].slice(0);
@@ -1335,6 +1591,10 @@ for (i = 0; i < TalentNames.length ; i += 1) {
     var MouseOverTxt = getMouseOverText (TalentNames[i],mouseoverTalents);
      TalentTxt += "<span title = '" + MouseOverTxt + "'>" + TalentNames[i] + ":" + TalentValues[i] + "</span>; ";
 }
+if (DoomingTxt != "") {
+ TalentTxt += "<br><B>Dooming:</B> "+ DoomingTxt;
+
+};
 StatsTxt = "<table><tr>";
 for (i in StatsName) {
     StatsTxt += "<th><B>" + StatsName[i] +"</B></th>";
@@ -1408,10 +1668,19 @@ Ask Simple Choices:</td><td><input type="checkbox" id="choiceCheck">
 <p id="talentsB"></p>
 <h3>Trappings</h3>
 <p id="trappingsB"></p>
-<p id="Links">Check also my <a href="https://pacomiscelaneousstuff.blogspot.com/2019/08/treasure-generator.html">WFRP Treasure Generator</a></p>
+<p id="Links">
+To generate simpler NPCS like the ones you might meet in a tavern check my <a href="https://pacomiscelaneousstuff.blogspot.com/2019/08/npc-generator.html">NPC Generator</a> to create Merchants, Scholar, Soldiers and similar citizens.<br>
+If you need a more dangerous set you might check my <a href="https://pacomiscelaneousstuff.blogspot.com/2019/08/monster-generator.html">Monster Generator</a> to create Mutants, Orcs, Goblins or worse.<br>
+You can also create the loot carried by them using my <a href="https://pacomiscelaneousstuff.blogspot.com/2019/08/treasure-generator.html">Random Treasure Generator</a>.<br>
+To have a more detailed Old Worlders you can use the list of my <a href="https://pacomiscelaneousstuff.blogspot.com/2018/09/generic-npc-stats-for-4th-edition.html">Generic NPCs stats for 4th edition</a>.<br>
+</p>
 <p id="Acknowledgements">Code: Francisco Mu&ntilde;oz 2018.
 <br>Skill advance selection and misc data: Jay Alexander Hafner 2018
 <br>Skill description: Ryan Graham 2018
+<br>Core character creation: <a href="https://www.drivethrurpg.com/product/248284/Warhammer-Fantasy-Roleplay-Fourth-Edition-Rulebook?affiliate_id=91369">Warhammer Fantasy Roleplay Fourth Edition Rulebook</a>
+<br>Gnomes' creation rules: <a href="https://www.drivethrurpg.com/product/273300/Warhammer-Fantasy-Roleplay-Fourth-Edition-Rough-Nights-and-Hard-Days?affiliate_id=91369">Warhammer Fantasy Roleplay Fourth Edition Rough Nights and Hard Days</a>.<br>
+<br>Dooming List: <a href="http://www.bindslet.dk/rpg/wfrpdoom.html">http://www.bindslet.dk/rpg/wfrpdoom.html</a>
+<br>Dooming List: <a href="https://www.drivethrurpg.com/product/63678/Warhammer-Fantasy-Roleplay-2nd-Edition-Tome-of-Salvation?affiliate_id=91369">WFRP 2nd Edition - Tome of Salvation</a>
 <br>Game: Games Worshop and Cubicle 7</p>
 </body>
 </html>
