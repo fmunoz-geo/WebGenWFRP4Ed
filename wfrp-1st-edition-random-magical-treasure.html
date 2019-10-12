@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><title>WFRP 1st edition Random Magical Treasures</title>
+<style>
+td, th {
+  padding: 1px;
+  text-align: center;
+}
+</style>
+<script>
+//<![CDATA[
+function roll1d10(){
+"use strict";
+ return Math.floor(Math.random() * 10) + 1;
+}
+function roll2d10(){
+"use strict";
+ return Math.floor(Math.random() * 10) + Math.floor(Math.random() * 10) + 2;
+}
+function rollXd10(x){
+"use strict";
+    var j;
+    var roll= 0;
+    for (j = 0; j < x; j += 1) {
+        roll += roll1d10();
+    }
+    return roll;
+}
+function roll1d100(){
+"use strict";
+ return Math.floor(Math.random() * 100) + 1;
+}
+function pickd100List (listToPick){
+ var roll = roll1d100();
+ var i = 0;
+ while (roll > ( listToPick[i][0] ) ){
+  i++;
+ };
+ return listToPick[i];
+};
+
+var SpellLevel = [
+    [55,"level 1"],
+    [85,"level 2"],
+    [95,"level 3"],
+    [100,"level 4"]
+];
+
+var Spells = [
+    [20,"Petty Magic"],
+    [60,"Battle Magic",SpellLevel],
+    [65,"Daemonic Magic",SpellLevel],
+    [80,"Elemental Magic",SpellLevel],
+    [95,"Illusion Magic",SpellLevel],
+    [100,"Necromantic Magic",SpellLevel]
+];
+
+
+
+
+var RaceSimple = [
+    [20,"Undead"],
+    [30,"Daemons"], 
+    [50,"Chaos"],
+    [70,"Goblinoids"],
+    [80,"Fimir"],
+    [100,"Ethereal Undead"]
+];
+
+
+var Race = [
+    [5,"Goblins and Snotlings"],
+    [10,"Hobgoblins"],
+    [20,"Orcs"],
+    [25,"All Goblinoids"],
+    [27,"Elementals"],
+    [30,"Daemons"],
+    [35,"Undead and Ethereal creatures"],
+    [45,"Creatures of Chaos (including Warriors Of Chaos, etc.)"],
+    [50,"Dragons, Wyverns, and Jabberwocks"],
+    [55,"Elves"],
+    [60,"Dwarfs, Gnomes, and Halflings"],
+    [65,"Fimir"],
+    [70,"Monstrous animals (Manticores, Griffins, etc.)"],
+    [75,"Skaven"],
+    [80,"Lizardmen and Troglodyte"],
+    [85,"Giants"],
+    [90,"Ogres and Trolls"],
+    [95,"Werecreatures"],
+    [100,"Vampires"]
+];
+
+var AmuletIron = [
+    [60, "+10"],
+    [90, "+20"],
+    [100, "+30"]
+];
+
+var Amulet = [
+    [20,"Thrice-blessed copper"],
+    [30,"Adamantine"],
+    [50,"Coal"],
+    [60,"Enchanted Jade"],
+    [70,"Iron", AmuletIron],
+    [80,"Law"],
+    [90,"Righteous Silver"],
+    [100,"Watchfulness"]
+];
+
+var ArmorPower = [
+    [25,"Mithril (+1; 20% encumbrance)"],
+    [85,"+1"],
+    [95,"+2"],
+    [98,"+3"],
+    [100,"The armour is engraved with D3 Runes"]
+];
+
+var Armour = [
+    [10,"Coif",ArmorPower],
+    [20,"Helmet",ArmorPower],
+    [30,"Mail Shirt",ArmorPower],
+    [40,"Sleeved Mail Shirt",ArmorPower],
+    [50,"Mail Coat",ArmorPower],
+    [60,"Sleeved Mail Coat",ArmorPower],
+    [70,"Leggings (pair)",ArmorPower],
+    [80,"Arm Pieces (pair)",ArmorPower],
+    [90,"Breastplate",ArmorPower],
+    [100,"Shield",ArmorPower]
+];
+
+var Arrows = [
+    [04,"Arrow Of Banefulness, 1",Race],
+    [06,"Arrow Of Bleeding, 1"],
+    [07,"Arrow Of Cursed Bone, "+ (Math.floor(Math.random() * 3) + 1)],
+    [08,"Arrow Of Direful Summonation, 1"],
+    [12,"Arrow Of Division, "+(Math.floor(Math.random() * 3) + 1)],
+    [13,"Arrow Of Doom, 1"],
+    [23,"Arrow Of Far Flight, "+(Math.floor(Math.random() * 6) + 1)],
+    [27,"Arrow Of Fear, "+(Math.floor(Math.random() * 3) + 1)],
+    [31,"Arrow Of Fire, "+(Math.floor(Math.random() * 3) + 1)],
+    [35,"Arrow Of Grappling, 1"],
+    [39,"Arrow Of Ice, "+(Math.floor(Math.random() * 3) + 1)],
+    [41,"Arrow Of Madness, "+(Math.floor(Math.random() * 3) + 1)],
+    [51,"Arrow Of Might, "+(Math.floor(Math.random() * 6) + 1)],
+    [53,"Arrow Of Mind Stealing, "+(Math.floor(Math.random() * 3) + 1)],
+    [55,"Arrow Of Pestilence, 1"],
+    [60,"Arrow Of Piercing, "+(Math.floor(Math.random() * 6) + 1)],
+    [65,"Arrow Of Potency, "+(Math.floor(Math.random() * 6) + 1)],
+    [66,"Arrow Of Rightful Banishment, 1"],
+    [68,"Arrow Of Sleep, "+(Math.floor(Math.random() * 6) + 1)],
+    [70,"Arrow Of Sluggish Doom, "+(Math.floor(Math.random() * 3) + 1)],
+    [80,"Arrow Of Sure Striking, "+(Math.floor(Math.random() * 6) + 1)],
+    [90,"Arrow Of True Flight, "+(Math.floor(Math.random() * 6) + 1)],
+    [92,"Arrow Of Venom, "+(Math.floor(Math.random() * 3) + 1)],
+    [93,"Arrow Of The Warp, 1"],
+    [95,"Arrow Of Weakening, "+(Math.floor(Math.random() * 3) + 1)],
+    [100,"Arrow Of Wounding, "+(Math.floor(Math.random() * 6) + 1)]
+];
+
+var Bag = [
+    [60,"Bag Of Lightness"],
+    [80,"Bag Of Middenheim"],
+    [100,"Bag Of Resource"]
+];
+
+var Boots = [
+    [30,"Speed"],
+    [50,"Leaping"],
+    [70,"Bovva"],
+    [90,"Concealment"],
+    [100,"Command"]
+];
+
+var BowAbilitiy = [
+    [25,"Accuracy"],
+    [50,"Additional Damage"],
+    [55,"Flame Attack"],
+    [80,"Increased Range"],
+    [85,"Mighty Strike"],
+    [90,"Marksmanship"],
+    [95,"Protection"],
+    [100,"Self-firing"]
+];
+
+var BowAbilities = [
+    [50,"0 Abilities"],
+    [75,"1 Abilities",WeaponAbility],
+    [90,"2 Abilities",WeaponAbility],
+    [99,"3 Abilities",WeaponAbility],
+    [100,"4 Abilities",WeaponAbility]
+];
+
+
+var  BowType = [
+    [30,"Short Bow",BowAbilities],
+    [60,"Normal Bow",BowAbilities],
+    [80,"Long Bow",BowAbilities],
+    [100,"Elf Bow",BowAbilities]
+];
+
+var Gloves = [
+    [40,"Gloves Of Archery"],
+    [60,"Gloves Of The Cobra"],
+    [100,"Gloves Of Nimbleness"]
+];
+
+var Horn = [
+    [10,"Horn Of Banishment"],
+    [30,"Horn Of Hounds"],
+    [60,"Horn Of Plenty"],
+    [90,"Horn Of Valour"],
+    [100,"Unicorn Horn"]
+];
+
+var Jewel = [
+    [50,"Spell Jewel",Spells],
+    [60,"Multiple Spell Jewel, "+(Math.floor(Math.random() * 3) +2 )+" spells",Spells],
+    [100,"Energy Jewel, "+(Math.floor(Math.random() * 6)+ Math.floor(Math.random() * 6) + 2)]
+];
+
+var Potion = [
+    [10,"Potion Of Flight"],
+    [35,"Potion Of Healing"],
+    [50,"Potion Of Invisibility"],
+    [70,"Potion Of Strength"],
+    [80,"Potion Of Tongues"],
+    [95,"Potion Of Lesser Healing"],
+    [100,"Cursed Potion"]
+];
+
+var Ring = [
+    [10,"Amulet Ring",Amulet],
+    [20,"Energy Ring, "+(Math.floor(Math.random() * 6)+ Math.floor(Math.random() * 6) + 2)],
+    [30,"Fortitude Ring"],
+    [40,"Multiple Spell Ring, "+(Math.floor(Math.random() * 3) +2 )+" spells",Spells],
+    [50,"Multiple Warding Ring, "+(Math.floor(Math.random() * 3) +2 )+" spells",Spells],
+    [60,"Protection Ring",RaceSimple],
+    [70,"Ring Of Elvenkind"],
+    [80,"Spell Ring",Spells],
+    [90,"Striking Ring"],
+    [100,"Warding Ring",Spells]
+];
+
+var Wand = [
+    [10,"Blackwand"],
+    [20,"Wand Of Absorption"],
+    [30,"Wand Of Corrosion"],
+    [50,"Wand Of Fear"],
+    [70,"Wand Of Jade"],
+    [90,"Wand Of Jet"],
+    [100,"Wand Of Onyx"]
+];
+
+var Robe = [
+    [20,"Robe Of Disguise"],
+    [40,"Robe Of Ethereality"],
+    [50,"Robe Of Fire Resistance"],
+    [70,"Robe Of Mist And Smoke"],
+    [80,"Robe Of The Shroud"],
+    [100,"Robe Of Toughness"]
+];
+
+var WeaponAbility = [
+    [25,"Additional Damage"],
+    [40,"Characteristic Gain"],
+    [50,"Characteristic Drain"],
+    [60,"Bane Weapon",Race],
+    [61,"Flame Attack"],
+    [61,"Flame Attack"],
+    [62,"Poison Attack"],
+    [63,"Degeneration Attack"],
+    [64,"Freeze Attack"],
+    [65,"Warp Attack"],
+    [66,"Sleep"],
+    [67,"Flight"],
+    [68,"Breathe Underwater"],
+    [69,"Confusion"],
+    [71,"Fear"],
+    [73,"Instability"],
+    [75,"Protection"],
+    [76,"Resist Fire"],
+    [77,"Animated"],
+    [78,"Invisibility"],
+    [79,"Magic Damper"],
+    [81,"Berserk"],
+    [83,"Repel Undead"],
+    [83,"Repel Undead"],
+    [85,"Repel Demon"],
+    [86,"Destroy Magical Weapon"],
+    [88,"Spell Absorption"],
+    [88,"Spell Absorption"],
+    [90,"Mighty Strike"],
+    [100,"Rune Weapon"]
+];
+
+var WeaponAbilities = [
+    [20,"0 Abilities"],
+    [70,"1 Abilities",WeaponAbility],
+    [90,"2 Abilities",WeaponAbility],
+    [95,"3 Abilities",WeaponAbility],
+    [99,"4 Abilities",WeaponAbility],
+    [100,"5 Abilities",WeaponAbility],
+];
+
+var Weapon = [
+    [25, "Sword (Hand Weapon)",WeaponAbilities],
+    [35, "Axe (Hand Weapon)",WeaponAbilities],
+    [45, "Mace (Hand Weapon)",WeaponAbilities],
+    [55, "Warhammer (Hand Weapon)",WeaponAbilities],
+    [65, "Spear",WeaponAbilities],
+    [70, "Halberd",WeaponAbilities],
+    [80, "Flail",WeaponAbilities],
+    [100, "Two Handed Sword",WeaponAbilities]
+];
+
+var RareItem = [
+    [12,"Dagger Of Halflings"],
+    [23,"Harness Of Fearlessness"],
+    [41,"Lantern Of Days"],
+    [50,"Lens Of Detection"],
+    [58,"Lyre Of Melody"],
+    [79,"Purse Of Teeth"],
+    [89,"Ring Of Comprehension"],
+    [100,"Sand Of Flinging"]
+];
+
+var General = [
+    [01,"All-Seeing Mirror"],
+    [10,"Amulet", Amulet],
+    [20,"Armour", Armour],
+    [25,"Arrows", Arrows],
+    [27,"Bag",Bag],
+    [32,"Boots",Boots],
+    [36,"Bow",BowType],
+    [39,"Enchanted Rope, "+(Math.floor(Math.random() * 6) + 2)+" feet lenght"],
+    [43,"Gloves",Gloves],
+    [46,"Grimoire",Spells],
+    [49,"Horn",Horn],
+    [54,"Jewel Of Power",Jewel],
+    [64,"Potion",Potion],
+    [73,"Ring",Ring],
+    [76,"Robe",Robe],
+    [84,"Scroll",Spells],
+    [88,"Wand",Wand],
+    [98,"Weapon",Weapon],
+    [100,"Singular/rare item",RareItem]
+];
+
+
+/*
+
+*/
+
+function refreshCharacterDisplay (ItemNameTxt,ItemDescriptionTxt) {
+    /*document.getElementById("nameB").innerHTML = NameTxt;*/
+    document.getElementById("ItemName").innerHTML = ItemNameTxt;
+    document.getElementById("ItemDescription").innerHTML = ItemDescriptionTxt;
+}
+
+
+
+function generateMagicTreasure(TreasureChoice) {
+    "use strict";
+    var itemPicked;
+    var ItemNameTxt;
+    if (TreasureChoice == -1) {
+        itemPicked = pickd100List(General);} 
+        else {
+        itemPicked 
+        itemPicked = General[TreasureChoice]; 
+    };
+    ItemNameTxt = itemPicked[1];
+
+    var ItemDescriptionTxt = "";
+    while (itemPicked.length==3) {
+        itemPicked = pickd100List(itemPicked[2]);
+        ItemDescriptionTxt += itemPicked[1] + "; ";
+    };
+    refreshCharacterDisplay (ItemNameTxt,ItemDescriptionTxt)
+    return 1;
+}
+//]]>
+</script>
+</head>
+<body>
+    <h1>WFRP 1st edition Random Magical Treasures</h1>
+<p>
+ This is a magic item generator based on the 1st edition of Warhammer RPG. Based on the tables from the <a href="https://www.drivethrurpg.com/product/228084/Warhammer-Fantasy-Roleplay-First-Edition-Core-Rulebook?affiliate_id=91369">1st edition Core Rules</a> (p183) and the Restless Dead Campaign (p98).<br>
+ You can also consult the <a href="https://wfrp1e.fandom.com/wiki/Magic_Items">Warhammer Fantasy Roleplay First Edition Wiki</a> about magic items.
+</p>
+ <button type="button" onclick="generateMagicTreasure(-1)">Generate Magica Treasure!</button><br>
+ <button type="button" onclick="generateMagicTreasure(1)">Generate Amulet!</button>
+ <button type="button" onclick="generateMagicTreasure(2)">Generate Armour!</button>
+ <button type="button" onclick="generateMagicTreasure(3)">Generate Arrows!</button><br>
+ <button type="button" onclick="generateMagicTreasure(12)">Generate Potion!</button>
+ <button type="button" onclick="generateMagicTreasure(13)">Generate Ring!</button>
+ <button type="button" onclick="generateMagicTreasure(14)">Generate Robe!</button><br>
+ <button type="button" onclick="generateMagicTreasure(15)">Generate Scroll!</button>
+ <button type="button" onclick="generateMagicTreasure(16)">Generate Wand!</button>
+ <button type="button" onclick="generateMagicTreasure(17)">Generate Weapon!</button>
+<h3>Magical Object</h3>
+<p id="ItemName"></p>
+<p id="ItemDescription"></p>
+
+<p id="Acknowledgements">Code: Francisco Mu&ntilde;oz 2019.
+<br>Game: Games Worshop and Cubicle 7
+<br>Other random generators: <a href="https://randroll.com/archive/warhammer-fantasy-roleplay-generators-guide/">https://randroll.com/archive/warhammer-fantasy-roleplay-generators-guide/</a>
+</p>
+
+</body>
+</html>
