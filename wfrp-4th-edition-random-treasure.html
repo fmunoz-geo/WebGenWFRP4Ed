@@ -178,6 +178,45 @@ var COLOUR = [
 ["greenish", -25]
 ];
 
+var SAINTTITLE = [
+["the Bishop",0],
+["of $CITY",0],
+["of $CITY",0],
+["of $PROVINCE",0],
+["of $PLACE",0],
+[" II",0],
+[" III",0],
+[" IV",0],
+[" IX",0],
+[" the Martyr",0],
+[" the Elder",0],
+[" the Young",0],
+[" the Good",0]
+];
+
+var SAINT = [
+["Saint Arnold $SAINTTITLE",0],
+["Saint Angus $SAINTTITLE",0],
+["Saint Bertrand $SAINTTITLE",0],
+["Saint Cyril $SAINTTITLE",0],
+["Saint Fridolin $SAINTTITLE",0],
+["Saint Gertrude $SAINTTITLE",0],
+["Saint Heribert $SAINTTITLE",0],
+["Saint Hildegard $SAINTTITLE",0],
+["Saint Odile $SAINTTITLE",0],
+["Saint Willehad $SAINTTITLE",0]
+];
+
+var RELIC = [
+["the ashes of $SAINT",0],
+["the ashes of $SAINT",0],
+["a bone of $SAINT",0],
+["a bone of $SAINT",0],
+["a mummified finger of $SAINT",10],
+["the skull of $SAINT",25],
+["the skull of $SAINT inscribed with '$SHIELDSENTENCE'",25]
+];
+
 var SHIELDCOLOURS = [
 ["gules (red)",0],
 ["gules (red)",0],
@@ -251,6 +290,7 @@ var SHIELDEXTRAS = [
 ["",0],
 ["",0],
 ["",0],
+[" and a scroll that says '$SAINT'",0],
 [" and a scroll that says '$SHIELDSENTENCE'",0],
 [" and a scroll that says '$SHIELDSENTENCE'",0],
 [" and a scroll that says '$SHIELDSENTENCE und $SHIELDSENTENCE'",0],
@@ -815,6 +855,9 @@ var ALLSTRINGS = [
 ["$SHIELDEXTRAS", SHIELDEXTRAS ],
 ["$SHIELDSENTENCE", SHIELDSENTENCE ],
 ["$SHIELDCOLOURS", SHIELDCOLOURS],
+["$SAINTTITLE", SAINTTITLE],
+["$SAINT", SAINT],
+["$RELIC", RELIC],
 ["$PLACE",PLACE],
 ["$PROVINCE",PROVINCE],
 ["$LANGUAGE",LANGUAGE],
@@ -1043,6 +1086,7 @@ var TreasureOthers = [
 ["A set of "+(roll=(Math.floor((roll1d10()+2)/3))+1)+" $COLOUR and $COLOUR balls.", roll*5/12, 0, 1],
 ["Some $STAINS $MAYBECOLOUR rags.", 0.20 , 0, 1],
 [(roll=(roll1d10()+1))+" dead rats strung from a pole.", 0.25 , 0, 1],
+["A $MINORMOD $MAYBESIZE $ANYMATERIAL reliquary with $RELIC.", 20, 1],
 
 ["A set of "+(roll=(roll1d10()+1))+" $MAYBECOLOUR candles tied with a $MAYBECOLOUR string.", roll/12, 0],
 ["A bundle of "+(roll=(roll1d10()+1))+" torches.", roll*4/12, Math.floor(roll/2)],
