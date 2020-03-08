@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><title>WFRP 4th Edition Random Treasure</title>
+<script>
+
+var FIERCEANIMAL = [
+["Gryphon"],
+["Dragon"],
+["Lion"],
+["Eagle"],
+["Panther"],
+["Bear"],
+["Wolf"],
+["Boar"]
+];
+
+var ANIMAL = [
+["Snake"],
+["Fish"],
+["Horse"],
+["Dog"],
+["Seagull"],
+["Frog"],
+["Rat"],
+["Pig"],
+["Donkey"],
+["$FIERCEANIMAL"],
+["$FIERCEANIMAL"],
+["$FIERCEANIMAL"]
+];
+
+var COLOUR = [
+["Purple"],
+["Red"],
+["Blue"],
+["White"],
+["Black"],
+["Gray"],
+["Yellow"],
+["Tan"],
+["Green"],
+["Brown"]
+];
+
+
+var ADJETIVE = [
+["Golden"],
+["Silver"],
+["Hanged"],
+["Happy"],
+["$COLOUR"]
+];
+
+
+var REST = [
+["Solace"],
+["Sleep"],
+["Retreat"]
+];
+
+var NOBLE = [
+["Crown"],
+["Emperor"],
+["Empress"],
+["Count"],
+["Elector"],
+["Graf"]
+];
+
+var WHSTUFF = [
+["Comet"],
+["Skull"],
+["Hearth"],
+["Feather"],
+["Hourglass"]
+];
+
+var CREATURE = [
+["Goblin"],
+["Troll"],
+["Halfling"],
+["Dwarf"]
+];
+
+var NAME = [
+["$ANIMAL"],
+["$FIERCEANIMAL"],
+["$NOBLE"],
+["$WHSTUFF"],
+["$CREATURE"]
+];
+
+var MAYBETHE = [
+["The"],
+["The"],
+[""]
+];
+
+var MAYBEPLACE = [
+["Tavern"],
+["Inn"],
+["Inn"],
+["Coaching Inn"],
+[""],
+[""]
+];
+var WALLMATERIAL = [
+["wooden"],
+["stone"],
+["brick"]
+];
+
+var DRINKQUALITY = [
+["watered"],
+["strong"],
+["piss-poor"],
+["spicy"],
+["excelent"]
+];
+var PIEFILLING = [
+["venison meat"],
+["beff"],
+["onions and rabbit"],
+["mistery meat"],
+["pork and cabbage"]
+];
+
+var GAME = [
+["Al-Zahr, a game of dice"],
+["Alvatafl, a board game"],
+["arm-wrestling matches"],
+["Beast Among the Tailors, a popular skittle game"],
+["bowls"],
+["Bull Ring, a ring tossing game"],
+["cards witg a Reiklander Tarock deck"],
+["cards witg a Reiklander Tarock deck"],
+["cards witg a Wissen Trioki deck"],
+["Cerevis, a card and drinking game"],
+["darts"],
+["dominoes"],
+["Dwile Flonking, a wild dancing game"],
+["Mühlen, a board game"],
+["pub quizzes"],
+["Scarlet Empress, a card game"],
+["Stones, a board game"],
+["arm-wrestling matches"],
+];
+
+var ALLSTRINGS = [
+["$MAYBEPLACE",MAYBEPLACE],
+["$MAYBETHE",MAYBETHE],
+["$NAME",NAME],
+["$ANIMAL",ANIMAL],
+["$FIERCEANIMAL",FIERCEANIMAL],
+["$COLOUR",COLOUR],
+["$CREATURE",CREATURE],
+["$ADJETIVE",ADJETIVE],
+["$NOBLE",NOBLE],
+["$WHSTUFF",WHSTUFF],
+["$REST",REST],
+["$WALLMATERIAL",WALLMATERIAL],
+["$GAME",GAME],
+["$PIEFILLING",PIEFILLING],
+["$DRINKQUALITY",DRINKQUALITY]
+];
+
+var Inns = [
+["The $NAME $MAYBEPLACE."],
+["$MAYBETHE $ADJETIVE $NAME $MAYBEPLACE."],
+["The $NAME and the $NAME $MAYBEPLACE."],
+["The $ADJETIVE $NAME and the $ADJETIVE $NAME $MAYBEPLACE."],
+["The $NOBLE $REST $MAYBEPLACE."]
+];
+
+var InnStuff = [
+["It's surounded by a $WALLMATERIAL wall."],
+["It's famous for its $DRINKQUALITY drinks."],
+["Inside always seems to be people playing $GAME."],
+["They serve halfling-made pies filled with $PIEFILLING."]
+];
+
+var InnType = -1;
+
+function roll1d10(){
+"use strict";
+ return Math.floor(Math.random() * 10) + 1;
+}
+function roll2d10(){
+"use strict";
+ return Math.floor(Math.random() * 10) + Math.floor(Math.random() * 10) + 2;
+}
+function rollXd10(x){
+"use strict";
+    var j;
+    var roll= 0;
+    for (j = 0; j < x; j += 1) {
+        roll += roll1d10();
+    }
+    return roll;
+}
+function roll1d100(){
+"use strict";
+ return Math.floor(Math.random() * 100) + 1;
+};
+
+function removedoublespaces (str) {
+"use strict";
+ str = str.replace(/ +(?= )/g,'');
+ str = str.replace(/ \./g,'.');
+ return str;
+};
+
+function aanmanagement( str) {
+"use strict";
+ var strnew = str.replace(/\b(a)\s([aeiou])/ig,'$1n $2');
+ strnew = strnew.replace(/\b(a)\s<I>([aeiou])/ig,'$1n <I>$2');
+ return strnew;
+};
+
+
+function parsequalities(originalString) {
+ var notdone = 1;
+ while (notdone) {
+  notdone = 0;
+  for(var i=0; i < ALLSTRINGS.length; i++){
+    var lookingfor = ALLSTRINGS[i][0];
+    var strings =  ALLSTRINGS[i][1];
+    var randomnumber =  Math.floor(Math.random() * strings.length) ;
+    var replacement =  strings[ randomnumber ][0];
+    if (originalString.includes(lookingfor) == true) { 
+     notdone = 1;
+    };
+    var originalString = originalString.replace( lookingfor , replacement);
+   };
+  };
+     var parsedString = aanmanagement(removedoublespaces(originalString));
+    return parsedString;
+};
+
+function randomInn (InnType){
+ if (InnType == -1) {
+  InnType = Math.floor(Math.random() * Inns.length) + 1;
+ }; 
+ var innst = Inns[Math.floor(Math.random() * Inns.length)];
+ 
+ return innst[0];
+};
+
+function randomDesc (InnType){
+ if (InnType == -1) {
+  InnType = Math.floor(Math.random() * InnStuff.length) + 1;
+ }; 
+ var inn = InnStuff[Math.floor(Math.random() * InnStuff.length)];
+ 
+ return inn[0];
+};
+
+function generateInn ( tt) {
+  
+  var inn = randomInn(tt);
+  var parsedinn = parsequalities(inn);
+  var desc = randomDesc(tt);
+  var parseddescription = parsequalities(desc);
+
+  var finalString = "<h3>"+parsedinn+"</h3>"+parseddescription;
+
+  document.getElementById("InnB").innerHTML = finalString;
+
+};
+
+</script>
+</head>
+<body>
+    <h1>Generate Inn</h1>
+    <h2>WFRP Random Inn Generator</h2>
+ <p>This is a simple Inn generator.<br>
+If you need people you might meet inside check my <a href="https://pacomiscelaneousstuff.blogspot.com/2019/08/npc-generator.html">NPC Generator</a> to create Merchants, Scholar, Soldiers and similar citizens.<br>
+If you need a more dangerous set you might check my <a href="https://pacomiscelaneousstuff.blogspot.com/2019/08/monster-generator.html">Monster Generator</a> to create Mutants, Orcs, Goblins or worse.<br>
+To have a more detailed Old Worlders you can use the list of my <a href="https://pacomiscelaneousstuff.blogspot.com/2018/09/generic-npc-stats-for-4th-edition.html">Generic NPCs stats for 4th edition</a>.<br>
+You can also create the loot carried by them using my <a href="https://pacomiscelaneousstuff.blogspot.com/2019/08/treasure-generator.html">Random Treasure Generator</a>.
+ </p>
+<button type="button" onclick="generateInn(-1)">Generate Now!</button><br>
+<p id="InnB"> </p>
+<p id="Acknowledgements">Code: Francisco Mu&ntilde;oz 2019.
+<br>Game: Games Worshop and Cubicle 7
+<br>Core WFRP 4th edition book: <a href="https://www.drivethrurpg.com/product/248284/Warhammer-Fantasy-Roleplay-Fourth-Edition-Rulebook">Warhammer Fantasy Roleplay Fourth Edition Rulebook</a>
+<br>Tavern Games from: <a href="https://www.drivethrurpg.com/product/273300/Warhammer-Fantasy-Roleplay-Fourth-Edition-Rough-Nights-and-Hard-Days">Warhammer Fantasy Roleplay Fourth Edition Rough Nights and Hard Days</a>
+<br>Other random generators: <a href="https://randroll.com/archive/warhammer-fantasy-roleplay-generators-guide/">https://randroll.com/archive/warhammer-fantasy-roleplay-generators-guide/</a></p>
+
+</body>
+</html>
+</html>
