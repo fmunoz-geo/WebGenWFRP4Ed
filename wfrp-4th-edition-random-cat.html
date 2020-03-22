@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><title>WFRP 4th Edition Random Cat Companion</title>
+<style>
+td, th {
+  padding: 1px;
+  text-align: center;
+}
+</style>
+<script>
+//<![CDATA[
+function roll1d10(){
+"use strict";
+ return Math.floor(Math.random() * 10) + 1;
+}
+function roll2d10(){
+"use strict";
+ return Math.floor(Math.random() * 10) + Math.floor(Math.random() * 10) + 2;
+}
+function rollXd10(x){
+"use strict";
+    var j;
+    var roll= 0;
+    for (j = 0; j < x; j += 1) {
+        roll += roll1d10();
+    }
+    return roll;
+}
+function roll1d100(){
+"use strict";
+ return Math.floor(Math.random() * 100) + 1;
+}
+
+function generateNPC(SpeciesChoice) {
+"use strict";
+var i;
+var Name = "";
+var NameTxt = "";
+var Name = "";
+var NameTxt = "";
+var SpeciesTxt ="";
+var SpeciesN;
+var SpeciesAll = ["Cat"];
+
+var StatsTxt = "";
+var StatsName = ["WS","BS","S","T","AG","I","DEX","INT","WP","FEL","M","W"];
+var StatsR =      [0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0,0];
+var StatsCat =   [20,-1,5,10,30,40,0,5,20,10,5,0];
+
+var StatsAll = [StatsCat];
+var StatsAdvance = [0,0,0,0,0,0,0,0,0,0,0,0];
+var StatsBase =    [0,0,0,0,0,0,0,0,0,0,0,0];
+var StatsTraits  = [0,0,0,0,0,0,0,0,0,0,0,0];
+var TraitTxt ="";
+var TraitNames = [];
+var TraitStartCat = [ "Bestial", "Night Vision 2", "Size (Little)", "Skittish", "Stealthy", "Stride", "Trained (Broken)", "Weapon SB+1", "Random Cat Trait", "Random Cat Trait"];
+
+
+var TraitStartAll = [TraitStartCat];
+
+var CareerAll =
+["(Not Henchman)",
+"Trainee Cat",
+"Cat",
+"Trained Cat",
+"Veteran Cat"
+];
+
+var CareerTraits = [
+["Brute","Clever","Cunning","Fast","Leader","Elite","Champion","Hardy","Big"],
+["Big","Brute","Cunning","Fast","Hardy","Tough","Fast","Hardy"],
+["Afraid (Any one)","Brute","Cunning","Fast","Skittish","Stupid","Animosity (Any one)"]
+];
+
+var AnyTraits = [
+ ["Mutation (Any one)","Mutation (Animalistic Legs)","Mutation (Corpulent)","Mutation (Distended Digits)","Mutation (Emaciated)","Mutation (Enormous Eye)","Mutation (Extra Legs Joins)","Mutation (Extra Mouth)","Mutation (Glowing Skin)","Mutation (Inhuman Beauty)","Mutation (Inverted Face)","Mutation (Iron Skin)", "Mutation (Lolling Tongue)","Mutation (Patchy Feathers)", "Mutation (Short Legs)", "Mutation (Thorny Scales)", "Mutation (Weeping Pus)","Mutation (Whiskered Snout)",
+ /*From tome of corruption*/
+ "Mutation (Albino)", "Mutation (Boils)"],
+  ["Afraid (Any one)","Afraid (Fire)","Afraid (Magic)","Afraid (Guns)"],
+  ["Animosity (Any one)","Animosity (Humans)","Animosity (Dwarfs)","Animosity (Elfs)","Animosity (Halflings)","Animosity (Gnomes)"],
+  ["Mental Corruption (Any one)","Mental Corruption (Awful Cravings)","Mental Corruption (Beast Within)","Mental Corruption (Chaotic Dreams)","Mental Corruption (Crawling Skin)","Mental Corruption (Erratic Fantasist)","Mental Corruption (Fearfull Concern)","Mental Corruption (Hateful Impulses)","Mental Corruption (Hollow Heart)","Mental Corruption (Jeallous Thoughts)","Mental Corruption (Lonely Spirit)","Mental Corruption (Mental Blocks)","Mental Corruption (Profane Urgency)","Mental Corruption (Shaky Morale)","Mental Corruption (Suspicious Mind)","Mental Corruption (Thrill Hunter)","Mental Corruption (Tortured Visions)",           "Mental Corruption (Totally Unhinged)","Mental Corruption (Unending Malice)","Mental Corruption (Unholy Rage)","Mental Corruption (Worried Jitters)"],
+  ["Random Cat Trait", "Arboreal", "Belligerent", "Big", "Bite SB+1", "Cunning", "Fast", "Fury", "Magical", "Night Vision +1", "Traker", "Ward (10+)", "Trained (Calm)", "Trained (Guard)", "Trained (Fetch)", "Trained (Pointer)", "Trained (Magical)", "Trained (War)"]
+ ];
+ 
+var Talents = [
+["Acute Sense (Hearing or Smell)", "Cat Fall", "Night Vision", "Sixth Sense"], 
+["Alley Cat or Rover", "Beneath Notice", "Luck", "Magical Sense"],
+["Combat Reflexes", "Jump Up", "Nose for Trouble", "Resistance (Chaos)"],
+["Fated", "Fearless (Dogs)", "Pure Soul", "Second Sight"]
+];
+
+var TalentNames = [];
+var TalentTxt = " ";
+
+var CareerN;
+var CareerName;
+
+var XPs = 0;
+var XPTxt = "";
+
+var SkillTxt ="";
+var SkillStart;
+var SkillNames = [];
+var SkillValues = [];
+var SkillStats = [];
+
+var StatsNPCCat = [
+[1,0],
+[1,4],
+[1,5],
+[2,8],
+[3,3],
+[4,9]
+];
+
+/* 5, 10, 15, 20 */
+var StatsXPcost = [125, 275, 475, 725];
+
+var SkillsNPCCat = [
+[1, "Athletics",2],
+[1, "Climb", 2],
+[1, "Intuition", 5],
+[1, "Melee (Tooth & Claw)", 0],
+[1, "Outdoor Survival",7],
+[1, "Perception", 5],
+[1, "Stealth", 4],
+[1, "Track", 5],
+[2, "Charm", 9],
+[2, "Endurance", 3],
+[2, "Cool",8],
+[2, "Dodge",4],
+[2, "Entertain (Meowing or Purring)", 9],
+[2, "Perform (Nap)", 4],
+[3, "Intimidate",4],
+[3, "Navigation", 5],
+[3, "Perform (Obedience)", 5],
+[3, "Trade (Hairball)", 4],
+[4, "Perform (Tricks)", 4],
+[4, "Swim", 2]
+];
+
+/* on steps extra of 5 over the previous */
+var SkillsXPStepCost = [
+50,75,100,150
+];
+
+var SkillsXPCost = [
+SkillsXPStepCost[0],
+SkillsXPStepCost[0]+SkillsXPStepCost[1],
+SkillsXPStepCost[0]+SkillsXPStepCost[1]+SkillsXPStepCost[2],
+SkillsXPStepCost[0]+SkillsXPStepCost[1]+SkillsXPStepCost[2]+SkillsXPStepCost[3]
+];
+
+
+var Sex;
+var SexAll = ["Male","Female",""];
+var SexTxt;
+
+function parseNamesAny (NamesArray,AnyNames) {
+    var x;
+    var y;
+    for (x in NamesArray) {
+        if (NamesArray[x].indexOf("(Any one)")  > -1 || NamesArray[x].indexOf("Random ") > -1 ) {
+           for (y in AnyNames) {
+               if ( (NamesArray[x]).localeCompare(AnyNames[y][0]) == 0  ) {
+                NamesArray[x] = AnyNames[y][ Math.floor( Math.random() * ( AnyNames[y].length - 1 ) + 1 ) ];
+                }
+           }
+       }
+    }
+    return NamesArray;
+}
+
+function parseTrait2Stats (TraitArray) {
+    var x;
+    /* var StatsName = [0"WS",1"BS",2"S",3"T",4"AG",5"I",6"DEX",7"INT",8"WP",9"FEL",10 "M",11 "W"]; */
+    var stat = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    for (x in TraitArray) {
+        console.log(TraitArray[x]); 
+        console.log(x); 
+        switch (TraitArray[x]) {
+            case "Big":
+                stat[2] += 10;
+                stat[3] += 10;
+                stat[4] += -5;
+                break;
+            case "Brute":
+                stat[2] += 10;
+                stat[3] += 10;
+                stat[4] += -10;
+                stat[10] += -1;
+                break;
+            case "Clever": 
+                stat[5] += 10;
+                stat[7] += 20;
+                break;
+            case "Cunning":
+                stat[5] += 10;
+                stat[7] += 10;
+                stat[9] += 10;
+                break;
+            case "Elite":
+                stat[0] += 20;
+                stat[1] += 20;
+                stat[8] += 20;
+                break;
+            case "Fast":
+                stat[4] += 10;
+                stat[10] += 1;
+                break;
+            case "Hardy": /*This will be reparsed later*/
+                stat[11] += 3;
+                break;
+            case "Leader":
+                stat[8] += 10;
+                stat[9] += 10;
+                break;
+            case "Tough":
+                stat[3] += 10;
+                stat[8] += 10;
+                break;
+/*Mutations pg 184*/
+            case "Mutation (Animalistic Legs)":
+                stat[10] += 1;
+                break;
+            case "Mutation (Corpulent)":
+                stat[2] += 5;
+                stat[3] += 5;
+                stat[10] += -1;
+                break;
+             case "Mutation (Distended Digits)":
+                stat[6] += 10;
+                break;
+            case "Mutation (Emaciated)":
+                stat[2] -= 10;
+                stat[5] += 5;
+                break;
+            case "Mutation (Extra Legs Joins)":
+                stat[5] += 5;
+                break;
+            case "Mutation (Inhuman Beauty)":
+                stat[9] += 10;
+                break;
+            case "Mutation (Short Legs)":
+                stat[10] -= 1;
+                break;
+/*Mutations ToC*/
+            case "Mutation (Albino)":
+                stat[3] -= 5;
+                break;
+            case "Mutation (Boils)":
+                stat[3] -= 10;
+                stat[5] -= 5;
+                break;
+/*Mental Corruptions pg 185*/
+            case "Mental Corruption (Awful Cravings)":
+                stat[8] -= 5;
+                stat[9] -= 5;
+                break;
+            case "Mental Corruption (Beast Within)":
+                stat[8] += 10;
+                stat[9] -= 5;
+                stat[7] -= 5;
+                break;
+            case "Mental Corruption (Crawling Skin)":
+                stat[5] -= 5;
+                stat[6] -= 5;
+                break;
+            case "Mental Corruption (Erratic Fantasist)":
+                stat[5] -= 5;
+                stat[8] -= 5;
+                break;
+            case "Mental Corruption (Fearfull Concern)":
+                stat[8] -= 10;
+                break;
+            case "Mental Corruption (Hollow Heart)":
+                stat[8] += 10;
+                stat[9] -= 10;
+                break;
+            case "Mental Corruption (Jeallous Thoughts)":
+                stat[9] -= 10;
+                break;
+            case "Mental Corruption (Mental Blocks)":
+                stat[7] -= 10;
+                break;
+            case "Mental Corruption (Profane Urgency)":
+                stat[8] -= 10;
+                stat[4] += 10;
+                break;
+            case "Mental Corruption (Totally Unhinged)":
+                stat[8] += 10;
+                stat[9] -= 20;
+                break;
+            case "Mental Corruption (Unholy Rage)":
+                stat[0] += 10;
+                break;
+            case "Mental Corruption (Worried Jitters)":
+                stat[9] -= 5;
+                stat[4] += 5;
+                break;
+            case "Mental Corruption (Suspicious Mind)":
+                stat[5] -= 5;
+                stat[7] -= 5;
+                break;
+            case "Mental Corruption (Thrill Hunter)":
+                stat[5] -= 10;
+                stat[8] += 10;
+                break;
+            case "Mental Corruption (Tortured Visions)":
+                stat[5] -= 10;
+                break;
+            default:
+        }
+    }
+    return stat;
+}
+
+function parseTrait2Skills (TraitArray) {
+    var x;
+    /* var StatsName = [0"WS",1"BS",2"S",3"T",4"AG",5"I",6"DEX",7"INT",8"WP",9"FEL",10 "M",11 "W"]; */
+ /* [1, "Athletics",2],*/
+    var skills = [];
+    for (x in TraitArray) {
+        console.log(TraitArray[x]); 
+        console.log(x); 
+        switch (TraitArray[x]) {
+            case "Spellcaster (Daemonology)":
+            case "Spellcaster (Chaos)":
+            case "Spellcaster (Beasts)":
+                skills.push([1, "Language (Magick)",7]);
+                skills.push([1, "Channeling",8]);
+                break;
+            default:
+        }
+    }
+    return skills;
+}
+
+
+function parseSBDamage (StringsArray, SB) {
+    var x;
+ for (x in StringsArray) {
+  StringsArray.splice(x,1, StringsArray[x].replace(" SB+0"," +"+(SB)));
+  StringsArray.splice(x,1, StringsArray[x].replace(" SB+1"," +"+(SB+1)));
+  StringsArray.splice(x,1, StringsArray[x].replace(" SB+2"," +"+(SB+2)));
+  StringsArray.splice(x,1, StringsArray[x].replace(" SB+3"," +"+(SB+3)));
+  StringsArray.splice(x,1, StringsArray[x].replace(" SB+4"," +"+(SB+4)));
+  StringsArray.splice(x,1, StringsArray[x].replace(" SB+5"," +"+(SB+5)));
+ }
+ return StringsArray
+};
+
+function dedupeName(NameArray) {
+    var i;
+    var j;
+    var toremove = [];
+    for (i = 0; i< (NameArray.length - 1); i += 1) {
+        for (j = i + 1; j < (NameArray.length ) ; j += 1) {
+            if( (NameArray[i]).localeCompare(NameArray[j]) == 0) { 
+                toremove.push(j);
+            }
+        }
+    }
+    if (toremove.length > 0) {
+        for (i in toremove) {
+            NameArray.splice ( toremove[i] , 1);
+        }
+    }
+    return NameArray;
+}
+
+function refreshCharacterDisplay () {
+    document.getElementById("nameB").innerHTML = NameTxt;
+    document.getElementById("speciessexcarredB").innerHTML = SpeciesTxt + ", " + CareerName + " " + XPTxt;
+    document.getElementById("statsB").innerHTML = StatsTxt;
+    document.getElementById("skillsB").innerHTML = SkillTxt;
+    document.getElementById("traitsB").innerHTML = TraitTxt;
+    document.getElementById("talentsB").innerHTML = TalentTxt;
+
+    //document.getElementById("trappingsB").innerHTML = "";
+}
+
+/*------ Start Rolling--------*/
+
+if  (SpeciesChoice>0) {
+    SpeciesN =  SpeciesChoice;
+} else {
+    SpeciesN =  Math.floor(Math.random() * SpeciesAll.length );
+}
+
+SpeciesTxt = SpeciesAll[ SpeciesN - 1 ];
+Sex = Math.floor(Math.random() * 2);
+SexTxt = SexAll[ Sex ];
+
+var CareerNRadio;
+for (CareerNRadio=0;CareerNRadio<document.CareerSelection.Career.length;CareerNRadio++){ 
+       if (document.CareerSelection.Career[CareerNRadio].checked) 
+          break; 
+} 
+CareerN = 1 * document.CareerSelection.Career[CareerNRadio].value;
+
+if ( CareerN == -1 ) {
+    CareerN = Math.floor(Math.random()*CareerAll.length);
+};
+
+CareerName = CareerAll[CareerN];
+
+StatsBase = StatsAll [ SpeciesN - 1 ];
+for (i in StatsR) {
+     if (document.getElementById("reRollCheck").checked == true) {
+        StatsR[i] = roll2d10();
+     } else {
+        StatsR[i] = 10;
+     };
+  if (StatsBase[i] == -1) {
+   StatsBase[i] = 0;
+         StatsR[i] = 0;
+  } 
+}
+/* No random M nor W*/
+StatsR[StatsR.length-1] = 0;
+StatsR[StatsR.length-2] = 0;
+
+TraitNames = TraitStartAll[SpeciesN - 1];
+/*Zero, 1 or 2 extra Traits*/
+/*
+if (Math.random()> CareerN/4) {
+    var randTrait = Math.floor(Math.random() * CareerTraits[CareerN].length );
+    TraitNames.push( CareerTraits[CareerN].splice(randTrait,1)[0]);
+        if (Math.random()> CareerN/4) {
+        var randTrait = Math.floor(Math.random() * CareerTraits[CareerN].length );
+        TraitNames.push( CareerTraits[CareerN].splice(randTrait,1)[0]);
+    }
+}
+if (Math.random()> (CareerN+1)/4) {
+    var randTrait = Math.floor(Math.random() * SpeciesOptionalTrait[SpeciesN-1].length );
+    TraitNames.push( SpeciesOptionalTrait[SpeciesN-1].splice(randTrait,1)[0]);
+        if (Math.random()> (CareerN+1)/4) {
+        var randTrait = Math.floor(Math.random() * SpeciesOptionalTrait[SpeciesN-1].length );
+        TraitNames.push( SpeciesOptionalTrait[SpeciesN-1].splice(randTrait,1)[0]);
+    }
+}
+*/
+TraitNames = dedupeName(parseNamesAny(TraitNames, AnyTraits));
+
+StatsTraits = parseTrait2Stats(TraitNames);
+
+if (CareerN > 0) {
+
+ for (i in StatsNPCCat) {
+ if (StatsNPCCat[i][0] <= CareerN) {
+ StatsAdvance[StatsNPCCat[i][1]] = 5 * CareerN;
+ XPs = XPs + StatsXPcost[CareerN-1];
+ };
+ };
+};
+
+/*Parse Wounds*/
+if (StatsTraits[11]>0) {
+    StatsTraits[11] = Math.floor((StatsR[3] + StatsBase[3] + StatsTraits[3] + StatsAdvance[3])/10);
+};
+
+StatsBase[11] = Math.floor((StatsR[3] + StatsBase[3] + StatsTraits[3] + StatsAdvance[3])/10) * 2 +
+        Math.floor((StatsR[2] + StatsBase[2] + StatsTraits[2] + StatsAdvance[2])/10)+
+        Math.floor((StatsR[8] + StatsBase[8] + StatsTraits[8] + StatsAdvance[8])/10);
+
+for (i in TraitNames) {
+    if (TraitNames[i]=="Size (Little)") {
+        StatsTraits[11] -= (Math.floor((StatsR[3] + StatsBase[3] + StatsTraits[3] + StatsAdvance[3])/10) +
+   Math.floor((StatsR[2] + StatsBase[2] + StatsTraits[2] + StatsAdvance[2])/10));
+    };
+    if (TraitNames[i]=="Size (Small)") {
+        StatsTraits[11] -= Math.floor((StatsR[2] + StatsBase[2] + StatsTraits[2] + StatsAdvance[2])/10);
+    };
+    if (TraitNames[i]=="Size (Large)") {
+        StatsTraits[11] += Math.floor((StatsR[2] + StatsBase[2] + StatsTraits[2] + StatsAdvance[2])/10);
+    };
+};
+
+TraitNames = parseSBDamage (TraitNames, Math.floor((StatsR[2] + StatsBase[2] + StatsTraits[2] + StatsAdvance[2])/10));
+
+
+/*Skills and talents*/
+if (CareerN > 0) {
+ var SkillsSpecieBase = SkillsNPCCat;
+ var extraSkills = parseTrait2Skills(TraitNames);
+ var SkillsSpecie = SkillsSpecieBase.concat(extraSkills);
+ var k;
+ /* We pick 8 skills each level to raise to max */
+ for (var j = 1; j <= CareerN; j++) { /*We add the skills for the level*/
+ var randomSkill ;
+ for (k in SkillsSpecie) {
+  if (SkillsSpecie[k][0] == j) {
+   SkillNames.push(SkillsSpecie[k][1]);
+   SkillValues.push(0);
+   SkillStats.push( StatsR[SkillsSpecie[k][2]] + StatsBase[SkillsSpecie[k][2]] + StatsTraits[SkillsSpecie[k][2]] +StatsAdvance[SkillsSpecie[k][2]]);
+  };
+ };
+ for (i = 1; i <= 8; i++) {
+  randomSkill = Math.floor(Math.random() * SkillNames.length);
+  if (j == 1) { randomSkill = i-1};
+  SkillValues[randomSkill] = 5 * CareerN;
+ };
+ };
+ /* Clean the 0 level skills and compute the XP costs*/
+for(i = 0; i < SkillNames.length; i++){ 
+   if ( SkillValues[i] == 0) {
+     SkillNames.splice(i, 1); 
+     SkillValues.splice(i, 1); 
+     SkillStats.splice(i, 1); 
+     i--;
+   } else {
+   XPs = XPs + SkillsXPCost[SkillValues[i]/5-1];
+   };
+};
+ 
+ 
+ for (i = 0; i < CareerN; i++) {
+ var randomTalent = Math.floor(Math.random() * Talents[i].length );
+ TalentNames.push(Talents[i][randomTalent]);
+ XPs = XPs + 100;
+ };
+ 
+
+}
+
+
+StatsTxt = "<table><tr>";
+for (i in StatsName) {
+    StatsTxt += "<th><B>" + StatsName[i] +"</B></th>";
+}
+StatsTxt += "</tr><tr style='text-align: right'>";
+for (i in StatsAdvance) {
+     var star = "";
+     if (StatsTraits[i]) { star = "*";}
+    StatsTxt += "<td>" + ( StatsR[i] + StatsBase[i] + StatsTraits[i]  ) + star + "</td>";
+}
+if (CareerN > 0) {
+StatsTxt += "</tr><tr style='text-align: right'>";
+for (i in StatsAdvance) {
+     StatsTxt += "<td>" +  ( StatsAdvance[i] ) + "</td>";
+}
+StatsTxt += "</tr><tr style='text-align: right'>";
+for (i in StatsAdvance) {
+    StatsTxt += "<td>" + ( StatsR[i] + StatsBase[i] + StatsTraits[i] + StatsAdvance[i] ) + "</td>";
+}
+};
+
+StatsTxt += "</tr></table>";
+
+for (i = 0; i < TraitNames.length ; i += 1) {
+    var MouseOverTxt = ""; /*getMouseOverText (TraitNames[i],mouseoverTraits);*/
+     TraitTxt += "<span title = '" + MouseOverTxt + "'>" + TraitNames[i] + "</span>; ";
+}
+
+for (i = 0; i < SkillNames.length ; i += 1) {
+    var MouseOverTxt = ""; /*getMouseOverText (SkillNames[i],mouseoverSkills);*/
+    SkillTxt += "<span title = '" + MouseOverTxt + "'>" + SkillNames[i] + ":" + (SkillValues[i] + SkillStats[i] )+ "</span>; ";
+}
+for (i = 0; i < TalentNames.length ; i += 1) {
+    var MouseOverTxt = ""; /*getMouseOverText (TalentNames[i],mouseoverTalents); */
+     TalentTxt += "<span title = '" + MouseOverTxt + "'>" + TalentNames[i] + "</span>; ";
+}
+if (XPs>0) {
+  XPTxt = "("+XPs+" Xps)";
+};
+
+refreshCharacterDisplay ();
+
+return 1;
+};
+
+//]]>
+</script>
+</head>
+<body>
+    <h1>Generate Cat Companion</h1>
+ <p>This is a simple Cat Companion generator, it creates random stats for cats and even additional training based on the article <a href="http://lawhammer.blogspot.com/2020/03/cats-in-cradle.html">"Cats in the Cradle" by Andy Law</a><br>
+For other companions, check <a href="https://pacomiscelaneousstuff.blogspot.com/2020/03/wfrp-4th-edition-random-dog-companion.html">the dog generator</a> based on the article <a href="http://lawhammer.blogspot.com/2020/03/small-medium-and-large-vicious-dogs.html">"Small, Medium, and Large Vicious Dogs" by Andy Law</a> and <a href="https://pacomiscelaneousstuff.blogspot.com/2020/03/wfrp-4th-edition-random-horse-companion.html">the horse generator</a> based on the article <a href="http://lawhammer.blogspot.com/2020/03/my-kingdom-for-horse.html">"My Kingdom For A Horse" also by Andy Law</a><br><br>
+If you need people you might meet in a <a href="https://pacomiscelaneousstuff.blogspot.com/2020/03/wfrp-inn-generator.html">tavern</a> check my <a href="https://pacomiscelaneousstuff.blogspot.com/2019/08/npc-generator.html">NPC Generator</a> to create Merchants, Scholar, Soldiers and similar citizens.<br>
+To have a more detailed Old Worlders you can use the list of my <a href="https://pacomiscelaneousstuff.blogspot.com/2018/09/generic-npc-stats-for-4th-edition.html">Generic NPCs stats for 4th edition</a>.<br>
+You can also create the loot carried by them using my <a href="https://pacomiscelaneousstuff.blogspot.com/2019/08/treasure-generator.html">Random Treasure Generator</a>.
+</p>
+ <button type="button" onclick="generateNPC(1)">Generate Cat Now!</button><br>
+<form name="CareerSelection">
+  <input type="radio" name="Career" id="Career" value="0" checked="checked" > Not Henchman
+  <input type="radio" name="Career" id="Career" value="1"> Trainee Horse
+  <input type="radio" name="Career" id="Career" value="2"> Horse
+  <input type="radio" name="Career" id="Career" value="3"> Trained Horse
+  <input type="radio" name="Career" id="Career" value="4"> Veteran Horse
+  <input type="radio" name="Career" id="Career" value="-1"> Random
+</form>
+<br>
+<table><tr><td>
+Roll Stats: </td><td><input type="checkbox" id="reRollCheck">
+</td></tr>
+</table>
+<h3><p id="nameB">.</p></h3>
+<h4><p id="speciessexcarredB"></p></h4>
+
+<h3>Characteristics</h3>
+<p id="statsB"></p>
+<h3>Skills</h3>
+<p id="skillsB"></p>
+<h3>Traits</h3>
+<p id="traitsB"></p>
+<h3>Talents</h3>
+<p id="talentsB"></p>
+
+<p id="Acknowledgements">Code: Francisco Mu&ntilde;oz 2019.
+<br>Inspiration: <a href="http://lawhammer.blogspot.com/2020/03/cats-in-cradle.html">"Cats in the Cradle" by Andy Law</a>
+<br>Inspiration: <a href="http://lawhammer.blogspot.com/2020/03/my-kingdom-for-horse.html">"My Kingdom For A Horse" by Andy Law</a>.
+<br>Inspiration: <a href="http://lawhammer.blogspot.com/2020/03/small-medium-and-large-vicious-dogs.html">"Small, Medium, and Large Vicious Dogs" by Andy Law</a>.
+<br>Inspiration: <a href="http://www.grimnirstavern.com">Grimnir's Tavern, Random NPC Generator for WFRP 4e</a>.
+<br>Game: Games Worshop and Cubicle 7
+<br>Other random generators: <a href="https://randroll.com/archive/warhammer-fantasy-roleplay-generators-guide/">https://randroll.com/archive/warhammer-fantasy-roleplay-generators-guide/</a>
+</p>
+
+</body>
+</html>
