@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><title>WFRP 4th Edition Disease Generation</title>
+<script>
+
+var DiseaseContraction = [
+"Creature, Very Easy (+60) Endurance Test.",
+"Creature, Easy (+40) Endurance Test.",
+"Creature, Average (+20) Endurance Test.",
+"Creature, Challenging (+0) Endurance Test.",
+"Food, Easy (+40) Endurance Test.",
+"Food, Average (+20) Endurance Test.",
+"Food, Challenging (+0) Endurance Test.",
+"Water, Easy (+40) Endurance Test.",
+"Water, Average (+20) Endurance Test.",
+"Water,  Challenging (+0) Endurance Test."
+];
+
+var DiseaseIncubation = [
+"Instant",
+"1d10 minutes",
+"1d10 hours",
+"1d10 days",
+"1d10 days",
+"2d10 days"
+];
+
+var DiseaseDuration = [
+"1d10 days",
+"1d10 days",
+"1d10 days",
+"2d10 days",
+"1d10+7 days",
+"3d10 days",
+"3d10+5 days"
+];
+var DiseaseAdjetive = ["Red","Purple","Green","Bad","Evil"]
+var DiseaseNames = ["Sickness","Illness","Plague"]
+var DiseaseSymptoms = [
+[
+ ["Blight",            "Pass a daily Very Easy (+60) Endurance Test or die. No treatment.", ["Deadly"],["Death","Blight"]],
+ ["Blight (Moderate)", "Pass a daily Easy (+40) Endurance Test or die. No treatment.", ["Deadly"],["Death","Blight"]],
+ ["Blight (Severe)",   "Pass a daily Average (+20) Endurance Test or die. No treatment.", ["Deadly"],["Death","Blight"]]
+],
+[ 
+["Buboes",            "-10 Physical Tests. Lance Buboes with Heal Test to remove.", ["Inflamation"],["Buboes","Inflamation"]]
+],
+[ 
+ ["Convulsions",       "-10 Physical Tests ", ["Twitchy"],["Movements"]],
+ ["Convulsions (Moderate)",       "-20 Physical Tests ",["Twitchy"],["Movements"]],
+ ["Convulsions (Severe)",       "Incapacited", ["Twitchy"],["Movements","Prostration"]]
+],
+[ 
+["Coughs and Sneezes","Expread to others, test once per hour of exposure. No treatment.",["Coughting"],["Lung","Cough","Croup"]]
+],
+[ 
+ ["Fever",             "-10 Physical Tests.",["Hot"],["Chills","Fever"]],
+ ["Fever (Severe)",             "Unconcious Condition.",["Hot"],["Chills","Fever","Ague","Prostration"]]
+],
+[
+ ["Flux",              ".", ["Icky"],["Guts","Trots"]],
+ ["Flux (Moderate)",              ".", ["Icky"],["Guts","Trots"]],
+ ["Flux (Severe)",              ".", ["Icky"],["Guts","Trots","Complaint"]]
+],
+[ 
+["Gangrene",          "."]
+],
+[ 
+ ["Lingering (Easy)",         "Add extra duration.", ["Lingering"],["Lingering"]],
+ ["Lingering (Challenging)",         "Add extra duration.", ["Lingering"],["Lingering"]]
+],
+[ 
+ ["Malaise",           ".", ["Sad"],["Sadness","Touch"]]
+],
+[ 
+["Nausea",            ".", ["Dizzy"],["Dizziness","Vomit","Vertigo"]]
+],
+[
+ ["Pox",               ".", ["Red"],["Spots"]]
+],
+[ ["Wound" ,             ".", ["Bledding"],["Wound"]]
+]
+];
+
+function getSymptom (DiseaseSymptomsLocal) {
+ var Symptom = [];
+ var SymptomPick = Math.floor(Math.random() * DiseaseSymptomsLocal.length);
+ Symptom = DiseaseSymptomsLocal [ SymptomPick ];
+ Symptom = Symptom[ Math.floor(Math.random() * Symptom.length)];
+ DiseaseSymptomsLocal.splice(SymptomPick, 1);
+ return [Symptom,DiseaseSymptomsLocal];
+};
+function getName (SAdjetive,SName) {
+ var Names = DiseaseNames.concat ( SName );
+ var Adjetives = DiseaseAdjetive.concat ( SAdjetive );
+ var AdjetiveName = Adjetives[ Math.floor(Math.random() * Adjetives.length)] + " " + Names[ Math.floor(Math.random() * Names.length)];
+ return AdjetiveName;
+};
+
+function randomDisease(DiseaseType){
+ var Symptom = getSymptom (DiseaseSymptoms);
+ var Symptom2 = getSymptom (Symptom[1]);
+ var Symptom3 = getSymptom (Symptom2[1]);
+ var DiseaseName = getName (Symptom[0][2].concat(Symptom2[0][2]), Symptom[0][3].concat(Symptom2[0][3]));
+ 
+ var Disease = 
+ "<b>Name:</b>" + DiseaseName +  "<br>" +
+ "Contraction: " + DiseaseContraction[ Math.floor(Math.random() * DiseaseContraction.length)] + "<br>" +
+ "Incubation:" + DiseaseIncubation[ Math.floor(Math.random() * DiseaseIncubation.length)] + "<br>" +
+ "Duration:" + DiseaseDuration[ Math.floor(Math.random() * DiseaseDuration.length)] + "<br>" +
+ "Symptoms:" + Symptom[0][0] + ", " + Symptom2[0][0] + ", " + Symptom3[0][0];
+ return Disease;
+};
+
+function generateDisease( bt ) {
+ var amount = amountInput.value;
+ if (isNaN(amount)) { 
+ amount = 5;
+ } else {
+ amount = Math.min(parseInt(amount,10), 15);
+ amount = Math.max(amount, 1);
+ };
+ document.getElementById("amountInput").value = amount;
+  for(j=0; j < 15; j++){
+  document.getElementById("Disease"+(j+1)).innerHTML = " ";
+  };
+  
+ for(j=0; j < amount; j++){
+ var Diseases = randomDisease(bt);
+ var treasureTargetText = "Disease"+(j+1);
+
+ document.getElementById(treasureTargetText).innerHTML = Diseases;
+ };
+};
+
+
+</script>
+</head>
+
+<body>
+ <h1>Generate Random Disease</h1>
+ <h2>WFRP Random Disease with Symptoms</h2>
+ <p>From natural illness to Nurgle's Blessings, passing by Poxes created by the unclean skavens.
+ </p>
+
+ <button type="button" onclick="generateDisease(-1)">Random Disease!</button> <label>Amount : <input type="text" maxlength="2" value= "5" size="2" id="amountInput"/></label><br>
+
+ <p id="Disease1"></p>
+ <p id="Disease2"></p>
+ <p id="Disease3"></p>
+ <p id="Disease4"></p>
+ <p id="Disease5"></p>
+ <p id="Disease6"></p>
+ <p id="Disease7"></p>
+ <p id="Disease8"></p>
+ <p id="Disease9"></p>
+ <p id="Disease10"></p>
+ <p id="Disease11"></p>
+ <p id="Disease12"></p>
+ <p id="Disease13"></p>
+ <p id="Disease14"></p>
+ <p id="Disease15"></p>
+
+</body>
+</html>
+</html>
