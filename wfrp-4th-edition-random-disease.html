@@ -20,6 +20,7 @@ var DiseaseIncubation = [
 "Instant",
 "1d10 minutes",
 "1d10 hours",
+"1d10 hours",
 "1d10 days",
 "1d10 days",
 "2d10 days"
@@ -34,7 +35,7 @@ var DiseaseDuration = [
 "3d10 days",
 "3d10+5 days"
 ];
-var DiseaseAdjetive = ["Red","Purple","Green","Bad","Evil"]
+var DiseaseAdjetive = ["Red","Purple","Green","Blue","Bretonnian","Tilean","Estalian","Bad","Evil"]
 var DiseaseNames = ["Sickness","Illness","Plague"]
 var DiseaseSymptoms = [
 [
@@ -46,9 +47,9 @@ var DiseaseSymptoms = [
 ["Buboes",            "-10 Physical Tests. Lance Buboes with Heal Test to remove.", ["Inflamation"],["Buboes","Inflamation"]]
 ],
 [ 
- ["Convulsions",       "-10 Physical Tests ", ["Twitchy"],["Movements"]],
- ["Convulsions (Moderate)",       "-20 Physical Tests ",["Twitchy"],["Movements"]],
- ["Convulsions (Severe)",       "Incapacited", ["Twitchy"],["Movements","Prostration"]]
+ ["Convulsions",       "-10 Physical Tests ", ["Twitchy"],["Movements","Palsy"]],
+ ["Convulsions (Moderate)",       "-20 Physical Tests ",["Twitchy"],["Movements","Palsy","Dance"]],
+ ["Convulsions (Severe)",       "Incapacited", ["Twitchy"],["Movements","Prostration","Palsy","Dance"]]
 ],
 [ 
 ["Coughs and Sneezes","Expread to others, test once per hour of exposure. No treatment.",["Coughting"],["Lung","Cough","Croup"]]
@@ -63,7 +64,7 @@ var DiseaseSymptoms = [
  ["Flux (Severe)",              ".", ["Icky"],["Guts","Trots","Complaint"]]
 ],
 [ 
-["Gangrene",          "."]
+["Gangrene",          ".",["Rotting"],[]]
 ],
 [ 
  ["Lingering (Easy)",         "Add extra duration.", ["Lingering"],["Lingering"]],
@@ -98,7 +99,8 @@ function getName (SAdjetive,SName) {
 };
 
 function randomDisease(DiseaseType){
- var Symptom = getSymptom (DiseaseSymptoms);
+ var SymptomsCopy = DiseaseSymptoms.slice();
+ var Symptom = getSymptom (SymptomsCopy);
  var Symptom2 = getSymptom (Symptom[1]);
  var Symptom3 = getSymptom (Symptom2[1]);
  var DiseaseName = getName (Symptom[0][2].concat(Symptom2[0][2]), Symptom[0][3].concat(Symptom2[0][3]));
