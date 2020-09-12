@@ -212,7 +212,9 @@ var RELIC = [
 ["the ashes of $SAINT",0],
 ["a bone of $SAINT",0],
 ["a bone of $SAINT",0],
+["the $BODYPART of $SAINT",0],
 ["a mummified finger of $SAINT",10],
+["a mummified hand of $SAINT",10],
 ["the skull of $SAINT",25],
 ["the skull of $SAINT inscribed with '$SHIELDSENTENCE'",25]
 ];
@@ -297,13 +299,21 @@ var SHIELDEXTRAS = [
 [" and a $DANGLING tied to it",0]
 ];
 
+var BODYPART = [
+["blood",0],
+["blood",0],
+["tears",0],
+["heart",0],
+["hand",0]
+];
+
 var SHIELDSENTENCE = [
 ["$CITY",0],
 ["$CITY",0],
 ["$PROVINCE",0],
 ["$PROVINCE",0],
 ["$DEITY",0],
-["$DEITY's blood",0],
+["$DEITY's $BODYPART",0],
 ["Ehre",0],
 ["Sieg",0],
 ["Ewig",0],
@@ -791,7 +801,7 @@ var CARDDECKS = [
 ["102-card Dwarven runic deck",10]
 ];
 var TRADETOOLS = [
-["a painter's kit with "+(roll1d10()+1)+" paintbrushes, a $METALFITTING flask with turpentine and pots of prepared oil paints, a few sponges and sheets of thick linen canvas. ¡",0],
+["a painter's kit with "+(roll1d10()+1)+" paintbrushes, a $METALFITTING flask with turpentine and pots of prepared oil paints, a few sponges and sheets of thick linen canvas. ยก",0],
 ["an apothecary's trade tools with a set of spoons, weight and scales, "+(roll1d10()+2)+" glass phials, tins of rare earth and hard-to-find herbs, bottles of essential oils, pestle and mortar",0],
 ["an herbolist's trade tools with pestle and mortar, "+(roll1d10()+1)+" small knives, pruning shears, and a set of $MAYBECOLOUR gloves",0],
 ["a gunsmith's trade tool with a hammer, files, a musket-cleaning kit with muzzle rods, oils, chamois, fuses, flints and spare parts",0],
@@ -802,6 +812,17 @@ var TRADETOOLS = [
 ["a navigator's kit composed of quadrant, astrolabe, charts and compasses, hourglass, and "+(roll1d10()+4)+" yards sounding line",0],
 ["a smith's trade tools with a big hammer, a smaller one, tongs, punches, swages, bits, and augers",0],
 ["a carpenter's trade tools with hammer and "+(roll2d10()+16)+" assorted nails, saw, auger and bits, measuring rod, chalk, and plumb lines.",0]
+];
+var BOOKDECORATION = [
+[", within it are a few pressed flowers",0],
+[" with a few $COLOUR ribbons to bookmark it",0],
+[" with a few $COLOUR ribbons to bookmark it",0],
+[" with strange illuminations in the margins",0],
+["",0],
+["",0],
+["",0],
+["",0],
+["",0],
 ];
 
 var ALLSTRINGS = [
@@ -837,6 +858,7 @@ var ALLSTRINGS = [
 ["$WOODMATERIAL",WOODMATERIAL],
 ["$STONEMATERIAL",WOODMATERIAL],
 ["$INLAYGEMS",INLAYGEMS],
+["$BODYPART",BODYPART],
 ["$DEITY",DEITY],
 ["$PAPERDAMAGED",PAPERDAMAGED],
 ["$STAINS",STAINS],
@@ -858,6 +880,7 @@ var ALLSTRINGS = [
 ["$SAINTTITLE", SAINTTITLE],
 ["$SAINT", SAINT],
 ["$RELIC", RELIC],
+["$BOOKDECORATION", BOOKDECORATION],
 ["$PLACE",PLACE],
 ["$PROVINCE",PROVINCE],
 ["$LANGUAGE",LANGUAGE],
@@ -1011,6 +1034,7 @@ var TreasureCoins = [
 ["A coin box with "+(roll2d10()+10)+" Crowns.", 2 , 0],
 ["A $MINORMOD coin box with "+(roll2d10()+2)+" karls.", 2 , 0],
 ["A heavy <I>fine</I> $MAYBECOLOUR pouch filled with "+(roll1d10()+2) + " Gold Crowns.", 8/12 , 0],
+["A $WOODMATERIAL coin box with "+(roll2d10()+8)+" Crowns and "+(roll2d10()+10)+" Shillings .", 2 , 0],
 
 ["A $MINORMOD $MAYBECOLOUR box full with "+(roll1d10()+24) +" silver coins.", 1, 0],
 ["A small $MAYBECOLOUR box with "+(roll2d10()+12) +" silver coins.", 1, 0],
@@ -1086,14 +1110,19 @@ var TreasureOthers = [
 ["A set of "+(roll=(Math.floor((roll1d10()+2)/3))+1)+" $COLOUR and $COLOUR balls.", roll*5/12, 0, 1],
 ["Some $STAINS $MAYBECOLOUR rags.", 0.20 , 0, 1],
 [(roll=(roll1d10()+1))+" dead rats strung from a pole.", 0.25 , 0, 1],
-["A $MINORMOD $MAYBESIZE $ANYMATERIAL reliquary with $RELIC.", 20, 1],
+
+["A $MINORMOD $MAYBESIZE $ANYMATERIAL reliquary with $RELIC.", 20, 1, 3],
+
+["A Grappling Hook and "+(roll=(roll1d10()+5))+" yards of rope.", 30+(roll)*0.834,2,2],
+["A coiled rope, "+(roll=(roll1d10()+9))+" yards.", (roll)*0.834,1,1],
+["A <I>shoddy</I> looking rope, "+(roll=(roll1d10()+9))+" yards, it could break under heavy loads.", (roll)*0.834/2,1,1],
 
 ["A set of "+(roll=(roll1d10()+1))+" $MAYBECOLOUR candles tied with a $MAYBECOLOUR string.", roll/12, 0],
 ["A bundle of "+(roll=(roll1d10()+1))+" torches.", roll*4/12, Math.floor(roll/2)],
-["A $METALFITTING lantern.", 12, 1],
-["A $METALFITTING storm lantern.", 20, 1],
-["A <I>durable</I> $METALFITTING storm lantern.", 40, 1],
-["A $METALFITTING Davrich lamp used for minning.", 40, 1],
+["A $METALFITTING lantern.", 12, 1, 1],
+["A $METALFITTING storm lantern.", 20, 1, 2],
+["A <I>durable</I> $METALFITTING storm lantern.", 40, 1, 3],
+["A $METALFITTING Davrich lamp used for minning.", 40, 1, 3],
 ["A small $ANYMATERIAL box with "+(roll=(roll1d10()+1))+ " sulfur matches.", roll + 0.25, 0, 1]
 ];
 
@@ -1156,6 +1185,16 @@ var TreasureWeapons = [
 ["A $NEUTRALWEAPONPREFIX $MINORMOD Quater Staff $DECORATION.", 3, 2, 1],
 ["A $GOODWEAPONPREFIX $GOODQUALITY Quater Staff $DECORATION.", 6, 2, 1],
 ["A $BADWOODENPREFIX $BADQUALITY Quater Staff $DECORATION.", 1.5, 2, 1],
+
+["A $NEUTRALWEAPONPREFIX $MINORMOD Spear with $DANGLING tied to its head.", 40, 3, 1],
+["A $NEUTRALWEAPONPREFIX $MINORMOD Spear $DECORATION.", 40, 3, 1],
+["A $GOODWEAPONPREFIX $GOODQUALITY Spear $DECORATION.", 80, 3, 1],
+["A $BADWOODENPREFIX $BADQUALITY Spear $DECORATION.", 40, 3, 1],
+
+["A $NEUTRALWEAPONPREFIX $MINORMOD Halberd with $DANGLING tied to its head.", 15, 2, 1],
+["A $NEUTRALWEAPONPREFIX $MINORMOD Halberd $DECORATION.", 15, 2, 1],
+["A $GOODWEAPONPREFIX $GOODQUALITY Halberd $DECORATION.", 30, 2, 1],
+["A $BADWOODENPREFIX $BADQUALITY Halberd $DECORATION.", 15, 2, 1],
 
 ["A $NEUTRALWEAPONPREFIX $MINORMOD bow.", 80, 2, 1],
 ["A $MINORMOD bow $DECORATION.", 80, 2, 1],
@@ -1231,6 +1270,7 @@ var TreasureArmour = [
 ["A $GOODQUALITY set of metal bracers $DECORATION.",320,3, 3],
 
 ["An open helm.",40, 1, 1],
+["An <I>durable</I> reinforced open helm.",80, 1, 1],
 ["A watchman's $MAYBECOLOUR leather skullcap and pot helmet $WRITING with the $CITY crest.",48, 2, 1],
 ["A $MAYBEFINE open helm $DECORATION.",40, 1, 1],
 ["A helm.",60,2, 3],
@@ -1267,8 +1307,8 @@ var TreasureDocuments = [
 ["A $PAPERDAMAGED sheet with some text in $LANGUAGE.", 1, 0, 1],
 
 ["A $PAPERDAMAGED set of documents from citizen of $PLACE.", 3, 0, 2],
-["A set of  documents from citizen of $PLACE.", 3, 0, 2],
-["A badly-forged set of documents from citizen of $PLACE.", 2.5, 0, 3],
+["A set of  documents from a citizen of $PLACE.", 3, 0, 2],
+["A badly-forged set of documents from a citizen of $PLACE.", 2.5, 0, 3],
 
 ["A license to bear martial weapons in $CITY.", 3, 0, 2],
 ["A license to bear guns and dueling weapons in $CITY.", 3, 0, 2],
@@ -1278,24 +1318,26 @@ var TreasureDocuments = [
 
 ["A $PAPERDAMAGED small stack of "+(roll=(roll1d10()+3))+" leaflets promoting the insurgence in $PLACE.", roll, 0, 1],
 
-["A $MAYBESIZE $MAYBECOLOUR book of apothecary lore.", 160, 1, 2],
-["A $MAYBESIZE $MAYBECOLOUR book of apothecary lore and herbalism.", 160, 1, 2],
-["A $MAYBESIZE $MAYBECOLOUR book of art.", 100, 1, 2],
+["A $MAYBESIZE $MAYBECOLOUR book of apothecary lore $BOOKDECORATION.", 160, 1, 2],
+["A $MAYBESIZE $MAYBECOLOUR book of apothecary lore and herbalism $BOOKDECORATION.", 160, 1, 2],
+["A $MAYBESIZE $MAYBECOLOUR book of art $BOOKDECORATION.", 100, 1, 2],
 ["A $MAYBESIZE $MAYBECOLOUR book detailing methods and examples of drawing and painting.", 100, 1, 2],
-["A $MAYBESIZE $MAYBECOLOUR book of crytography.", 160, 1, 4],
+["A $MAYBESIZE $MAYBECOLOUR book of crytography $BOOKDECORATION.", 160, 1, 4],
 ["A $MAYBESIZE <I>unreliable</I> $MAYBECOLOUR book of engineering. It's full of erratas and misprints.", 30, 1, 1],
-["A $MAYBESIZE $MAYBECOLOUR book of general engineering.", 60, 1, 2],
-["A $MAYBESIZE $MAYBECOLOUR book of construction engineering.", 60, 1, 2],
-["A $MAYBESIZE $MAYBECOLOUR book of law.", 300, 1, 4],
+["A $MAYBESIZE $MAYBECOLOUR book of general engineering $BOOKDECORATION.", 60, 1, 2],
+["A $MAYBESIZE $MAYBECOLOUR book of construction engineering $BOOKDECORATION.", 60, 1, 2],
+["A $MAYBESIZE $MAYBECOLOUR book of law $BOOKDECORATION.", 300, 1, 4],
 ["A $MAYBESIZE <I>practical</I> $MAYBECOLOUR textbook of law from $PLACE.", 600, 1, 4],
 ["A $MAYBESIZE $MAYBECOLOUR book of magic. It's possesion could be legally troublesome.", 400, 1, 4],
 ["A $MAYBESIZE $MAYBECOLOUR book of medicine, detailing ailments.", 300, 1, 3],
-["A $MAYBESIZE $MAYBECOLOUR book of anatomy and medicine.", 300, 1, 3],
+["A $MAYBESIZE $MAYBECOLOUR book of anatomy and medicine $BOOKDECORATION.", 300, 1, 3],
 ["A $MAYBESIZE $MAYBECOLOUR book of religion, written for $FOLLOWERS of $DEITY.", 20, 1, 1],
-["A $MAYBESIZE $MAYBECOLOUR book of religion.", 20, 1, 1],
-["A $MAYBESIZE $MAYBECOLOUR book of bad poetry.", 19, 1, 1],
-["A $MAYBESIZE $MAYBECOLOUR book of poetry.", 20, 1, 1],
-["A $MAYBESIZE $MAYBECOLOUR book of cooking recipes.", 20, 1, 1],
+["A $MAYBESIZE $MAYBECOLOUR book of religion $BOOKDECORATION.", 20, 1, 1],
+["'The life of $SAINT', a $MAYBESIZE $MAYBECOLOUR book of religion $BOOKDECORATION.", 20, 1, 1],
+["A $MAYBESIZE $MAYBECOLOUR book of bad poetry $BOOKDECORATION.", 19, 1, 1],
+["A $MAYBESIZE $MAYBECOLOUR book of poetry $BOOKDECORATION.", 20, 1, 1],
+["A <I>fine</I> $MAYBESIZE $MAYBECOLOUR book of adventures, it's a collector edition.", 40, 1, 2],
+["A $MAYBESIZE $MAYBECOLOUR book of cooking recipes $BOOKDECORATION.", 20, 1, 1],
 ["A $MAYBESIZE $MAYBECOLOUR book with a bad theatre play.", 19, 1, 1],
 ["A $MAYBESIZE $MAYBECOLOUR book with a theatre play.", 20, 1, 1]
 ];
@@ -1466,7 +1508,7 @@ function generateTreasure( tt) {
     <h1>Generate Treasure</h1>
     <h2>WFRP 4th Edition Random treasure</h2>
  <p>This is a simple treasure generator, currently it creates 5 random pieces of jewelry, clothes, weapons, armours and other things you could find adventuring in the Old World (the plan is to make it more flexible and with a larger set of items).<br>
-If you need people you might meet in a tavern check my <a href="https://pacomiscelaneousstuff.blogspot.com/2019/08/npc-generator.html">NPC Generator</a> to create Merchants, Scholar, Soldiers and similar citizens.<br>
+If you need people you might meet in a <a href="https://pacomiscelaneousstuff.blogspot.com/2020/03/wfrp-inn-generator.html">tavern</a> check my <a href="https://pacomiscelaneousstuff.blogspot.com/2019/08/npc-generator.html">NPC Generator</a> to create Merchants, Scholar, Soldiers and similar citizens.<br>
 If you need a more dangerous set you might check my <a href="https://pacomiscelaneousstuff.blogspot.com/2019/08/monster-generator.html">Monster Generator</a> to create Mutants, Orcs, Goblins or worse.<br>
 To have a more detailed Old Worlders you can use the list of my <a href="https://pacomiscelaneousstuff.blogspot.com/2018/09/generic-npc-stats-for-4th-edition.html">Generic NPCs stats for 4th edition</a>.<br>
 You can also create the loot carried by them using my <a href="https://pacomiscelaneousstuff.blogspot.com/2019/08/treasure-generator.html">Random Treasure Generator</a>.
@@ -1498,6 +1540,7 @@ You can also create the loot carried by them using my <a href="https://pacomisce
 <br>Inspiration: <a href="http://www.windsofchaos.com/wp-content/uploads/encroachment/html/generator-random-treasure-01.html">Encroatchment of Chaos, Treasure Generator by Dave Graffam</a>.
 <br>Inspiration: <a href="http://orteil.dashnet.org/randomgen/?gen=https://pastebin.com/raw/JcxC8pMx">WFRP 4e Equipment Generator</a>.
 <br>Inspiration: <a href="https://ratujmywfrp2pl.files.wordpress.com/2010/01/treasure-tables.pdf">Dan White's WFRP RANDOM TREASURE GENERATION</a>.
+<br>Inspiration: <a href="http://www.goatmansgoblet.com/2020/08/warhammer-fantasy-apothecary.html">Goatman's Goblet: WFRP The Apothecary (Trappings/Randomizers)</a>.
 <br>Game: Games Worshop and Cubicle 7
 <br>Other random generators: <a href="https://randroll.com/archive/warhammer-fantasy-roleplay-generators-guide/">https://randroll.com/archive/warhammer-fantasy-roleplay-generators-guide/</a></p>
 
