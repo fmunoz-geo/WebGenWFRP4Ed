@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<style>
+th, td {
+    padding: 5px;
+}
+th {
+    background-color: black;
+    color: white;
+}
+padding
+</style>
+<head><title>WFRP 4th Edition NPC Cults</title>
+
+<script>
+//<![CDATA[
+
+function roll1d10(){
+"use strict";
+ return Math.floor(Math.random() * 10) + 1;
+}
+
+function roll2d10(){
+"use strict";
+ return Math.floor(Math.random() * 10) + Math.floor(Math.random() * 10) + 2;
+}
+
+function rollXd10(x){
+"use strict";
+    var j;
+    var roll= 0;
+    for (j = 0; j < x; j += 1) {
+        roll += roll1d10();
+    }
+    return roll;
+}
+
+function roll1d100(){
+"use strict";
+ return Math.floor(Math.random() * 100) + 1;
+}
+
+function removedoublespaces (str) {
+"use strict";
+ str = str.replace(/ +(?= )/g,'');
+ str = str.replace(/ \./g,'.');
+ return str;
+};
+
+function aanmanagement( str) {
+"use strict";
+ var strnew = str.replace(/\b(a)\s([aeiou])/ig,'$1n $2');
+ strnew = strnew.replace(/\b(a)\s<I>([aeiou])/ig,'$1n <I>$2');
+ return strnew;
+};
+
+
+
+function generateEncounter(CultChoice) {
+"use strict";
+var EncounterTxt = "";
+var CultType = -1;
+var CultN;
+
+var CultGroup = ["Group","Cult","People","Slaves","Servants","Followers","Cabal","Friends","Children"];
+var CultAdjetive = ["Sacred","Holy","Blessed","Divine","Unconquered"];
+var CultSustantive = ["God","Servant"]
+
+var HereticCults = [
+["a heretic cult of Sigmar",["Church"],["True"],["Comet","Thruth","Sigmar"] ],
+["a heretic cult of Sigmar",["Church"],["True"],["Comet","Thruth","Sigmar"] ],
+["a heretic cult of Sigmar",["Church"],["True"],["Comet","Thruth","Sigmar"] ],
+["a heretic cult of Ulric",["Church","Pack"],["True","Savage","White"],["Wolf","Winter","Flame","Ulric"] ],
+["a heretic cult of Ulric",["Church","Pack"],["True","Savage","White"],["Wolf","Winter","Flame","Ulric"] ],
+["a heretic cult of Morr",["Mourners"],["Horned"],["Moor","Skull"]],
+["a heretic splint cult of Shallya",["Sisters"],["Healing"],["Shallya","Dove"]],
+["a heretic  cult of Taal",["Hunters","Sons"],["Horned"],["Taal","Stag"]],
+["a heretic cult of Rhya",["Children","Dauthers","Sisters"],["Harvest","Pregnant"],["Queen","Rhya"]]
+];
+var ChaosCults = ["a Chaos cult, followers of Khorne","a Chaos cult, followers of Slaanesh","a Chaos cult, followers of Tzeentch","a Chaos cult, followers of Nurgle"];
+var ChaosCults = ["a Chaos cult, followers of Khorne","a Chaos cult, followers of Slaanesh","a Chaos cult, followers of Tzeentch","a Chaos cult, followers of Nurgle"];
+var EvilCults = ["an evil cult following Khaine","an evil cult following Stormfels","an evil cult following the teachings of Nagash","an evil cult following Drachenfels","an evil cult following a Sylvanian Vampire"];
+var MundaneCults = ["a group moved by pure greed", "a group following deranged teachings"];
+
+var CultsAll = [HereticCults, ChaosCults, EvilCults, MundaneCults];
+
+function refreshDisplay () {
+    document.getElementById("CultB").innerHTML = EncounterTxt;
+}
+
+/*------ Start Rolling--------*/
+
+if  (CultChoice>0) {
+    CultN =  CultChoice;
+} else {
+    CultN =  Math.floor(Math.random() * CultsAll.length );
+}
+var SubCultN =  Math.floor(Math.random() * (CultsAll[CultN]).length );
+
+EncounterTxt = "The enemies are " + CultsAll[CultN][SubCultN];
+refreshDisplay ();
+return 1;
+}
+//]]>
+</script>
+</head>
+<body>
+
+<h1>Generate Enemy Cults and adversary groups</h1>
+<h2>WFRP 4th Edition Random Cult Generator</h2>
+<button type="button" onclick="generateEncounter(-1)">Generate Now!</button><br>
+<button type="button" onclick="generateEncounter(1)">Generate Heretic Cult!</button>
+<button type="button" onclick="generateEncounter(2)">Generate Chaos Cult!</button>
+<button type="button" onclick="generateEncounter(3)">Generate Evil Cult!</button>
+<button type="button" onclick="generateEncounter(4)">Generate Mundane Group!</button>
+<br>
+
+
+<p id="CultB"></p>
+
+
+<p id="Acknowledgements">Code: Francisco Mu&ntilde;oz 2018.
+<br>Skill advance selection and misc data: Jay Alexander Hafner 2018
+<br>Skill description: Ryan Graham 2018
+<br>Game: Games Worshop and Cubicle 7</p>
+
+</body>
+</html>
