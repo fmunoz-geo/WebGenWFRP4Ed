@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head><title>WFRP 4th Edition Random NPC</title>
+<style>
+td, th {
+  padding: 1px;
+  text-align: center;
+}
+</style>
 <script>
 //<![CDATA[
 function roll1d10(){
@@ -232,11 +238,17 @@ var TraitStartHalfling = ["Size(Small)","Night Vision"];
 var TraitStartElf = ["Night Vision"];
 var TraitStartGnome = ["Size(Small)","Night Vision"];
 
+
+
+
 var TraitStartAll = [TraitStartHuman,
  TraitStartDwarf,TraitStartHalfling,
  TraitStartElf,
  TraitStartGnome];
  
+var TraitsOptionalDwarf = ["Prejudice (Elves)","Animosity (Elves)"];
+var TraitsOptional = [ [], TraitsOptionalDwarf, [], [], [] ];
+
 var CareerAll =
 ["Merchant",
 "Soldier",
@@ -252,12 +264,24 @@ var CareerSkill = [
 ["Melee", "Endurance","Cool","Athletics","Dodge","Ranged"],
 ["Melee", "Perception","Intuition","Bribery","Gossip"],
 ["Lore (Any one)", "Research", "Lore (Any one)", "Gossip"],
-["Gossip", "Dodge", "Gamble", "Sleight of Hand","Entertain (Any one)","Play (Any one)"],
+["Charm", "Gossip", "Dodge", "Gamble", "Sleight of Hand","Entertain (Any one)","Play (Any one)"],
 ["Gossip", "Lore (Local)","Consume Alcohol","Melee (Brawling)"],
 ["Charm", "Consume Alcohol", "Gamble", "Intimidate", "Leadership", "Lore (Heraldry)", "Melee (Fencing)"],
 ["Stealh", "Melee", "Ranged","Intimidate", "Bribery"]
 ];
-
+/*
+var StatsName = ["WS"0,"BS"1,"S"2,"T"3,"AG"4,"I"5,"DEX"6,"INT"7,"WP"8,"FEL"9,"M","W"];
+*/
+var CareerSkilStats = [
+[9, 7, 9, 9],
+[0, 3, 8,4,4,1],
+[0, 5, 5, 9, 9],
+[7, 7, 7, 9],
+[9, 9, 4, 7, 6, 9, 6],
+[9, 7, 3,0],
+[9, 3, 7, 2, 9, 7, 0],
+[4, 0, 1, 2, 9]
+];
 var CareerSocial = ["Silver 3","Silver 1","Brass 4","Silver 1",
 "Brass 4","Brass 2","Gold 1","Brass 2"];
 
@@ -375,7 +399,7 @@ var Build = ["Slim","Trim","Average","Stocky","Corpulent"];
 
 
 function rollHeight (Base) {
- var roll = roll2d10();
+ var roll = roll2d10()-2;
  var height = Base+roll;
     var HeightTxt = Math.floor(height/12)+"'"+(height-Math.floor(height/12)*12)+"''";
  return HeightTxt;
@@ -558,22 +582,14 @@ StatsR[StatsR.length-1] = 0;
 StatsR[StatsR.length-2] = 0;
 
 
-SkillNames.push(CareerSkill[CareerN].splice(0,1));
-SkillValues.push(Math.floor(Math.random()*3+1)*5);
-
-if (Math.random()> 0.5) {
-   var randSkill = Math.floor(Math.random() * CareerSkill[CareerN].length );
-    SkillNames.push( CareerSkill[CareerN].splice(randSkill,1));
-    SkillValues.push(Math.floor(Math.random()*3+1)*5);
-    if (Math.random()> 0.5) {
-       var randSkill = Math.floor(Math.random() * CareerSkill[CareerN].length );
-      SkillNames.push( CareerSkill[CareerN].splice(randSkill,1));
-      SkillValues.push(Math.floor(Math.random()*2+1)*5);
-    };
-};
-SkillNames = parseSkillAny(SkillNames).slice(0);
 
 TraitNames = TraitStartAll[SpeciesN - 1];
+
+if ((Math.random()> 0.5) && ( TraitsOptional[SpeciesN - 1].length > 0))  {
+	var randTrait = Math.floor(Math.random() * TraitsOptional[SpeciesN - 1].length );
+    TraitNames.push(  TraitsOptional[SpeciesN - 1].splice(randTrait,1));
+};
+
 /*Zero, 1 or 2 extra Traits*/
 if (Math.random()> 0.5) {
     var randTrait = Math.floor(Math.random() * CareerTraits[CareerN].length );
@@ -586,6 +602,23 @@ if (Math.random()> 0.5) {
 
 StatsTraits = parseTrait2Stats(TraitNames);
 
+
+SkillNames.push(CareerSkill[CareerN].splice(0,1));
+SkillValues.push(Math.floor(Math.random()*3+1)*5 +  StatsR[CareerSkilStats[CareerN][0]] + StatsBase[CareerSkilStats[CareerN][0]] + StatsTraits[CareerSkilStats[CareerN][0]] );
+
+if (Math.random()> 0.5) {
+   var randSkill = Math.floor(Math.random() * CareerSkill[CareerN].length );
+    SkillNames.push( CareerSkill[CareerN].splice(randSkill,1));
+    SkillValues.push(Math.floor(Math.random()*3+1)*5 + StatsR[CareerSkilStats[CareerN][randSkill]] + StatsBase[CareerSkilStats[CareerN][randSkill]] + StatsTraits[CareerSkilStats[CareerN][randSkill]]);
+    if (Math.random()> 0.5) {
+       var randSkill = Math.floor(Math.random() * CareerSkill[CareerN].length );
+      SkillNames.push( CareerSkill[CareerN].splice(randSkill,1));
+      SkillValues.push(Math.floor(Math.random()*2+1)*5 + StatsR[CareerSkilStats[CareerN][randSkill]] + StatsBase[CareerSkilStats[CareerN][randSkill]] + StatsTraits[CareerSkilStats[CareerN][randSkill]]);
+    };
+};
+SkillNames = parseSkillAny(SkillNames).slice(0);
+
+/* StatsR[CareerSkilStats[CareerN][0]] + StatsBase[CareerSkilStats[CareerN][0]] + StatsTraits[CareerSkilStats[CareerN][0]];*/
 /*Parse Wounds*/
 if (StatsTraits[11]>0) {
     StatsTraits[11] = Math.floor((StatsR[3] + StatsBase[3] + StatsTraits[3])/10);
@@ -658,7 +691,7 @@ return 1;
 <body>
     <h1>Generate NPCs</h1>
     <h2>WFRP 4th Edition Random Simple NPCs</h2>
- <p>This is a simple NPC generator, it creates the kind on people you might meet in a tavern of the Old World. It uses the Traits mechanism and add a few relevant skills and trappings.<br>
+ <p>This is a simple NPC generator, it creates the kind on people you might meet in a <a href="https://pacomiscelaneousstuff.blogspot.com/2020/03/wfrp-inn-generator.html">tavern</a> of the Old World. It uses the Traits mechanism and add a few relevant skills and trappings.<br>
 If you need a more dangerous set you might check my <a href="https://pacomiscelaneousstuff.blogspot.com/2019/08/monster-generator.html">Monster Generator</a> to create Mutants, Orcs, Goblins or worse.<br>
 To have a more detailed Old Worlders you can use the list of my <a href="https://pacomiscelaneousstuff.blogspot.com/2018/09/generic-npc-stats-for-4th-edition.html">Generic NPCs stats for 4th edition</a>.<br>
 You can also create the loot carried by them using my <a href="https://pacomiscelaneousstuff.blogspot.com/2019/08/treasure-generator.html">Random Treasure Generator</a>.
@@ -696,7 +729,7 @@ You can also create the loot carried by them using my <a href="https://pacomisce
 <h3>Description</h3>
 <p id="descriptionB"></p>
 
-<p id="Acknowledgements">Code: Francisco Mu&ntilde;oz 2019.
+<p id="Acknowledgements"><a href="https://github.com/fmunoz-geo/WebGenWFRP4Ed">Code: Francisco Mu&ntilde;oz 2019-2020.</a>
 <br>Inspiration: <a href="http://www.windsofchaos.com/wp-content/uploads/encroachment/html/generator-random-treasure-01.html">Encroatchment of Chaos, Treasure Generator by Dave Graffam</a>.
 <br>Inspiration: <a href="http://orteil.dashnet.org/randomgen/?gen=https://pastebin.com/raw/JcxC8pMx">WFRP 4e Equipment Generator</a>.
 <br>Inspiration: <a href="http://www.grimnirstavern.com">Grimnir's Tavern, Random NPC Generator for WFRP 4e</a>.
