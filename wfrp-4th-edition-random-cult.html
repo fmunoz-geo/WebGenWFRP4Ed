@@ -62,27 +62,67 @@ var EncounterTxt = "";
 var CultType = -1;
 var CultN;
 
-var CultGroup = ["Group","Cult","People","Slaves","Servants","Followers","Cabal","Friends","Children"];
-var CultAdjetive = ["Sacred","Holy","Blessed","Divine","Unconquered"];
-var CultSustantive = ["God","Servant"]
+var CultGroup = ["Cult","Cult","Order","Order","Group","People","Slaves","Servants","Followers","Cabal","Friends","Children","Family","Brotherhood"];
+var CultAdjetive = ["Sacred","Holy","Glorious","Blessed","Divine","Unconquered"];
+var CultSustantive = ["God","Servant","Crown","Monarch"];
+var CultWeapons = ["improvised weapons","simple hand weapons"];
 
+var CultLeader = ["very charismatic leader","cunning leader","ruthless leader","council of three"];
+  
+var CultSpecial = ["who has the watch bribed", "loved by everyone","with links to the criminal world", "who uses an unique magic item","whose real identity is secret even to other members","who has possesion of books of forbidden texts"];
+  
+var CultSign = ["They all wear a pendant with a hidden sign","A piece of oddly coloured clothing is used by members","A hidden tatoo mark their alliance","A ritual scar hidden under their clothes","A secret handshake is used to recognice the members","A complex code of movements is used as grettings between members","They use secret code phrases between them","An entire secret language with hidden meaning is used in their comunications and ceremonies", "A secret code is sewn in their clothes, markings their rank and position in the cult"];
+  
+  
 var HereticCults = [
-["a heretic cult of Sigmar",["Church"],["True"],["Comet","Thruth","Sigmar"] ],
-["a heretic cult of Sigmar",["Church"],["True"],["Comet","Thruth","Sigmar"] ],
-["a heretic cult of Sigmar",["Church"],["True"],["Comet","Thruth","Sigmar"] ],
-["a heretic cult of Ulric",["Church","Pack"],["True","Savage","White"],["Wolf","Winter","Flame","Ulric"] ],
-["a heretic cult of Ulric",["Church","Pack"],["True","Savage","White"],["Wolf","Winter","Flame","Ulric"] ],
-["a heretic cult of Morr",["Mourners"],["Horned"],["Moor","Skull"]],
-["a heretic splint cult of Shallya",["Sisters"],["Healing"],["Shallya","Dove"]],
-["a heretic  cult of Taal",["Hunters","Sons"],["Horned"],["Taal","Stag"]],
-["a heretic cult of Rhya",["Children","Dauthers","Sisters"],["Harvest","Pregnant"],["Queen","Rhya"]]
+["a heretic cult of Sigmar",["Church","Congregation"],["True","Twin-Tailed"],["Comet","Thruth","Sigmar","Hammer","Emperor"], ["warhammers","hammers and shields","hammers and shields and heavily armoured","swords and pistols"], ["heretic fanatic", "misguided priest", "ambitious demagoge"], ["able to call witch hunters over the group enemies"],["They all wear a peculiar hammer ornament","They all wear a peculiar comet ornament"]],
+["a heretic cult of Sigmar",["Church","Congregation"],["True","Twin-Tailed"],["Comet","Thruth","Sigmar","Hammer","Emperor"], ["warhammers","hammers and shields","hammers and shields and heavily armoured","swords and pistols"], ["heretic fanatic", "misguided priest", "ambitious demagoge"], ["able to call witch hunters over the group enemies"],["They all wear a peculiar hammer ornament","They all wear a peculiar comet ornament"] ],
+["a heretic cult of Sigmar",["Church","Congregation"],["True","Twin-Tailed"],["Comet","Thruth","Sigmar","Hammer","Emperor"], ["warhammers","hammers and shields","hammers and shields and heavily armoured","swords and pistols"], ["heretic fanatic", "misguided priest", "ambitious demagoge"], ["able to call witch hunters over the group enemies"],["They all wear a peculiar hammer ornament","They all wear a peculiar comet ornament"] ],
+  
+["a heretic cult of Ulric",["Church","Pack"],["True","Savage","White"],["Wolf","Winter","Flame","Ulric"], ["swords and chain mail covered", "two handed swords","battle axes", "battle axes and chain mail covered","swords and wearing wolf pelts"] , ["heretic fanatic", "misguided priest", "ambitious demagoge"], ["able to control wolves"], ["They all wear a peculiar wolf ornament"] ],
+["a heretic cult of Ulric",["Church","Pack"],["True","Savage","White"],["Wolf","Winter","Flame","Ulric"], ["swords and chain mail covered", "two handed swords","battle axes", "battle axes and chain mail covered","swords and wearing wolf pelts"] , ["heretic fanatic", "misguided priest", "ambitious demagoge"], ["able to control wolves"], ["They all wear a peculiar wolf ornament"] ],
+  
+["a heretic cult of Morr",["Mourners","Church","Reapers","Dreamers","Congregation"],["Grim","Black","Dead","Unavoidable"],["Moor","Death","Messenger","Skull","Raven","Dream"], ["crossbows","scythes"], ["heretic fanatic", "misguided priest", "ambitious demagoge"], ["with power over dreams"], ["They all wear a peculiar raven ornament","They all wear a slightly distorted skull ornaments"]],
+["a heretic splint cult of Shallya",["Sisters","Congregation"], ["Merciful","Healing"],["Shallya","Dove","Peace","Healer","Goddess"], ["staves"], ["heretic fanatic", "misguided priest","ambitious demagoge"], ["able to heal or harm at will"], ["They all wear a peculiar dove ornament"]],
+["a heretic cult of Taal",["Hunters","Sons"],["Horned","Savage","Forest"],["Taal","Stag","Hunter","Arrow"],["bows"], ["heretic fanatic", "misguided priest"],["with power over wild animals"], ["They all wear a peculiar stag ornament","They all use deer horn as material for their weapons and clothes"]],
+["a heretic cult of Rhya",["Children","Daugthers","Sisters","Mothers"],["Harvest","Pregnant"],["Queen","Rhya","Mother","Goddess"],["scythes","syckles"], ["heretic fanatic", "misguided priest","ambitious demagoge"], ["with power over plants"],["They all wear a peculiar ear of wheat ornament","The members of the cult like to wear fresh flowers or other living plant ornaments"]]
 ];
-var ChaosCults = ["a Chaos cult, followers of Khorne","a Chaos cult, followers of Slaanesh","a Chaos cult, followers of Tzeentch","a Chaos cult, followers of Nurgle"];
-var ChaosCults = ["a Chaos cult, followers of Khorne","a Chaos cult, followers of Slaanesh","a Chaos cult, followers of Tzeentch","a Chaos cult, followers of Nurgle"];
-var EvilCults = ["an evil cult following Khaine","an evil cult following Stormfels","an evil cult following the teachings of Nagash","an evil cult following Drachenfels","an evil cult following a Sylvanian Vampire"];
-var MundaneCults = ["a group moved by pure greed", "a group following deranged teachings"];
+var ChaosCults = [
+["a Chaos cult, followers of Khorne",["Slaves","Killers","Pact","Warriors"],["Dark","Bronze","Bloody","Red","Burning","Hateful"],["Skull","Axe","Hound","Eight"], ["battle axes", "and armoured like a military unit"], ["bloodthirsty berserker", "hardened veteran", "hideous mutant","Chaos Warrior"], ["armed with a chaos weapon", "covered in in a steel and brass full armour"] , ["Scars cross the body of all members"]],
+  ["a Chaos cult, followers of Khorne",["Slaves","Killers","Pact","Warriors"],["Dark","Bronze","Bloody","Red","Burning","Hateful"],["Skull","Axe","Hound","Eight"], ["battle axes", "and armoured like a military unit"], ["bloodthirsty berserker", "hardened veteran", "hideous mutant","Chaos Warrior"], ["armed with a chaos weapon", "covered in in a steel and brass full armour"], ["Scars cross the body of all members"] ],
+ 
+["a Chaos cult, followers of Slaanesh",["Slaves","Lovers"],["Dark","Pink","Blue","Hedonic","Frantic","Singing"],["Prince","Lover","Phallus","Tongue","Crab","Pain","Pleasure","Six"], ["whips and chains","dueling swords"], ["inhumanly attractive leader","strange mutant","Chaos Warrior"], ["with disturbing magical powers"], ["Subtle unique makeup is used by all members"] ],
+["a Chaos cult, followers of Slaanesh",["Slaves","Lovers"],["Dark","Pink","Blue","Hedonic","Frantic","Singing"],
+["Prince","Lover","Phallus","Tongue","Crab","Pain","Pleasure","Six"], ["whips and chains","dueling swords"], ["inhumanly attractive leader","strange alluring mutant","Chaos Warrior"], ["with disturbing magical powers"],["Subtle unique makeup is used by all members"]],
+
+["a Chaos cult, followers of Tzeentch",["Losts","Students","Coven"],["Dammed","Purple","Pink","Blue","Red","Ebon","Rainbow"],["Change","Hand","Bird","Fire","Eye","Flame","Illusion","Talon","Nine"], ["staves", "cremonial daggers"], ["powerful chaos magus","hideous mutant","Chaos Warrior"], ["with demoniac servants","with disturbing magical powers"], ["A small minor mutation, usually hidden from view, could be found in all members"]],
+["a Chaos cult, followers of Tzeentch",["Losts","Students","Coven"],["Dammed","Purple","Pink","Blue","Red","Ebon","Rainbow"],["Change","Hand","Bird","Fire","Eye","Flame","Illusion","Talon","Nine"], ["staves", "cremonial daggers"], ["powerful chaos magus","hideous mutant","Chaos Warrior"], ["with demoniac servants","with disturbing magical powers"], ["A small minor mutation, usually hidden from view, could be found in all members"]],
+  
+["a Chaos cult, followers of Nurgle",["Losts","Contagion"],["Dammed","Green","Brown","Bloated","Putrid","Purulent"],["Uncle","Plague","Pox","Fly","Worm","Maggot","Seven"], ["rusty weapons"], ["hideous mutant","Chaos Warrior"],["whose touch spread <a href='https://pacomiscelaneousstuff.blogspot.com/2020/03/wfrp-4th-edition-random-disease.html'>disease</a>", "with disturbing magical powers"], ["A putrid pustule marrs the body of all members"]],
+["a Chaos cult, followers of Nurgle",["Losts","Contagion"],["Dammed","Green","Brown","Bloated","Putrid","Purulent"],["Uncle","Plague","Pox","Fly","Worm","Maggot","Seven"], ["rusty weapons"], ["hideous mutant","Chaos Warrior"],["whose touch spread <a href='https://pacomiscelaneousstuff.blogspot.com/2020/03/wfrp-4th-edition-random-disease.html'>disease</a>", "with disturbing magical powers"], ["A putrid pustule marrs the body of all members"]],
+  
+["a Chaos cult, followers of the Undivided Chaos",["Horde"],["United"],["Pantheon","Destruction"], ["weapons of all kinds"], ["hideous mutant","Chaos Warrior"],["with beastmen servants", "with disturbing magical powers"], ["Thay all have a eigth arrow sign hidden in their possesion"]],
+ ["a Chaos cult, followers of Malice",["Horde"],["Outcast","Renegade","Black and White"],["Skull"], ["strange weapons"], ["hideous mutant","Chaos Warrior"],["with beastmen servants", "with disturbing magical powers"], ["The skin of the members seems to lack colours"]],
+];
+
+var EvilCults = [
+["an evil cult following Khaine",["Circle","Cell"],["Hidden","Poisoned"],["Dagger","Skeleton","Scorpion","Brother"],["poisoned daggers","poisoned blowguns"],["misterious assassin","dark priest"], ["master of disguise","skilled in necromancy","expert on poisons, drugs and venoms","who controls a host of skeletons"], ["All the knifes and daggers owned by the members have a peculiar curved shape"]],
+["an evil cult following Stormfels",["Parish", "Crew"],["Hungry","Deep","Sunken","Underwater"],["Storm","Shark","Lightning","Trident"], ["hooks","tridents"],["fanatic cleric", "pirate captain"], ["who control the storms","disguised as a cleric of Manann"], ["They all wear a peculiar shark tooth ornaments"] ],
+["an evil cult following the teachings of Nagash",[],["Ancient","Undying","Khemrian"], ["Skull","Skeleton","Usurper"], ["Khemrian swords","curved daggers"], ["powerful necromancer","undead spirit","ancient liche"], ["who controls a host of skeletons","who uses ghots as servants"], ["A scarab motiff is common in all the members."]],
+["an evil cult following Drachenfels",[],["Iron"],["Mask","Great Enchanter"],[],["dark magician"],["skilled in necromancy","able to summon elemental creatures"],[]],
+["an evil cult following a Sylvanian Vampire",["Spawns"],["Thirsty","Red","Crimson"],["Blood","Fangs"],[],["ancient vampire","charming vampire","faithful strigany servant"], ["skilled in necromancy","who controls a large group of zombies"],["Faint bite marks could be found in the rank members"]]
+];
+var MundaneCults = [
+["a group moved by pure greed",["Fellowship","Society","Guild","Company","Syndicate"],["Golden","Silver","Bountiful","Abundant"],["Profit","Purse"],["gilded daggers","ornamental swords"], ["rich merchant","powerful politician"],["who has a group of ruthless mercenaries hired","with much influence over a lot of professional guilds","rich beyond measure"], ["A gold ring with a hidden sigil is used by the members"]], 
+["a group following deranged teachings",["Society"],["Hidden","Secret"],["Mistery","Idol","Star","Toad","Fire","Light","Oracle"],["impractical ceremony weapons"],["crazy seer", "bumbling idiot"],["with too much sheer luck","plagued by strange dreams"], []],
+["a group following an unlicensed mage",["Cabal","School","Coven","Council"],["Enligthed","Magical"],["Secret","Eye","Dhar","Circle","Light"],["staves"],["dark mage","powerful pyromancer","powerful astromancer","powerful alchemist"],["with access to a few magic items", "who taught magic to several members"], []]
+];
 
 var CultsAll = [HereticCults, ChaosCults, EvilCults, MundaneCults];
+
+var CultSize = [ "a small group just less than half a dozen members","a medium sized group with "+ (roll1d10()+5) + " members", 
+"a large group with "+ (roll2d10()+12) + " members", "a very large group with "+ (rollXd10(4) +20) + " members"];
+
 
 function refreshDisplay () {
     document.getElementById("CultB").innerHTML = EncounterTxt;
@@ -90,14 +130,41 @@ function refreshDisplay () {
 
 /*------ Start Rolling--------*/
 
-if  (CultChoice>0) {
+if  (CultChoice>-1) {
     CultN =  CultChoice;
 } else {
     CultN =  Math.floor(Math.random() * CultsAll.length );
 }
 var SubCultN =  Math.floor(Math.random() * (CultsAll[CultN]).length );
+var CultGroupFinal = CultGroup.concat( CultsAll[CultN][SubCultN][1] );
 
-EncounterTxt = "The enemies are " + CultsAll[CultN][SubCultN];
+var CultGroupN = Math.floor(Math.random() * CultGroupFinal.length )
+var CultAdjetiveFinal = CultAdjetive.concat( CultsAll[CultN][SubCultN][2] );
+
+var CultAdjetiveN = Math.floor(Math.random() * CultAdjetiveFinal.length )
+var CultSustantiveFinal = CultSustantive.concat( CultsAll[CultN][SubCultN][3] );
+
+var CultSustantiveN = Math.floor(Math.random() * CultSustantiveFinal.length )
+var CultSizeN = Math.floor(Math.random() * CultSize.length );
+
+var CultWeaponsFinal = CultWeapons.concat(CultsAll[CultN][SubCultN][4] );
+var CultWeaponsN = Math.floor(Math.random() * CultWeaponsFinal.length );
+
+var CultLeaderFinal = CultLeader.concat(CultsAll[CultN][SubCultN][5] );
+var CultLeaderN = Math.floor(Math.random() * CultLeaderFinal.length );
+
+var CultSpecialFinal = CultSpecial.concat(CultsAll[CultN][SubCultN][6] );
+var CultSpecialN = Math.floor(Math.random() * CultSpecialFinal.length );
+
+var CultSignFinal = CultSign.concat(CultsAll[CultN][SubCultN][7] );
+var CultSignN = Math.floor(Math.random() * CultSignFinal.length );
+
+var EncounterTxt = Math.random() < 0.4 ? "<b>The " + CultAdjetiveFinal[CultAdjetiveN] + " "+ CultGroupFinal[CultGroupN] + " of the " + CultSustantiveFinal[CultSustantiveN]  + "</b><br>":  "<b>The " + CultGroupFinal[CultGroupN] + " of the " + CultAdjetiveFinal[CultAdjetiveN] + " " + CultSustantiveFinal[CultSustantiveN]  + "</b><br>";
+
+EncounterTxt = EncounterTxt + "It is " + CultsAll[CultN][SubCultN][0]+".<br>";
+EncounterTxt = EncounterTxt + "It is " + CultSize[CultSizeN] + " armed mostly with " + CultWeaponsFinal[CultWeaponsN]+ ".<br>";
+EncounterTxt = EncounterTxt + "It is lead by a " + CultLeaderFinal[CultLeaderN]+ " " + CultSpecialFinal[CultSpecialN] + ".<br>";
+EncounterTxt = EncounterTxt + CultSignFinal[CultSignN] + ".<br>";
 refreshDisplay ();
 return 1;
 }
@@ -109,19 +176,20 @@ return 1;
 <h1>Generate Enemy Cults and adversary groups</h1>
 <h2>WFRP 4th Edition Random Cult Generator</h2>
 <button type="button" onclick="generateEncounter(-1)">Generate Now!</button><br>
-<button type="button" onclick="generateEncounter(1)">Generate Heretic Cult!</button>
-<button type="button" onclick="generateEncounter(2)">Generate Chaos Cult!</button>
-<button type="button" onclick="generateEncounter(3)">Generate Evil Cult!</button>
-<button type="button" onclick="generateEncounter(4)">Generate Mundane Group!</button>
+<button type="button" onclick="generateEncounter(0)">Generate Heretic Cult!</button>
+<button type="button" onclick="generateEncounter(1)">Generate Chaos Cult!</button>
+<button type="button" onclick="generateEncounter(2)">Generate Evil Cult!</button>
+<button type="button" onclick="generateEncounter(3)">Generate Mundane Group!</button>
 <br>
 
 
-<p id="CultB"></p>
+<p id="CultB">Click one of the buttons above to generate your Cult.</p>
 
-
-<p id="Acknowledgements">Code: Francisco Mu&ntilde;oz 2018.
-<br>Skill advance selection and misc data: Jay Alexander Hafner 2018
-<br>Skill description: Ryan Graham 2018
+<p> If you need Chaos Warriors or Mutants for your cults go to my <a href="https://pacomiscelaneousstuff.blogspot.com/2019/08/monster-generator.html">WFRP4 Monster Generator</a>.<br>
+If you need just basic cultits or corrupted watchmen, you can get them with my <a href="https://pacomiscelaneousstuff.blogspot.com/2019/08/npc-generator.html">WFRP4 NPC Generator</a>.
+</p>
+    <p id="Acknowledgements"><a href="https://github.com/fmunoz-geo/WebGenWFRP4Ed">Code: Francisco Mu&ntilde;oz 2020.</a>
+<br>Inspiration: <a href="http://inplacesdeep.blogspot.com/2011/11/random-cult-generator.html">In Places Deep: Random Cult Generator</a>
 <br>Game: Games Worshop and Cubicle 7</p>
 
 </body>
