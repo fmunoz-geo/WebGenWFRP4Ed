@@ -40,8 +40,8 @@ var Name = "";
 var NameTxt = "";
 var SpeciesTxt ="";
 var SpeciesN;
-var SpeciesAll = ["Mutant","Chaos Warrior","Orc","Goblin","Skaven","Skaven Stormvermin","Beastman Gor","Beastman Ungor"];
-var SpeciesSex= [ 1,        1,               0, 0,         0, 0, 0, 0];
+var SpeciesAll = ["Mutant","Chaos Warrior","Orc","Goblin","Skaven","Skaven Stormvermin","Beastman Gor","Beastman Ungor","Fimir","Troll"];
+var SpeciesSex= [ 1,        1,               0, 0,         0, 0, 0, 0, 0];
 var Sex = 0;
 
 
@@ -56,10 +56,12 @@ var StatsSkaven = [20,20,20,20,30,25,20,20,10,10,5,0];
 var StatsSkavenLarge = [35,25,25,25,45,40,20,20,15,10,5,0];
 var StatsBeastman =      [35,20,25,35,20,25,15,15,20,15,4,0];
 var StatsBeastmanSmall = [25,20,20,25,20,25,15,15,25,15,4,0];
+var StatsFimir =      [25,10,35,30,20,10,10,20,20,5,6,0];
+var StatsTroll =      [20,5,35,35,0,5,5,0,10,-5,6,0];
 var StatsSkeleton = [15,15,20,20,10,10,15,-10,-10,-10,4,0];
 
 
-var StatsAll = [StatsMutant,StatsChaosWarrior, StatsOrc, StatsGoblin, StatsSkaven, StatsSkavenLarge, StatsBeastman, StatsBeastmanSmall];
+var StatsAll = [StatsMutant,StatsChaosWarrior, StatsOrc, StatsGoblin, StatsSkaven, StatsSkavenLarge, StatsBeastman, StatsBeastmanSmall, StatsFimir, StatsTroll];
 var StatsAdvance = [0,0,0,0,0,0,0,0,0,0,0,0];
 var StatsBase =    [0,0,0,0,0,0,0,0,0,0,0,0];
 var StatsTraits  = [0,0,0,0,0,0,0,0,0,0,0,0];
@@ -74,21 +76,26 @@ var TraitStartSkaven = ["Armour 2","Infected","Night Vision","Weapon SB+4"];
 var TraitStartSkavenLarge = ["Armour 4","Infected","Night Vision","Weapon SB+5"];
 var TraitStartBeastman = ["Arboreal","Armour 1", "Fury", "Horns SB+3", "Night Vision","Weapon SB+4"];
 var TraitStartBeastmanSmall = ["Arboreal","Night Vision","Weapon SB+3"];
+var TraitStartFimir = ["Armour 2","Cool-blooded","Night Vision","Size (Large)","Swamp-strider","Weapon SB+4"];
+var TraitStartTroll = ["Armour 2","Bite SB+3","Die Hard","Infected","Regenerate","Size (Large)","Stupid","Vomit","Weapon SB+4"];
 
 var TraitStartAll = [TraitStartMutant,TraitStartChaosWarrior,
  TraitStartOrc,TraitStartGoblin,
  TraitStartSkaven,TraitStartSkavenLarge,
- TraitStartBeastman,TraitStartBeastmanSmall];
+ TraitStartBeastman,TraitStartBeastmanSmall,
+ TraitStartFimir,TraitStartTroll];
 
 var SpeciesOptionalTrait = [
-["Mutation (Any one)","Mutation (Any one)","Arboreal","Armour 2","Bite SB+2","Horns SB+3","Corrosive Blood","Constrictor","Flight 5","Painless","Fury","Rear","Regenerate","Tail Attack SB+2",(Math.floor(roll1d10()/3)+1)+" Tentacles SB+1","Magical","Spellcaster (Chaos)","Infected", "Infestation"],
+["Mutation (Any one)","Mutation (Any one)","Mutation (Any one)","Arboreal","Armour 2","Bite SB+2","Horns SB+3","Corrosive Blood","Constrictor","Flight 5","Painless","Fury","Rear","Regenerate","Tail Attack SB+2",(Math.floor(roll1d10()/3)+1)+" Tentacles SB+1","Magical","Spellcaster (Chaos)","Infected", "Infestation"],
 ["Belligerent","Disease","Distracting","Frenzy","Mental Corruption (Any one)","Mutation (Any one)","Mutation (Any one)","Spellcaster (Chaos)"],
 ["Painless","Size(Large)","Ranged +9 (50)"],
 ["Arboreal","Hatred (Dwarfs)","Ranged SB+3 (50)", "Venom"],
 ["Disease (Packer's Pox)","Mutation (Any one)","Skittish","Stealthy","Tracker"],
 ["Disease (Packer's Pox)","Mutation (Any one)","Tough","Tracker"],
-["Corruption (Minor)","Disease (Packer's Pox)","Infected", "Infestation","Mutation (Any one)","Size(Large)","Spellcaster(Beasts)"],
-["Armour 1","Corruption (Minor)","Disease (Packer's Pox)","Infected", "Infestation","Mutation (Any one)","Ranged SB+3 (25)","Size(Small)"]
+["Corruption (Minor)","Disease (Packer's Pox)","Infected", "Infestation","Mutation (Any one)","Size(Large)","Spellcaster (Beasts)"],
+["Armour 1","Corruption (Minor)","Disease (Packer's Pox)","Infected", "Infestation","Mutation (Any one)","Ranged SB+3 (25)","Size(Small)"],
+["Tail SB+3","Spellcaster (Daemonology)"],
+["Aquatic","Bestial","Frenzy","Hungry","Infestation","Magic Resistance","Mutation (Any one)","Night Vision","Painless","Stealth","Swamp-strider"]
 ];
 
 var CareerAll =
@@ -113,6 +120,76 @@ var AnyTraits = [
 
 var CareerN;
 var CareerName;
+
+
+var SkillTxt ="";
+var SkillStart;
+var SkillNames = [];
+var SkillValues = [];
+var SkillStats = [];
+
+var SkillsNPCKnight = [
+[1, "Athletics",2],
+[1, "Melee (Basic)", 0],
+[1, "Melee (Cavalry)",0],
+[1, "Ride",6],
+[2, "Cool",8],
+[2, "Dodge",4],
+[2, "Endurance",3],
+[2, "Intimidate",4],
+[3, "Leadership",9],
+[3, "Lore (Warfare)",7]
+];
+
+
+var SkillsNPCGuard = [
+[1, "Consume Alcohol", 3],
+[1, "Endurance", 2],
+[1, "Intuition", 6],
+[1, "Melee (Basic)", 0],
+[1, "Perception", 5],
+[2, "Athletics", 2],
+[2, "Cool", 8],
+[2, "Dodge", 4],
+[2, "Intimidate", 4],
+[3, "Melee (Two-handed)", 0]
+];
+
+
+var SkillsNPCSoldier = [
+[1, "Athletics",1],
+[1, "Endurance",2],
+[1, "Cool",8],
+[1, "Dodge",4],
+[1, "Melee (Basic)", 0],
+[2, "Melee (Parry)", 0],
+[2, "Ranged",1],
+[2, "Outdoor Survival",7],
+[2, "Intimidate",4],
+[3, "Leadership",9],
+[3, "Perception",5]
+];
+
+var SkillsNPCOutlaw = [
+[1, "Athletics",1],
+[1, "Melee (Basic)", 0],
+[1, "Cool",8],
+[1, "Intimidate", 4],
+[1, "Climb", 6],
+[2, "Dodge",4],
+[2, "Stealth", 6],
+[3, "Intuition", 6],
+[3, "Leadership",9]
+];
+
+//[StatsMutant,StatsChaosWarrior, StatsOrc, StatsGoblin, StatsSkaven, StatsSkavenLarge, StatsBeastman, StatsBeastmanSmall];
+var SkillsAll = [
+ [SkillsNPCSoldier,SkillsNPCGuard,SkillsNPCOutlaw], [SkillsNPCSoldier,SkillsNPCGuard,SkillsNPCKnight],
+ [SkillsNPCSoldier,SkillsNPCGuard,SkillsNPCOutlaw], [SkillsNPCSoldier,SkillsNPCGuard,SkillsNPCOutlaw],
+ [SkillsNPCSoldier,SkillsNPCGuard,SkillsNPCOutlaw], [SkillsNPCSoldier,SkillsNPCGuard,SkillsNPCOutlaw],
+ [SkillsNPCSoldier,SkillsNPCGuard,SkillsNPCOutlaw], [SkillsNPCSoldier,SkillsNPCGuard,SkillsNPCOutlaw],
+ [SkillsNPCSoldier, SkillsNPCGuard], [SkillsNPCSoldier, SkillsNPCGuard,SkillsNPCOutlaw]
+];
 
 
 var SexAll = ["Male","Female",""];
@@ -277,6 +354,28 @@ function parseTrait2Stats (TraitArray) {
     return stat;
 }
 
+function parseTrait2Skills (TraitArray) {
+    var x;
+    /* var StatsName = [0"WS",1"BS",2"S",3"T",4"AG",5"I",6"DEX",7"INT",8"WP",9"FEL",10 "M",11 "W"]; */
+ /* [1, "Athletics",2],*/
+    var skills = [];
+    for (x in TraitArray) {
+        console.log(TraitArray[x]); 
+        console.log(x); 
+        switch (TraitArray[x]) {
+            case "Spellcaster (Daemonology)":
+            case "Spellcaster  (Chaos)":
+            case "Spellcaster  (Beasts)":
+                skills.push([1, "Language (Magick)",7]);
+                skills.push([1, "Channeling",8]);
+                break;
+            default:
+        }
+    }
+    return skills;
+}
+
+
 function parseSBDamage (StringsArray, SB) {
     var x;
  for (x in StringsArray) {
@@ -313,30 +412,18 @@ function refreshCharacterDisplay () {
     document.getElementById("nameB").innerHTML = NameTxt;
     document.getElementById("speciessexcarredB").innerHTML = SpeciesTxt + " " + CareerName;
     document.getElementById("statsB").innerHTML = StatsTxt;
+    document.getElementById("skillsB").innerHTML = SkillTxt;
     document.getElementById("traitsB").innerHTML = TraitTxt;
-    document.getElementById("trappingsB").innerHTML = "";
+    //document.getElementById("trappingsB").innerHTML = "";
 }
 
 /*------ Start Rolling--------*/
 
-var SpeciesRoll = roll1d100();
-
 if  (SpeciesChoice>0) {
-    SpeciesN = SpeciesChoice;
+    SpeciesN =  SpeciesChoice;
 } else {
- if (SpeciesRoll <= 89) {
-   SpeciesN = 1; /*Human*/
- } else if (SpeciesRoll <= 90) {
-   SpeciesN = 5; /*Beastman*/
- } else if (SpeciesRoll <= 95) {
-   SpeciesN = 2;
- } else if (SpeciesRoll <= 98) {
-   SpeciesN = 3;
- } else {
-   SpeciesN = 4; /*Skaven*/
- }
+    SpeciesN =  Math.floor(Math.random() * SpeciesAll.length );
 }
-
 
 SpeciesTxt = SpeciesAll[ SpeciesN - 1 ];
 Sex = Math.floor(Math.random() * 2);
@@ -410,7 +497,20 @@ for (i in TraitNames) {
 
 TraitNames = parseSBDamage (TraitNames, Math.floor((StatsR[2] + StatsBase[2] + StatsTraits[2])/10));
 
-
+if (document.getElementById("addSkills").checked == true) {
+ var SkillsSpecieBase = SkillsAll[SpeciesN-1][ Math.floor( Math.random() * ( SkillsAll[SpeciesN-1].length - 1 ) ) ];
+ /*var SkillNames = [];
+ var SkillValues = []; SkillStats*/
+ var extraSkills = parseTrait2Skills(TraitNames);
+ var SkillsSpecie = SkillsSpecieBase.concat(extraSkills);
+ for (i in SkillsSpecie) {
+  if (SkillsSpecie[i][0] <= (3 - CareerN)) {
+    SkillNames.push(SkillsSpecie[i][1]);
+    SkillValues.push(5 * ( (3 - CareerN) * 2 - SkillsSpecie[i][0]));
+    SkillStats.push( StatsR[SkillsSpecie[i][2]] + StatsBase[SkillsSpecie[i][2]] + StatsTraits[SkillsSpecie[i][2]] );
+  }
+ }
+}
 
 
 StatsTxt = "<table><tr>";
@@ -430,6 +530,11 @@ for (i = 0; i < TraitNames.length ; i += 1) {
      TraitTxt += "<span title = '" + MouseOverTxt + "'>" + TraitNames[i] + "</span>; ";
 }
 
+for (i = 0; i < SkillNames.length ; i += 1) {
+    var MouseOverTxt = ""; /*getMouseOverText (SkillNames[i],mouseoverSkills);*/
+    SkillTxt += "<span title = '" + MouseOverTxt + "'>" + SkillNames[i] + ":" + (SkillValues[i] + SkillStats[i] )+ "</span>; ";
+}
+
 refreshCharacterDisplay ();
 
 return 1;
@@ -441,7 +546,7 @@ return 1;
 <body>
     <h1>Generate Monsters</h1>
  <p>This is a simple Monster generator, it creates foes found in the dark and hidden reaches of the Old World: Mutants, Orcs, Goblins or worse. It uses the Traits mechanism and and also Mutations.<br>
-If you need people you might meet in a tavern check my <a href="https://pacomiscelaneousstuff.blogspot.com/2019/08/npc-generator.html">NPC Generator</a> to create Merchants, Scholar, Soldiers and similar citizens.<br>
+If you need people you might meet in a <a href="https://pacomiscelaneousstuff.blogspot.com/2020/03/wfrp-inn-generator.html">tavern</a> check my <a href="https://pacomiscelaneousstuff.blogspot.com/2019/08/npc-generator.html">NPC Generator</a> to create Merchants, Scholar, Soldiers and similar citizens.<br>
 To have a more detailed Old Worlders you can use the list of my <a href="https://pacomiscelaneousstuff.blogspot.com/2018/09/generic-npc-stats-for-4th-edition.html">Generic NPCs stats for 4th edition</a>.<br>
 You can also create the loot carried by them using my <a href="https://pacomiscelaneousstuff.blogspot.com/2019/08/treasure-generator.html">Random Treasure Generator</a>.
 </p>
@@ -454,6 +559,8 @@ You can also create the loot carried by them using my <a href="https://pacomisce
  <button type="button" onclick="generateNPC(6)">Generate Large Skaven!</button><br>
  <button type="button" onclick="generateNPC(7)">Generate Beastman!</button>
  <button type="button" onclick="generateNPC(8)">Generate Ungor Beastman!</button><br>
+ <button type="button" onclick="generateNPC(9)">Generate Fimir!</button>
+ <button type="button" onclick="generateNPC(10)">Generate Troll!</button><br>
 <form name="CareerSelection">
   <input type="radio" name="Career" id="Career" value="0"> Boss
   <input type="radio" name="Career" id="Career" value="1"> Rank
@@ -463,6 +570,9 @@ You can also create the loot carried by them using my <a href="https://pacomisce
 <br>
 <table><tr><td>
 Roll Stats: </td><td><input type="checkbox" id="reRollCheck">
+</td></tr>
+<tr><td>
+Add Skills: </td><td><input type="checkbox" id="addSkills">
 </td></tr>
 </table>
 <h3><p id="nameB">.</p></h3>
@@ -475,7 +585,7 @@ Roll Stats: </td><td><input type="checkbox" id="reRollCheck">
 <h3>Traits</h3>
 <p id="traitsB"></p>
 
-<p id="Acknowledgements">Code: Francisco Mu&ntilde;oz 2019.
+<p id="Acknowledgements"><a href="https://github.com/fmunoz-geo/WebGenWFRP4Ed">Code: Francisco Mu&ntilde;oz 2019-2020.</a>
 <br>Inspiration: <a href="http://www.windsofchaos.com/wp-content/uploads/encroachment/html/generator-random-treasure-01.html">Encroatchment of Chaos, Treasure Generator by Dave Graffam</a>.
 <br>Inspiration: <a href="http://orteil.dashnet.org/randomgen/?gen=https://pastebin.com/raw/JcxC8pMx">WFRP 4e Equipment Generator</a>.
 <br>Inspiration: <a href="http://www.grimnirstavern.com">Grimnir's Tavern, Random NPC Generator for WFRP 4e</a>.
