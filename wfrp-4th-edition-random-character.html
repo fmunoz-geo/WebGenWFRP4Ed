@@ -39,6 +39,30 @@ function randPick(myArray) {
     var i = Math.floor(Math.random() * l);
     return myArray[i];
 }
+function createPDF () {
+	var sTable = document.  getElementById ('characterPrint').innerHTML;
+
+	var style = "<style>";
+	style = style + "table {width: 100%;font: 17px Calibri;}";
+	style = style + "table, th, td {border: solid 1px #DDD; border-collapse: collapse;";
+	style = style + "padding: 2px 3px;text-align: center;}";
+	style = style + "</style>";
+
+	// CREATE A WINDOW OBJECT.
+	var win = window.  open ('', '', 'height=700,width=700');
+
+	win.document.write('<html><head>');
+	win.document.write('<title>Profile</title>');  // <title> FOR PDF HEADER.
+	win.document.write(style);  // ADD STYLE INSIDE THE HEAD TAG.
+	win.document.write('</head>');
+	win.document.write('<body>');
+	win.document.write(sTable);  // THE TABLE CONTENTS INSIDE THE BODY TAG.
+	win.document.write('</body></html>');
+
+	win.document.  close ();  // CLOSE THE CURRENT WINDOW.
+
+	win.  print ();  // PRINT THE CONTENTS.
+}
 
 function generateChar(SpeciesChoice) {
 "use strict";
@@ -528,7 +552,7 @@ var CareerSkill = [
 ["Consume Alcohol","Cool","Endurance","Language (Classical)","Lore (Science)","Perception","Ranged (Blackpowder)","Trade (Engineer)"],
 ["Consume Alcohol","Endurance","Haggle","Language (Classical)","Lore (Law)","Lore (Theology)","Perception","Research"],
 ["Art (Calligraphy)","Cool","Endurance","Entertain (Storyteller)","Gossip","Heal","Lore (Theology)","Pray"],
-["Bookish","Field Dressing","Read/Write","Strike to Stun"],
+["Bribery","Cool","Drive","Endurance","Gossip","Heal","Perception","Sleight of Hand"],
 ["Athletics","Cool","Endurance","Intuition","Lore (Theology)","Perception","Pray","Research"],
 ["Consume Alcohol","Entertain (Storytelling)","Gamble","Gossip","Haggle","Language (Classical)","Lore (Any one)","Research"],
 ["Channelling","Dodge","Intuition","Language (Magick)","Lore (Magic)","Melee (Basic)","Melee (Polearm)","Perception"],
@@ -1643,6 +1667,7 @@ Ask Reroll Career: </td><td><input type="checkbox" id="careerCheck">
 Ask Simple Choices:</td><td><input type="checkbox" id="choiceCheck">
 </td></tr>
 </table>
+<div id="characterPrint">
 <table><tr><td>
 <h3><span title='Your name you can change it later'>Name</span></h3>
 <p id="nameB">.</p>
@@ -1669,13 +1694,17 @@ Ask Simple Choices:</td><td><input type="checkbox" id="choiceCheck">
 <p id="talentsB"></p>
 <h3>Trappings</h3>
 <p id="trappingsB"></p>
+</div>
+<input type="button" value="Create PDF" 
+  id="btPrint" onclick ="createPDF()" />
+
 <p id="Links">
-To generate simpler NPCS like the ones you might meet in a <a href="https://pacomiscelaneousstuff.blogspot.com/2020/03/wfrp-inn-generator.html">tavern</a> check my <a href="https://pacomiscelaneousstuff.blogspot.com/2019/08/npc-generator.html">NPC Generator</a> to create Merchants, Scholar, Soldiers and similar citizens.<br>
+To generate simpler NPCS like the ones you might meet in a <a href="https://pacomiscelaneousstuff.blogspot.com/2020/03/wfrp-inn-generator.html">tavern</a> check my <a href="https://pacomiscelaneousstuff.blogspot.com/2019/08/npc-generator.html">NPC Generator</a> to create Merchants, Scholar, Soldiers and similar citizens that could be found in an <a href="https://pacomiscelaneousstuff.blogspot.com/2020/03/wfrp-inn-generator.html">inn</a> or belonging to a <a href="https://pacomiscelaneousstuff.blogspot.com/2020/09/wfrp-4th-edition-npc-cults.html">cult</a>.<br>
 If you need a more dangerous set you might check my <a href="https://pacomiscelaneousstuff.blogspot.com/2019/08/monster-generator.html">Monster Generator</a> to create Mutants, Orcs, Goblins or worse.<br>
 You can also create the loot carried by them using my <a href="https://pacomiscelaneousstuff.blogspot.com/2019/08/treasure-generator.html">Random Treasure Generator</a>.<br>
 To have a more detailed Old Worlders you can use the list of my <a href="https://pacomiscelaneousstuff.blogspot.com/2018/09/generic-npc-stats-for-4th-edition.html">Generic NPCs stats for 4th edition</a>.<br>
 </p>
-<p id="Acknowledgements">Code: Francisco Mu&ntilde;oz 2018.
+<p id="Acknowledgements"><a href="https://github.com/fmunoz-geo/WebGenWFRP4Ed">Code: Francisco Mu&ntilde;oz 2018-2020.</a>
 <br>Skill advance selection and misc data: Jay Alexander Hafner 2018
 <br>Skill description: Ryan Graham 2018
 <br>Core character creation: <a href="https://www.drivethrurpg.com/product/248284/Warhammer-Fantasy-Roleplay-Fourth-Edition-Rulebook?affiliate_id=91369">Warhammer Fantasy Roleplay Fourth Edition Rulebook</a>
