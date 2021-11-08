@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><title>WFRP 4th Edition Random Lost Monster</title>
+<style>
+td, th {
+  padding: 1px;
+  text-align: center;
+}
+</style>
+<script>
+//<![CDATA[
+function roll1d10(){
+"use strict";
+ return Math.floor(Math.random() * 10) + 1;
+}
+function roll2d10(){
+"use strict";
+ return Math.floor(Math.random() * 10) + Math.floor(Math.random() * 10) + 2;
+}
+function rollXd10(x){
+"use strict";
+    var j;
+    var roll= 0;
+    for (j = 0; j < x; j += 1) {
+        roll += roll1d10();
+    }
+    return roll;
+}
+function roll1d100(){
+"use strict";
+ return Math.floor(Math.random() * 100) + 1;
+}
+// ["WS","BS","S","T","I","AG","DEX","INT","WP","FEL","M","W"];
+const ST_WS = 0;
+const ST_BS = 1;
+const ST_S = 2;
+const ST_T = 3;
+const ST_I = 4;
+const ST_AG = 5;
+const ST_DEX = 6;
+const ST_INT = 7;
+const ST_WP = 8;
+const ST_FEL = 9;
+const ST_M = 10;
+const ST_W = 11;
+
+function generateNPC(SpeciesChoice) {
+"use strict";
+var i;
+var Name = "";
+var NameTxt = "";
+var Name = "";
+var NameTxt = "";
+var SpeciesTxt ="";
+var SpeciesN;
+var SpeciesAll = ["Menfish","Chaos Snakeman","Orc","Zoat"];
+var SpeciesSex= [ 0,        0,               0, 0,         0, 0, 0, 0, 0];
+var Sex = 0;
+
+
+var StatsTxt = "";
+var StatsName = ["WS","BS","S","T","I","AG","DEX","INT","WP","FEL","M","W"];
+var StatsR =      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0];
+var StatsMenfish = [20,10,10,10,20,15,20,15,20,5,4,0];
+var StatsSnakemen = [30,20,25,35,10,30,20,20,35,15,3,0];
+var StatsGargoyle =    [25,-10,35,35,20,5,10,10,10,-10,4,0];
+var StatsZoat = [45,15,40,40,40,15,35,35,35,30,7,0];
+
+
+var StatsAll = [StatsMenfish,StatsSnakemen, StatsGargoyle, StatsZoat];
+var StatsAdvance = [0,0,0,0,0,0,0,0,0,0,0,0];
+var StatsBase =    [0,0,0,0,0,0,0,0,0,0,0,0];
+var StatsTraits  = [0,0,0,0,0,0,0,0,0,0,0,0];
+
+var TraitTxt ="";
+var TraitNames = [];
+var TraitStartMenfish = ["Afraid (Fire, Sunlight)", "Amphibious", "Animosity (other species)", "Bite SB+2", "Cold-blooded", "Night Vision", "Swamp-strider", "Territorial", "Weapon SB+4"];
+var TraitStartSnakemen = ["Armour 1", "Cold-blooded", "Fast", "Night Vision", "Weapon SB+4"];
+var TraitStartGargoyle = ["Armour 3", "Dark Vision", "Hardy", "Immunity to Psychology", "Magical", "Territorial (one building or small area)","Weapon SB+4"];
+var TraitStartZoat = ["Arboreal", "Armour 3 (body/hindquarters, Armour 1 (elsewhere)", "Night Vision", "Size (Large)", "Stride", "Tracker", "Weapon SB+6"];
+
+
+var TraitStartAll = [TraitStartMenfish,TraitStartSnakemen,
+ TraitStartGargoyle,TraitStartZoat];
+
+var SpeciesOptionalTrait = [
+["Armour 1", "Hatred (other species)", "Ranged +6 (6)", "Stealthy"],
+["Armour 3 – 4)", "Bite SB+2", "Constrictor", "Corruption (Minor)", "Dark Vision", "Mutation (Any one)", "Ranged +7 (100)", "Size (Large)", "Spellcaster (Any one)", "Tail SB+2", "Venom (Any one)"],
+["2 Claws SB+4", "Die Hard", "Flight 60", "Horns SB+2", "Size (Any one)", "Magic Resistance", "Ranged +8 (12)", "Tail SB+2", "Unstable"],
+["Spellcaster (Beasts)","Swamp-strider","Ward (10)"]
+];
+
+var CareerAll =
+["Boss",
+"Rank",
+"Underdog"];
+
+var CareerTraits = [
+["Brute","Clever","Cunning","Fast","Leader","Elite","Champion","Hardy","Big"],
+["Big","Brute","Cunning","Fast","Hardy","Tough","Fast","Hardy"],
+["Afraid (Any one)","Brute","Cunning","Fast","Skittish","Stupid","Animosity (Any one)"]
+];
+
+var AnyTraits = [
+ ["Mutation (Any one)","Mutation (Animalistic Legs)","Mutation (Corpulent)","Mutation (Distended Digits)","Mutation (Emaciated)","Mutation (Enormous Eye)","Mutation (Extra Legs Joins)","Mutation (Extra Mouth)","Mutation (Glowing Skin)","Mutation (Inhuman Beauty)","Mutation (Inverted Face)","Mutation (Iron Skin)", "Mutation (Lolling Tongue)","Mutation (Patchy Feathers)", "Mutation (Short Legs)", "Mutation (Thorny Scales)", "Mutation (Weeping Pus)","Mutation (Whiskered Snout)",
+ /*From tome of corruption*/
+ "Mutation (Albino)", "Mutation (Boils)"],
+  ["Afraid (Any one)","Afraid (Fire)","Afraid (Magic)","Afraid (Guns)"],
+  ["Animosity (Any one)","Animosity (Humans)","Animosity (Dwarfs)","Animosity (Elfs)","Animosity (Halflings)","Animosity (Gnomes)"],
+  ["Mental Corruption (Any one)","Mental Corruption (Awful Cravings)","Mental Corruption (Beast Within)","Mental Corruption (Chaotic Dreams)","Mental Corruption (Crawling Skin)","Mental Corruption (Erratic Fantasist)","Mental Corruption (Fearfull Concern)","Mental Corruption (Hateful Impulses)","Mental Corruption (Hollow Heart)","Mental Corruption (Jeallous Thoughts)","Mental Corruption (Lonely Spirit)","Mental Corruption (Mental Blocks)","Mental Corruption (Profane Urgency)","Mental Corruption (Shaky Morale)","Mental Corruption (Suspicious Mind)","Mental Corruption (Thrill Hunter)","Mental Corruption (Tortured Visions)",           "Mental Corruption (Totally Unhinged)","Mental Corruption (Unending Malice)","Mental Corruption (Unholy Rage)","Mental Corruption (Worried Jitters)"],
+  ["Spellcaster (Any one)","Spellcaster (Daemonology)","Spellcaster (Necromancy)","Spellcaster (Fire)","Spellcaster (Heavens)","Spellcaster (Metal)","Spellcaster (Beasts)","Spellcaster (Life)","Spellcaster (Light)","Spellcaster (Death)","Spellcaster (Shadows)"],
+  ["Venom (Any one)","Venom (Easy)","Venom (Challenging)","Venom (Hard)","Venom (Very Hard)"],
+  ["Size (Any one)","Size (Small)","Size (Large)","Size (Enormous)"]
+];
+
+var CareerN;
+var CareerName;
+
+
+var SkillTxt ="";
+var SkillStart;
+var SkillNames = [];
+var SkillValues = [];
+var SkillStats = [];
+
+var SkillsNPCKnight = [
+[1, "Athletics", ST_AG],
+[1, "Melee (Basic)", ST_WS],
+[1, "Melee (Cavalry)",ST_WS],
+[1, "Ride",ST_AG],
+[2, "Cool",ST_WP],
+[2, "Dodge",ST_AG],
+[2, "Endurance",ST_T],
+[2, "Intimidate",ST_S],
+[3, "Leadership",ST_FEL],
+[3, "Lore (Warfare)",ST_INT]
+];
+
+
+var SkillsNPCGuard = [
+[1, "Consume Alcohol", ST_T],
+[1, "Endurance", ST_T],
+[1, "Intuition", ST_I],
+[1, "Melee (Basic)", ST_WS],
+[1, "Perception", ST_I],
+[2, "Athletics", ST_AG],
+[2, "Cool", ST_WP],
+[2, "Dodge", ST_AG],
+[2, "Intimidate", ST_S],
+[3, "Melee (Two-handed)", ST_WS]
+];
+
+
+var SkillsNPCSoldier = [
+[1, "Athletics",ST_AG],
+[1, "Endurance",ST_T],
+[1, "Cool",ST_WP],
+[1, "Dodge",ST_AG],
+[1, "Melee (Basic)", ST_WS],
+[2, "Melee (Parry)", ST_WS],
+[2, "Ranged",ST_BS],
+[2, "Outdoor Survival", ST_INT],
+[2, "Intimidate",ST_S],
+[3, "Leadership",ST_FEL],
+[3, "Perception",ST_I]
+];
+
+var SkillsNPCOutlaw = [
+[1, "Athletics", ST_AG],
+[1, "Melee (Basic)", ST_WS],
+[1, "Cool",ST_WP],
+[1, "Intimidate", ST_S],
+[1, "Climb", ST_S],
+[2, "Dodge", ST_AG],
+[2, "Stealth", ST_AG],
+[2, "Track", ST_I]
+[3, "Intuition", ST_I],
+[3, "Leadership",ST_FEL]
+];
+
+//[StatsMutant,StatsChaosWarrior, StatsOrc, StatsGoblin, StatsSkaven, StatsSkavenLarge, StatsBeastman, StatsBeastmanSmall];
+var SkillsAll = [
+ [SkillsNPCSoldier,SkillsNPCGuard,SkillsNPCOutlaw], [SkillsNPCSoldier,SkillsNPCGuard,SkillsNPCOutlaw],
+ [SkillsNPCSoldier,SkillsNPCGuard,SkillsNPCOutlaw], [SkillsNPCSoldier,SkillsNPCGuard,SkillsNPCOutlaw]
+];
+
+
+var SexAll = ["Male","Female",""];
+var SexTxt;
+
+function parseNamesAny (NamesArray,AnyNames) {
+    var x;
+    var y;
+    for (x in NamesArray) {
+        if (NamesArray[x].indexOf("(Any one)") > -1 ) {
+           for (y in AnyNames) {
+               if ( (NamesArray[x]).localeCompare(AnyNames[y][0]) == 0  ) {
+                NamesArray[x] = AnyNames[y][ Math.floor( Math.random() * ( AnyNames[y].length - 1 ) + 1 ) ];
+                }
+           }
+       }
+    }
+    return NamesArray;
+}
+
+function parseTrait2Stats (TraitArray) {
+    var x;
+    /* var StatsName = [0"WS",1"BS",2"S",3"T",4"I",5"AG",6"DEX",7"INT",8"WP",9"FEL",10 "M",11 "W"]; */
+    var stat = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    for (x in TraitArray) {
+        console.log(TraitArray[x]); 
+        console.log(x); 
+        switch (TraitArray[x]) {
+            case "Big":
+                stat[ST_S] += 10;
+                stat[ST_T] += 10;
+                stat[ST_AG] += -5;
+                break;
+            case "Brute":
+                stat[ST_S] += 10;
+                stat[ST_T] += 10;
+                stat[ST_AG] += -10;
+                stat[ST_M] += -1;
+                break;
+            case "Clever": 
+                stat[ST_I] += 10;
+                stat[ST_INT] += 20;
+                break;
+            case "Cunning":
+                stat[ST_I] += 10;
+                stat[ST_INT] += 10;
+                stat[ST_FEL] += 10;
+                break;
+            case "Elite":
+                stat[ST_WS] += 20;
+                stat[ST_BS] += 20;
+                stat[ST_WP] += 20;
+                break;
+            case "Fast":
+                stat[ST_AG] += 10;
+                stat[ST_M] += 1;
+                break;
+            case "Hardy": /*This will be reparsed later*/
+                stat[ST_W] += 3;
+                break;
+            case "Leader":
+                stat[ST_WP] += 10;
+                stat[ST_FEL] += 10;
+                break;
+            case "Tough":
+                stat[ST_T] += 10;
+                stat[ST_WP] += 10;
+                break;
+/*Mutations pg 184*/
+            case "Mutation (Animalistic Legs)":
+                stat[10] += 1;
+                break;
+            case "Mutation (Corpulent)":
+                stat[ST_S] += 5;
+                stat[ST_T] += 5;
+                stat[ST_M] += -1;
+                break;
+             case "Mutation (Distended Digits)":
+                stat[ST_DEX] += 10;
+                break;
+            case "Mutation (Emaciated)":
+                stat[ST_S] -= 10;
+                stat[ST_AG] += 5;
+                break;
+            case "Mutation (Extra Legs Joins)":
+                stat[ST_AG] += 5;
+                break;
+            case "Mutation (Inhuman Beauty)":
+                stat[ST_FEL] += 10;
+                break;
+            case "Mutation (Short Legs)":
+                stat[ST_M] -= 1;
+                break;
+/*Mutations ToC*/
+            case "Mutation (Albino)":
+                stat[ST_T] -= 5;
+                break;
+            case "Mutation (Boils)":
+                stat[ST_T] -= 10;
+                stat[ST_AG] -= 5;
+                break;
+/*Mental Corruptions pg 185*/
+            case "Mental Corruption (Awful Cravings)":
+                stat[ST_WP] -= 5;
+                stat[ST_FEL] -= 5;
+                break;
+            case "Mental Corruption (Beast Within)":
+                stat[ST_WP] += 10;
+                stat[ST_INT] -= 5;
+                stat[ST_FEL] -= 5;
+                break;
+            case "Mental Corruption (Crawling Skin)":
+                stat[ST_I] -= 5;
+                stat[ST_DEX] -= 5;
+                break;
+            case "Mental Corruption (Erratic Fantasist)":
+                stat[ST_I] -= 5;
+                stat[ST_WP] -= 5;
+                break;
+            case "Mental Corruption (Fearfull Concern)":
+                stat[ST_WP] -= 10;
+                break;
+            case "Mental Corruption (Hollow Heart)":
+                stat[ST_WP] += 10;
+                stat[ST_FEL] -= 10;
+                break;
+            case "Mental Corruption (Jeallous Thoughts)":
+                stat[ST_FEL] -= 10;
+                break;
+            case "Mental Corruption (Mental Blocks)":
+                stat[ST_INT] -= 10;
+                break;
+            case "Mental Corruption (Profane Urgency)":
+                stat[ST_WP] -= 10;
+                stat[ST_AG] += 10;
+                break;
+            case "Mental Corruption (Totally Unhinged)":
+                stat[ST_WP] += 10;
+                stat[ST_FEL] -= 20;
+                break;
+            case "Mental Corruption (Unholy Rage)":
+                stat[ST_WS] += 10;
+                break;
+            case "Mental Corruption (Suspicious Mind)":
+                stat[ST_I] -= 5;
+                stat[ST_INT] -= 5;
+                break;
+            case "Mental Corruption (Thrill Hunter)":
+                stat[ST_I] -= 10;
+                stat[ST_WP] += 10;
+                break;
+            case "Mental Corruption (Tortured Visions)":
+                stat[ST_I] -= 10;
+                break;
+            case "Mental Corruption (Worried Jitters)":
+                stat[ST_FEL] -= 5;
+                stat[ST_AG] += 5;
+                break;
+            default:
+        }
+    }
+    return stat;
+}
+
+function parseTrait2Skills (TraitArray) {
+    var x;
+    /* var StatsName = [0"WS",1"BS",2"S",3"T",4"I",5"AG",6"DEX",7"INT",8"WP",9"FEL",10 "M",11 "W"]; */
+ /* [1, "Athletics",2],*/
+    var skills = [];
+    for (x in TraitArray) {
+        console.log(TraitArray[x]); 
+        console.log(x); 
+        switch (TraitArray[x]) {
+            case "Spellcaster (Any one)":
+            case "Spellcaster (Daemonology)":
+            case "Spellcaster (Chaos)":
+            case "Spellcaster (Necromancy)":
+            case "Spellcaster (Beasts)":
+            case "Spellcaster (Fire)":
+            case "Spellcaster (Heavens)":
+            case "Spellcaster (Metal)":
+            case "Spellcaster (Life)":
+            case "Spellcaster (Light)":
+            case "Spellcaster (Death)":
+            case "Spellcaster (Shadows)":
+                skills.push([1, "Language (Magick)",7]);
+                skills.push([1, "Channeling",8]);
+                break;
+            default:
+        }
+    }
+    return skills;
+}
+
+
+function parseSBDamage (StringsArray, SB) {
+    var x;
+ for (x in StringsArray) {
+  StringsArray.splice(x,1, StringsArray[x].replace(" SB+0"," +"+(SB)));
+  StringsArray.splice(x,1, StringsArray[x].replace(" SB+1"," +"+(SB+1)));
+  StringsArray.splice(x,1, StringsArray[x].replace(" SB+2"," +"+(SB+2)));
+  StringsArray.splice(x,1, StringsArray[x].replace(" SB+3"," +"+(SB+3)));
+  StringsArray.splice(x,1, StringsArray[x].replace(" SB+4"," +"+(SB+4)));
+  StringsArray.splice(x,1, StringsArray[x].replace(" SB+5"," +"+(SB+5)));
+  StringsArray.splice(x,1, StringsArray[x].replace(" SB+6"," +"+(SB+6)));
+ }
+ return StringsArray
+};
+
+function dedupeName(NameArray) {
+    var i;
+    var j;
+    var toremove = [];
+    for (i = 0; i< (NameArray.length - 1); i += 1) {
+        for (j = i + 1; j < (NameArray.length ) ; j += 1) {
+            if( (NameArray[i]).localeCompare(NameArray[j]) == 0) { 
+                toremove.push(j);
+            }
+        }
+    }
+    if (toremove.length > 0) {
+        for (i in toremove) {
+            NameArray.splice ( toremove[i] , 1);
+        }
+    }
+    return NameArray;
+}
+
+function refreshCharacterDisplay () {
+    document.getElementById("nameB").innerHTML = NameTxt;
+    document.getElementById("speciessexcarredB").innerHTML = SpeciesTxt + " " + CareerName;
+    document.getElementById("statsB").innerHTML = StatsTxt;
+    document.getElementById("skillsB").innerHTML = SkillTxt;
+    document.getElementById("traitsB").innerHTML = TraitTxt;
+    //document.getElementById("trappingsB").innerHTML = "";
+}
+
+/*------ Start Rolling--------*/
+
+if  (SpeciesChoice>0) {
+    SpeciesN =  SpeciesChoice;
+} else {
+    SpeciesN =  Math.floor(Math.random() * SpeciesAll.length );
+}
+
+SpeciesTxt = SpeciesAll[ SpeciesN - 1 ];
+Sex = Math.floor(Math.random() * 2);
+SexTxt = SexAll[ Sex ];
+
+var CareerNRadio;
+for (CareerNRadio=0;CareerNRadio<document.CareerSelection.Career.length;CareerNRadio++){ 
+       if (document.CareerSelection.Career[CareerNRadio].checked) 
+          break; 
+} 
+CareerN = document.CareerSelection.Career[CareerNRadio].value;
+
+if ( CareerN == -1 ) {
+    CareerN = Math.floor(Math.random()*CareerAll.length);
+};
+
+CareerName = CareerAll[CareerN];
+
+StatsBase = StatsAll [ SpeciesN - 1 ];
+for (i in StatsR) {
+     if (document.getElementById("reRollCheck").checked == true) {
+        StatsR[i] = roll1d10()+5;
+     } else {
+        StatsR[i] = 10;
+     }
+}
+/* No random M nor W*/
+StatsR[StatsR.length-1] = 0;
+StatsR[StatsR.length-2] = 0;
+
+TraitNames = TraitStartAll[SpeciesN - 1];
+/*Zero, 1 or 2 extra Traits*/
+if (Math.random()> CareerN/4) {
+    var randTrait = Math.floor(Math.random() * CareerTraits[CareerN].length );
+    TraitNames.push( CareerTraits[CareerN].splice(randTrait,1)[0]);
+        if (Math.random()> CareerN/4) {
+        var randTrait = Math.floor(Math.random() * CareerTraits[CareerN].length );
+        TraitNames.push( CareerTraits[CareerN].splice(randTrait,1)[0]);
+    }
+}
+if (Math.random()> (CareerN+1)/4) {
+    var randTrait = Math.floor(Math.random() * SpeciesOptionalTrait[SpeciesN-1].length );
+    TraitNames.push( SpeciesOptionalTrait[SpeciesN-1].splice(randTrait,1)[0]);
+        if (Math.random()> (CareerN+1)/4) {
+        var randTrait = Math.floor(Math.random() * SpeciesOptionalTrait[SpeciesN-1].length );
+        TraitNames.push( SpeciesOptionalTrait[SpeciesN-1].splice(randTrait,1)[0]);
+    }
+}
+
+TraitNames = dedupeName(parseNamesAny(TraitNames, AnyTraits));
+
+StatsTraits = parseTrait2Stats(TraitNames);
+
+/*Parse Wounds*/
+if (StatsTraits[11]>0) {
+    StatsTraits[11] = Math.floor((StatsR[3] + StatsBase[3] + StatsTraits[3])/10);
+};
+
+StatsBase[11] = Math.floor((StatsR[3] + StatsBase[3] + StatsTraits[3])/10) * 2 +
+        Math.floor((StatsR[2] + StatsBase[2] + StatsTraits[2])/10)+
+        Math.floor((StatsR[8] + StatsBase[8] + StatsTraits[8])/10);
+
+for (i in TraitNames) {
+    if (TraitNames[i]=="Size (Small)") {
+        StatsTraits[11] -= Math.floor((StatsR[2] + StatsBase[2] + StatsTraits[2])/10);
+    };
+    if (TraitNames[i]=="Size (Large)") {
+        StatsTraits[11] += Math.floor((StatsR[3] + StatsBase[3] + StatsTraits[3])/10) * 2 +
+        Math.floor((StatsR[2] + StatsBase[2] + StatsTraits[2])/10)+
+        Math.floor((StatsR[8] + StatsBase[8] + StatsTraits[8])/10);
+    };
+    if (TraitNames[i]=="Size (Enormous)") {
+        StatsTraits[11] += 3 * (Math.floor((StatsR[3] + StatsBase[3] + StatsTraits[3])/10) * 2 +
+        Math.floor((StatsR[2] + StatsBase[2] + StatsTraits[2])/10)+
+        Math.floor((StatsR[8] + StatsBase[8] + StatsTraits[8])/10));
+    };
+};
+
+TraitNames = parseSBDamage (TraitNames, Math.floor(Math.max(StatsR[2] + StatsBase[2] + StatsTraits[2], 0)/10));
+
+if (document.getElementById("addSkills").checked == true) {
+ var SkillsSpecieBase = SkillsAll[SpeciesN-1][ Math.floor( Math.random() * ( SkillsAll[SpeciesN-1].length - 1 ) ) ];
+ /*var SkillNames = [];
+ var SkillValues = []; SkillStats*/
+ var extraSkills = parseTrait2Skills(TraitNames);
+ var SkillsSpecie = SkillsSpecieBase.concat(extraSkills);
+ for (i in SkillsSpecie) {
+  if (SkillsSpecie[i][0] <= (3 - CareerN)) {
+    SkillNames.push(SkillsSpecie[i][1]);
+    SkillValues.push(5 * ( (3 - CareerN) * 2 - SkillsSpecie[i][0]));
+    SkillStats.push( StatsR[SkillsSpecie[i][2]] + StatsBase[SkillsSpecie[i][2]] + StatsTraits[SkillsSpecie[i][2]] );
+  }
+ }
+}
+
+
+StatsTxt = "<table><tr>";
+for (i in StatsName) {
+    StatsTxt += "<th><B>" + StatsName[i] +"</B></th>";
+}
+StatsTxt += "</tr><tr style='text-align: right'>";
+for (i in StatsAdvance) {
+     var star = "";
+     if (StatsTraits[i]) { star = "*";}
+    StatsTxt += "<td>" + Math.max( StatsR[i] + StatsBase[i] + StatsTraits[i] , 0 ) + star + "</td>";
+}
+StatsTxt += "</tr></table>";
+
+for (i = 0; i < TraitNames.length ; i += 1) {
+    var MouseOverTxt = ""; /*getMouseOverText (TraitNames[i],mouseoverTraits);*/
+     TraitTxt += "<span title = '" + MouseOverTxt + "'>" + TraitNames[i] + "</span>; ";
+}
+
+for (i = 0; i < SkillNames.length ; i += 1) {
+    var MouseOverTxt = ""; /*getMouseOverText (SkillNames[i],mouseoverSkills);*/
+    SkillTxt += "<span title = '" + MouseOverTxt + "'>" + SkillNames[i] + ":" + (SkillValues[i] + SkillStats[i] )+ "</span>; ";
+}
+
+refreshCharacterDisplay ();
+
+return 1;
+};
+
+//]]>
+</script>
+</head>
+<body>
+    <h1>Generate WFRP Lost Monsters</h1>
+ <p>Graeme Davis, one of the originals creators of the WFRP 1st editon, has a lot of old creatures from a Warhammer bygone era.<br>
+ From them I added here the <a href="https://graemedavis.wordpress.com/2020/08/08/menfish-another-lost-warhammer-race/">Menfish</a>, the <a href="https://graemedavis.wordpress.com/2020/08/03/chaos-snakemen-a-forgotten-warhammer-race/">Chaos Snakemen</a>, the <a href="https://graemedavis.wordpress.com/2020/05/30/gargoyle-a-forgotten-wfrp-monster/">Gargoyles</a> and the <a href="https://graemedavis.wordpress.com/2020/03/28/zoats-from-warhammer-to-40k-and-back-again/">Zoats</a>.<br>
+ You can check his new endeavours at <b>The Rookery</b>:<br>
+ YouTube: <a href="https://www.youtube.com/c/TheRookery">https://www.youtube.com/c/TheRookery</a><br>
+ Facebook: <a href="https://www.facebook.com/RookeryPublications">https://www.facebook.com/RookeryPublications</a><br>
+ Twitter: <a href="https://twitter.com/RookeryP">@RookeryP</a><br>
+ Instagram: <a href="https://www.instagram.com/rookerypublications/">https://www.instagram.com/rookerypublications/</a><br>
+ and you can support them on Patreon: <a href="https://www.patreon.com/InsideTheRookery">https://www.patreon.com/InsideTheRookery</a><br>
+ If you need a more standard set of creatures you might check my <a href="https://pacomiscelaneousstuff.blogspot.com/2019/08/monster-generator.html">Monster Generator</a> to create Mutants, Orcs, Goblins or worse.<br>
+ If you need people you might meet in a <a href="https://pacomiscelaneousstuff.blogspot.com/2020/03/wfrp-inn-generator.html">tavern</a> check my <a href="https://pacomiscelaneousstuff.blogspot.com/2019/08/npc-generator.html">NPC Generator</a> to create Merchants, Scholar, Soldiers and similar citizens.<br>
+ To have a more detailed Old Worlders you can use the list of my <a href="https://pacomiscelaneousstuff.blogspot.com/2018/09/generic-npc-stats-for-4th-edition.html">Generic NPCs stats for 4th edition</a>.<br>
+You can also create the loot carried by them using my <a href="https://pacomiscelaneousstuff.blogspot.com/2019/08/treasure-generator.html">Random Treasure Generator</a>.
+</p>
+ <button type="button" onclick="generateNPC(-1)">Generate Now!</button><br>
+ <button type="button" onclick="generateNPC(1)">Generate Menfish!</button>
+ <button type="button" onclick="generateNPC(2)">Generate Chaos Snakemen!</button><br>
+ <button type="button" onclick="generateNPC(3)">Generate Gargoyle!</button>
+ <button type="button" onclick="generateNPC(4)">Generate Zoat!</button><br>
+<form name="CareerSelection">
+  <input type="radio" name="Career" id="Career" value="0"> Boss
+  <input type="radio" name="Career" id="Career" value="1"> Rank
+  <input type="radio" name="Career" id="Career" value="2"> Underdog
+  <input type="radio" name="Career" id="Career" value="-1" checked="checked" > Random
+</form>
+<br>
+<table><tr><td>
+Roll Stats: </td><td><input type="checkbox" id="reRollCheck">
+</td></tr>
+<tr><td>
+Add Skills: </td><td><input type="checkbox" id="addSkills">
+</td></tr>
+</table>
+<h3><p id="nameB">.</p></h3>
+<h4><p id="speciessexcarredB"></p></h4>
+
+<h3>Characteristics</h3>
+<p id="statsB"></p>
+<h3>Skills</h3>
+<p id="skillsB"></p>
+<h3>Traits</h3>
+<p id="traitsB"></p>
+
+<p id="Acknowledgements"><a href="https://github.com/fmunoz-geo/WebGenWFRP4Ed">Code: Francisco Mu&ntilde;oz 2019-2021.</a>
+<br>Monster Stats: <a href="https://graemedavis.wordpress.com/">Graeme Davis Blog</a>.
+<br>Inspiration: <a href="http://www.windsofchaos.com/wp-content/uploads/encroachment/html/generator-random-treasure-01.html">Encroatchment of Chaos, Treasure Generator by Dave Graffam</a>.
+<br>Inspiration: <a href="http://orteil.dashnet.org/randomgen/?gen=https://pastebin.com/raw/JcxC8pMx">WFRP 4e Equipment Generator</a>.
+<br>Inspiration: <a href="http://www.grimnirstavern.com">Grimnir's Tavern, Random NPC Generator for WFRP 4e</a>.
+<br>Game: Games Worshop and Cubicle 7
+<br>Other random generators: <a href="https://randroll.com/archive/warhammer-fantasy-roleplay-generators-guide/">https://randroll.com/archive/warhammer-fantasy-roleplay-generators-guide/</a>
+</p>
+
+</body>
+</html>
