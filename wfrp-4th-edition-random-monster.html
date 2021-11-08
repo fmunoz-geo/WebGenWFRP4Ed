@@ -30,6 +30,19 @@ function roll1d100(){
 "use strict";
  return Math.floor(Math.random() * 100) + 1;
 }
+// ["WS","BS","S","T","I","AG","DEX","INT","WP","FEL","M","W"];
+const ST_WS = 0;
+const ST_BS = 1;
+const ST_S = 2;
+const ST_T = 3;
+const ST_I = 4;
+const ST_AG = 5;
+const ST_DEX = 6;
+const ST_INT = 7;
+const ST_WP = 8;
+const ST_FEL = 9;
+const ST_M = 10;
+const ST_W = 11;
 
 function generateNPC(SpeciesChoice) {
 "use strict";
@@ -40,13 +53,13 @@ var Name = "";
 var NameTxt = "";
 var SpeciesTxt ="";
 var SpeciesN;
-var SpeciesAll = ["Mutant","Chaos Warrior","Orc","Goblin","Skaven","Skaven Stormvermin","Beastman Gor","Beastman Ungor","Fimir","Troll"];
+var SpeciesAll = ["Mutant","Chaos Warrior","Orc","Goblin","Skaven","Skaven Stormvermin","Beastman Gor","Beastman Ungor","Fimir","Troll", "Ogre","Snotling"];
 var SpeciesSex= [ 1,        1,               0, 0,         0, 0, 0, 0, 0];
 var Sex = 0;
 
 
 var StatsTxt = "";
-var StatsName = ["WS","BS","S","T","AG","I","DEX","INT","WP","FEL","M","W"];
+var StatsName = ["WS","BS","S","T","I","AG","DEX","INT","WP","FEL","M","W"];
 var StatsR =      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0];
 var StatsMutant = [20,20,20,20,20,20,20,20,20,20,4,0];
 var StatsChaosWarrior = [45,20,35,35,35,45,20,25,45,15,4,0];
@@ -58,10 +71,12 @@ var StatsBeastman =      [35,20,25,35,20,25,15,15,20,15,4,0];
 var StatsBeastmanSmall = [25,20,20,25,20,25,15,15,25,15,4,0];
 var StatsFimir =      [25,10,35,30,20,10,10,20,20,5,6,0];
 var StatsTroll =      [20,5,35,35,0,5,5,0,10,-5,6,0];
+var StatsOgre =      [20,10,35,35,0,15,10,10,20,10,6,0];
+var StatsSnotling =      [15,5,15,10,10,20,-5,5,20,-5,4,0];
 var StatsSkeleton = [15,15,20,20,10,10,15,-10,-10,-10,4,0];
 
 
-var StatsAll = [StatsMutant,StatsChaosWarrior, StatsOrc, StatsGoblin, StatsSkaven, StatsSkavenLarge, StatsBeastman, StatsBeastmanSmall, StatsFimir, StatsTroll];
+var StatsAll = [StatsMutant,StatsChaosWarrior, StatsOrc, StatsGoblin, StatsSkaven, StatsSkavenLarge, StatsBeastman, StatsBeastmanSmall, StatsFimir, StatsTroll,StatsOgre,StatsSnotling];
 var StatsAdvance = [0,0,0,0,0,0,0,0,0,0,0,0];
 var StatsBase =    [0,0,0,0,0,0,0,0,0,0,0,0];
 var StatsTraits  = [0,0,0,0,0,0,0,0,0,0,0,0];
@@ -78,12 +93,15 @@ var TraitStartBeastman = ["Arboreal","Armour 1", "Fury", "Horns SB+3", "Night Vi
 var TraitStartBeastmanSmall = ["Arboreal","Night Vision","Weapon SB+3"];
 var TraitStartFimir = ["Armour 2","Cool-blooded","Night Vision","Size (Large)","Swamp-strider","Weapon SB+4"];
 var TraitStartTroll = ["Armour 2","Bite SB+3","Die Hard","Infected","Regenerate","Size (Large)","Stupid","Vomit","Weapon SB+4"];
+var TraitStartOgre = ["Armour 1","Hungry","Prejudice (Thin People)","Night Vision","Size (Large)","Weapon SB+4"];
+var TraitStartSnotling = ["Bestial","Infected","Night Vision","Size (Small)","Weapon SB+2"];
 
 var TraitStartAll = [TraitStartMutant,TraitStartChaosWarrior,
  TraitStartOrc,TraitStartGoblin,
  TraitStartSkaven,TraitStartSkavenLarge,
  TraitStartBeastman,TraitStartBeastmanSmall,
- TraitStartFimir,TraitStartTroll];
+ TraitStartFimir,TraitStartTroll,
+ TraitStartOgre,  TraitStartSnotling];
 
 var SpeciesOptionalTrait = [
 ["Mutation (Any one)","Mutation (Any one)","Mutation (Any one)","Arboreal","Armour 2","Bite SB+2","Horns SB+3","Corrosive Blood","Constrictor","Flight 5","Painless","Fury","Rear","Regenerate","Tail Attack SB+2",(Math.floor(roll1d10()/3)+1)+" Tentacles SB+1","Magical","Spellcaster (Chaos)","Infected", "Infestation"],
@@ -95,7 +113,9 @@ var SpeciesOptionalTrait = [
 ["Corruption (Minor)","Disease (Packer's Pox)","Infected", "Infestation","Mutation (Any one)","Size(Large)","Spellcaster (Beasts)"],
 ["Armour 1","Corruption (Minor)","Disease (Packer's Pox)","Infected", "Infestation","Mutation (Any one)","Ranged SB+3 (25)","Size(Small)"],
 ["Tail SB+3","Spellcaster (Daemonology)"],
-["Aquatic","Bestial","Frenzy","Hungry","Infestation","Magic Resistance","Mutation (Any one)","Night Vision","Painless","Stealth","Swamp-strider"]
+["Aquatic","Bestial","Frenzy","Hungry","Infestation","Magic Resistance","Mutation (Any one)","Night Vision","Painless","Stealth","Swamp-strider"],
+["Belligerent","Infected","Tracker"],
+["Broken","Swarm","Trained (Broken)","Trained (Fetch)","Trained (Guard)","Venom" ]
 ];
 
 var CareerAll =
@@ -115,7 +135,10 @@ var AnyTraits = [
  "Mutation (Albino)", "Mutation (Boils)"],
   ["Afraid (Any one)","Afraid (Fire)","Afraid (Magic)","Afraid (Guns)"],
   ["Animosity (Any one)","Animosity (Humans)","Animosity (Dwarfs)","Animosity (Elfs)","Animosity (Halflings)","Animosity (Gnomes)"],
-  ["Mental Corruption (Any one)","Mental Corruption (Awful Cravings)","Mental Corruption (Beast Within)","Mental Corruption (Chaotic Dreams)","Mental Corruption (Crawling Skin)","Mental Corruption (Erratic Fantasist)","Mental Corruption (Fearfull Concern)","Mental Corruption (Hateful Impulses)","Mental Corruption (Hollow Heart)","Mental Corruption (Jeallous Thoughts)","Mental Corruption (Lonely Spirit)","Mental Corruption (Mental Blocks)","Mental Corruption (Profane Urgency)","Mental Corruption (Shaky Morale)","Mental Corruption (Suspicious Mind)","Mental Corruption (Thrill Hunter)","Mental Corruption (Tortured Visions)",           "Mental Corruption (Totally Unhinged)","Mental Corruption (Unending Malice)","Mental Corruption (Unholy Rage)","Mental Corruption (Worried Jitters)"]
+  ["Mental Corruption (Any one)","Mental Corruption (Awful Cravings)","Mental Corruption (Beast Within)","Mental Corruption (Chaotic Dreams)","Mental Corruption (Crawling Skin)","Mental Corruption (Erratic Fantasist)","Mental Corruption (Fearfull Concern)","Mental Corruption (Hateful Impulses)","Mental Corruption (Hollow Heart)","Mental Corruption (Jeallous Thoughts)","Mental Corruption (Lonely Spirit)","Mental Corruption (Mental Blocks)","Mental Corruption (Profane Urgency)","Mental Corruption (Shaky Morale)","Mental Corruption (Suspicious Mind)","Mental Corruption (Thrill Hunter)","Mental Corruption (Tortured Visions)",           "Mental Corruption (Totally Unhinged)","Mental Corruption (Unending Malice)","Mental Corruption (Unholy Rage)","Mental Corruption (Worried Jitters)"],
+  ["Spellcaster (Any one)","Spellcaster (Daemonology)","Spellcaster (Necromancy)","Spellcaster (Fire)","Spellcaster (Heavens)","Spellcaster (Metal)","Spellcaster (Beasts)","Spellcaster (Life)","Spellcaster (Light)","Spellcaster (Death)","Spellcaster (Shadows)"],
+  ["Venom (Any one)","Venom (Easy)","Venom (Challenging)","Venom (Hard)","Venom (Very Hard)"],
+  ["Size (Any one)","Size (Small)","Size (Large)","Size (Enormous)"]
 ];
 
 var CareerN;
@@ -129,57 +152,58 @@ var SkillValues = [];
 var SkillStats = [];
 
 var SkillsNPCKnight = [
-[1, "Athletics",2],
-[1, "Melee (Basic)", 0],
-[1, "Melee (Cavalry)",0],
-[1, "Ride",6],
-[2, "Cool",8],
-[2, "Dodge",4],
-[2, "Endurance",3],
-[2, "Intimidate",4],
-[3, "Leadership",9],
-[3, "Lore (Warfare)",7]
+[1, "Athletics", ST_AG],
+[1, "Melee (Basic)", ST_WS],
+[1, "Melee (Cavalry)",ST_WS],
+[1, "Ride",ST_AG],
+[2, "Cool",ST_WP],
+[2, "Dodge",ST_AG],
+[2, "Endurance",ST_T],
+[2, "Intimidate",ST_S],
+[3, "Leadership",ST_FEL],
+[3, "Lore (Warfare)",ST_INT]
 ];
 
 
 var SkillsNPCGuard = [
-[1, "Consume Alcohol", 3],
-[1, "Endurance", 2],
-[1, "Intuition", 6],
-[1, "Melee (Basic)", 0],
-[1, "Perception", 5],
-[2, "Athletics", 2],
-[2, "Cool", 8],
-[2, "Dodge", 4],
-[2, "Intimidate", 4],
-[3, "Melee (Two-handed)", 0]
+[1, "Consume Alcohol", ST_T],
+[1, "Endurance", ST_T],
+[1, "Intuition", ST_I],
+[1, "Melee (Basic)", ST_WS],
+[1, "Perception", ST_I],
+[2, "Athletics", ST_AG],
+[2, "Cool", ST_WP],
+[2, "Dodge", ST_AG],
+[2, "Intimidate", ST_S],
+[3, "Melee (Two-handed)", ST_WS]
 ];
 
 
 var SkillsNPCSoldier = [
-[1, "Athletics",1],
-[1, "Endurance",2],
-[1, "Cool",8],
-[1, "Dodge",4],
-[1, "Melee (Basic)", 0],
-[2, "Melee (Parry)", 0],
-[2, "Ranged",1],
-[2, "Outdoor Survival",7],
-[2, "Intimidate",4],
-[3, "Leadership",9],
-[3, "Perception",5]
+[1, "Athletics",ST_AG],
+[1, "Endurance",ST_T],
+[1, "Cool",ST_WP],
+[1, "Dodge",ST_AG],
+[1, "Melee (Basic)", ST_WS],
+[2, "Melee (Parry)", ST_WS],
+[2, "Ranged",ST_BS],
+[2, "Outdoor Survival", ST_INT],
+[2, "Intimidate",ST_S],
+[3, "Leadership",ST_FEL],
+[3, "Perception",ST_I]
 ];
 
 var SkillsNPCOutlaw = [
-[1, "Athletics",1],
-[1, "Melee (Basic)", 0],
-[1, "Cool",8],
-[1, "Intimidate", 4],
-[1, "Climb", 6],
-[2, "Dodge",4],
-[2, "Stealth", 6],
-[3, "Intuition", 6],
-[3, "Leadership",9]
+[1, "Athletics", ST_AG],
+[1, "Melee (Basic)", ST_WS],
+[1, "Cool",ST_WP],
+[1, "Intimidate", ST_S],
+[1, "Climb", ST_S],
+[2, "Dodge", ST_AG],
+[2, "Stealth", ST_AG],
+[2, "Track", ST_I]
+[3, "Intuition", ST_I],
+[3, "Leadership",ST_FEL]
 ];
 
 //[StatsMutant,StatsChaosWarrior, StatsOrc, StatsGoblin, StatsSkaven, StatsSkavenLarge, StatsBeastman, StatsBeastmanSmall];
@@ -188,7 +212,8 @@ var SkillsAll = [
  [SkillsNPCSoldier,SkillsNPCGuard,SkillsNPCOutlaw], [SkillsNPCSoldier,SkillsNPCGuard,SkillsNPCOutlaw],
  [SkillsNPCSoldier,SkillsNPCGuard,SkillsNPCOutlaw], [SkillsNPCSoldier,SkillsNPCGuard,SkillsNPCOutlaw],
  [SkillsNPCSoldier,SkillsNPCGuard,SkillsNPCOutlaw], [SkillsNPCSoldier,SkillsNPCGuard,SkillsNPCOutlaw],
- [SkillsNPCSoldier, SkillsNPCGuard], [SkillsNPCSoldier, SkillsNPCGuard,SkillsNPCOutlaw]
+ [SkillsNPCSoldier, SkillsNPCGuard], [SkillsNPCSoldier, SkillsNPCGuard,SkillsNPCOutlaw],
+ [SkillsNPCSoldier,SkillsNPCGuard,SkillsNPCOutlaw], [SkillsNPCSoldier,SkillsNPCGuard,SkillsNPCOutlaw]
 ];
 
 
@@ -212,141 +237,141 @@ function parseNamesAny (NamesArray,AnyNames) {
 
 function parseTrait2Stats (TraitArray) {
     var x;
-    /* var StatsName = [0"WS",1"BS",2"S",3"T",4"AG",5"I",6"DEX",7"INT",8"WP",9"FEL",10 "M",11 "W"]; */
+    /* var StatsName = [0"WS",1"BS",2"S",3"T",4"I",5"AG",6"DEX",7"INT",8"WP",9"FEL",10 "M",11 "W"]; */
     var stat = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     for (x in TraitArray) {
         console.log(TraitArray[x]); 
         console.log(x); 
         switch (TraitArray[x]) {
             case "Big":
-                stat[2] += 10;
-                stat[3] += 10;
-                stat[4] += -5;
+                stat[ST_S] += 10;
+                stat[ST_T] += 10;
+                stat[ST_AG] += -5;
                 break;
             case "Brute":
-                stat[2] += 10;
-                stat[3] += 10;
-                stat[4] += -10;
-                stat[10] += -1;
+                stat[ST_S] += 10;
+                stat[ST_T] += 10;
+                stat[ST_AG] += -10;
+                stat[ST_M] += -1;
                 break;
             case "Clever": 
-                stat[5] += 10;
-                stat[7] += 20;
+                stat[ST_I] += 10;
+                stat[ST_INT] += 20;
                 break;
             case "Cunning":
-                stat[5] += 10;
-                stat[7] += 10;
-                stat[9] += 10;
+                stat[ST_I] += 10;
+                stat[ST_INT] += 10;
+                stat[ST_FEL] += 10;
                 break;
             case "Elite":
-                stat[0] += 20;
-                stat[1] += 20;
-                stat[8] += 20;
+                stat[ST_WS] += 20;
+                stat[ST_BS] += 20;
+                stat[ST_WP] += 20;
                 break;
             case "Fast":
-                stat[4] += 10;
-                stat[10] += 1;
+                stat[ST_AG] += 10;
+                stat[ST_M] += 1;
                 break;
             case "Hardy": /*This will be reparsed later*/
-                stat[11] += 3;
+                stat[ST_W] += 3;
                 break;
             case "Leader":
-                stat[8] += 10;
-                stat[9] += 10;
+                stat[ST_WP] += 10;
+                stat[ST_FEL] += 10;
                 break;
             case "Tough":
-                stat[3] += 10;
-                stat[8] += 10;
+                stat[ST_T] += 10;
+                stat[ST_WP] += 10;
                 break;
 /*Mutations pg 184*/
             case "Mutation (Animalistic Legs)":
                 stat[10] += 1;
                 break;
             case "Mutation (Corpulent)":
-                stat[2] += 5;
-                stat[3] += 5;
-                stat[10] += -1;
+                stat[ST_S] += 5;
+                stat[ST_T] += 5;
+                stat[ST_M] += -1;
                 break;
              case "Mutation (Distended Digits)":
-                stat[6] += 10;
+                stat[ST_DEX] += 10;
                 break;
             case "Mutation (Emaciated)":
-                stat[2] -= 10;
-                stat[5] += 5;
+                stat[ST_S] -= 10;
+                stat[ST_AG] += 5;
                 break;
             case "Mutation (Extra Legs Joins)":
-                stat[5] += 5;
+                stat[ST_AG] += 5;
                 break;
             case "Mutation (Inhuman Beauty)":
-                stat[9] += 10;
+                stat[ST_FEL] += 10;
                 break;
             case "Mutation (Short Legs)":
-                stat[10] -= 1;
+                stat[ST_M] -= 1;
                 break;
 /*Mutations ToC*/
             case "Mutation (Albino)":
-                stat[3] -= 5;
+                stat[ST_T] -= 5;
                 break;
             case "Mutation (Boils)":
-                stat[3] -= 10;
-                stat[5] -= 5;
+                stat[ST_T] -= 10;
+                stat[ST_AG] -= 5;
                 break;
 /*Mental Corruptions pg 185*/
             case "Mental Corruption (Awful Cravings)":
-                stat[8] -= 5;
-                stat[9] -= 5;
+                stat[ST_WP] -= 5;
+                stat[ST_FEL] -= 5;
                 break;
             case "Mental Corruption (Beast Within)":
-                stat[8] += 10;
-                stat[9] -= 5;
-                stat[7] -= 5;
+                stat[ST_WP] += 10;
+                stat[ST_INT] -= 5;
+                stat[ST_FEL] -= 5;
                 break;
             case "Mental Corruption (Crawling Skin)":
-                stat[5] -= 5;
-                stat[6] -= 5;
+                stat[ST_I] -= 5;
+                stat[ST_DEX] -= 5;
                 break;
             case "Mental Corruption (Erratic Fantasist)":
-                stat[5] -= 5;
-                stat[8] -= 5;
+                stat[ST_I] -= 5;
+                stat[ST_WP] -= 5;
                 break;
             case "Mental Corruption (Fearfull Concern)":
-                stat[8] -= 10;
+                stat[ST_WP] -= 10;
                 break;
             case "Mental Corruption (Hollow Heart)":
-                stat[8] += 10;
-                stat[9] -= 10;
+                stat[ST_WP] += 10;
+                stat[ST_FEL] -= 10;
                 break;
             case "Mental Corruption (Jeallous Thoughts)":
-                stat[9] -= 10;
+                stat[ST_FEL] -= 10;
                 break;
             case "Mental Corruption (Mental Blocks)":
-                stat[7] -= 10;
+                stat[ST_INT] -= 10;
                 break;
             case "Mental Corruption (Profane Urgency)":
-                stat[8] -= 10;
-                stat[4] += 10;
+                stat[ST_WP] -= 10;
+                stat[ST_AG] += 10;
                 break;
             case "Mental Corruption (Totally Unhinged)":
-                stat[8] += 10;
-                stat[9] -= 20;
+                stat[ST_WP] += 10;
+                stat[ST_FEL] -= 20;
                 break;
             case "Mental Corruption (Unholy Rage)":
-                stat[0] += 10;
-                break;
-            case "Mental Corruption (Worried Jitters)":
-                stat[9] -= 5;
-                stat[4] += 5;
+                stat[ST_WS] += 10;
                 break;
             case "Mental Corruption (Suspicious Mind)":
-                stat[5] -= 5;
-                stat[7] -= 5;
+                stat[ST_I] -= 5;
+                stat[ST_INT] -= 5;
                 break;
             case "Mental Corruption (Thrill Hunter)":
-                stat[5] -= 10;
-                stat[8] += 10;
+                stat[ST_I] -= 10;
+                stat[ST_WP] += 10;
                 break;
             case "Mental Corruption (Tortured Visions)":
-                stat[5] -= 10;
+                stat[ST_I] -= 10;
+                break;
+            case "Mental Corruption (Worried Jitters)":
+                stat[ST_FEL] -= 5;
+                stat[ST_AG] += 5;
                 break;
             default:
         }
@@ -356,16 +381,25 @@ function parseTrait2Stats (TraitArray) {
 
 function parseTrait2Skills (TraitArray) {
     var x;
-    /* var StatsName = [0"WS",1"BS",2"S",3"T",4"AG",5"I",6"DEX",7"INT",8"WP",9"FEL",10 "M",11 "W"]; */
+    /* var StatsName = [0"WS",1"BS",2"S",3"T",4"I",5"AG",6"DEX",7"INT",8"WP",9"FEL",10 "M",11 "W"]; */
  /* [1, "Athletics",2],*/
     var skills = [];
     for (x in TraitArray) {
         console.log(TraitArray[x]); 
         console.log(x); 
         switch (TraitArray[x]) {
+            case "Spellcaster (Any one)":
             case "Spellcaster (Daemonology)":
-            case "Spellcaster  (Chaos)":
-            case "Spellcaster  (Beasts)":
+            case "Spellcaster (Chaos)":
+            case "Spellcaster (Necromancy)":
+            case "Spellcaster (Beasts)":
+            case "Spellcaster (Fire)":
+            case "Spellcaster (Heavens)":
+            case "Spellcaster (Metal)":
+            case "Spellcaster (Life)":
+            case "Spellcaster (Light)":
+            case "Spellcaster (Death)":
+            case "Spellcaster (Shadows)":
                 skills.push([1, "Language (Magick)",7]);
                 skills.push([1, "Channeling",8]);
                 break;
@@ -385,6 +419,7 @@ function parseSBDamage (StringsArray, SB) {
   StringsArray.splice(x,1, StringsArray[x].replace(" SB+3"," +"+(SB+3)));
   StringsArray.splice(x,1, StringsArray[x].replace(" SB+4"," +"+(SB+4)));
   StringsArray.splice(x,1, StringsArray[x].replace(" SB+5"," +"+(SB+5)));
+  StringsArray.splice(x,1, StringsArray[x].replace(" SB+6"," +"+(SB+6)));
  }
  return StringsArray
 };
@@ -487,15 +522,22 @@ StatsBase[11] = Math.floor((StatsR[3] + StatsBase[3] + StatsTraits[3])/10) * 2 +
         Math.floor((StatsR[8] + StatsBase[8] + StatsTraits[8])/10);
 
 for (i in TraitNames) {
-    if (TraitNames[i]=="Size(Small)") {
+    if (TraitNames[i]=="Size (Small)") {
         StatsTraits[11] -= Math.floor((StatsR[2] + StatsBase[2] + StatsTraits[2])/10);
     };
-    if (TraitNames[i]=="Size(Large)") {
-        StatsTraits[11] += Math.floor((StatsR[2] + StatsBase[2] + StatsTraits[2])/10);
+    if (TraitNames[i]=="Size (Large)") {
+        StatsTraits[11] += Math.floor((StatsR[3] + StatsBase[3] + StatsTraits[3])/10) * 2 +
+        Math.floor((StatsR[2] + StatsBase[2] + StatsTraits[2])/10)+
+        Math.floor((StatsR[8] + StatsBase[8] + StatsTraits[8])/10);
+    };
+    if (TraitNames[i]=="Size (Enormous)") {
+        StatsTraits[11] += 3 * (Math.floor((StatsR[3] + StatsBase[3] + StatsTraits[3])/10) * 2 +
+        Math.floor((StatsR[2] + StatsBase[2] + StatsTraits[2])/10)+
+        Math.floor((StatsR[8] + StatsBase[8] + StatsTraits[8])/10));
     };
 };
 
-TraitNames = parseSBDamage (TraitNames, Math.floor((StatsR[2] + StatsBase[2] + StatsTraits[2])/10));
+TraitNames = parseSBDamage (TraitNames, Math.floor(Math.max(StatsR[2] + StatsBase[2] + StatsTraits[2], 0)/10));
 
 if (document.getElementById("addSkills").checked == true) {
  var SkillsSpecieBase = SkillsAll[SpeciesN-1][ Math.floor( Math.random() * ( SkillsAll[SpeciesN-1].length - 1 ) ) ];
@@ -521,7 +563,7 @@ StatsTxt += "</tr><tr style='text-align: right'>";
 for (i in StatsAdvance) {
      var star = "";
      if (StatsTraits[i]) { star = "*";}
-    StatsTxt += "<td>" + ( StatsR[i] + StatsBase[i] + StatsTraits[i]  ) + star + "</td>";
+    StatsTxt += "<td>" + Math.max( StatsR[i] + StatsBase[i] + StatsTraits[i] , 0 ) + star + "</td>";
 }
 StatsTxt += "</tr></table>";
 
@@ -561,6 +603,8 @@ You can also create the loot carried by them using my <a href="https://pacomisce
  <button type="button" onclick="generateNPC(8)">Generate Ungor Beastman!</button><br>
  <button type="button" onclick="generateNPC(9)">Generate Fimir!</button>
  <button type="button" onclick="generateNPC(10)">Generate Troll!</button><br>
+ <button type="button" onclick="generateNPC(11)">Generate Ogre!</button>
+ <button type="button" onclick="generateNPC(12)">Generate Snotling!</button><br>
 <form name="CareerSelection">
   <input type="radio" name="Career" id="Career" value="0"> Boss
   <input type="radio" name="Career" id="Career" value="1"> Rank
