@@ -30,6 +30,19 @@ function roll1d100(){
 "use strict";
  return Math.floor(Math.random() * 100) + 1;
 }
+// ["WS","BS","S","T","I","AG","DEX","INT","WP","FEL","M","W"];
+const ST_WS = 0;
+const ST_BS = 1;
+const ST_S = 2;
+const ST_T = 3;
+const ST_I = 4;
+const ST_AG = 5;
+const ST_DEX = 6;
+const ST_INT = 7;
+const ST_WP = 8;
+const ST_FEL = 9;
+const ST_M = 10;
+const ST_W = 11;
 
 function generateNPC(SpeciesChoice) {
 "use strict";
@@ -218,7 +231,7 @@ var SurnameSuffixDwarvenFemale = ["sdottir","sdottir","sdottir","sniz"];
 var SurnameSuffixDwarvenAll = [SurnameSuffixDwarvenMale, SurnameSuffixDwarvenFemale];
 
 var StatsTxt = "";
-var StatsName = ["WS","BS","S","T","AG","I","DEX","INT","WP","FEL","M","W"];
+var StatsName = ["WS","BS","S","T","I","AG","DEX","INT","WP","FEL","M","W"];
 var StatsR =      [0,0,0,0,0,0,0,0,0,0,0,0];
 var StatsHuman = [20,20,20,20,20,20,20,20,20,20,4,0];
 var StatsDwarf = [30,20,20,30,10,20,30,20,40,10,3,0];
@@ -234,9 +247,9 @@ var TraitTxt ="";
 var TraitNames = [];
 var TraitStartHuman = [];
 var TraitStartDwarf = ["Night Vision"];
-var TraitStartHalfling = ["Size(Small)","Night Vision"];
+var TraitStartHalfling = ["Size (Small)","Night Vision"];
 var TraitStartElf = ["Night Vision"];
-var TraitStartGnome = ["Size(Small)","Night Vision"];
+var TraitStartGnome = ["Size (Small)","Night Vision"];
 
 
 
@@ -261,26 +274,26 @@ var CareerAll =
 
 var CareerSkill = [
 ["Haggle", "Evaluate","Bribery","Gossip"],
-["Melee", "Endurance","Cool","Athletics","Dodge","Ranged"],
-["Melee", "Perception","Intuition","Bribery","Gossip"],
+["Melee (Basic)", "Endurance","Cool","Athletics","Dodge","Ranged"],
+["Melee (Basic)", "Perception","Intuition","Bribery","Gossip"],
 ["Lore (Any one)", "Research", "Lore (Any one)", "Gossip"],
 ["Charm", "Gossip", "Dodge", "Gamble", "Sleight of Hand","Entertain (Any one)","Play (Any one)"],
 ["Gossip", "Lore (Local)","Consume Alcohol","Melee (Brawling)"],
 ["Charm", "Consume Alcohol", "Gamble", "Intimidate", "Leadership", "Lore (Heraldry)", "Melee (Fencing)"],
-["Stealh", "Melee", "Ranged","Intimidate", "Bribery"]
+["Stealh", "Melee (Basic)", "Ranged","Intimidate", "Bribery"]
 ];
 /*
 var StatsName = ["WS"0,"BS"1,"S"2,"T"3,"AG"4,"I"5,"DEX"6,"INT"7,"WP"8,"FEL"9,"M","W"];
 */
 var CareerSkilStats = [
-[9, 7, 9, 9],
-[0, 3, 8,4,4,1],
-[0, 5, 5, 9, 9],
-[7, 7, 7, 9],
-[9, 9, 4, 7, 6, 9, 6],
-[9, 7, 3,0],
-[9, 3, 7, 2, 9, 7, 0],
-[4, 0, 1, 2, 9]
+[ST_FEL, ST_INT, ST_FEL, ST_FEL],
+[ST_WS, ST_T, ST_WP, 4,4, ST_BS],
+[ST_WS, ST_I, ST_I, ST_FEL, ST_FEL],
+[ST_INT, ST_INT, ST_INT, ST_FEL],
+[ST_FEL, ST_FEL, ST_AG, ST_INT, ST_DEX, ST_FEL, 6],
+[ST_FEL, ST_INT, ST_T, ST_WS],
+[ST_FEL, ST_T, ST_INT, ST_S, ST_FEL, ST_INT, ST_WS],
+[ST_AG, ST_WS, ST_BS, ST_S, ST_FEL]
 ];
 var CareerSocial = ["Silver 3","Silver 1","Brass 4","Silver 1",
 "Brass 4","Brass 2","Gold 1","Brass 2"];
@@ -308,36 +321,51 @@ var SexAll = ["Male","Female"];
 var SexTxt;
 
 var CareerWeapon = [
-["Dagger SB+2","Knife SB+1 (Undamaging)","Unarmed SB+0 (Undamaging)","Unarmed SB+0 (Undamaging)"],
-["Spear SB+4 (Impale)","Halberd SB+4 (Defensive, Hack, Impale)","Sword SB+4","Sword SB+4, Shield (Shield 2, Defensive, Undamaging)","Axe SB+4","Mace SB+4","Zweihander SB+5 (Damaging, Hack)"],
-["Sword SB+4", "Reinforced Club SB+4"],
-["Dagger SB+2","Knife SB+1 (Undamaging)","Unarmed SB+0 (Undamaging)","Unarmed SB+0 (Undamaging)"],
-["Dagger SB+2","Dagger SB+2","Knife SB+1 (Undamaging)","Unarmed SB+0 (Undamaging)"],
-["Dagger SB+2","Knife SB+1 (Undamaging)","Unarmed SB+0 (Undamaging)","Handaxe SB+4"],
-["Rapier SB+4 (Fast, Impale)","Foil SB+3 (Fast, Impale, Precise, Undamaging)","Dagger SB+2 (Undamaging)"],
-["Spear SB+4 (Impale)","Sword SB+4","Sword SB+4, Shield (Shield 2, Defensive, Undamaging)","Axe SB+4","Mace SB+4"]
+[["Dagger SB+2",""],["Knife SB+1 (Undamaging)",""],["Unarmed SB+0 (Undamaging)",""],["Unarmed SB+0 (Undamaging)",""]],
+[["Spear SB+4 (Impale)","Melee (Polearm)"],["Halberd SB+4 (Defensive, Hack, Impale)","Melee (Polearm)"],["Sword SB+4",""],["Sword SB+4, Shield (Shield 2, Defensive, Undamaging)","Melee (Parrying)"],["Axe SB+4",""],["Mace SB+4",""],["Zweihander SB+5 (Damaging, Hack)","Melee (Two-handed)"]],
+[["Sword SB+4",""], ["Reinforced Club SB+4",""]],
+[["Dagger SB+2",""],["Knife SB+1 (Undamaging)",""],["Unarmed SB+0 (Undamaging)",""],["Unarmed SB+0 (Undamaging)",""]],
+[["Dagger SB+2",""],["Dagger SB+2",""],["Knife SB+1 (Undamaging)",""],["Unarmed SB+0 (Undamaging)",""]],
+[["Dagger SB+2",""],["Knife SB+1 (Undamaging)",""],["Unarmed SB+0 (Undamaging)",""],["Handaxe SB+4",""]],
+[["Rapier SB+4 (Fast, Impale)","Melee (Fencing)"],["Foil SB+3 (Fast, Impale, Precise, Undamaging)","Melee (Fencing)"],["Fine Dagger SB+2 (Undamaging)",""]],
+[["Spear SB+4 (Impale)","Melee (Polearm)"],["Sword SB+4",""],["Sword SB+4, Shield (Shield 2, Defensive, Undamaging)","Melee (Parrying)"],["Axe SB+4",""],["Mace SB+4",""]]
+];
+
+var SpecieWeapon = [
+[""],
+[["Warhammer SB+4",""]],
+[""],
+[["Elven Sabre SB+4",""]],
+[["Hidden Dagger SB+2",""]]
 ];
 
 var CareerRanged = [
 [""],
-["Crossbow +9 (60, Reload 1, Impale)","Handgun +9 (50, Dangerous, Reload 3, Impale, Penetrating)"],
-["Crossbow +9 (60, Reload 1, Impale)"],
+[["Crossbow +9 (60, Reload 1, Impale)","Ranged (Crossbow)"],["Handgun +9 (50, Dangerous, Reload 3, Impale, Penetrating)","Ranged (Firearms)"]],
+[["Crossbow +9 (60, Reload 1, Impale)","Ranged (Crossbow)"]],
 [""],
-["Throwing Knife SB+2"],
-["Sling +6 (Pummel)"],
+[["Throwing Knife SB+2","Ranged (Throwing)"]],
+[["Sling +6 (Pummel)","Ranged (Sling)"]],
 [""],
-["Bow SB+3 (Impale)","Sling +6 (Pummel)"]
+[["Bow SB+3 (Impale)","Ranged (Bow)"],["Sling +6 (Pummel)","Ranged (Sling)"]]
 ];
 
+var SpecieRanged = [
+[""],
+[["Crossbow +9 (60, Reload 1, Impale)","Ranged (Crossbow)"]],
+[["Sling +6 (Pummel)","Ranged (Sling)"]],
+[["Bow SB+3 (Impale)","Ranged (Bow)"]],
+[""]
+];
 
 var CareerArmour = [
-[""],
+["Burguer Clothes","Fine Clothes"],
 ["Leather Armour (1)","Mail Armour (2)","Plate Armour (3)"],
 ["Leather Jack (body, arms, 1), Pot Helm (head, 2) (Partial)","Leather Armour (1)","Mail Armour (2)"],
-[""],
-["Leather Jerkin (body, 1)","Leather Jack (body, arms, 1)","","",""],
-["Leather Jerkin (body, 1)","Leather Jack (body, arms, 1)","","",""],
-["Courtly Garb"],
+["Burguer Clothes","Scholar Robes"],
+["Leather Jerkin (body, 1)","Leather Jack (body, arms, 1)","Burguer Clothes","Simple Clothes","Simple Clothes"],
+["Leather Jerkin (body, 1)","Leather Jack (body, arms, 1)","Simple Clothes","Simple Clothes","Simple Clothes"],
+["Courtly Garb","Fine Courtly Garb"],
 ["Leather Jerkin (body, 1)","Leather Jack (body, arms, 1)","Leather Armour (1)",""]
 ];
 
@@ -427,51 +455,141 @@ function rollMoney (SocialString) {
 
 function parseTrait2Stats (TraitArray) {
     var x;
-    /* var StatsName = [0"WS",1"BS",2"S",3"T",4"AG",5"I",6"DEX",7"INT",8"WP",9"FEL",10 "M",11 "W"]; */
+    /* var StatsName = [0"WS",1"BS",2"S",3"T",4"I",5"AG",6"DEX",7"INT",8"WP",9"FEL",10 "M",11 "W"]; */
     var stat = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     for (x in TraitArray) {
-        console.log(TraitArray[x]); 
-        console.log(x); 
+        //console.log(TraitArray[x]); 
+        //console.log(x); 
         switch (TraitArray[x][0]) {
             case "Big":
-                stat[2] += 10;
-                stat[3] += 10;
-                stat[4] += -5;
+                stat[ST_S] += 10;
+                stat[ST_T] += 10;
+                stat[ST_AG] += -5;
                 break;
             case "Brute":
-                stat[2] += 10;
-                stat[3] += 10;
-                stat[4] += -10;
-                stat[10] += -1;
+                stat[ST_S] += 10;
+                stat[ST_T] += 10;
+                stat[ST_AG] += -10;
+                stat[ST_M] += -1;
                 break;
             case "Clever": 
-                stat[5] += 10;
-                stat[7] += 20;
+                stat[ST_I] += 10;
+                stat[ST_INT] += 20;
                 break;
             case "Cunning":
-                stat[5] += 10;
-                stat[7] += 10;
-                stat[9] += 10;
+                stat[ST_I] += 10;
+                stat[ST_INT] += 10;
+                stat[ST_FEL] += 10;
                 break;
             case "Elite":
-                stat[0] += 20;
-                stat[1] += 20;
-                stat[8] += 20;
+                stat[ST_WS] += 20;
+                stat[ST_BS] += 20;
+                stat[ST_WP] += 20;
                 break;
             case "Fast":
-                stat[4] += 10;
-                stat[10] += 1;
+                stat[ST_AG] += 10;
+                stat[ST_M] += 1;
                 break;
             case "Hardy": /*This will be reparsed later*/
-                stat[11] += 3;
+                stat[ST_W] += 3;
                 break;
             case "Leader":
-                stat[8] += 10;
-                stat[9] += 10;
+                stat[ST_WP] += 10;
+                stat[ST_FEL] += 10;
                 break;
             case "Tough":
-                stat[3] += 10;
-                stat[8] += 10;
+                stat[ST_T] += 10;
+                stat[ST_WP] += 10;
+                break;
+/*Mutations pg 184*/
+            case "Mutation (Animalistic Legs)":
+                stat[10] += 1;
+                break;
+            case "Mutation (Corpulent)":
+                stat[ST_S] += 5;
+                stat[ST_T] += 5;
+                stat[ST_M] += -1;
+                break;
+             case "Mutation (Distended Digits)":
+                stat[ST_DEX] += 10;
+                break;
+            case "Mutation (Emaciated)":
+                stat[ST_S] -= 10;
+                stat[ST_AG] += 5;
+                break;
+            case "Mutation (Extra Legs Joins)":
+                stat[ST_AG] += 5;
+                break;
+            case "Mutation (Inhuman Beauty)":
+                stat[ST_FEL] += 10;
+                break;
+            case "Mutation (Short Legs)":
+                stat[ST_M] -= 1;
+                break;
+/*Mutations ToC*/
+            case "Mutation (Albino)":
+                stat[ST_T] -= 5;
+                break;
+            case "Mutation (Boils)":
+                stat[ST_T] -= 10;
+                stat[ST_AG] -= 5;
+                break;
+/*Mental Corruptions pg 185*/
+            case "Mental Corruption (Awful Cravings)":
+                stat[ST_WP] -= 5;
+                stat[ST_FEL] -= 5;
+                break;
+            case "Mental Corruption (Beast Within)":
+                stat[ST_WP] += 10;
+                stat[ST_INT] -= 5;
+                stat[ST_FEL] -= 5;
+                break;
+            case "Mental Corruption (Crawling Skin)":
+                stat[ST_I] -= 5;
+                stat[ST_DEX] -= 5;
+                break;
+            case "Mental Corruption (Erratic Fantasist)":
+                stat[ST_I] -= 5;
+                stat[ST_WP] -= 5;
+                break;
+            case "Mental Corruption (Fearfull Concern)":
+                stat[ST_WP] -= 10;
+                break;
+            case "Mental Corruption (Hollow Heart)":
+                stat[ST_WP] += 10;
+                stat[ST_FEL] -= 10;
+                break;
+            case "Mental Corruption (Jeallous Thoughts)":
+                stat[ST_FEL] -= 10;
+                break;
+            case "Mental Corruption (Mental Blocks)":
+                stat[ST_INT] -= 10;
+                break;
+            case "Mental Corruption (Profane Urgency)":
+                stat[ST_WP] -= 10;
+                stat[ST_AG] += 10;
+                break;
+            case "Mental Corruption (Totally Unhinged)":
+                stat[ST_WP] += 10;
+                stat[ST_FEL] -= 20;
+                break;
+            case "Mental Corruption (Unholy Rage)":
+                stat[ST_WS] += 10;
+                break;
+            case "Mental Corruption (Suspicious Mind)":
+                stat[ST_I] -= 5;
+                stat[ST_INT] -= 5;
+                break;
+            case "Mental Corruption (Thrill Hunter)":
+                stat[ST_I] -= 10;
+                stat[ST_WP] += 10;
+                break;
+            case "Mental Corruption (Tortured Visions)":
+                stat[ST_I] -= 10;
+                break;
+            case "Mental Corruption (Worried Jitters)":
+                stat[ST_FEL] -= 5;
+                stat[ST_AG] += 5;
                 break;
             default:
         }
@@ -496,6 +614,7 @@ function parseSkillAny (SkillArray) {
 function parseSBDamage (StringsArray, SB) {
     var x;
  for (x in StringsArray) {
+  console.log(StringsArray[x]);
   StringsArray.splice(x,1, StringsArray[x].replace(" SB+0"," +"+(SB)));
   StringsArray.splice(x,1, StringsArray[x].replace(" SB+1"," +"+(SB+1)));
   StringsArray.splice(x,1, StringsArray[x].replace(" SB+2"," +"+(SB+2)));
@@ -628,25 +747,60 @@ StatsBase[11] = Math.floor((StatsR[3] + StatsBase[3] + StatsTraits[3])/10) * 2 +
         Math.floor((StatsR[2] + StatsBase[2] + StatsTraits[2])/10)+
         Math.floor((StatsR[8] + StatsBase[8] + StatsTraits[8])/10);
 
-if (TraitNames[1]=="Size(Small)") {
-    StatsTraits[11] -= Math.floor((StatsR[2] + StatsBase[2] + StatsTraits[2])/10);
+for (i in TraitNames) {
+    if (TraitNames[i]=="Size (Small)") {
+        StatsTraits[11] -= Math.floor((StatsR[2] + StatsBase[2] + StatsTraits[2])/10);
+    };
+    if (TraitNames[i]=="Size (Large)") {
+        StatsTraits[11] += Math.floor((StatsR[3] + StatsBase[3] + StatsTraits[3])/10) * 2 +
+        Math.floor((StatsR[2] + StatsBase[2] + StatsTraits[2])/10)+
+        Math.floor((StatsR[8] + StatsBase[8] + StatsTraits[8])/10);
+    };
+    if (TraitNames[i]=="Size (Enormous)") {
+        StatsTraits[11] += 3 * (Math.floor((StatsR[3] + StatsBase[3] + StatsTraits[3])/10) * 2 +
+        Math.floor((StatsR[2] + StatsBase[2] + StatsTraits[2])/10)+
+        Math.floor((StatsR[8] + StatsBase[8] + StatsTraits[8])/10));
+    };
 };
 
+if (SpecieWeapon[SpeciesN-1] != "" ) {
+  CareerWeapon[CareerN].push(SpecieWeapon[SpeciesN-1][0]);
+};
 
-var Trappings = [ CareerWeapon[CareerN][Math.floor(Math.random() * CareerWeapon[CareerN].length )] ];
+var WeaponPick = Math.floor(Math.random() * CareerWeapon[CareerN].length );
+var Trappings = [ CareerWeapon[CareerN][  WeaponPick ][0] ];
+
+if (CareerWeapon[CareerN][  WeaponPick ][1] != "" ) {
+	for (i in SkillNames) { 
+	 if (SkillNames[i]=="Melee (Basic)") { SkillNames[i] = CareerWeapon[CareerN][  WeaponPick ][1]; };
+	 if (SkillNames[i]=="Melee (Parrying)") {
+		SkillNames.push("Melee (Basic)");
+		SkillValues.push(SkillValues[i]);
+		}
+	}
+};
 
 var hasRanged = 0;
+
 for (i in SkillNames) { 
  if (SkillNames[i]=="Ranged") {hasRanged=1;};
 };
-if (hasRanged || Math.random() < .1) {
- Trappings.push(CareerRanged[CareerN][Math.floor(Math.random() * CareerRanged[CareerN].length )]);
+
+if (SpecieRanged[SpeciesN-1] != [""] ) {
+  CareerRanged[CareerN].push(SpecieRanged[SpeciesN-1][0]);
 };
+
+var RangedPick;
+if (hasRanged || Math.random() < .1) {
+ RangedPick = Math.floor(Math.random() * CareerRanged[CareerN].length );
+ Trappings.push(CareerRanged[CareerN][ RangedPick ][0]);
+};
+
 Trappings.push(CareerArmour[CareerN][Math.floor(Math.random() * CareerArmour[CareerN].length )]);
 
 Trappings = Trappings.filter(function(value){return value != ""});
 
-Trappings = parseSBDamage (Trappings, Math.floor((StatsR[2] + StatsBase[2] + StatsTraits[2])/10));
+Trappings = parseSBDamage (Trappings, Math.floor((StatsR[ST_S] + StatsBase[ST_S] + StatsTraits[ST_S])/10));
 
 var Money = rollMoney(CareerSocial [ CareerN ]);
 
@@ -691,7 +845,7 @@ return 1;
 <body>
     <h1>Generate NPCs</h1>
     <h2>WFRP 4th Edition Random Simple NPCs</h2>
- <p>This is a simple NPC generator, it creates the kind on people you might meet in a <a href="https://pacomiscelaneousstuff.blogspot.com/2020/03/wfrp-inn-generator.html">tavern</a> of the Old World. It uses the Traits mechanism and add a few relevant skills and trappings.<br>
+ <p>This is a simple NPC generator, it creates the kind on people you might meet in a <a href="https://pacomiscelaneousstuff.blogspot.com/2020/03/wfrp-inn-generator.html">tavern</a> of the Old World or belonging to <a href="https://pacomiscelaneousstuff.blogspot.com/2020/09/wfrp-4th-edition-npc-cults.html">a cult</a>. It uses the Traits mechanism and add a few relevant skills and trappings.<br>
 If you need a more dangerous set you might check my <a href="https://pacomiscelaneousstuff.blogspot.com/2019/08/monster-generator.html">Monster Generator</a> to create Mutants, Orcs, Goblins or worse.<br>
 To have a more detailed Old Worlders you can use the list of my <a href="https://pacomiscelaneousstuff.blogspot.com/2018/09/generic-npc-stats-for-4th-edition.html">Generic NPCs stats for 4th edition</a>.<br>
 You can also create the loot carried by them using my <a href="https://pacomiscelaneousstuff.blogspot.com/2019/08/treasure-generator.html">Random Treasure Generator</a>.
