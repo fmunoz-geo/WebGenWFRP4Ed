@@ -55,6 +55,13 @@ var ANIMAL = [
 ["$FIERCEANIMAL",0]
 ];
 
+//Based on silver
+var CHAINMETAL = [
+["gold", 1900],
+["silver", 0],
+["brass", -90]
+];
+
 var RAREMETAL = [
 ["meteoric iron", 200],
 ["Nuln's steel", 200],
@@ -110,7 +117,7 @@ var STONEMATERIAL = [
 ["clay", -25]
 ];
 
-ANYMATERIAL = [
+var ANYMATERIAL = [
 ["$METALMATERIAL", 0],
 ["$STONEMATERIAL", -50],
 ["$WOODMATERIAL", -75]
@@ -124,6 +131,13 @@ var SCABBARDMAT = [
 ["polished leather", 0],
 ["oiled leather", 0],
 ["$COLOUR painted wood",0]
+];
+
+var CRAFTFINE = [
+["<i>fine</i>", 100],
+["", 0],
+["", 0],
+["", 0]
 ];
 
 var INLAYGEMS = [
@@ -447,8 +461,8 @@ var DWARFDECORATION = [
 ["with geometric engravings",25],
 ["covered with decorative, scrolling engravings",25],
 ["$WRITING with runes", 25],
-["$WRITING with the image of a stylised dwarf's head",20]
-["$DECORATION",0]
+["$WRITING with the image of a stylised dwarf's head",20],
+["$DECORATION",0],
 ["",0]
 ];
 
@@ -459,7 +473,7 @@ var ELFDECORATION = [
 ["$WRITING with Eltharin runes", 25],
 ["with golden felegree all over it", 25],
 ["with a large $INLAYGEMS inset", 25],
-["$DECORATION",0]
+["$DECORATION",0],
 ["",0]
 ];
 
@@ -481,6 +495,39 @@ var CLOTHDECORATION = [
 ["",0],
 ["",0]
 ];
+
+var CLOTHCHARACTER = [
+["with a prayer sewn",10],
+["with a small bone pinned", 0],
+["with a small patch of $COLOUR cloth",0],
+["with a $COLOUR ribbon",0],
+["",0],
+["",0],
+["",0],
+["",0]
+];
+
+var BUTTONSCHARACTER = [
+["with rought $WOODMATERIAL buttons", 0],
+["with carved $WOODMATERIAL buttons", 5],
+["with carved $WOODMATERIAL buttons shaped like $SHAPE", 5],
+["with smoothly carved whalebone buttons", 10],
+["with roughly etched horn toggles", 5],
+["with brass clasps", 5],
+["with simple brass buttons", 5],
+["with brass buttons shaped like $SHAPE", 5],
+["with pewter buttons", 5],
+["with buttons shaped like skulls", 5],
+["with cross shaped brass buttons", 5],
+["",0],
+["",0],
+["",0],
+["",0],
+["",0],
+["",0],
+["",0]
+];
+
 
 var SIZED = [
 ["",0],
@@ -733,7 +780,7 @@ var POMMELHILTSCABBARD = [
 ["$DANGLING tied to the pommel",0],
 ["a $METALFITTING pommel in the shape of a two-headed $FIERCEANIMAL",0],
 ["a $METALFITTING pommel in the shape of a $SHAPE",0],
-["a $METALFITTING round pommel with an icon of $DEITY",0]
+["a $METALFITTING round pommel with an icon of $DEITY",0],
 ["a $METALFITTING round pommel",0],
 ["a $METALFITTING disc pommel",0],
 ["a $METALFITTING fishtail pommel",0],
@@ -762,7 +809,7 @@ var POMMELHANDLE = [
 ["$DANGLING tied to the handle",0],
 ["a $METALFITTING pommel in the shape of a two-headed $FIERCEANIMAL",0],
 ["a $METALFITTING pommel in the shape of a $SHAPE",0],
-["a $METALFITTING round pommel with an icon of $DEITY",0]
+["a $METALFITTING round pommel with an icon of $DEITY",0],
 ["a $METALFITTING round pommel",0],
 ["a $METALFITTING disc pommel",0],
 ["a $METALFITTING fishtail pommel",0],
@@ -801,7 +848,7 @@ var CARDDECKS = [
 ["102-card Dwarven runic deck",10]
 ];
 var TRADETOOLS = [
-["a painter's kit with "+(roll1d10()+1)+" paintbrushes, a $METALFITTING flask with turpentine and pots of prepared oil paints, a few sponges and sheets of thick linen canvas. ยก",0],
+["a painter's kit with "+(roll1d10()+1)+" paintbrushes, a $METALFITTING flask with turpentine and pots of prepared oil paints, a few sponges and sheets of thick linen canvas. ??",0],
 ["an apothecary's trade tools with a set of spoons, weight and scales, "+(roll1d10()+2)+" glass phials, tins of rare earth and hard-to-find herbs, bottles of essential oils, pestle and mortar",0],
 ["an herbolist's trade tools with pestle and mortar, "+(roll1d10()+1)+" small knives, pruning shears, and a set of $MAYBECOLOUR gloves",0],
 ["a gunsmith's trade tool with a hammer, files, a musket-cleaning kit with muzzle rods, oils, chamois, fuses, flints and spare parts",0],
@@ -813,6 +860,16 @@ var TRADETOOLS = [
 ["a smith's trade tools with a big hammer, a smaller one, tongs, punches, swages, bits, and augers",0],
 ["a carpenter's trade tools with hammer and "+(roll2d10()+16)+" assorted nails, saw, auger and bits, measuring rod, chalk, and plumb lines.",0]
 ];
+  
+var MAYBEBULKYDURABLE = [
+[", fitted with a iron reinforced bound, making it <I>bulky</I> but <I>durable</I>",0],
+["",0],
+["",0],
+["",0],
+["",0],
+["",0]
+];
+  
 var BOOKDECORATION = [
 [", within it are a few pressed flowers",0],
 [" with a few $COLOUR ribbons to bookmark it",0],
@@ -823,6 +880,392 @@ var BOOKDECORATION = [
 ["",0],
 ["",0],
 ["",0],
+];
+var BOOKMAYBETHE = [
+	["The", 0],
+	["The", 0],
+	["The", 0],
+	["The", 0],
+	["Multiple", 0],
+	["Book of the ", 0],
+	["On the", 0],
+	["", 0],
+	["", 0],
+	["", 0],
+	["", 0],
+	["", 0]
+];
+
+var BOOKADJETIVE = [
+	["Abridged ", 0],
+	["Accumulated ", 0],
+	["Assembled ", 0],
+	["Collected ", 0],
+	["Complete ", 0],
+	["Comprehensive ", 0],
+	["Critical ", 0],
+	["Distinctive ", 0],
+	["Elaborated ", 0],
+	["Essential ", 0],
+	["Experiential ", 0],
+	["Exposed ", 0],
+	["Final ", 0],
+	["Finest ", 0],
+	["First ", 0],
+	["Fundamental ", 0],
+	["Glorious ", 0],
+	["Great ", 0],
+	["Indispensible ", 0],
+	["Major ", 0],
+	["New ", 0],
+	["Original ", 0],
+	["Principal ", 0],
+	["Universal ", 0],
+	["Valuable ", 0],
+	["", 0]
+];
+
+var BOOKMAIN = [
+	["Accounts on ", 0],
+	["Arguments on ", 0],
+	["Conceptions on ", 0],
+	["Considerations on ", 0],
+	["Discourse on ", 0],
+	["Dissertation on ", 0],
+	["Encyclopedia on ", 0],
+	["Essays on ", 0],
+	["Examinations on ", 0],
+	["Exposé on ", 0],
+	["Findings on ", 0],
+	["Handbook on ", 0],
+	["Hypothesis on ", 0],
+	["Insights into ", 0],
+	["Knowledge on ", 0],
+	["Lectures on ", 0],
+	["Lessons on ", 0],
+	["Notes on ", 0],
+	["Observations on ", 0],
+	["Records on ", 0],
+	["Research on ", 0],
+	["Studies on ", 0],
+	["Teachings on ", 0],
+	["Theories on ", 0],
+	["Writings on ", 0]
+];
+
+var BOOKAPOTHECARY = [
+	["the Alcohol in Healing Remedies", 0],
+	["the Arsenic Cookbook", 0],
+	["the Apothecary Spirits & Oils", 0],
+	["the Application of Healing Poultices", 0],
+	["the Botany & Pharmacopeia", 0],
+	["the Curing Potions and Draughts", 0],
+	["the Draughts and Ointments", 0],
+	["the Drugs made from Minerals", 0],
+	["the Exotic Ointments of New World", 0],
+	["the Healing Herbs of Bretonnia", 0],
+	["the Herb Graden Maintenance", 0],
+	["the Incredible Potions of Empire", 0],
+	["the Liquors for Headaches", 0],
+	["the Kislevan Herbs", 0],
+	["the Nature of Bodily Fluids", 0],
+	["the Mushroms & their Effects", 0],
+	["the Mandrake Potions", 0],
+	["the Ointments for Wounds", 0],
+	["the Poisons of Tilea & Araby", 0],
+	["the Preparation of Tonics", 0],
+	["the Real Dangers of Plants", 0],
+	["the Sickness' Remedies & Cures", 0],
+	["the Treatment of Burn Injuries", 0],
+	["the Unnatural Selection in Plants", 0],
+	["the Weirdroot Recepies", 0]
+];
+
+var BOOKENGINEERING = [
+	["the Artillery & Measures", 0],
+	["the Ancient Mechanical Wonders", 0],
+	["the Clockwork Mechanism", 0],
+	["the Computational Tools", 0],
+	["the Dwarven Contraptions", 0],
+	["the Dynamics & Motion", 0],
+	["the Explosives and Eruptions", 0],
+	["the Fluid Mechanics in Steam Engines", 0],
+	["the Gunpowder & Firearms", 0],
+	["the Heating Principles", 0],
+	["the Ingenious Devices of Elves", 0],
+	["the Kislevan Gemcutting Tools", 0],
+	["the Locking Design Schematics", 0],
+	["the Major Flaws & Errors", 0],
+	["the Mechanics of Motion and Flight", 0],
+	["the Military Constructions & Forts", 0],
+	["the Nature of Force and Impact", 0],
+	["the New Technical Inventions", 0],
+	["the Old World's War Devices", 0],
+	["the Pumping Mechanism", 0],
+	["the Siege Engines of Nuln", 0],
+	["the Standard Procedures in Architecture", 0],
+	["the Structure of Iron and Gromril", 0],
+	["the Techniks of Engines", 0],
+	["the Weird Gunpowder Uses", 0]
+];
+
+var BOOKLAW = [
+	["the Agrarian Reforms", 0],
+	["the Areas of Political Influence", 0],
+	["the Authority (vol. III)", 0],
+	["the Construction Permits", 0],
+	["the Corporal Punishment", 0],
+	["the Diplomatic Protocols", 0],
+	["the Elves & Merchant Amenities", 0],
+	["the Financial & Tax Rules", 0],
+	["the Guild Courts Procedures", 0],
+	["the Inheritance & Succession Law", 0],
+	["the Imperial Electoral System", 0],
+	["the Imperial Trade Quotas", 0],
+	["the Justice of Men & Elves", 0],
+	["the Lawyers' Regulations", 0],
+	["the Legal History of the Empire", 0],
+	["the Liberty and Order", 0],
+	["the Maritime & River Law", 0],
+	["the Middenland's Hunting Rights", 0],
+	["the Origins of Rebellion", 0],
+	["the Peasant's Cattle Mores", 0],
+	["the Provincial Treaties", 0],
+	["the Property Rights", 0],
+	["the Republican Idea", 0],
+	["the Sigmarite Jurisprudence", 0],
+	["the Witchcraft Trials", 0]
+];
+
+var MAYBEOFGOD = [
+	[" of $DEITY and $DEITY", 0],
+	[" of $DEITY", 0],
+	[" of $DEITY", 0],
+	[" of $DEITY", 0],
+	["", 0],
+	["", 0],
+	["", 0],
+	["", 0]
+];
+
+var BOOKRELIGION = [
+	["the Grand Theogonists lives", 0],
+	["the Death, Morr and other Gods", 0],
+	["the Divinity $MAYBEOFGOD", 0],
+	["the Orthodox Imperatives $MAYBEOFGOD", 0],
+	["the Cathegorical Miracles $MAYBEOFGOD", 0],
+	["the Pious Salvation $MAYBEOFGOD", 0],
+	["the True Teachings $MAYBEOFGOD", 0],
+	["the Supreme Preaching $MAYBEOFGOD", 0],
+	["the Holy Sermons $MAYBEOFGOD", 0],
+	["the Holy Prophecies $MAYBEOFGOD", 0],
+	["the Sacred Visions $MAYBEOFGOD", 0],
+	["the Portents and Misteries $MAYBEOFGOD", 0],
+	["the Saints, Martirs and Clergy $MAYBEOFGOD", 0],
+	["the Most Virtous Truths $MAYBEOFGOD", 0]
+];
+
+var BOOKMEDICINE = [
+	["the Amputation Techniques", 0],
+	["the Botanical Remedies", 0],
+	["the Bodily Chemistry", 0],
+	["the Bestial Psyche", 0],
+	["the Cranial Structure and Pain", 0],
+	["the Exotic Ointments of Norsca", 0],
+	["the False Ailment Symptoms", 0],
+	["the Gory Operations", 0],
+	["the Human & Elven Anatomy", 0],
+	["the Healing Process", 0],
+	["the Knowledge of Death", 0],
+	["the Largest Tumors", 0],
+	["the Living Tissue & Force", 0],
+	["the Military Field Medicine", 0],
+	["the Magical Wounds", 0],
+	["the Nature of Plague", 0],
+	["the Nefarious Sicknesses of Border Princes", 0],
+	["the Origins of Diseases", 0],
+	["the Pox and its Prevention", 0],
+	["the Poisons and Cures", 0],
+	["the Rotten Flesh & Pus", 0],
+	["the Secrets of Longivity", 0],
+	["the Treatment of Burn Injuries", 0],
+	["the Uses of Leeches in Treament of Sickness", 0],
+	["the Wounds, Injuries & Harm ", 0]
+];
+
+var BOOKSCIENCE = [
+	["the Astronomical Distances", 0],
+	["the Botany & Plant Growth", 0],
+	["the Basic Chemistry", 0],
+	["the Bestial Psyche", 0],
+	["the Celestial Bodies", 0],
+	["the Exotic Animals of the New World", 0],
+	["the Four Elements & some more", 0],
+	["the Gunpowder Experiments", 0],
+	["the Human & Elven Anatomy", 0],
+	["the Illusions and Shadows", 0],
+	["the Knowledge of Nature", 0],
+	["the Logics of Breeding & Mating", 0],
+	["the Lizards and Reptilians", 0],
+	["the Mathematical Problems", 0],
+	["the Methodical Approach", 0],
+	["the Nature of Winged Beasts", 0],
+	["the Neverendings of Plagues & Poxes", 0],
+	["the Origins of Diseases", 0],
+	["the Optics & Light", 0],
+	["the Poisons and Cures", 0],
+	["the Research Techniques", 0],
+	["the Scientific Reasoning", 0],
+	["the Truth in the Sciences", 0],
+	["the Unnatural Selection", 0],
+	["the Zoological Wonders", 0]
+];
+
+var BOOKHERALDRY = [
+	["the Aquilla Sigil in Imperial Edicts & Laws", 0],
+	["the Black Guard's Raven Imagery", 0],
+	["the Bretonnian Coat of Arms", 0],
+	["the Cross & Skull on Pirate Flags", 0],
+	["the Colours of Halfling Klans", 0],
+	["the Dwarven Runes in Heraldy", 0],
+	["the Elven Coat of Arms & their Colours", 0],
+	["the Flags of Templar Knight Orders", 0],
+	["the Greenskins' Tribal Symbols", 0],
+	["the Hochland's Hunting Houses' Colours", 0],
+	["the Imperial Heraldic Codes", 0],
+	["the Insignia of Imperial Navy", 0],
+	["the Knights and their Shield Symbols", 0],
+	["the Lines and Stripes in Guild Stamps", 0],
+	["the Lost Meaning of Skull Symbolism", 0],
+	["the Legendary Beasts on Imperial Sigils", 0],
+	["the Nightwatch Uniforms & Badges", 0],
+	["the Military Insignia of the Empire", 0],
+	["the Orcs in Dwarven Symbolism", 0],
+	["the Patterns and Images on Mercenary Flags", 0],
+	["the Town Seals of Tilea & Estalia", 0],
+	["the Roadwarden's Symbols and Signes", 0],
+	["the Shields of Provincial Militias", 0],
+	["the Symbolism of Hammer on War Banners", 0],
+	["the Witchunters' Insignia", 0]
+];
+
+var BOOKHISTORY = [
+	["the Ancient Priest-Kings of Nehekhara", 0],
+	["the Battles of Black Fire Pass", 0],
+	["the Construction of Altdorf's Palaces", 0],
+	["the Conquest of Kislev & Gospodar's Ruleship", 0],
+	["the Chronology of Crusades in Araby", 0],
+	["the Destruction of Mordheim", 0],
+	["the Elven Heroes in Folk Stories", 0],
+	["the Great Witchunters of $PROVINCE", 0],
+	["the Guilds of the Empire and Marienburg", 0],
+	["the Halfling Question in the Imperial Society", 0],
+	["the History of Chaos Incursions", 0],
+	["the Independence of Marienburg", 0],
+	["the Knights of the White Wolf", 0],
+	["the Lords of Dwarven Karaks", 0],
+	["the Legends of Sigmar", 0],
+	["the Middenheim's History", 0],
+	["the Norscan Clans and their Jarls", 0],
+	["the Nobile Families of Empire", 0],
+	["the Origins of Troll Slayers", 0],
+	["the Peasant's Revolts in Bretonnia", 0],
+	["the Pre-Sigmarite Tribal Kings", 0],
+	["the Rise and Fall of Knightly Orders", 0],
+	["the Streissen Massacre", 0],
+	["the Victories of Karl-Franz I", 0],
+	["the Wizards and College of Magic", 0]
+];
+
+var BOOKMAGIC = [
+	["the Aethyric Attunement Techniques", 0],
+	["the Alchemical Processes & Experiments", 0],
+	["the Articles of Imperial Magic", 0],
+	["the Azyr or the Blue Wind of Heavens", 0],
+	["the Aqshy or the Red Wind of Fire", 0],
+	["the Black Magisters and their Traitorous Acts", 0],
+	["the Chamon – the Yellow Wind of Metal", 0],
+	["the Dangers of Dhar or Dark Magic", 0],
+	["the Ghur or the Feral Brown Wind", 0],
+	["the Ghyran: the Green Wind of Life", 0],
+	["the Hedge Wizards and Witches in the Empire", 0],
+	["the High Magic of Elven Mages", 0],
+	["the Hysh or the White Wind of Brilliance", 0],
+	["the Language of Magick and Arcana", 0],
+	["the Magical Items and Arcane Treasures", 0],
+	["the Magical Sense and Witchsight", 0],
+	["the Potion Brewing & Alchemy", 0],
+	["the Preservation of Ingredients", 0],
+	["the Realms of Sorcery", 0],
+	["the Ritual Magic and Spellcraft", 0],
+	["the Shyish, the Purple WInd of Mortality", 0],
+	["the Uglu: the Grey Wind of Illusion", 0],
+	["the Waystones and Leylines", 0],
+	["the White Tower of Hoeth", 0],
+	["The Wyrdstone's Corruption Effects", 0]
+];
+
+
+
+var MAYBETITLEAPOTHECARY = [
+	["It's titled '$BOOKMAYBETHE $BOOKADJETIVE $BOOKMAIN $BOOKAPOTHECARY' .", 0],
+	["Written on the cover, '$BOOKMAYBETHE $BOOKADJETIVE $BOOKMAIN $BOOKAPOTHECARY'.", 0],
+	["", 0]
+];
+
+var MAYBETITLEMEDICINE = [
+	["It's titled '$BOOKMAYBETHE $BOOKADJETIVE $BOOKMAIN $BOOKMEDICINE' .", 0],
+	["Written on the cover, '$BOOKMAYBETHE $BOOKADJETIVE $BOOKMAIN $BOOKMEDICINE'.", 0],
+	["", 0]
+];
+
+var MAYBETITLESCIENCE = [
+	["It's titled '$BOOKMAYBETHE $BOOKADJETIVE $BOOKMAIN $BOOKSCIENCE'.", 0],
+	["Written on the cover, '$BOOKMAYBETHE $BOOKADJETIVE $BOOKMAIN $BOOKSCIENCE.", 0],
+	["", 0]
+];
+
+var MAYBETITLEENGINEERING = [
+	["It's titled '$BOOKMAYBETHE $BOOKADJETIVE $BOOKMAIN $BOOKENGINEERING' .", 0],
+	["Written on the cover, '$BOOKMAYBETHE $BOOKADJETIVE $BOOKMAIN $BOOKENGINEERING'.", 0],
+	["", 0]
+];
+
+var MAYBETITLEMAGIC = [
+	["It's titled '$BOOKMAYBETHE $BOOKADJETIVE $BOOKMAIN $BOOKMAGIC'.", 0],
+	["Written on the cover, '$BOOKMAYBETHE $BOOKADJETIVE $BOOKMAIN $BOOKMAGIC'.", 0],
+	["", 0],
+	["", 0],
+	["", 0],
+	["", 0],
+	["", 0]
+];
+
+var MAYBETITLERELIGION = [
+	["It's titled simply 'Gods'.", 0],
+	["It's titled simply '$DEITY'.", 0],
+	["It's titled '$BOOKMAYBETHE $BOOKADJETIVE $BOOKMAIN $BOOKRELIGION'.", 0],
+	["Written on the cover, '$BOOKMAYBETHE $BOOKADJETIVE $BOOKMAIN $BOOKRELIGION'.", 0],
+	["", 0]
+];
+
+var MAYBETITLELAW = [
+	["It's titled simply 'Laws'.", 0],
+	["It's titled '$BOOKMAYBETHE $BOOKADJETIVE $BOOKMAIN $BOOKLAW'.", 0],
+	["Written on the cover, '$BOOKMAYBETHE $BOOKADJETIVE $BOOKMAIN $BOOKLAW'.", 0],
+	["", 0]
+];
+
+var MAYBETITLEHERALDRY = [
+	["Its titled '$BOOKMAYBETHE $BOOKADJETIVE $BOOKMAIN $BOOKHERALDRY'.", 0],
+	["Written on the cover, '$BOOKMAYBETHE $BOOKADJETIVE $BOOKMAIN $BOOKHERALDRY'.", 0],
+	["", 0]
+];
+
+var MAYBETITLEHISTORY = [
+	["Its titled '$BOOKMAYBETHE $BOOKADJETIVE $BOOKMAIN $BOOKHISTORY .", 0],
+	["Written on the cover, '$BOOKMAYBETHE $BOOKADJETIVE $BOOKMAIN $BOOKHISTORY'.", 0],
+	["", 0]
 ];
 
 var ALLSTRINGS = [
@@ -840,7 +1283,9 @@ var ALLSTRINGS = [
 ["$POMMELHANDLE",POMMELHANDLE],
 ["$DANGLING",DANGLING],
 ["$SIZED",SIZED],
+["$BUTTONSCHARACTER",BUTTONSCHARACTER],
 ["$CLOTHDECORATION",CLOTHDECORATION],
+["$CLOTHCHARACTER",CLOTHCHARACTER],
 ["$DWARFDECORATION",DWARFDECORATION],
 ["$ELFDECORATION",ELFDECORATION],
 ["$DECORATION",DECORATION],
@@ -850,13 +1295,15 @@ var ALLSTRINGS = [
 ["$FIERCEANIMAL",FIERCEANIMAL],
 ["$JEWELSTRING",JEWELSTRING],
 ["$ANYMATERIAL",ANYMATERIAL],
+["$CHAINMETAL", CHAINMETAL],
 ["$METALMATERIAL",METALMATERIAL],
 ["$METALFITTING",METALFITTING],
 ["$METALTRIMS",METALTRIMS],
 ["$RAREMETAL",RAREMETAL],
 ["$SCABBARDMAT",SCABBARDMAT],
 ["$WOODMATERIAL",WOODMATERIAL],
-["$STONEMATERIAL",WOODMATERIAL],
+	["$STONEMATERIAL", STONEMATERIAL],
+["$CRAFTFINE", CRAFTFINE],
 ["$INLAYGEMS",INLAYGEMS],
 ["$BODYPART",BODYPART],
 ["$DEITY",DEITY],
@@ -881,6 +1328,29 @@ var ALLSTRINGS = [
 ["$SAINT", SAINT],
 ["$RELIC", RELIC],
 ["$BOOKDECORATION", BOOKDECORATION],
+	["$BOOKMAYBETHE", BOOKMAYBETHE],
+	["$BOOKADJETIVE", BOOKADJETIVE],
+	["$BOOKMAIN", BOOKMAIN],
+	["$BOOKAPOTHECARY", BOOKAPOTHECARY],
+	["$BOOKENGINEERING", BOOKENGINEERING],
+	["$BOOKMEDICINE", BOOKMEDICINE],
+	["$BOOKLAW", BOOKLAW],
+	["$BOOKRELIGION", BOOKRELIGION],
+	["$BOOKHISTORY", BOOKHISTORY],
+	["$BOOKHERALDRY", BOOKHERALDRY],
+	["$BOOKMAGIC", BOOKMAGIC],
+	["$BOOKSCIENCE", BOOKSCIENCE],
+	["$MAYBEOFGOD", MAYBEOFGOD],
+	["$MAYBETITLEAPOTHECARY", MAYBETITLEAPOTHECARY],
+	["$MAYBETITLEMEDICINE", MAYBETITLEMEDICINE],
+	["$MAYBETITLEENGINEERING", MAYBETITLEENGINEERING],
+	["$MAYBETITLELAW", MAYBETITLELAW],
+	["$MAYBETITLEHISTORY", MAYBETITLEHISTORY],
+	["$MAYBETITLEHERALDRY", MAYBETITLEHERALDRY],
+	["$MAYBETITLERELIGION", MAYBETITLERELIGION],
+	["$MAYBETITLEMAGIC", MAYBETITLEMAGIC],
+	["$MAYBETITLESCIENCE", MAYBETITLESCIENCE],
+  	["$MAYBEBULKYDURABLE", MAYBEBULKYDURABLE],
 ["$PLACE",PLACE],
 ["$PROVINCE",PROVINCE],
 ["$LANGUAGE",LANGUAGE],
@@ -906,8 +1376,8 @@ var TreasureJewels = [
 ["A $MINORMOD $MAYBEFINE $METALTRIMS cloak clasp.",4,0, 1],
 ["A $METALTRIMS $MAYBEFINE cloak clasp in the shape of $SHAPE.",5,0, 1],
 
-["A $MINORMOD $METALTRIMS $MAYBEFINE belt bucke.", 4,0, 1],
-["A $QUALITY $METALTRIMS $MAYBEFINE belt bucke.", 8,0, 1],
+["A $MINORMOD $METALTRIMS $MAYBEFINE belt buckle.", 4,0, 1],
+["A $QUALITY $METALTRIMS $MAYBEFINE belt buckle.", 8,0, 1],
 ["A $METALMATERIAL $MAYBEFINE belt buckle shaped like a $FIERCEANIMAL's head.", 6,0, 1],
 ["A $METALMATERIAL $MAYBEFINE belt buckle in the shape of $SHAPE.", 5,0, 1],
 
@@ -915,7 +1385,7 @@ var TreasureJewels = [
 ["A $METALTRIMS $MAYBEFINE bracelet inset with $INLAYGEMS.", 6,0, 1],
 ["A $METALMATERIAL $MAYBEFINE bracelet with $METALTRIMS highlights.", 5,0, 1],
 
-["A $MINORMOD  $METALMATERIAL ring.", 3,0, 1],
+["A $MINORMOD $METALMATERIAL ring.", 3,0, 1],
 ["A $METALMATERIAL $MAYBEFINE ring $DECORATION.", 4,0, 1],
 ["A $METALMATERIAL $MAYBEFINE ring with a $INLAYGEMS inset.", 5,0, 1],
 ["A $METALTRIMS $MAYBEFINE signet ring with an intrincated design.", 50,0, 1],
@@ -924,6 +1394,9 @@ var TreasureJewels = [
 ["A $METALMATERIAL $MAYBEFINE pendant in the shape of $SHAPE.", 6, 1] ,
 ["A $METALMATERIAL $MAYBEFINE pendant in the shape of $SHAPE, strung from a $JEWELSTRING necklace.", 6,0, 1],
 ["A $ANYMATERIAL $MAYBEFINE pendant on a $JEWELSTRING.", 4,0, 1],
+
+["A $CHAINMETAL $CRAFTFINE heavy ceremonial neck chain.", 20,0, 1],
+["A $CHAINMETAL $CRAFTFINE heavy ceremonial neck chain with plaque $DECORATION.", 20,0, 1],
 
 ["A $MINORMOD $MAYBEFINE $METALMATERIAL earring.", 3,0, 1],
 ["An $MAYBEFINE earring made of $METALMATERIAL and $DECORATION.", 3,0, 1],
@@ -935,52 +1408,54 @@ var TreasureJewels = [
 ["A $QUALITY $MAYBEFINE $ANYMATERIAL statuette of the god $DEITY.", 6,0, 1],
 
 ["A rare $METALMATERIAL coin $DECORATION.", 2,0, 3],
-["A set of "+ (roll=(roll1d10()+4)) +" $METALMATERIAL buttons each mounted with a $INLAYGEMS.", roll/2,0,1],
+["A set of $CRAFTFINE "+ (roll=(roll1d10()+4)) +" $METALMATERIAL buttons each mounted with a $INLAYGEMS.", roll/2,0,1],
 
 ["An ingot of $METALMATERIAL.", 10, 1, 2],
 ["An ingot of $METALMATERIAL stamped with a seal of $PLACE authorities.", 10, 1, 2]
 
 ];
+
+
 var TreasureClothing = [
 ["A <I>fine</I> $FUR cloak with $TRIMMING trimmings.", 20, 1, 1],
 ["A <I>fine</I> warm $FUR cloak with $TRIMMING trimmings.", 22, 1, 1],
 ["A <I>fine</I> $COLOUR cloak $EMBROIDED with $COLOUR $PATTERN.", 20, 1, 1],
 ["A $MAYBEFINE $MINORMOD $FUR cloak.", 13, 1, 1],
 ["A $MAYBEFINE $COLOUR cloak with $TRIMMING trimmings.", 12, 1, 1],
-["A $MINORMOD $COLOUR cloak.", 10, 1, 1],
+["A $MINORMOD $COLOUR cloak $CLOTHCHARACTER..", 10, 1, 1],
 ["A $MAYBEFINE $COLOUR cloak. It has a $JEWELSTRING to tie it.", 10, 1, 1],
 ["A $MAYBEFINE $COLOUR cloak $EMBROIDED with the shape of $SHAPE.", 10, 1, 1],
-["An <I>ugly</I> $COLOUR cloak.", 5, 1, 1],
-["A $BADCLOTH <I>shoddy</I> $COLOUR cloak.", 5, 1, 1],
+["An <I>ugly</I> $COLOUR cloak $CLOTHCHARACTER.", 5, 1, 1],
+["A $BADCLOTH <I>shoddy</I> $COLOUR cloak $CLOTHCHARACTER.", 5, 1, 1],
 
 ["A <I>fine</I> $FUR coat.", 36, 1, 1],
 ["A <I>fine</I> warm $FUR coat with $TRIMMING trimmings.", 38, 1, 1],
 ["A $GOODCLOTH <I>fine</I> $COLOUR coat.", 36, 1, 1],
 ["A <I>fine</I> $COLOUR coat. It's $CLOTHDECORATION.", 36, 1, 1],
 ["A $MAYBEFINE $FUR coat with $TRIMMING trimmings.", 24, 1, 1],
-["A $MAYBEFINE $MINORMOD $FUR coat $SIZED.", 24, 1, 1],
-["A $MINORMOD $COLOUR coat $SIZED.", 18, 1, 1],
+["A $MAYBEFINE $MINORMOD $FUR coat $BUTTONSCHARACTER $SIZED.", 24, 1, 1],
+["A $MINORMOD $COLOUR coat $CLOTHCHARACTER $BUTTONSCHARACTER $SIZED.", 18, 1, 1],
 ["A $COLOUR coat with $TRIMMING trimmings.", 18, 1, 1],
 ["A <I>bulky</I> $COLOUR coat, with large pockets and ill sewn.", 9, 1, 1],
-["An <I>ugly</I> $COLOUR coat.", 9, 1, 1],
-["A $BADCLOTH <I>shoddy</I> $COLOUR coat.", 9, 1, 1],
+["An <I>ugly</I> $COLOUR coat $CLOTHCHARACTER $BUTTONSCHARACTER.", 9, 1, 1],
+["A $BADCLOTH <I>shoddy</I> $COLOUR coat $CLOTHCHARACTER $BUTTONSCHARACTER.", 9, 1, 1],
 
 ["A $GOODCLOTH <I>fine</I> set of $COLOUR ornate robes.It's $CLOTHDECORATION.",80, 1, 1],
 ["A $GOODCLOTH <I>fine</I> set of silky $COLOUR ornate robes.",80, 1, 1],
-["A $MINORMOD set of $COLOUR robes.",40, 1, 1],
+["A $MINORMOD set of $COLOUR robes $CLOTHCHARACTER.",40, 1, 1],
 ["A set of $COLOUR robes. It's $EMBROIDED with the shape of $SHAPE.",40, 1, 1],
 ["A set of $COLOUR robes. It's $CLOTHDECORATION.",40, 1, 1],
 ["A priestly set of $COLOUR robes. It's $EMBROIDED with prayers to $DEITY.",40, 1, 1],
 ["A <I>bulky</I> set of $COLOUR robes. It has sewn $ANYMATERIAL beads of all over it.",20, 1, 1],
-["An <I>ugly</I> set of $COLOUR robes.",20, 1, 1],
+["An <I>ugly</I> set of $COLOUR robes $CLOTHCHARACTER.",20, 1, 1],
 
-["A $GOODCLOTH <I>fine</I> pair of $COLOUR gloves.", 8,0, 1],
+["A $GOODCLOTH <I>fine</I> pair of $COLOUR gloves $CLOTHCHARACTER.", 8,0, 1],
 ["A <I>fine</I> pair of $COLOUR dyed leather gloves.", 8,0, 1],
-["A pair of $COLOUR gloves.", 4,0, 1],
-["A $MINORMOD pair of $COLOUR gloves.", 4,0, 1],
-["A pair of $COLOUR dyed leather gloves.", 6,0, 1],
-["A $BADCLOTH <I>shoddy</I> pair of $COLOUR gloves.", 2,0, 1],
-["A $BADCLOTH <I>ugly</I> pair of $COLOUR gloves.", 2,0, 1],
+["A pair of $COLOUR gloves $CLOTHCHARACTER.", 4,0, 1],
+["A $MINORMOD pair of $COLOUR gloves $CLOTHCHARACTER.", 4,0, 1],
+["A pair of $COLOUR dyed leather gloves $CLOTHCHARACTER.", 6,0, 1],
+["A $BADCLOTH <I>shoddy</I> pair of $COLOUR gloves $CLOTHCHARACTER.", 2,0, 1],
+["A $BADCLOTH <I>ugly</I> pair of $COLOUR gloves $CLOTHCHARACTER.", 2,0, 1],
 
 ["A pair of $GOODCLOTH <I>fine</I> $COLOUR shoes. Made by a renowed master artisan from $CITY.", 10,0, 1],
 ["A $MINORMOD pair of $COLOUR shoes.", 5,0, 1],
@@ -997,14 +1472,14 @@ var TreasureClothing = [
 ["A pair of army $MAYBEFINE boots with button-back cuffs. The buttons are $METALMATERIAL.",5, 1, 1],
 ["A <I>bulky</I> pair of leather boots with $METALMATERIAL buckles.", 2.5, 1, 1],
 
-["A <I>fine</I> $COLOUR shirt and a $COLOUR vest and pants $SIZED.", 12, 1, 1],
-["A $MINORMOD matching $COLOUR shirt, vest and pants $SIZED.", 6, 1, 1],
-["A $MINORMOD white shirt and a $COLOUR vest and pants $SIZED.", 6, 1, 1],
+["A <I>fine</I> $COLOUR shirt $CLOTHCHARACTER and a $COLOUR vest and pants $SIZED.", 12, 1, 1],
+["A $MINORMOD matching $COLOUR shirt, vest $BUTTONSCHARACTER  and pants $SIZED.", 6, 1, 1],
+["A $MINORMOD white shirt.a $COLOUR vest $BUTTONSCHARACTER  and pants $SIZED.", 6, 1, 1],
 ["A $STAINS matching $COLOUR shirt, vest and pants $SIZED.", 5, 1, 1],
-["A $MINORMOD $COLOUR dress and skirts $SIZED.", 6, 1, 1],
+["A $MINORMOD $COLOUR dress $CLOTHCHARACTER $BUTTONSCHARACTER and skirts $SIZED.", 6, 1, 1],
 
-["A $MINORMOD $COLOUR hood.", 5, 0, 1],
-["A $BADCLOTH <I>ugly</I> $COLOUR hood.", 2.5, 0, 1],
+["A $MINORMOD $COLOUR hood $CLOTHCHARACTER.", 5, 0, 1],
+["A $BADCLOTH <I>ugly</I> $COLOUR hood $CLOTHCHARACTER.", 2.5, 0, 1],
 
 
 ["A $GOODCLOTH <I>fine</I> $COLOUR hat.", 8, 0, 1],
@@ -1016,15 +1491,15 @@ var TreasureClothing = [
 ["An oversized <I>bulky</I> $COLOUR hat with too many $MINORMOD $MAYBECOLOUR feathers.", 2, 0, 1],
 
 ["A $GOODCLOTH <I>fine</I> $COLOUR uniform with $COLOUR accents.",44, 1, 2],
-["An army officer <I>fine</I> $COLOUR and $COLOUR uniform.",44, 1, 2],
-["A $MINORMOD $COLOUR uniform $SIZED.",22, 1, 2],
-["A $COLOUR and $COLOUR uniform $SIZED.",22, 1, 2],
+["An army officer <I>fine</I> $COLOUR and $COLOUR uniform $CLOTHCHARACTER.",44, 1, 2],
+["A $MINORMOD $COLOUR uniform $BUTTONSCHARACTER $SIZED.",22, 1, 2],
+["A $COLOUR and $COLOUR uniform $BUTTONSCHARACTER $SIZED.",22, 1, 2],
 ["A $COLOUR and $COLOUR military uniform.",22, 1, 2],
-["A $STAINS $COLOUR uniform.", 18, 1, 2],
-["An <I>ugly</I> $COLOUR servant's uniform.",11, 1, 2],
-["A <I>bulky</I> $COLOUR and $COLOUR militia uniform.",11, 1, 2],
-["A $BADCLOTH <I>shoddy</I> $COLOUR militia uniform.",11, 1, 2],
-["A $STAINS and $BADCLOTH <I>shoddy</I> $COLOUR uniform.",11, 0, 2]
+["A $STAINS $COLOUR uniform $CLOTHCHARACTER.", 18, 1, 2],
+["An <I>ugly</I> $COLOUR servant's uniform $BUTTONSCHARACTER.",11, 1, 2],
+["A <I>bulky</I> $COLOUR and $COLOUR militia uniform $CLOTHCHARACTER.",11, 1, 2],
+["A $BADCLOTH <I>shoddy</I> $COLOUR militia uniform $CLOTHCHARACTER.",11, 1, 2],
+["A $STAINS and $BADCLOTH <I>shoddy</I> $COLOUR uniform $CLOTHCHARACTER.",11, 0, 2]
 
 ];
 
@@ -1242,14 +1717,14 @@ var TreasureWeapons = [
 ];
 
 var TreasureArmour = [
-["A $MAYBECOLOUR leather jerkin.",10, 1, 1],
-["A $GOODORBADCLOTH $MAYBECOLOUR leather jerkin.",10, 1, 1],
-["A $BADQUALITY $BADCLOTH $MAYBECOLOUR leather jerkin.", 5, 1, 1],
+["A $MAYBECOLOUR leather jerkin $BUTTONSCHARACTER  $SIZED.",10, 1, 1],
+["A $GOODORBADCLOTH $MAYBECOLOUR leather jerkin $BUTTONSCHARACTER.",10, 1, 1],
+["A $BADQUALITY $BADCLOTH $MAYBECOLOUR leather jerkin $BUTTONSCHARACTER.", 5, 1, 1],
 ["A $MAYBECOLOUR leather leggings.",14, 1, 1],
 ["A $GOODORBADCLOTH $MAYBECOLOUR leather leggings.",14, 1, 1],
-["A $MAYBECOLOUR leather jack $SIZED.",12, 1, 1],
-["A $GOODORBADCLOTH $MAYBECOLOUR leather jack.",12, 1, 1],
-["A $BADQUALITY $BADCLOTH $MAYBECOLOUR leather jack.", 6, 1, 1],
+["A $MAYBECOLOUR leather jack $BUTTONSCHARACTER $SIZED.",12, 1, 1],
+["A $GOODORBADCLOTH $MAYBECOLOUR leather jack $BUTTONSCHARACTER.",12, 1, 1],
+["A $BADQUALITY $BADCLOTH $MAYBECOLOUR leather jack $BUTTONSCHARACTER.", 6, 1, 1],
 ["A $MINORMOD $MAYBECOLOUR leather skullcap.",8, 0, 1],
 ["A $GOODORBADCLOTH $MINORMOD $MAYBECOLOUR leather skullcap.",8, 0, 1],
 
@@ -1273,7 +1748,7 @@ var TreasureArmour = [
 ["An <I>durable</I> reinforced open helm.",80, 1, 1],
 ["A watchman's $MAYBECOLOUR leather skullcap and pot helmet $WRITING with the $CITY crest.",48, 2, 1],
 ["A $MAYBEFINE open helm $DECORATION.",40, 1, 1],
-["A helm.",60,2, 3],
+["A helm with a $COLOUR plume.",60,2, 3],
 
 ["A $MAYBECOLOUR buckler",18+2/12, 0, 1],
 ["A buckler painted $COLOUR and $COLOUR.",18+2/12, 0, 1],
@@ -1316,24 +1791,27 @@ var TreasureDocuments = [
 ["A letter of road tool exemption for $PROVINCE.", 3, 0, 2],
 ["A license to practice magical arts in $PROVINCE, for a Journeyman wizard from $CITY.", 3, 0, 4],
 
-["A $PAPERDAMAGED small stack of "+(roll=(roll1d10()+3))+" leaflets promoting the insurgence in $PLACE.", roll, 0, 1],
+["A $PAPERDAMAGED small stack of "+(roll=(roll1d10()+3))+" leaflets promoting the insurgence in $PLACE.", roll / 2, 0, 1],
 
-["A $MAYBESIZE $MAYBECOLOUR book of apothecary lore $BOOKDECORATION.", 160, 1, 2],
-["A $MAYBESIZE $MAYBECOLOUR book of apothecary lore and herbalism $BOOKDECORATION.", 160, 1, 2],
+["A $MAYBESIZE $MAYBECOLOUR book of apothecary lore $BOOKDECORATION. $MAYBETITLEAPOTHECARY", 160, 1, 2],
+["A $MAYBESIZE $MAYBECOLOUR book of apothecary lore and herbalism $BOOKDECORATION. $MAYBETITLEAPOTHECARY", 160, 1, 2],
 ["A $MAYBESIZE $MAYBECOLOUR book of art $BOOKDECORATION.", 100, 1, 2],
 ["A $MAYBESIZE $MAYBECOLOUR book detailing methods and examples of drawing and painting.", 100, 1, 2],
 ["A $MAYBESIZE $MAYBECOLOUR book of crytography $BOOKDECORATION.", 160, 1, 4],
-["A $MAYBESIZE <I>unreliable</I> $MAYBECOLOUR book of engineering. It's full of erratas and misprints.", 30, 1, 1],
-["A $MAYBESIZE $MAYBECOLOUR book of general engineering $BOOKDECORATION.", 60, 1, 2],
+["A $MAYBESIZE <I>unreliable</I> $MAYBECOLOUR book of engineering. It's full of erratas and misprints. $MAYBETITLEENGINEERING", 30, 1, 1],
+["A $MAYBESIZE $MAYBECOLOUR book of general engineering $BOOKDECORATION. $MAYBETITLEENGINEERING", 60, 1, 2],
 ["A $MAYBESIZE $MAYBECOLOUR book of construction engineering $BOOKDECORATION.", 60, 1, 2],
-["A $MAYBESIZE $MAYBECOLOUR book of law $BOOKDECORATION.", 300, 1, 4],
-["A $MAYBESIZE <I>practical</I> $MAYBECOLOUR textbook of law from $PLACE.", 600, 1, 4],
-["A $MAYBESIZE $MAYBECOLOUR book of magic. It's possesion could be legally troublesome.", 400, 1, 4],
-["A $MAYBESIZE $MAYBECOLOUR book of medicine, detailing ailments.", 300, 1, 3],
+["A $MAYBESIZE $MAYBECOLOUR book of law $BOOKDECORATION. $MAYBETITLELAW", 300, 1, 4],
+["A $MAYBESIZE <I>practical</I> $MAYBECOLOUR textbook of law from $PLACE. $MAYBETITLELAW", 600, 1, 4],
+["A $MAYBESIZE $MAYBECOLOUR book of magic. It's possesion could be legally troublesome$MAYBEBULKYDURABLE. $MAYBETITLEMAGIC", 400, 1, 4],
+["A $MAYBESIZE $MAYBECOLOUR book of medicine, detailing ailments. $MAYBETITLEMEDICINE", 300, 1, 3],
 ["A $MAYBESIZE $MAYBECOLOUR book of anatomy and medicine $BOOKDECORATION.", 300, 1, 3],
 ["A $MAYBESIZE $MAYBECOLOUR book of religion, written for $FOLLOWERS of $DEITY.", 20, 1, 1],
-["A $MAYBESIZE $MAYBECOLOUR book of religion $BOOKDECORATION.", 20, 1, 1],
+["A $MAYBESIZE $MAYBECOLOUR book of religion $BOOKDECORATION$MAYBEBULKYDURABLE. $MAYBETITLERELIGION", 20, 1, 1],
 ["'The life of $SAINT', a $MAYBESIZE $MAYBECOLOUR book of religion $BOOKDECORATION.", 20, 1, 1],
+["A $MAYBESIZE $MAYBECOLOUR book of history $BOOKDECORATION. $MAYBETITLEHISTORY", 20, 1, 1],
+["A $MAYBESIZE $MAYBECOLOUR book of heraldry $BOOKDECORATION. $MAYBETITLEHERALDRY", 20, 1, 1],
+["A $MAYBESIZE $MAYBECOLOUR book of Natural Sciences $BOOKDECORATION. $MAYBETITLESCIENCE", 60, 1, 2],
 ["A $MAYBESIZE $MAYBECOLOUR book of bad poetry $BOOKDECORATION.", 19, 1, 1],
 ["A $MAYBESIZE $MAYBECOLOUR book of poetry $BOOKDECORATION.", 20, 1, 1],
 ["A <I>fine</I> $MAYBESIZE $MAYBECOLOUR book of adventures, it's a collector edition.", 40, 1, 2],
@@ -1395,26 +1873,27 @@ function rollXd10(x){
 function roll1d100(){
 "use strict";
  return Math.floor(Math.random() * 100) + 1;
-};
+}
 
 function removedoublespaces (str) {
 "use strict";
  str = str.replace(/ +(?= )/g,'');
  str = str.replace(/ \./g,'.');
  return str;
-};
+}
 
 function aanmanagement( str) {
 "use strict";
  var strnew = str.replace(/\b(a)\s([aeiou])/ig,'$1n $2');
  strnew = strnew.replace(/\b(a)\s<I>([aeiou])/ig,'$1n <I>$2');
  return strnew;
-};
+}
+
 
 function randomTreasure(TreasureType){
  if (TreasureType == -1) {
   TreasureType = Math.floor(Math.random() * TreasureAll.length) + 1;
- }; 
+ }
  treasure = TreasureAll[TreasureType-1][ Math.floor(Math.random() * TreasureAll[TreasureType-1].length) ];
  
  return treasure;
@@ -1424,35 +1903,37 @@ function parsemaybefine (parsedstr, valuemultiplier) {
  var lookingfor = "$MAYBEFINE";
  if (parsedstr.includes(lookingfor) == true) {
   if (valuemultiplier>200) { parsedstr = parsedstr.replace(lookingfor,"<I>fine</I>");} else 
-  {parsedstr = parsedstr.replace(lookingfor,"");};
- };
- return parsedstr
-};
+  {parsedstr = parsedstr.replace(lookingfor,"");}
+ }
+ return parsedstr;
+}
 
 function parseencumbrance (parsedstr, encumbrance) {
  var badlookingfor = "<I>bulky</I>";
  var goodlookingfor = "<I>lightweight</I>";
  if (parsedstr.includes(badlookingfor) == true) {
-  encumbrance = encumbrance + 1 };
+		encumbrance = encumbrance + 1;
+	}
  if (parsedstr.includes(goodlookingfor) == true) {
-  encumbrance = Math.max( 0 , encumbrance - 1) };
- return encumbrance
-};
+		encumbrance = Math.max(0, encumbrance - 1);
+	}
+ return encumbrance;
+}
 
 function parseAvailability (avalabilityval, parsedstr) {
  var val =  avalabilityval;
  for(var i=0; i < GOODQUALITY.length; i++){
   if (parsedstr.includes(GOODQUALITY[i][0]) == true){
    val = Math.min(4,val+1);
-  };
- };
+  }
+ }
  for(var i=0; i < BADQUALITY.length; i++){
   if (parsedstr.includes(BADQUALITY[i][0]) == true){
    val = Math.max(1,val-1);
-  };
- };
+  }
+ }
  return Availability[val-1];
-};
+}
 
 function parsequalities(originalString) {
     var valuemultiplier = 100;
@@ -1467,13 +1948,13 @@ function parsequalities(originalString) {
     if (originalString.includes(lookingfor) == true) { 
      valuemultiplier = valuemultiplier + strings[ randomnumber ][1];
      notdone = 1;
-    };
+    }
     var originalString = originalString.replace( lookingfor , replacement);
-   };
-  };
+   }
+  }
      var parsedString = aanmanagement(removedoublespaces(parsemaybefine(originalString,valuemultiplier)));
     return [ parsedString, Math.max(valuemultiplier/100,0.1)];
-};
+}
 
 function generateTreasure( tt) {
  var amount = amountInput.value;
@@ -1540,10 +2021,8 @@ You can also create the loot carried by them using my <a href="https://pacomisce
 <br>Inspiration: <a href="http://www.windsofchaos.com/wp-content/uploads/encroachment/html/generator-random-treasure-01.html">Encroatchment of Chaos, Treasure Generator by Dave Graffam</a>.
 <br>Inspiration: <a href="http://orteil.dashnet.org/randomgen/?gen=https://pastebin.com/raw/JcxC8pMx">WFRP 4e Equipment Generator</a>.
 <br>Inspiration: <a href="https://ratujmywfrp2pl.files.wordpress.com/2010/01/treasure-tables.pdf">Dan White's WFRP RANDOM TREASURE GENERATION</a>.
-<br>Inspiration: <a href="http://www.goatmansgoblet.com/2020/08/warhammer-fantasy-apothecary.html">Goatman's Goblet: WFRP The Apothecary (Trappings/Randomizers)</a>.
 <br>Game: Games Worshop and Cubicle 7
 <br>Other random generators: <a href="https://randroll.com/archive/warhammer-fantasy-roleplay-generators-guide/">https://randroll.com/archive/warhammer-fantasy-roleplay-generators-guide/</a></p>
 
 </body>
-</html>
 </html>
