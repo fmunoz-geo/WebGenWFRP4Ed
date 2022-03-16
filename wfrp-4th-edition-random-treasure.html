@@ -836,6 +836,36 @@ var WITHPAULDRONSANDTASSETS = [
 ["with pauldrons and tassets", 0],
 ];
 
+var MAILDECORATIONS = [
+	 ["decorated with bronze rings at the edges",0],
+	 ["decorated with golden rings at the edges", 10],
+	 ["decorated with $SHAPE of lacquered rings"]
+	 ["edged with $COLOUR ribbon",0],
+	 ["edged with $COLOUR ribbon",0],
+	 ["",0],
+	 ["",0],
+	 ["",0],
+	 ["",0],
+	 ["",0]
+];
+ 
+var HELMDECORATIONS = [
+  ["with a $COLOUR plume", 5],
+  ["with a gilded nose-guard", 0],
+  ["with a $FIERCEANIMAL figure on top",0],
+  ["with laurel wreath",0],
+  ["with pair of bovine horns",0],
+  ["with pair of caprine horns",0],
+  ["with laurel wreath",0],
+  ["with a pair of wings",0],
+  ["with a pair of antlers",0],
+  ["",0],
+  ["",0],
+  ["",0]
+];
+
+
+
 var CARDDECKS = [
 ["82-card Reiklander Tarock",0],
 ["82-card Reiklander Tarock",0],
@@ -1360,6 +1390,8 @@ var ALLSTRINGS = [
 ["$MINORMOD",MINORMOD],
 ["$QUALITY",QUALITY],
 ["$WITHPAULDRONSANDTASSETS",WITHPAULDRONSANDTASSETS],
+["$MAILDECORATIONS",MAILDECORATIONS],
+["$HELMDECORATIONS", HELMDECORATIONS],
 ["$CARDDECKS",CARDDECKS],
 ["$TRADETOOLS",TRADETOOLS],
 ["$GOODQUALITY",GOODQUALITY],
@@ -1504,7 +1536,7 @@ var TreasureClothing = [
 ];
 
 var TreasureCoins = [
-["A $GOODWOODENPREFIX $WOODMATERIAL chest with coins. It has "+(roll2d10()+2)+" gold crowns, "+(roll2d10()*roll2d10()+1)+" silver shillings and "+(roll2d10()*roll2d10()+10)+" pennies.", 8 , 2],
+["A $GOODWOODENPREFIX $WOODMATERIAL chest with coins. It has "+(rollg = roll2d10()+2)+" gold crowns, "+(roll2d10()*roll2d10()+1)+" silver shillings and "+(roll2d10()*roll2d10()+10)+" pennies.", 8 , 2],
 ["A secure $METALMATERIAL coin-box hanging on a chain necklace. It contains "+(roll1d10()+2)+" gold crowns, "+(roll2d10()+10)+" tarnished shillings and several brass pennies.", 12 , 1],
 ["A coin box with "+(roll2d10()+10)+" Crowns.", 2 , 0],
 ["A $MINORMOD coin box with "+(roll2d10()+2)+" karls.", 2 , 0],
@@ -1522,7 +1554,7 @@ var TreasureCoins = [
 ["A knotted piece of $MAYBECOLOUR cloth with " + (roll2d10()+12) +" brass pennies.", 2/12, 0],
 ["A $STAINS $MAYBECOLOUR pouch with a " + (roll2d10()+6) +" pennies.", 4/12, 0],
 ["A $BADCLOTH knotted piece of $MAYBECOLOUR cloth with " + (roll2d10()+5) +" brass pennies.",  2/12, 0],
-["A $BADCLOTH purse with " + (roll2d10()+2) +" pennies.", 2/12, 0],
+["A $BADCLOTH <I>ugly</I> purse with " + (roll2d10()+2) +" pennies.", 1/12, 0],
 ["A bit of string with " + (roll1d10()+2) +" pierced pennies in it.", 1/12, 0]
 ];
 
@@ -1720,6 +1752,7 @@ var TreasureArmour = [
 ["A $MAYBECOLOUR leather jerkin $BUTTONSCHARACTER  $SIZED.",10, 1, 1],
 ["A $GOODORBADCLOTH $MAYBECOLOUR leather jerkin $BUTTONSCHARACTER.",10, 1, 1],
 ["A $BADQUALITY $BADCLOTH $MAYBECOLOUR leather jerkin $BUTTONSCHARACTER.", 5, 1, 1],
+["A <i>fine</i> leather jerkin of good quality $COLOUR leather $CLOTHDECORATION.", 20, 1, 2],
 ["A $MAYBECOLOUR leather leggings.",14, 1, 1],
 ["A $GOODORBADCLOTH $MAYBECOLOUR leather leggings.",14, 1, 1],
 ["A $MAYBECOLOUR leather jack $BUTTONSCHARACTER $SIZED.",12, 1, 1],
@@ -1733,22 +1766,22 @@ var TreasureArmour = [
 
 ["A $MAYBECOLOUR boiled leather breastplate.",18, 2, 2],
 ["A $GOODQUALITY $MAYBECOLOUR boiled leather breastplate $DECORATION.",36, 2, 2],
-["A mail shirt.",40,2, 2],
-["A mail coat $SIZED.",60,3, 1],
+["A mail shirt $MAILDECORATIONS.",40,2, 2],
+["A mail coat $MAILDECORATIONS $SIZED.",60,3, 1],
 ["A mail coat.",60,3, 1],
-["A $GOODQUALITY mail coat.",120,3, 1],
-["A set of mail chausses.",40,3, 2],
-["A long mail coat.",100, 4, 2],
+["A $GOODQUALITY mail coat $MAILDECORATIONS.",120,3, 1],
+["A set of mail chausses $MAILDECORATIONS.",40,3, 2],
+["A long mail hauberk covering all the limbs and body $MAILDECORATIONS.",100, 4, 2],
 ["A breastplate $WITHPAULDRONSANDTASSETS.",200,3, 2],
 ["A $GOODQUALITY breastplate $WITHPAULDRONSANDTASSETS $DECORATION.",400,3, 2],
 ["A set of bracers.",160,3, 3],
 ["A $GOODQUALITY set of metal bracers $DECORATION.",320,3, 3],
 
-["An open helm.",40, 1, 1],
+["An open helm $HELMDECORATIONS.",40, 1, 1],
 ["An <I>durable</I> reinforced open helm.",80, 1, 1],
 ["A watchman's $MAYBECOLOUR leather skullcap and pot helmet $WRITING with the $CITY crest.",48, 2, 1],
 ["A $MAYBEFINE open helm $DECORATION.",40, 1, 1],
-["A helm with a $COLOUR plume.",60,2, 3],
+["A helm $HELMDECORATIONS.",60,2, 3],
 
 ["A $MAYBECOLOUR buckler",18+2/12, 0, 1],
 ["A buckler painted $COLOUR and $COLOUR.",18+2/12, 0, 1],
