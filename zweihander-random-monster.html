@@ -40,13 +40,14 @@ var SpeciesN;
 var SpeciesAll = ["Abyssal","Animal","Beast","Humanoid","Mutant","Supernatural"];
 
 /*Chance to use simple or martial weapons*/
-var WeaponChance = [0.5, 0.1, 0.1, 0.8, 0.6, 0.5];
+var WeaponChance = [0.5, 0.1, 0.1, 0.7, 0.6, 0.5];
 /*Chance of having Natural attack with the weapon*/
 var WeaponBothChance = [0.9, 0.9, 0.9, 0.2, 0.6, 0.5];
 /*Chance to be a magic user*/
 var MageChance   = [0.2, 0.1, 0.3, 0.1, 0.2, 0.3];
 var Mage = 0;
 var WeaponUser = 0;
+var SpellNames = [];
 
 var SizeN;
 var SizeAll = ["Small","Normal","Large","Huge"];
@@ -92,7 +93,7 @@ var TraitsBasic = [
 ["Feel the Heat","Flammable"],"Fetid Weaponry", 
 ["Hatred (Humans)","Hatred (Dwarves)","Hatred (Elves)","Hatred (Gnomes)","Hatred (Ogres)"],
 "Foul Mutation","Lick Your Wounds","Menacing",
-["Natural Armor (1)","Natural Armor (3)","Natural Armor (5)","Scar the Flesh"],
+["Natural Armor (1)","Natural Armor (1)","Natural Armor (3)","Natural Armor (5)","Scar the Flesh"],
 "One-two Punch","Pack Mentality",
 ["Paw/hoof/wing","Paw/hoof/wing","Paw/hoof/wing#Broken Wings"],
 "Perfect Camouflage",
@@ -105,7 +106,7 @@ var TraitsBasic = [
 "Wanton Hunger",
 ["Weak Spot (Head)","Weak Spot (Body)","Weak Spot (Legs)"]];
 
-var TraitsBasicWeaponUser = ["Point Blanck","Murderous Attacks","Saddle Tactics","Shootfighting","Shotgun Bang!"];
+var TraitsBasicWeaponUser = ["Point Blank","Murderous Attacks","Saddle Tactics","Shootfighting","Shotgun Bang!"];
 var TraitsBasicMage = ["Winds of Chaos"];
 
 var TraitsIntermediate = [
@@ -127,7 +128,7 @@ var TraitsIntermediate = [
 "One-two Punch","Pack Mentality",["Paw/hoof/wing","Paw/hoof/wing","Paw/hoof/wing#Broken Wings"],"Perfect Camouflage",
 ["Petrifying Gaze","Petrifying Gaze#Eyes Wide Shut"],
 "Poison Resistance",
-["Reanimator#I Thee Wed","Reanimator#Kill It With Fire","Reanimator#Kill It With Fire","Reanimator#Soul Jar","Reanimator#Witchboard"],
+["Reanimator#I Thee Wed","Reanimator#Kill it With Fire","Reanimator#Kill it With Fire","Reanimator#Soul Jar","Reanimator#Witchboard"],
 "Ringen","Ripping Teeth",
 "Salt of the Earth","Sanity-blasting","Silent Stalker",
 "Unruly",
@@ -135,7 +136,7 @@ var TraitsIntermediate = [
 ];
 var TraitIntermediateMage = ["Winds of Chaos","Living Chaos"];
 
-var TraitsIntermediateWeaponUser = ["Big Grim","Both-handedness","Snikt!Snikt!","Greanadier","Gift of Devils","I Got Axe for You","Murderous Attacks","Point Blanck","Saddle Tactics","Serpentine Cloak","Sharp-sighted","Shootfighting","Smoke Bomb",["Blam!Blam!","Blam!Blam!#Shotgun Bang!","Shotgun Bang!","Fwip!Fwip!","Fwip!Fwip!"],"Wytch-science"];
+var TraitsIntermediateWeaponUser = ["Big Grim","Both-handedness","Snikt!Snikt!","Grenadier","Gift of Devils","I Got Axe for You","Murderous Attacks","Point Blank","Saddle Tactics","Serpentine Cloak","Sharp-sighted","Shootfighting","Smoke Bomb",["Blam!Blam!","Blam!Blam!#Shotgun Bang!","Shotgun Bang!","Fwip!Fwip!","Fwip!Fwip!"],"Wytch-science"];
 
 var TraitsAdvanced = [
 "Accursed",["Acidic Spittle","Gastric Acidity","Acidic Spittle#Gastric Acidity"],["Aethereal Form","Aethereal Form#Bonds of Death","Aethereal Form#Bonds of Death"],
@@ -159,7 +160,7 @@ var TraitsAdvanced = [
 "One-two Punch","Pack Mentality",["Paw/hoof/wing","Paw/hoof/wing","Paw/hoof/wing#Broken Wings","Paw/hoof/wing#Broken Wings#Strafing Talons"],"Perfect Camouflage",
 ["Petrifying Gaze","Petrifying Gaze#Eyes Wide Shut","Transfixed Gaze","Transfixed Gaze#Entrancing"],
 ["Poison Resistance","Poison Resistance","Poison Resistance#Poisonous Bite","Poison Resistance#Poisonous Bite","Poisonous Bite"],
-["Reanimator#Ashes to Ashes","Reanimator#Come Into the Light","Reanimator#Weakness to Brass","Reanimator#Kill It With Fire","Reanimator#Soul Jar","Reanimator#Golden Death","Vampire's Curse","Vampire's Curse","Vampire's Curse"],
+["Reanimator#Ashes to Ashes","Reanimator#Come Into the Light","Reanimator#Weakness to Brass","Reanimator#Kill it With Fire","Reanimator#Soul Jar","Reanimator#Golden Death","Vampire's Curse","Vampire's Curse","Vampire's Curse"],
 "Ringen","Ripping Teeth",
 "Salt of the Earth","Sanity-blasting","Silent Stalker",
 "Unruly","Wall Crawler","Wanton Hunger","Wind Kick",
@@ -167,7 +168,7 @@ var TraitsAdvanced = [
 ];
 
 var TraitsAdvancedMage = ["Aetheric Domination","Ceremonial Runes","Winds of Chaos","Living Chaos","The Changer of Ways"];
-var TraitsAdvancedWeaponUser = ["Big Grim","Serpentine Cloak","Both-handedness","Gift of Devils","I Got Axe for You","Murderous Attacks","Saddle Tactics","Snikt!Snikt!","Shootfighting","Shotgun Bang!","Smoke Bomb","Sweeping Strike",["Blam!Blam!","Blam!Blam!#Shotgun Bang!","Shotgun Bang!","Point Blanck","Fwip!Fwip!","Fwip!Fwip!"],"Wytch-science"];
+var TraitsAdvancedWeaponUser = ["Big Grim","Serpentine Cloak","Both-handedness","Gift of Devils","I Got Axe for You","Murderous Attacks","Saddle Tactics","Snikt!Snikt!","Shootfighting","Shotgun Bang!","Smoke Bomb","Sweeping Strike",["Blam!Blam!","Blam!Blam!#Shotgun Bang!","Shotgun Bang!","Point Blank","Fwip!Fwip!","Fwip!Fwip!"],"Wytch-science"];
 
 
 
@@ -194,7 +195,7 @@ var TraitsElite = [
 ["Petrifying Gaze","Petrifying Gaze#Eyes Wide Shut","Transfixed Gaze","Transfixed Gaze#Entrancing"],
 ["Poison Resistance","Poison Resistance","Poison Resistance#Poisonous Bite","Poison Resistance#Poisonous Bite","Poisonous Bite"],
 "Potent Blows",
-["Reanimator#Ashes to Ashes","Reanimator#Come Into the Light","Reanimator#Weakness to Brass","Reanimator#Kill It With Fire","Reanimator#Soul Jar","Reanimator#Golden Death","Vampire's Curse","Vampire's Curse","Vampire's Curse"],
+["Reanimator#Ashes to Ashes","Reanimator#Come Into the Light","Reanimator#Weakness to Brass","Reanimator#Kill it With Fire","Reanimator#Soul Jar","Reanimator#Golden Death","Vampire's Curse","Vampire's Curse","Vampire's Curse"],
 "Ringen","Ripping Teeth",
 "Salt of the Earth","Sanity-blasting","Silent Stalker",
 "Unruly","Wall Crawler","Wanton Hunger","Wind Kick",
@@ -328,7 +329,7 @@ var TraitDescription = [
 ["In the Face","These creatures can only be harmed by melee and ranged weapons by using a Called Shot to the head."],
 ["Inescapable","When these creatures use a Chokehold, they are able to maintain it for 0 AP and use other Actions In Combat."],
 ["Keening Wail","These creatures can spend 2 APs to make an Interrogation Test. If successful, foes caught in a Cone Template who fail to Resist with a Resolve Test immediately suffer from Fear and cannot Counterspell or Parry until their next Turn. A foe can be made victim to Keening Wail every Turn."],
-["Kill It With Fire","Only after these creature's remains are set On Fire are they forever Slain!."],
+["Kill it With Fire","Only after these creature's remains are set On Fire are they forever Slain!."],
 ["Lamb to the Slaughter","When these creatures Injure a foe with a melee weapon, they inflict two Injuries instead of one."],
 ["Lick Your Wounds","These creatures can spend 1 Misfortune Point to move three steps up the Damage Condition Track positively."],
 ["Light Sensitive","When a foe uses Take Aim for 2 APs to shine a source of light upon this creature before making their attack, reduce its Damage Threshold by a -6 penalty (to a minimum of 1)."],
@@ -405,9 +406,10 @@ var WeaponsSimpleLow = [
 ];
 
 var WeaponsMartial = [
-"<B>Sabre</B>: : MM% . Distance (melee engaged) . Damage [CB] . Defensive",
-"<B>Morgenstern</B>: : MM% . Distance (melee engaged) . Damage [CB] . Adaptable, Powerful, Vicious",
-"<B>Battle Axe</B>: : MM% . Distance (melee engaged or 1 yard) . Damage [CB] . Adaptable, Reach, Slow, Vicious"
+"<B>Sabre</B>: MM% . Distance (melee engaged) . Damage [CB] . Defensive",
+"<B>Mortuary Sword</B>: MM% . Distance (melee engaged) . Damage [CB] . Vicious",
+"<B>Morgenstern</B>: MM% . Distance (melee engaged) . Damage [CB] . Adaptable, Powerful, Vicious",
+"<B>Battle axe</B>: MM% . Distance (melee engaged or 1 yard) . Damage [CB] . Adaptable, Reach, Slow, Vicious"
 ];
 
 var Attacks = [];
@@ -445,7 +447,7 @@ var WeaponsAnimal = [
 "<B>Terrible Bites or Claws</B>: SM% . Distance (melee engaged) . Damage [CB] . Finesse, Punishing, Vicious",
 "<B>Tusks</B>: SM% . Distance (melee engaged) . Damage [CB] . Fast, Powerful, Vicious",
 "<B>Vampiric Fangs</B>: SM% . Distance (melee engaged) . Damage [CB] . Fast, Vicious",
-"<B>Wall Crawler Spinneret</B>: SM% . Distance (ranged 3+[PB] yards) . Load (1 AP) . Damage (None) . Entangling, Ineffective, Throwing",
+//"<B>Wall Crawler Spinneret</B>: SM% . Distance (ranged 3+[PB] yards) . Load (1 AP) . Damage (None) . Entangling, Ineffective, Throwing",
 "<B>Yellow Teeth</B>: SM% . Distance (melee engaged) . Damage [CB] . Fast, Vicious, Weak"
 ];
 var WeaponsAnimalLow = [
@@ -539,11 +541,11 @@ var TaintOfChaos = [
 ["Cyclopean Eye",""],
 ["Demonic Tentacle",""],
 ["Doppelganger",""],
-["Egghead",""],
+["Egghead","+9% Intelligence"],
 ["Elongated Neck",""],
 ["Evil Eye",""],
 ["Eyes Without A Face",""],
-["Eyestalks",""],
+["Eyestalks","+9% Perception"],
 ["Fanged Maw",""],
 ["Fantastic Arms",""],
 ["Featherweight",""],
@@ -616,6 +618,31 @@ var TaintOfChaos = [
 ["Zoological Mutation",""]
 ];
 
+var GeneralistSpells = ["Ã†gis",
+"Anoint Weapon",
+"Bewitched",
+"Cack-handed Grasp",
+"Candlelight",
+"Dispel Magick",
+"Gust of Wind",
+"Hasten Speed",
+"Hat-trick",
+"Haunting",
+"Hush",
+"Indomitable Spirit",
+"Invoke Fury",
+"Magick Missile",
+"Pinprick",
+"Rainshade",
+"Robber's Misery",
+"Sanctuary",
+"Subdue",
+"Trackless Step",
+"Vow of Fealty",
+"Warding",
+"Will o' the Wisp",
+"Wytchsight"];
+
 function parseNamesAny (NamesArray,AnyNames) {
     var x;
     var y;
@@ -633,19 +660,19 @@ function parseNamesAny (NamesArray,AnyNames) {
 
 
 function dedupeName(NameArray) {
-    var i;
-    var j;
+    var di;
+    var dj;
     var toremove = [];
-    for (i = 0; i< (NameArray.length - 1); i += 1) {
-        for (j = i + 1; j < (NameArray.length ) ; j += 1) {
-            if( (NameArray[i]).localeCompare(NameArray[j]) == 0) { 
-                toremove.push(j);
+    for (di = 0; di< (NameArray.length - 1); di += 1) {
+        for (dj = di + 1; dj < (NameArray.length ) ; dj += 1) {
+            if( (NameArray[di]).localeCompare(NameArray[dj]) == 0) { 
+                toremove.push(dj);
             }
         }
     }
     if (toremove.length > 0) {
-        for (i in toremove) {
-            NameArray.splice ( toremove[i] , 1);
+        for (di in toremove) {
+            NameArray.splice ( toremove[di] , 1);
         }
     }
     return NameArray;
@@ -667,8 +694,7 @@ function parseTrait2Stats (TraitArray) {
     /* var StatsBonusName =   ["CB","BB","AB","PB","IB","WB","FB"]; */
     var stat = [0, 0, 0, 0, 0, 0, 0];
     var secondary = [0, 0, 0, 0, 0, 0, 0];
-    var secondary = [0, 0, 0, 0, 0, 0, 0];
-    var weapons = [];
+ var weapons = [];
     for (x in TraitArray) {
         switch (TraitArray[x]) {
             case "Brute Strength":
@@ -689,12 +715,49 @@ function parseTrait2Stats (TraitArray) {
             case "Scar the Flesh":
                 secondary[2] += 3;
                 break;
+				case "Taint of Chaos: Albinism":
+				case "Albinism":
+					stat[0] += -9;
+					break;
             case "Taint of Chaos: Cancerous Protection":
+				case "Cancerous Protection":
                 secondary[2] += 2;
                 break;
+				case "Taint of Chaos: Conehead":
+				case "Conehead":
+					stat[4] += -9;
+					break;
+				case "Taint of Chaos: Egghead":
+				case "Egghead":
+					stat[4] += 9;
+					break;
+				case "Taint of Chaos: Eyestalks":
+				case "Eyestalks":
+				case "Taint of Chaos: Third Eye":
+				case "Third Eye":
+					stat[3] += 9;
+					break;
+				case "Taint of Chaos: Mace-like Tail":
+				case "Mace-like Tail":
+					weapons.push("<B>Mace-like Tail</B>: SR% . Distance (melee engaged) . Load (1 AP) . Damage [CB] . Slow");
+					break;
+				case "Taint of Chaos: Moronic Mutation":
+				case "Moronic Mutation":
+					stat[5] += -9;
+					break;
+				case "Taint of Chaos: Pinhead":
+				case "Pinhead":
+					stat[3] += -3;
+					stat[4] += -3;
+					stat[5] += -3;
+					break;
+				case "Taint of Chaos: Pony Jumbo":
+				case "Pony Jumbo":
+					stat[0] += -9;
+					break;
             case "Serpentine Cloak":
                 secondary[2] += 1;
-    Trappings.push("Serpentine Cloak");
+    			Trappings.push("Serpentine Cloak");
                 break;
             case "Natural Armor (1)":
                 secondary[2] += 1;
@@ -725,16 +788,38 @@ function parseTrait2Stats (TraitArray) {
                 break;
    case "Shotgun Bang!":
    case "Blam!Blam!":
-   case "Point Blanck":
+   case "Point Blank":
                 weapons.push("<B>Flintlock Pistol</B>: SR% . Distance (ranged 7 yards) . Load (3 AP) • Damage (5) . Gunpowder, Volatile");
-    Trappings.push("<B>Flintlock Pistol</B>");
-    Trappings.push("Gunpowder & shot (6)");
-    break;
+    			Trappings.push("<B>Flintlock Pistol</B>");
+    			Trappings.push("Gunpowder & shot (6)");
+    			break;
+		case "Wytch-science":
+					//weapons.push("<B>Flintlock pistol</B>: SR% . Distance (ranged 7 yards) . Load (3 AP) â€¢ Damage (5) . Gunpowder, Volatile");
+					if(Math.random() < 0.66) {
+						weapons.push("<B>Wytchfyre Pistol</B>:");
+						weapons.push("<B>Wytchfyre Pistol</B>:");
+						Trappings.push("<B>Wytchfyre Pistol</B>");
+						Trappings.push("<B>Wytchfyre Pistol</B>");
+					} else if(Math.random() < 0.5) {
+						weapons.push("<B>Wytchfyre Jezzail</B>:");
+						Trappings.push("<B>Wytchfyre Jezzail</B>");
+					} else {
+						weapons.push("<B>Wytchfyre Jezzail</B>:");
+						Trappings.push("<B>Wytchfyre Jezzail</B>");
+					};
+					Trappings.push("Gunpowder & shot (6)");
+					break;   
+		case "Fwip! Fwip!":
+					ItWeapons.push("<B>Hunting bow</B>:");
+					Trappings.push("Arrows (6)");
+		break;
    case "Spit Fire":
                 weapons.push("<B>Spit Fire</B>: SR% . Distance (ranged 3+[PB] yards) . Load (0 AP) . Damage (Special) . Shrapnel");
                 break;
    case "Wall Crawler":
-                weapons.push("<B>Wall Crawler Grasp</B>: SM% . Distance (ranged 3+[PB] yards) . Load (1 AP) . Damage (None) . Entangling, Ineffective, Throwing");
+					if (Math.random() > 0.4) {
+					weapons.push("<B>Wall Crawler Grasp</B>: SM% . Distance (ranged 3+[PB] yards) . Load (1 AP) . Damage (None) . Entangling, Ineffective, Throwing") 
+					} else { weapons.push("<B>Wall Crawler Spinneret</B>: SM% . Distance (ranged 3+[PB] yards) . Load (1 AP) . Damage (None) . Entangling, Ineffective, Throwing") };
                 break;
    case "Wind Kick":
                 weapons.push("<B>Wind Kick</B>: SR% . Distance (melee engaged) . Damage (Special) . None");
@@ -760,7 +845,16 @@ function parseTrait2Stats (TraitArray) {
                 Trappings.push("Jug of wine");
                 break;
    case "Smoke Bomb":
-                Trappings.push("Smoke Bomb");
+					ItWeapons.push("<B>Smoke Bomb</B>");
+					break;
+		case "Grenadier":
+					ItWeapons.push("<B>Glass Grenade</B>");
+					break;
+		case "Big Grim":
+					WeaponsSimple.push("<B>Splitting maul</B>");
+					WeaponsSimple.push("<B>Scythe</B>");
+					WeaponsMartial.push("<B>Pole cleaver</B>");
+					WeaponsMartial.push("<B>ZweihÃ¤nder</B>");
                 break;
    case "Foul Mutation":  /*Ugly hack*/
     for (i =0;i<RiskN;i++) {
@@ -790,11 +884,12 @@ function FindTraitDesc (traitIndex) {
 
 var SpeciesRoll =  Math.floor(Math.random() *  SpeciesAll.length ) +1;
 
-if  (SpeciesChoice>0) {
-    SpeciesN = SpeciesChoice;
+if  (parseInt(SpeciesChoice)>0) {
+    SpeciesN = parseInt(SpeciesChoice);
 } else {
    SpeciesN = SpeciesRoll;
- };
+}
+
 SpeciesTxt = SpeciesAll[ SpeciesN - 1 ];
 
 
@@ -802,7 +897,8 @@ var RiskNRadio;
 for (RiskNRadio=0;RiskNRadio<document.RiskSelection.Risk.length;RiskNRadio++){ 
        if (document.RiskSelection.Risk[RiskNRadio].checked) 
           break; 
-};
+}
+
 RiskN = document.RiskSelection.Risk[RiskNRadio].value;
 
 if ( RiskN == -1 ) {
@@ -820,7 +916,7 @@ NotchN = document.NotchSelection.Notch[NotchNRadio].value;
 
 if ( NotchN == -1 ) {
     NotchN = Math.floor(Math.random()*NotchAll.length);
-};
+}
 
 NotchName = NotchAll[NotchN ];
 
@@ -837,22 +933,22 @@ if ( SizeN == -1 ) {
  /* Non basic are rarely small, basic are never huge*/
  if (Math.random() < (RiskN/(RiskAll.length+1))) {
   SizeN = Math.min(SizeN+1,SizeAll.length-1);
- };
+ }
  if (Math.random() > (RiskN/(RiskAll.length+1))) {
   SizeN = Math.max(SizeN-1,0);
- };
-};
+ }
+}
 
 SizeName = SizeAll[SizeN];
 
 for (i in Stats) {
     var randStat =  Math.floor(Math.random()* StatsAll [ RiskN ].length );
     Stats[i] =  StatsAll [ RiskN ].splice(randStat,1);
-};
+}
 
 for (i in Stats) {
     StatsBonus[i] =  Math.floor(Stats[i]/10);
-};
+}
 
 var StatBonusVal = StatsBonusByRisk[RiskN][NotchN];
 
@@ -861,19 +957,45 @@ while (StatBonusVal) {
     if (StatsBonusAdvance[rand] < StatBonusMax[RiskN] ){
         StatsBonusAdvance[rand] += 1,
         StatBonusVal -= 1;
-    };
-};
+    }
+}
 
 if ( Math.random() < WeaponChance[SpeciesN - 1] ) {
     WeaponUser = 1;
  TraitsAll[RiskN] = TraitsAll[RiskN].concat(TraitsWeaponUserAll[RiskN]);
  Skills = Skills.concat(SkillsWeaponUser);
-};
+}
 
 /*Abyssal creatures are almost always demons*/
 if ((SpeciesN == 1) && (Math.random() > 0.5) ){
   TraitNames.push( "Horror of the Pit" );
-};
+}
+//Animals and Beasts have animal feet
+if ((SpeciesN == 2) && (Math.random() > 0.3) ){
+  TraitNames.push( "Paw/hoof/wing" );
+}
+if ((SpeciesN == 3) && (Math.random() > 0.4) ){
+  TraitNames.push( "Paw/hoof/wing" );
+}
+
+var SkillVal = SkillRanks[RiskN][NotchN];
+
+if ( Math.random() < MageChance[SpeciesN - 1] ) {
+    SkillNames.push("Incantation");
+    SkillValues.push( SkillRanksMax[RiskN] );
+    SkillVal -= SkillRanksMax[RiskN] ;
+    Mage = 1;
+    TraitsAll[RiskN] = TraitsAll[RiskN].concat(TraitsMageAll[RiskN]);
+	Trappings.push("Arcane Tome with " + (SkillRanksMax[RiskN]*3) + " Generalistic and Petty Magick spells");
+	if (SkillRanksMax[RiskN]>1) {Trappings.push("Arcane Tome with " + ((SkillRanksMax[RiskN]-1)*3) + " Lesser Magick spells");}
+	if (SkillRanksMax[RiskN]>2) {Trappings.push("Arcane Tome with " + ((SkillRanksMax[RiskN]-2)*3) + " Greater Magick spells");}
+	Trappings.push("Reagents appropriate for Magicks (" + (SkillRanksMax[RiskN]*3+3) +")");
+	for (let j=0; j < (SkillRanksMax[RiskN]*3); j++) { 
+	    var randSpell = Math.floor( Math.random() * GeneralistSpells.length );
+		SpellNames.push( GeneralistSpells.splice(randSpell,1)[0]);
+	}
+}
+
 
 for (i=TraitNames.length; i<TraitsByRisk[ RiskN ][NotchN]; i++) {
     var randTrait = Math.floor(Math.random() * TraitsAll[RiskN].length );
@@ -881,7 +1003,7 @@ for (i=TraitNames.length; i<TraitsByRisk[ RiskN ][NotchN]; i++) {
     /* Multiple exclusive trait*/
     if (Array.isArray(TraitNames[TraitNames.length-1])) {
         TraitNames[TraitNames.length-1] = TraitNames[TraitNames.length-1][ Math.floor(Math.random() * TraitNames[TraitNames.length-1].length ) ];
-    };
+    }
  if (TraitNames[TraitNames.length-1].search("#") > -1) {
   var TraitArray = TraitNames[TraitNames.length-1].split("#");
   TraitNames[TraitNames.length-1] = TraitArray[0];
@@ -890,27 +1012,15 @@ for (i=TraitNames.length; i<TraitsByRisk[ RiskN ][NotchN]; i++) {
   if (TraitArray.length>2) { /*Ugly hack, replace for a proper loop*/
     TraitNames.push (TraitArray[2]);
     i += 1;
-  };
- };
-};
-
-var SkillVal = SkillRanks[RiskN][NotchN];
-
-
-if ( Math.random() < MageChance[SpeciesN - 1] ) {
-    SkillNames.push("Incantation");
-    SkillValues.push( SkillRanksMax[RiskN] );
-    SkillVal -= SkillRanksMax[RiskN] ;
-    Mage = 1;
-    TraitsAll[RiskN] = TraitsAll[RiskN].concat(TraitsMageAll[RiskN]);
- Trappings.push("Arcane tome with " + (SkillRanksMax[RiskN]*3) + " Petty Magick spells");
- if (SkillRanksMax[RiskN]>1) {Trappings.push("Arcane tome with " + ((SkillRanksMax[RiskN]-1)*3) + " Lesser Magick spells");};
- if (SkillRanksMax[RiskN]>2) {Trappings.push("Arcane tome with " + ((SkillRanksMax[RiskN]-2)*3) + " Greater Magick spells");};
- Trappings.push("Reagents appropriate for Magicks (" + (SkillRanksMax[RiskN]*3+3) +")");
-};
+  }
+ }
+}
 
 TraitNames = dedupeName(TraitNames);
 TraitNames.sort();
+
+
+
 
 while (SkillVal) {
     var rand =  Math.floor(Math.random()* Skills.length);
@@ -924,66 +1034,56 @@ while (SkillVal) {
         SkillNames.push( SkillsRare.splice(randrare,1)[0] );
         SkillValues.push( randVal );
         SkillVal -= randVal;
-    };
-};
+    }
+}
 
 /* For lower risk we add couple of crappy simple weapons */
 if (RiskN == 0) {
  WeaponsSimple = WeaponsSimple.concat(WeaponsSimpleLow);
-};
+}
 
 var SkillVal = 0;
 
+var ParsedOutput = parseTrait2Stats(TraitNames);
 if (WeaponUser) {
  var MeleeSkill = "Simple Melee";
- for (i=0;i<SkillNames.length;i++) {
-  if (SkillNames[i].includes("Melee") &&  SkillVal<SkillValues[i] ) {
-   MeleeSkill = SkillNames[i];
-   SkillVal = SkillValues[i];
+ for (let j=0;j<SkillNames.length;j++) {
+  if (SkillNames[j].includes("Melee") &&  SkillVal<SkillValues[j] ) {
+   MeleeSkill = SkillNames[j];
+   SkillVal = SkillValues[j];
   }
- };
+  }
  if (MeleeSkill == "Simple Melee") {
   Attacks.push(WeaponsSimple[Math.floor(Math.random()*WeaponsSimple.length)]);
  } else {
   Attacks.push(WeaponsMartial[Math.floor(Math.random()*WeaponsMartial.length)]);
  }; 
- Secondary[4] = SkillVal;
+ Secondary[4] = SkillVal*10;
  Trappings.push(Attacks[Attacks.length-1].split(":")[0]);
  if (Math.random()>.7) {
-	if (MeleeSkill == "Simple Melee") {
-		Trappings.push("Leather armor");
-		ArmorBonus = 1;
-	}
-	else {
-		Trappings.push("Brigandine armor");
-		ArmorBonus = 3;
-	}
- };
-};
-
-var DodgeVal = 0;
-
+ Trappings.push("Brigandine armor");
+ ArmorBonus = 3;
+ }
+}
+/*Coordination for Dodge*/
 for (i=0;i<SkillNames.length;i++) {
   if (SkillNames[i].includes("Coordination")) {
-   DodgeVal = SkillValues[i];
-   };
-};
-
-
+   Secondary[5] = SkillValues[i]*10;
+}};
 
 if (SizeN < 2) {
  WeaponsNatural[SpeciesN-1] = WeaponsNatural[SpeciesN-1].concat(WeaponsNaturalLow[SpeciesN-1]);
 } else if (SizeN > 1) {
  WeaponsNatural[SpeciesN-1] = WeaponsNatural[SpeciesN-1].concat(WeaponsNaturalHigh[SpeciesN-1]);
-};
+}
 
 if (Attacks.length == 0 || Math.random()<WeaponBothChance[SpeciesN-1] ) {
  Attacks.push(WeaponsNatural[SpeciesN-1][Math.floor(Math.random()*WeaponsNatural[SpeciesN-1].length)]);
  if (RiskN>1) {
   Attacks.push(WeaponsNatural[SpeciesN-1][Math.floor(Math.random()*WeaponsNatural[SpeciesN-1].length)]);
- };
-};
-var ParsedOutput = parseTrait2Stats(TraitNames);
+ }
+}
+//var ParsedOutput = parseTrait2Stats(TraitNames);
 StatsBonusTrait = ParsedOutput[0];
 SecondaryBonusTrait = ParsedOutput[1];
 
@@ -1004,16 +1104,16 @@ if (StatsBonusTrait[4] < 0) {
 
 if (ParsedOutput[2].length>0) {
  Attacks.push(ParsedOutput[2][0]);
-};
+}
 
 Secondary[0] = 3 + StatsBonus[3]+StatsBonusAdvance[3]+StatsBonusTrait[3];
 Secondary[1] = 3 + StatsBonus[2]+StatsBonusAdvance[2]+StatsBonusTrait[2];
-Secondary[2] = StatsBonus[1]+StatsBonusAdvance[1]+StatsBonusTrait[1] + ArmorBonus;
-Secondary[3] = 3 + StatsBonus[5]+StatsBonusAdvance[5]+StatsBonusTrait[5];
+Secondary[2] = StatsBonus[5]+StatsBonusAdvance[5]+StatsBonusTrait[5] + ArmorBonus;
+Secondary[3] = 3 + StatsBonus[1]+StatsBonusAdvance[1]+StatsBonusTrait[1];
 if (WeaponUser) {
- Secondary[4] =+ Stats[0] + (SkillVal*10);
+ Secondary[4] = Secondary[4] + Stats[0][0];
 };
-Secondary[5] =+ Stats[2] + (DodgeVal*10);
+Secondary[5] = Secondary[5] + Stats[2][0];
 
 /*Animals get Meat and hide*/
 if ( SpeciesN == 2 ) {
@@ -1021,7 +1121,7 @@ if ( SpeciesN == 2 ) {
  Trappings.push("Animal's Meat ("+ (3 + 3 * SizeN) +")");
 } else if ( SpeciesN == 3) {
  Trappings.push("Beast's Hide");
-};
+}
 
 Trappings = dedupeName(Trappings);
 Trappings.sort();
@@ -1044,7 +1144,7 @@ for (i in SecondaryName) {
 }
 StatsTxt += "</tr><tr style='text-align: right'>";
 for (i in Secondary) {
-    StatsTxt += "<td>" + (Secondary[i]  +SecondaryBonusTrait[i]) + (i==4||i==5?"%":"") + (i==5&&ArmorBonus==0?"<br>Natural":"") + "</td>";
+    StatsTxt += "<td>" + (Secondary[i]  +SecondaryBonusTrait[i]) + "</td>";
 }
 StatsTxt += "</tr></table>";
 
@@ -1061,14 +1161,14 @@ for (i = 0; i < SkillNames.length ; i += 1) {
 
 for (i = 0; i < Attacks.length ; i += 1) {
  AttackProfileTxt += Attacks[i]+"<br>";
-};
+}
 
 TrappingTxt = Trappings.join(", ");
 
 refreshCharacterDisplay ();
 
 return 1;
-};
+}
 
 //]]>
 </script>
