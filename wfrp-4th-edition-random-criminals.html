@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<style>
+th, td {
+    padding: 5px;
+}
+th {
+    background-color: black;
+    color: white;
+}
+padding
+</style>
+<head><title>WFRP 4th Edition NPC Criminal Organizations</title>
+
+<script>
+//<![CDATA[
+
+function roll1d10(){
+"use strict";
+ return Math.floor(Math.random() * 10) + 1;
+}
+
+function roll2d10(){
+"use strict";
+ return Math.floor(Math.random() * 10) + Math.floor(Math.random() * 10) + 2;
+}
+
+function rollXd10(x){
+"use strict";
+    var j;
+    var roll= 0;
+    for (j = 0; j < x; j += 1) {
+        roll += roll1d10();
+    }
+    return roll;
+}
+
+function roll1d100(){
+"use strict";
+ return Math.floor(Math.random() * 100) + 1;
+}
+
+function removedoublespaces (str) {
+"use strict";
+ str = str.replace(/ +(?= )/g,'');
+ str = str.replace(/ \./g,'.');
+ return str;
+};
+
+function aanmanagement( str) {
+"use strict";
+ var strnew = str.replace(/\b(a)\s([aeiou])/ig,'$1n $2');
+ strnew = strnew.replace(/\b(a)\s<I>([aeiou])/ig,'$1n <I>$2');
+ return strnew;
+};
+
+
+
+function generateEncounter(CriminalChoice) {
+"use strict";
+var EncounterTxt = "";
+var CriminalType = -1;
+var CriminalN;
+
+var CriminalGroup = ["Squad","Guild","Order","Order","Group","People","Association","Fraternity","Followers","Cabal","Friends","Children","Family","Brotherhood"];
+var CriminalAdjetive = ["Silent","Sly","Secret","Hidden","Fallen","Stray","Alley","Block","Street","Bloody","Bone","Savage"]
+var CriminalShortName = ["Bats","Dogs","Crows","Vultures","Wolves","Eels","Snakes","Serpents","Shadows","Ghosts","Knives","Daggers","Razors","Nails","Spikes","Clubs","Hands"]
+
+var CriminalWeapons = ["improvised weapons","simple hand weapons","daggers and knifes"];
+
+var CriminalLeader = ["a very charismatic leader","a cunning leader","a ruthless leader","council of three"];
+  
+var CriminalSpecial = ["who has the watch bribed", "with eyes all around town", "who has no mercy on their enemies", "who has a couple of ogre bodyguards always behind", "loved by everyone","with links to the other criminal organizations", "who uses an unique magic item","whose real identity is secret even to other members","who has possesion of books of forbidden texts"];
+  
+var CriminalSign = ["They don't need identification, as the group name is enough",
+   "They all wear a pendant"+(Math.random() < 0.6 ? " with a hidden sign":""),
+   "They all carry small visit card",
+   "A piece of oddly coloured clothing is used by members",
+   "A"+(Math.random() < 0.6 ? " hidden":"")+" tatoo mark their alliance",
+   "They all have a ritual scar "+(Math.random() < 0.5 ? " hidden under their clothes":""),
+   "A secret handshake is used to recognice the members",
+   "A complex code of movements is used as grettings between members",
+   "They use secret code phrases between them",
+   "An entire secret language with hidden meaning is used in their comunications and bussines", 
+   "A secret code is sewn in their clothes, markings their rank and position in the organization"];
+
+var CrimeList = [
+	"extortion","thievery","prostitution","forgery","counterfeiting","tax evasion","smuggling","illegal gambling","bet fixing"
+]
+  
+var TypesCriminals = [
+{ CriminalType:"a halfling family with large ties everywhere", 
+	ExtraLeader:"a heavy set matron, aunt and gramma of all of them",
+	ExtraShortName:"Pies",
+	ExtraAdjetive:["Short","Tiny"], 
+	ExtraWeapon:["daggers and slings","crossbows"],
+	ExtraCrime:"dubious meat pies"},
+{ CriminalType:"a group of labourers (steevedores/bricklayers/teamsteers/Other) with partial control of the guild.",
+	ExtraLeader:"a foreman of the guild",
+	ExtraShortName:"Fists",
+	ExtraAdjetive:["Rough","Honest"],
+	ExtraWeapon:"metal bars, hooks and heavy tools",
+	ExtraCrime:"extortion",
+	ExtraCrime:""},
+{ CriminalType:"a bunch of Ranald devotes",
+	ExtraLeader: ["a bizarre thief monk","a priest of the trickter god"],
+	ExtraShortName:"Cats",
+	ExtraAdjetive: "Gray",
+	ExtraWeapon:"just daggers and luck",
+	ExtraCrime: "scamming the rich and powerful"},
+{ CriminalType:"Tileans inmigrants", 
+	ExtraLeader: "a 'godfatherly' figure, respected by all inmigrant comunity",
+	ExtraShortName:"Luigis",
+	ExtraAdjetive: ["Tilean","Tobaro's","Luccini's"], 
+	ExtraWeapon:"daggers and poisons",
+	ExtraCrime: "racketting"},
+{ CriminalType:"Estalians inmigrants", 
+	ExtraLeader: "an estalian with little knoledwe of Reikspiel, <i>¿Qué?</i>",
+	ExtraShortName:"Braves", 
+	ExtraAdjetive: ["Estalian","Magritta's","Bilbali's"],
+	ExtraWeapon:"rapiers and heavy cloaks",
+	ExtraCrime: "illegal dueling"},
+{ CriminalType:"a secret group of burguers",
+	ExtraLeader:["a filthy rich merchant","an influential public figure"], 
+	ExtraShortName:["Company","Syndicate"], 
+	ExtraAdjetive:["Golden","Silver","Bountiful","Abundant"], 
+	ExtraWeapon:["guilded daggers","ornamental swords"],
+	ExtraCrime: ["grafting","fraud"]},
+{ CriminalType:"a clan of shunned dwarves",
+	ExtraLeader:"a cunning but really old clan leader, even for a dwarf", 
+	ExtraShortName:"Clan", 
+	ExtraAdjetive:["Stone","Steel"], 
+	ExtraWeapon:"fine axes and warhammers",
+	ExtraCrime:"unlicensed weapon craft"},
+{ CriminalType:"a group with dark ties, its inner core a cult",
+	ExtraLeader:"a blessed with the dark gods gifts", ExtraShortName:"Servants",ExtraWeapon:"curved daggers",
+	ExtraCrime:["witchery", "unlicense magic practice"]},
+{ CriminalType:"a party of ex-adventurers",
+	ExtraLeader:"a seasoned adventurer",ExtraShortName:"Party", ExtraAdjetive:"Adventurer",
+	ExtraWeapon:"a large assortment of weapons"},
+{ CriminalType:"a thieves' guild with extrange rules",
+	ExtraLeader:"a thief labeled by themself as high level",ExtraShortName:"Assasins", ExtraAdjetive:"Nefarious",
+	ExtraWeapon:"daggers and short swords",
+	ExtraCrime:"burglary"},
+];
+
+var CriminalQuarters = [
+"a secret underground room reachable by the sewer tunnels",
+"a few condemned houses, boarded and advandoned",
+"the basement of a busy tavern",
+"a dilapidated wharehouse",
+"the upper floor of a private club"
+];
+
+/*
+var ChaosCriminals = [
+["a Chaos cult, followers of Khorne",["Slaves","Killers","Pact","Warriors"],["Dark","Bronze","Bloody","Red","Burning","Hateful"],["Skull","Axe","Hound","Eight"], ["battle axes", "and armoured like a military unit"], ["bloodthirsty berserker", "hardened veteran", "hideous mutant","Chaos Warrior"], ["armed with a chaos weapon", "covered in in a steel and brass full armour"] , ["Scars cross the body of all members"]],
+  ["a Chaos cult, followers of Khorne",["Slaves","Killers","Pact","Warriors"],["Dark","Bronze","Bloody","Red","Burning","Hateful"],["Skull","Axe","Hound","Eight"], ["battle axes", "and armoured like a military unit"], ["bloodthirsty berserker", "hardened veteran", "hideous mutant","Chaos Warrior"], ["armed with a chaos weapon", "covered in in a steel and brass full armour"], ["Scars cross the body of all members"] ],
+ 
+["a Chaos cult, followers of Slaanesh",["Slaves","Lovers"],["Dark","Pink","Blue","Hedonic","Frantic","Singing"],["Prince","Lover","Phallus","Tongue","Crab","Pain","Pleasure","Six"], ["whips and chains","dueling swords"], ["inhumanly attractive leader","strange mutant","Chaos Warrior"], ["with disturbing magical powers"], ["Subtle unique makeup is used by all members"] ],
+["a Chaos cult, followers of Slaanesh",["Slaves","Lovers"],["Dark","Pink","Blue","Hedonic","Frantic","Singing"],
+["Prince","Lover","Phallus","Tongue","Crab","Pain","Pleasure","Six"], ["whips and chains","dueling swords"], ["inhumanly attractive leader","strange alluring mutant","Chaos Warrior"], ["with disturbing magical powers"],["Subtle unique makeup is used by all members"]],
+
+["a Chaos cult, followers of Tzeentch",["Losts","Students","Coven"],["Dammed","Purple","Pink","Blue","Red","Ebon","Rainbow"],["Change","Hand","Bird","Fire","Eye","Flame","Illusion","Talon","Nine"], ["staves", "cremonial daggers"], ["powerful chaos magus","hideous mutant","Chaos Warrior"], ["with demoniac servants","with disturbing magical powers"], ["A small minor mutation, usually hidden from view, could be found in all members"]],
+["a Chaos cult, followers of Tzeentch",["Losts","Students","Coven"],["Dammed","Purple","Pink","Blue","Red","Ebon","Rainbow"],["Change","Hand","Bird","Fire","Eye","Flame","Illusion","Talon","Nine"], ["staves", "cremonial daggers"], ["powerful chaos magus","hideous mutant","Chaos Warrior"], ["with demoniac servants","with disturbing magical powers"], ["A small minor mutation, usually hidden from view, could be found in all members"]],
+  
+["a Chaos cult, followers of Nurgle",["Losts","Contagion"],["Dammed","Green","Brown","Bloated","Putrid","Purulent"],["Uncle","Plague","Pox","Fly","Worm","Maggot","Seven"], ["rusty weapons"], ["hideous mutant","Chaos Warrior"],["whose touch spread <a href='https://pacomiscelaneousstuff.blogspot.com/2020/03/wfrp-4th-edition-random-disease.html'>disease</a>", "with disturbing magical powers"], ["A putrid pustule marrs the body of all members"]],
+["a Chaos cult, followers of Nurgle",["Losts","Contagion"],["Dammed","Green","Brown","Bloated","Putrid","Purulent"],["Uncle","Plague","Pox","Fly","Worm","Maggot","Seven"], ["rusty weapons"], ["hideous mutant","Chaos Warrior"],["whose touch spread <a href='https://pacomiscelaneousstuff.blogspot.com/2020/03/wfrp-4th-edition-random-disease.html'>disease</a>", "with disturbing magical powers"], ["A putrid pustule marrs the body of all members"]],
+  
+["a Chaos cult, followers of the Undivided Chaos",["Horde"],["United"],["Pantheon","Destruction"], ["weapons of all kinds"], ["hideous mutant","Chaos Warrior"],["with beastmen servants", "with disturbing magical powers"], ["Thay all have a eigth arrow sign hidden in their possesion"]],
+ ["a Chaos cult, followers of Malice",["Horde"],["Outcast","Renegade","Black and White"],["Skull"], ["strange weapons"], ["hideous mutant","Chaos Warrior"],["with beastmen servants", "with disturbing magical powers"], ["The skin of the members seems to lack colours"]],
+];
+
+var EvilCriminals = [
+["an evil cult following Khaine",["Circle","Cell"],["Hidden","Poisoned"],["Dagger","Skeleton","Scorpion","Brother"],["poisoned daggers","poisoned blowguns"],["misterious assassin","dark priest"], ["master of disguise","skilled in necromancy","expert on poisons, drugs and venoms","who controls a host of skeletons"], ["All the knifes and daggers owned by the members have a peculiar curved shape"]],
+["an evil cult following Stormfels",["Parish", "Crew"],["Hungry","Deep","Sunken","Underwater"],["Storm","Shark","Lightning","Trident"], ["hooks","tridents"],["fanatic cleric", "pirate captain"], ["who control the storms","disguised as a cleric of Manann"], ["They all wear a peculiar shark tooth ornaments"] ],
+["an evil cult following the teachings of Nagash",[],["Ancient","Undying","Khemrian"], ["Skull","Skeleton","Usurper"], ["Khemrian swords","curved daggers"], ["powerful necromancer","undead spirit","ancient liche"], ["who controls a host of skeletons","who uses ghots as servants"], ["A scarab motiff is common in all the members."]],
+["an evil cult following Drachenfels",[],["Iron"],["Mask","Great Enchanter"],[],["dark magician"],["skilled in necromancy","able to summon elemental creatures"],[]],
+["an evil cult following a Sylvanian Vampire",["Spawns"],["Thirsty","Red","Crimson"],["Blood","Fangs"],[],["ancient vampire","charming vampire","faithful strigany servant"], ["skilled in necromancy","who controls a large group of zombies"],["Faint bite marks could be found in the rank members"]],
+["an evil cult in league with a greater demon",["Circle"],["Deamoniac","Powerful","Migthy"],["Beyond","Prince","Princess"],["ritual knives"],["the demon itself disguised as a person","powerful demonologist","dabbler ocultist"], ["expert in summoning demoniac servants", "who taught magic to several members"],[]]
+];
+var MundaneCriminals = [
+["a group moved by pure greed",["Fellowship","Society","Guild","Company","Syndicate"],["Golden","Silver","Bountiful","Abundant"],["Profit","Purse"],["gilded daggers","ornamental swords"], ["rich merchant","powerful politician"],["who has a group of ruthless mercenaries hired","with much influence over a lot of professional guilds","rich beyond measure"], ["A gold ring with a hidden sigil is used by the members"]], 
+["a group following deranged teachings",["Society"],["Hidden","Secret"],["Mistery","Idol","Star","Toad","Fire","Light","Oracle"],["impractical ceremony weapons"],["crazy seer", "bumbling idiot"],["with too much sheer luck","plagued by strange dreams"], []],
+["a group following an unlicensed mage",["Cabal","School","Coven","Council"],["Enligthed","Magical"],["Secret","Eye","Dhar","Circle","Light"],["staves"],["dark mage","powerful pyromancer","powerful astromancer","powerful alchemist"],["with access to a few magic items", "who taught magic to several members"], []]
+];
+*/
+var CriminalsAll = [TypesCriminals];
+
+var CriminalSize = [ "a small group just less than a dozen members",
+"a medium sized group with "+ (roll1d10()+10) + " members", 
+"a large group with "+ (roll2d10()+19) + " members", 
+"a very large group with "+ (rollXd10(4) +26) + " members"];
+
+
+function refreshDisplay () {
+    document.getElementById("CriminalB").innerHTML = EncounterTxt;
+}
+
+/*------ Start Rolling--------*/
+
+if  (CriminalChoice>-1) {
+    CriminalN =  CriminalChoice;
+} else {
+    CriminalN =  Math.floor(Math.random() * CriminalsAll.length );
+}
+var SubCriminalN =  Math.floor(Math.random() * (CriminalsAll[CriminalN]).length );
+var CriminalGroupFinal = CriminalGroup/*.concat( CriminalsAll[CriminalN][SubCriminalN][1] )*/;
+
+var CriminalGroupN = Math.floor(Math.random() * CriminalGroupFinal.length )
+var CriminalAdjetiveFinal = CriminalAdjetive.concat( TypesCriminals[SubCriminalN].ExtraAdjetive );
+
+var CriminalAdjetiveN = Math.floor(Math.random() * CriminalAdjetiveFinal.length );
+
+var CriminalShortNameFinal = CriminalShortName.concat(TypesCriminals[SubCriminalN].ExtraShortName );
+var CriminalShortNameN = Math.floor(Math.random() * CriminalShortNameFinal.length );
+
+var CriminalSizeN = Math.floor(Math.random() * CriminalSize.length );
+
+var CriminalWeaponsFinal = CriminalWeapons.concat(TypesCriminals[SubCriminalN].ExtraWeapon );
+var CriminalWeaponsN = Math.floor(Math.random() * CriminalWeaponsFinal.length );
+
+var CriminalLeaderFinal = CriminalLeader.concat(TypesCriminals[SubCriminalN].ExtraLeader );
+var CriminalLeaderN = Math.floor(Math.random() * CriminalLeaderFinal.length );
+
+var CriminalSpecialFinal = CriminalSpecial/*.concat(CriminalsAll[CriminalN][SubCriminalN][6] )*/;
+var CriminalSpecialN = Math.floor(Math.random() * CriminalSpecialFinal.length );
+
+var CriminalSignFinal = CriminalSign/*.concat(CriminalsAll[CriminalN][SubCriminalN][7] )*/;
+var CriminalSignN = Math.floor(Math.random() * CriminalSignFinal.length );
+
+var CriminalName = (Math.random() < 0.7 ? "The " + CriminalAdjetiveFinal[CriminalAdjetiveN] + " "+ (Math.random() < 0.7 ? CriminalShortNameFinal[CriminalShortNameN]: CriminalGroup[CriminalGroupN]) :
+	(Math.random() < 0.4 ? "The " + CriminalAdjetiveFinal[CriminalAdjetiveN] + " "+ CriminalGroupFinal[CriminalGroupN] + " of the " + CriminalShortNameFinal[CriminalShortNameN]  
+	:  "The " + CriminalGroupFinal[CriminalGroupN] + " of the " + CriminalAdjetiveFinal[CriminalAdjetiveN] + " " + CriminalShortNameFinal[CriminalShortNameN] ));
+var EncounterTxt = "<b>" + CriminalName + "</b><br>" ;
+
+var CrimeListFinal = CrimeList.concat(TypesCriminals[SubCriminalN].ExtraCrime );
+var CrimeA = CrimeListFinal.splice(Math.floor(Math.random() * CrimeListFinal.length), 1);
+var CrimeB = CrimeListFinal.splice(Math.floor(Math.random() * CrimeListFinal.length), 1);
+var CrimeC = CrimeListFinal.splice(Math.floor(Math.random() * CrimeListFinal.length), 1);
+
+EncounterTxt = EncounterTxt + "The group is mostly composed by " + TypesCriminals[SubCriminalN].CriminalType+".<br>";
+EncounterTxt = EncounterTxt + "It is lead by a " + CriminalLeaderFinal[CriminalLeaderN]+ " " + CriminalSpecialFinal[CriminalSpecialN] + ".<br>";
+EncounterTxt = EncounterTxt + "It is " + CriminalSize[CriminalSizeN] + " armed mostly with " + CriminalWeaponsFinal[CriminalWeaponsN]+ ".<br>";
+EncounterTxt = EncounterTxt + "The group is know for "+ CrimeA + ", " + CrimeB + " and " + CrimeC + ".<br>";
+EncounterTxt = EncounterTxt + CriminalSignFinal[CriminalSignN] + ".<br>";
+refreshDisplay ();
+return 1;
+}
+//]]>
+</script>
+</head>
+<body>
+
+<h1>Generate Enemy Criminals Organizations</h1>
+<h2>WFRP 4th Edition Random Criminal Organizations Generator</h2>
+<button type="button" onclick="generateEncounter(-1)">Generate Now!</button><br>
+<br>
+
+
+<p id="CriminalB">Click one of the buttons above to generate your Criminal Organization.</p>
+
+<p>
+If you need basic criminals or corrupted watchmen, you can get them with my <a href="https://pacomiscelaneousstuff.blogspot.com/2019/08/npc-generator.html">WFRP4 NPC Generator</a>.<br>
+If you need a cult instead of just some boring criminals, <a href="https://pacomiscelaneousstuff.blogspot.com/2020/09/wfrp-4th-edition-npc-cults.html">WFRP4 Cult Generator</a>.<br>
+If you need Chaos Warriors or Mutants to spice things up, go to my <a href="https://pacomiscelaneousstuff.blogspot.com/2019/08/monster-generator.html">WFRP4 Monster Generator</a>.<br>
+</p>
+    <p id="Acknowledgements"><a href="https://github.com/fmunoz-geo/WebGenWFRP4Ed">Code: Francisco Mu&ntilde;oz 2022.</a>
+<br>Inspiration: <a href="http://inplacesdeep.blogspot.com/2011/11/random-cult-generator.html">In Places Deep: Random Cult Generator</a>
+<br>Inspiration: <a href="https://www.dndspeak.com/2022/06/lets-build-a-thieves-guild/">DnD Speak: Lets Build: A Thieves’ Guild</a>
+<br>Game: Games Worshop and Cubicle 7</p>
+
+</body>
+</html>
