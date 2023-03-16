@@ -62,18 +62,12 @@ function roll1d10(){
 "use strict";
  return Math.floor(Math.random() * 10) + 1;
 }
+function rollXd10(x) {
+  return Array.from({ length: x }, roll1d10).reduce((a, b) => a + b);
+}
 function roll2d10(){
 "use strict";
- return Math.floor(Math.random() * 10) + Math.floor(Math.random() * 10) + 2;
-}
-function rollXd10(x){
-"use strict";
-    var j;
-    var roll= 0;
-    for (j = 0; j < x; j += 1) {
-        roll += roll1d10();
-    }
-    return roll;
+ return rollXd10(2);
 }
 function roll1d100(){
 "use strict";
@@ -86,16 +80,13 @@ function randPick(myArray) {
 }
 function createPDF () {
 	var sTable = document.  getElementById ('characterPrint').innerHTML;
-
 	var style = "<style>";
 	style = style + "table {width: 100%;font: 17px Calibri;}";
 	style = style + "table, th, td {border: solid 1px #DDD; border-collapse: collapse;";
 	style = style + "padding: 2px 3px;text-align: center;}";
 	style = style + "</style>";
-
 	// CREATE A WINDOW OBJECT.
 	var win = window.  open ('', '', 'height=700,width=700');
-
 	win.document.write('<html><head>');
 	win.document.write('<title>Profile</title>');  // <title> FOR PDF HEADER.
 	win.document.write(style);  // ADD STYLE INSIDE THE HEAD TAG.
@@ -103,9 +94,7 @@ function createPDF () {
 	win.document.write('<body>');
 	win.document.write(sTable);  // THE TABLE CONTENTS INSIDE THE BODY TAG.
 	win.document.write('</body></html>');
-
 	win.document.  close ();  // CLOSE THE CURRENT WINDOW.
-
 	win.  print ();  // PRINT THE CONTENTS.
 }
 async function showCustomDialog(message, buttonLabels = ['Yes', 'No']) {
@@ -166,6 +155,20 @@ async function showCareerDialog(careers) {
     careerDialog.style.display = 'block';
   });
 }
+
+// ["WS","BS","S","T","I","AG","DEX","INT","WP","FEL","M","W"];
+const ST_WS = 0;
+const ST_BS = 1;
+const ST_S = 2;
+const ST_T = 3;
+const ST_I = 4;
+const ST_AG = 5;
+const ST_DEX = 6;
+const ST_INT = 7;
+const ST_WP = 8;
+const ST_FEL = 9;
+const ST_M = 10;
+const ST_W = 11;
 
 async function generateChar(SpeciesChoice) {
 "use strict";
@@ -1347,41 +1350,42 @@ function parseTalent2Stats (TalentArray) {
     var stat = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     for (x in TalentArray) {
         switch (TalentArray[x]) {
-            case "Coolheaded":
-                stat[8] = 5;
-                break;
-            case "Fleetfooted": /*Movement*/
-                break;
-            case "Hardy": /*Wounds*/
-                break;
-            case "Lightning Reflexes":
-                stat[4] = 5;
-                break;
-            case "Marksman":
-                stat[1] = 5;
-                break;
-            case "Nimble Fingered":
-                stat[6] = 5;
-                break;
-            case "Savvy":
-                stat[7] = 5;
-                break;
-            case "Sharp":
-                stat[5] = 5;
-                break;
-            case "Suave":
-                stat[9] = 5;
-                break;
-            case "Very Resilient":
-                stat[3] = 5;
-                break;
-            case "Very Strong":
-                stat[2] = 5;
-                 break;
-            case "Warrior Born":
-                stat[0] = 5;
-                 break;
-            default:
+		  case "Coolheaded":
+			stat[ST_WP] = 5;
+			break;
+		  case "Fleetfooted":
+			break;
+		  case "Hardy":
+			break;
+		  case "Lightning Reflexes":
+			stat[ST_AG] = 5;
+			break;
+		  case "Marksman":
+			stat[ST_BS] = 5;
+			break;
+		  case "Nimble Fingered":
+			stat[ST_DEX] = 5;
+			break;
+		  case "Savvy":
+			stat[ST_INT] = 5;
+			break;
+		  case "Sharp":
+			stat[ST_I] = 5;
+			break;
+		  case "Suave":
+			stat[ST_FEL] = 5;
+			break;
+		  case "Very Resilient":
+			stat[ST_T] = 5;
+			break;
+		  case "Very Strong":
+			stat[ST_S] = 5;
+			break;
+		  case "Warrior Born":
+			stat[ST_WS] = 5;
+			break;
+		  default:
+			break;
         }
     }
     return stat;
@@ -1664,6 +1668,8 @@ StatsExtraBase[2] += FateResilienceRoll[0];
 StatsExtraBase[3] += FateResilienceRoll[1];
 var ski = CareerSkill[CareerN];
 var randskiChoice =  [
+[5,5,5,5,5,5,5,5],
+[5,5,5,5,5,5,5,5],
 [5,5,5,5,5,5,5,5],
 [7,6,5,5,5,5,4,3],
 [6,6,6,5,5,4,4,4],
