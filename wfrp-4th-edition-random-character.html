@@ -9,6 +9,51 @@ th {
     background-color: black;
     color: white;
 }
+.custom-dialog {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+.custom-dialog-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.custom-dialog-buttons {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 10px;
+}
+.custom-dialog-buttons button {
+  background-color: #4caf50;
+  border: none;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  width: 100px;
+  height: 30px;
+  line-height: 30px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.custom-dialog-buttons button:hover {
+  background-color: #45a049;
+}
 </style>
 <head><title>WFRP 4th Edition Random character</title>
 <script>
@@ -63,8 +108,66 @@ function createPDF () {
 
 	win.  print ();  // PRINT THE CONTENTS.
 }
+async function showCustomDialog(message, buttonLabels = ['Yes', 'No']) {
+  return new Promise((resolve) => {
+    const customDialog = document.getElementById('customDialog');
+    const customDialogText = document.getElementById('customDialogText');
+    const customDialogButtons = document.getElementById('customDialogButtons');
 
-function generateChar(SpeciesChoice) {
+    customDialogText.textContent = message;
+
+    // Clear existing buttons and add new ones
+    customDialogButtons.innerHTML = '';
+    buttonLabels.forEach((label, index) => {
+      const button = document.createElement('button');
+      button.textContent = label;
+      button.onclick = () => {
+        customDialog.style.display = 'none';
+        resolve(index);
+      };
+      customDialogButtons.appendChild(button);
+    });
+    customDialog.style.display = 'block';
+  });
+}
+async function showCareerDialog(careers) {
+  return new Promise((resolve) => {
+    const careerDialog = document.getElementById('careerDialog');
+    const careerForm = document.getElementById('careerForm');
+    const careerDialogSubmit = document.getElementById('careerDialogSubmit');
+
+    // Clear the form and add radio buttons for the given careers
+    careerForm.innerHTML = '';
+    careers.forEach((career, index) => {
+      const radioButton = document.createElement('input');
+      radioButton.type = 'radio';
+      radioButton.name = 'career';
+      radioButton.value = index;
+      radioButton.id = `career${index}`;
+
+      const label = document.createElement('label');
+      label.htmlFor = `career${index}`;
+      label.textContent = career;
+
+      careerForm.appendChild(radioButton);
+      careerForm.appendChild(label);
+      careerForm.appendChild(document.createElement('br'));
+    });
+
+    // Select the first radio button by default
+    careerForm.elements[0].checked = true;
+
+    careerDialogSubmit.onclick = () => {
+      careerDialog.style.display = 'none';
+      const selectedIndex = parseInt(careerForm.elements['career'].value, 10);
+      resolve(selectedIndex);
+    };
+
+    careerDialog.style.display = 'block';
+  });
+}
+
+async function generateChar(SpeciesChoice) {
 "use strict";
 var Name = "";
 var NameTxt = "";
@@ -1208,22 +1311,26 @@ function randomTalent(){
      }
      return TalentRandomName[i];
 }
-function parseInicialTalent(TalentArray) {
+async function parseInicialTalent(TalentArray) {
 /* Get Initial Talents */
      var x;
      var ch;
      var Talents;
      for (x in TalentArray) {
           Talents = TalentArray[x].split(" or ");
-          if (Talents.length > 1) {
-               if (document.getElementById("choiceCheck").checked == true)  {
-                    refreshCharacterDisplay ();
-                   ch = (confirm (TalentArray[x])?0:1);
-               } else {
-                   ch = Math.floor(Math.random() * Talents.length );
-               }
-           TalentArray[x] = Talents [ch];
-      }
+		  if (Talents.length > 1) {
+			if (document.getElementById("choiceCheck").checked == true) {
+			  refreshCharacterDisplay();
+			  const selectedIndex = await showCustomDialog(
+				"Select an option: " + TalentArray[x],
+				[Talents[0], Talents[1]]
+			  );
+			  ch = selectedIndex;
+			} else {
+			  ch = Math.floor(Math.random() * Talents.length);
+			}
+			TalentArray[x] = Talents[ch];
+		  }
           if (TalentArray[x] == "Random") {
                TalentArray[x] = randomTalent();
           }
@@ -1328,7 +1435,7 @@ function dedupeNameValue(NameArray,ValueArray) {
     var CombinedArray = [NameArray, ValueArray];
     return CombinedArray;
 }
-function parseOrParenthesis(NameArray) {
+async function parseOrParenthesis(NameArray) {
      var i;
      var Pick;
      var Base;
@@ -1339,7 +1446,11 @@ function parseOrParenthesis(NameArray) {
             Pick = Base[1].split(" or ");
             if (Pick.length > 1) {
                if (document.getElementById("choiceCheck").checked == true)  {
-                   ch = (confirm (NameArray[i])?0:1);
+			     const selectedIndex = await showCustomDialog(
+					"Select an option: " + NameArray[i],
+					[Pick[0], Pick[1]]
+				   );
+                   ch = selectedIndex;
                } else {
                    ch = Math.floor(Math.random() * Pick.length );
                }
@@ -1471,7 +1582,7 @@ for (i = 0; i < 6; i += 1) {
 console.log(SkillStart);
 console.log(SkillNames);
 TalentNames = TalentStartAll [ SpeciesN - 1 ];
-TalentNames = parseInicialTalent (TalentNames);
+TalentNames = await parseInicialTalent (TalentNames);
 TalentValues = Array(TalentNames.length).fill(1);
 var CareerSpecies = CareerSpeciesAll [ SpeciesN - 1 ];
 var CareerRoll = roll1d100();
@@ -1483,39 +1594,34 @@ CareerN = i;
 CareerName = CareerAll[CareerN];
 /*If we agree keep the 1st career so no changes just less xp*/
 if ((document.getElementById("careerCheck").checked == true) ) {
-    refreshCharacterDisplay ();
-    if ( !confirm("Keep career as " + SpeciesTxt + " " + CareerName) ) {
-        var newCareerRoll = [CareerRoll,0,0];
-        var newCareerN = [CareerN,0,0];
-        var newCareerName = [CareerName,"",""];
-        var x;
-        for (i=1;i<3; i += 1) {
-            newCareerRoll[i] = roll1d100();
-            x = 0;
-            while (CareerSpecies[x] < newCareerRoll[i] ) {
-                x += 1;
-            }
-            newCareerN[i] = x;
-            newCareerName[i] = CareerAll[x];
+   refreshCharacterDisplay();
+    const keepCurrentCareer = await showCustomDialog("Keep career as " + SpeciesTxt + " " + CareerName);
+    if (keepCurrentCareer) {
+      var newCareerRoll = [CareerRoll, 0, 0];
+      var newCareerN = [CareerN, 0, 0];
+      var newCareerName = [CareerName, "", ""];
+
+      for (i = 1; i < 3; i += 1) {
+        newCareerRoll[i] = roll1d100();
+        x = 0;
+        while (CareerSpecies[x] < newCareerRoll[i]) {
+          x += 1;
         }
-        if (!confirm("Keep first from " + newCareerName.toString())) {
-            if (confirm("Keep second from " + newCareerName.toString())) {
-                CareerRoll = newCareerRoll[1];
-                CareerN = newCareerN[1];
-                CareerName=newCareerName[1];
-            } else {
-                CareerRoll = newCareerRoll[2];
-                CareerN = newCareerN[2];
-                CareerName=newCareerName[2];
-            }
-        } 
-        xp += 25;
-    }  else  {
-        xp += 50;
+        newCareerN[i] = x;
+        newCareerName[i] = CareerAll[x];
+      }
+
+      const selectedIndex = await showCareerDialog(newCareerName);
+      CareerRoll = newCareerRoll[selectedIndex];
+      CareerN = newCareerN[selectedIndex];
+      CareerName = newCareerName[selectedIndex];
+      xp += 25;
+    } else {
+      xp += 50;
     }
-} else {
-        xp += 50;
-}
+  } else {
+    xp += 50;
+  }
 ClassN = Math.floor(CareerN / 8);
 StatsCareer[ CareerAdvance[CareerN][0] ] = 1;
 StatsCareer[ CareerAdvance[CareerN][1] ] = 1;
@@ -1527,7 +1633,8 @@ for (i in StatsR) {
 }
 if ((document.getElementById("reRollCheck").checked == true) ) {
     refreshCharacterDisplay ();
-    if ( !confirm(StatsR) ) {
+    const keepCurrentStats = await showCustomDialog("Keep current stats: " + StatsR.toString());
+    if (keepCurrentStats) {
         for (i in StatsR) {
             StatsR[i] = roll2d10();
         }
@@ -1582,7 +1689,8 @@ TalentValues.push(1);
 StatsTalents = parseTalent2Stats(TalentNames);
  
 TalentNames = parseTalentAny(TalentNames).slice(0);
-SkillNames = parseOrParenthesis(SkillNames).slice(0);
+SkillNames = await parseOrParenthesis(SkillNames);
+SkillNames = SkillNames.slice(0)
 console.log(SkillNames);
 SkillNames = parseSkillAny(SkillNames).slice(0);
  console.log(SkillNames);
@@ -1697,7 +1805,21 @@ Ask Simple Choices:</td><td><input type="checkbox" id="choiceCheck">
 </div>
 <input type="button" value="Create PDF" 
   id="btPrint" onclick ="createPDF()" />
-
+<div id="customDialog" class="custom-dialog">
+  <div class="custom-dialog-content">
+    <p id="customDialogText"></p>
+    <div id="customDialogButtons" class="custom-dialog-buttons"></div>
+  </div>
+</div>
+<div id="careerDialog" class="custom-dialog">
+  <div class="custom-dialog-content">
+    <p>Select a career:</p>
+    <form id="careerForm">
+      <!-- Radio buttons will be added here using JavaScript -->
+    </form>
+    <button id="careerDialogSubmit">Submit</button>
+  </div>
+</div>
 <p id="Links">
 To generate simpler NPCS like the ones you might meet in a <a href="https://pacomiscelaneousstuff.blogspot.com/2020/03/wfrp-inn-generator.html">tavern</a> check my <a href="https://pacomiscelaneousstuff.blogspot.com/2019/08/npc-generator.html">NPC Generator</a> to create Merchants, Scholar, Soldiers and similar citizens that could be found in an <a href="https://pacomiscelaneousstuff.blogspot.com/2020/03/wfrp-inn-generator.html">inn</a> or belonging to a <a href="https://pacomiscelaneousstuff.blogspot.com/2020/09/wfrp-4th-edition-npc-cults.html">cult</a>.<br>
 If you need a more dangerous set you might check my <a href="https://pacomiscelaneousstuff.blogspot.com/2019/08/monster-generator.html">Monster Generator</a> to create Mutants, Orcs, Goblins or worse.<br>
