@@ -46,8 +46,10 @@ var COLOUR = [
 var ADJETIVE = [
 ["Golden"],
 ["Silver"],
+["Dancing"],
 ["Hanged"],
 ["Happy"],
+["Thirsty"],
 ["$COLOUR"]
 ];
 
@@ -70,14 +72,26 @@ var NOBLE = [
 var WHSTUFF = [
 ["Comet"],
 ["Skull"],
-["Hearth"],
+["Heart"],
 ["Feather"],
 ["Hourglass"]
+];
+
+var PERSON = [
+["$NOBLE"],
+["Estalian"],
+["Bretonian"],
+["Tilean"],
+["Rover"],
+["Rover"],
+["Minstrel"]
 ];
 
 var CREATURE = [
 ["Goblin"],
 ["Troll"],
+["Giant"],
+["Ogre"],
 ["Halfling"],
 ["Dwarf"]
 ];
@@ -86,6 +100,7 @@ var NAME = [
 ["$ANIMAL"],
 ["$FIERCEANIMAL"],
 ["$NOBLE"],
+["$PERSON"],
 ["$WHSTUFF"],
 ["$CREATURE"]
 ];
@@ -96,6 +111,12 @@ var MAYBETHE = [
 [""]
 ];
 
+var MAYBEAPS = [
+[""],
+[""],
+["'s"]
+];
+
 var MAYBEPLACE = [
 ["Tavern"],
 ["Inn"],
@@ -104,6 +125,13 @@ var MAYBEPLACE = [
 [""],
 [""]
 ];
+
+var SIZE= [
+["small"],
+["medium sized"],
+["large"]
+];
+
 var WALLMATERIAL = [
 ["wooden"],
 ["stone"],
@@ -115,14 +143,34 @@ var DRINKQUALITY = [
 ["strong"],
 ["piss-poor"],
 ["spicy"],
+["strong"],
 ["excelent"]
 ];
+
+var DRINKTYPE= [
+["drinks"],
+["ales"],
+["ales"],
+["beer"],
+["wines"],
+["bretonian wines"]
+];
+
 var PIEFILLING = [
 ["venison meat"],
 ["beff"],
 ["onions and rabbit"],
 ["mistery meat"],
 ["pork and cabbage"]
+];
+
+
+var BOUNCER = [
+["ogre"],
+["armoured dwarf"],
+["scarred veteran"],
+["ex-pit figther"],
+["halfling wielding too-many-knives"]
 ];
 
 var GAME = [
@@ -132,9 +180,9 @@ var GAME = [
 ["Beast Among the Tailors, a popular skittle game"],
 ["bowls"],
 ["Bull Ring, a ring tossing game"],
-["cards witg a Reiklander Tarock deck"],
-["cards witg a Reiklander Tarock deck"],
-["cards witg a Wissen Trioki deck"],
+["cards with a Reiklander Tarock deck"],
+["cards with a Reiklander Tarock deck"],
+["cards with a Wissen Trioki deck"],
 ["Cerevis, a card and drinking game"],
 ["darts"],
 ["dominoes"],
@@ -149,6 +197,7 @@ var GAME = [
 var ALLSTRINGS = [
 ["$MAYBEPLACE",MAYBEPLACE],
 ["$MAYBETHE",MAYBETHE],
+["$MAYBEAPS",MAYBEAPS],
 ["$NAME",NAME],
 ["$ANIMAL",ANIMAL],
 ["$FIERCEANIMAL",FIERCEANIMAL],
@@ -156,29 +205,43 @@ var ALLSTRINGS = [
 ["$CREATURE",CREATURE],
 ["$ADJETIVE",ADJETIVE],
 ["$NOBLE",NOBLE],
+["$PERSON",PERSON],
 ["$WHSTUFF",WHSTUFF],
 ["$REST",REST],
+["$SIZE",SIZE],
 ["$WALLMATERIAL",WALLMATERIAL],
 ["$GAME",GAME],
 ["$PIEFILLING",PIEFILLING],
-["$DRINKQUALITY",DRINKQUALITY]
+["$BOUNCER",BOUNCER],
+["$DRINKQUALITY",DRINKQUALITY],
+["$DRINKTYPE",DRINKTYPE]
 ];
 
 var Inns = [
 ["The $NAME $MAYBEPLACE."],
+["The $NAME $MAYBEPLACE."],
 ["$MAYBETHE $ADJETIVE $NAME $MAYBEPLACE."],
 ["The $NAME and the $NAME $MAYBEPLACE."],
 ["The $ADJETIVE $NAME and the $ADJETIVE $NAME $MAYBEPLACE."],
-["The $NOBLE $REST $MAYBEPLACE."]
+["The $ADJETIVE $PERSON$MAYBEAPS $REST $MAYBEPLACE."],
+["The $NOBLEMAYBEAPS $REST $MAYBEPLACE."]
 ];
 
 var InnStuff = [
-["It's surounded by a $WALLMATERIAL wall."],
-["It's famous for its $DRINKQUALITY drinks."],
+["A $SIZE establishment surrounded by a $WALLMATERIAL wall."],
+["It's famous for its $DRINKQUALITY $DRINKTYPE."],
 ["Inside always seems to be people playing $GAME."],
+["It's guarded by a $BOUNCER bouncer."],
 ["They serve halfling-made pies filled with $PIEFILLING."]
 ];
 
+var RoomOffer =[
+["It offers private rooms (10 s) and really cheap common rooms (3 d)."],
+["It offers private rooms (10 s) and common rooms (10 d)."],
+["It offers fine private rooms (1 gc) and average common rooms (10 d)."],
+["It offers average (10 s) and fine private rooms (1 gc)."]
+];
+  
 var InnType = -1;
 
 function roll1d10(){
@@ -249,22 +312,34 @@ function randomInn (InnType){
 function randomDesc (InnType){
  if (InnType == -1) {
   InnType = Math.floor(Math.random() * InnStuff.length) + 1;
- }; 
- var inn = InnStuff[Math.floor(Math.random() * InnStuff.length)];
+ };
+
+ var inn = InnStuff[Math.floor(Math.random() * InnStuff.length)][0] + "<br>" + RoomOffer[Math.floor(Math.random() * RoomOffer.length)][0] ;
  
- return inn[0];
+ return inn;
 };
 
 function generateInn ( tt) {
-  
+ var amount = amountInput.value;
+ if (isNaN(amount)) { 
+  amount = 3;
+ } else {
+  amount = Math.min(parseInt(amount,10), 15);
+  amount = Math.max(amount, 1);
+ };
+ document.getElementById("amountInput").value = amount;
+    for(j=0; j < amount; j++){
+   
   var inn = randomInn(tt);
   var parsedinn = parsequalities(inn);
   var desc = randomDesc(tt);
   var parseddescription = parsequalities(desc);
 
   var finalString = "<h3>"+parsedinn+"</h3>"+parseddescription;
+  var innTargetText = "InnB"+(j+1);
 
-  document.getElementById("InnB").innerHTML = finalString;
+  document.getElementById(innTargetText).innerHTML = finalString;
+ };
 
 };
 
@@ -273,18 +348,35 @@ function generateInn ( tt) {
 <body>
     <h1>Generate Inn</h1>
     <h2>WFRP Random Inn Generator</h2>
- <p>This is a simple Inn generator.<br>
+ <p>This is a simple Inn generator, still mostly WIP.<br>
 If you need people you might meet inside check my <a href="https://pacomiscelaneousstuff.blogspot.com/2019/08/npc-generator.html">NPC Generator</a> to create Merchants, Scholar, Soldiers and similar citizens.<br>
 If you need a more dangerous set you might check my <a href="https://pacomiscelaneousstuff.blogspot.com/2019/08/monster-generator.html">Monster Generator</a> to create Mutants, Orcs, Goblins or worse.<br>
 To have a more detailed Old Worlders you can use the list of my <a href="https://pacomiscelaneousstuff.blogspot.com/2018/09/generic-npc-stats-for-4th-edition.html">Generic NPCs stats for 4th edition</a>.<br>
 You can also create the loot carried by them using my <a href="https://pacomiscelaneousstuff.blogspot.com/2019/08/treasure-generator.html">Random Treasure Generator</a>.
  </p>
-<button type="button" onclick="generateInn(-1)">Generate Now!</button><br>
-<p id="InnB"> </p>
+<button type="button" onclick="generateInn(-1)">Generate Now!</button><br> <label>Amount : <input type="text" maxlength="2" value= "5" size="2" id="amountInput"/></label><br> 
+<p id="InnB1"> </p>
+<p id="InnB2"> </p>
+<p id="InnB3"> </p>
+<p id="InnB4"> </p>
+<p id="InnB5"> </p>
+<p id="InnB6"> </p>
+<p id="InnB7"> </p>
+<p id="InnB8"> </p>
+<p id="InnB9"> </p>
+<p id="InnB10"> </p>
+<p id="InnB11"> </p>
+<p id="InnB12"> </p>
+<p id="InnB13"> </p>
+<p id="InnB14"> </p>
+<p id="InnB15"> </p>
+  
+<div class="separator" style="clear: both;"><a href="https://1.bp.blogspot.com/-CxW7zgDSHlA/YBJ6Mt6A_WI/AAAAAAAAtiE/byt2ZxlNVDoe9VoS3B4kgiuR3dQ7Q8fLQCLcBGAsYHQ/s2048/20210128_094554.jpg" style="display: block; padding: 1em 0; text-align: center; "><img alt="" border="0" width="200" data-original-height="1637" data-original-width="2048" src="https://1.bp.blogspot.com/-CxW7zgDSHlA/YBJ6Mt6A_WI/AAAAAAAAtiE/byt2ZxlNVDoe9VoS3B4kgiuR3dQ7Q8fLQCLcBGAsYHQ/s200/20210128_094554.jpg"/></a></div>
 <p id="Acknowledgements">Code: Francisco Mu&ntilde;oz 2019.
 <br>Game: Games Worshop and Cubicle 7
-<br>Core WFRP 4th edition book: <a href="https://www.drivethrurpg.com/product/248284/Warhammer-Fantasy-Roleplay-Fourth-Edition-Rulebook">Warhammer Fantasy Roleplay Fourth Edition Rulebook</a>
-<br>Tavern Games from: <a href="https://www.drivethrurpg.com/product/273300/Warhammer-Fantasy-Roleplay-Fourth-Edition-Rough-Nights-and-Hard-Days">Warhammer Fantasy Roleplay Fourth Edition Rough Nights and Hard Days</a>
+<br>Core WFRP 4th edition book: <a href="https://www.drivethrurpg.com/product/248284/Warhammer-Fantasy-Roleplay-Fourth-Edition-Rulebook?affiliate_id=91369">Warhammer Fantasy Roleplay Fourth Edition Rulebook</a>
+<br>Tavern Games from: <a href="https://www.drivethrurpg.com/product/273300/Warhammer-Fantasy-Roleplay-Fourth-Edition-Rough-Nights-and-Hard-Days?affiliate_id=91369">Warhammer Fantasy Roleplay Fourth Edition Rough Nights and Hard Days</a>
+<br>Other random tavern generator for Warhammer: <a href="http://orteil.dashnet.org/randomgen/?gen=YmmACP0J">http://orteil.dashnet.org/randomgen/?gen=YmmACP0J</a>
 <br>Other random generators: <a href="https://randroll.com/archive/warhammer-fantasy-roleplay-generators-guide/">https://randroll.com/archive/warhammer-fantasy-roleplay-generators-guide/</a></p>
 
 </body>
