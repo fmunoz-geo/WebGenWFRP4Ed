@@ -1638,7 +1638,7 @@ if ((document.getElementById("reRollCheck").checked == true) ) {
         for (i in StatsR) {
             StatsR[i] = roll2d10();
         }
-        alert (StatsR);
+        await showCustomDialog("New stats: " + StatsR.toString(), ["OK"]);
         xp += 25;
     }  else  {
         xp += 50;
