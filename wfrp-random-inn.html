@@ -194,6 +194,13 @@ var GAME = [
 ["arm-wrestling matches"],
 ];
 
+var COVERED = [
+  ["in murals depicting famous battles"],
+  ["with paitings of hunting scenes"],
+  ["with beautiful tapestries"],
+  ["with grime and soot from years of pipe smoking by the patrons."],
+  ["with grim trophies, such as skulls and weapons taken from vanquished foes"]
+];
 var ALLSTRINGS = [
 ["$MAYBEPLACE",MAYBEPLACE],
 ["$MAYBETHE",MAYBETHE],
@@ -214,6 +221,7 @@ var ALLSTRINGS = [
 ["$PIEFILLING",PIEFILLING],
 ["$BOUNCER",BOUNCER],
 ["$DRINKQUALITY",DRINKQUALITY],
+["$COVERED", COVERED],
 ["$DRINKTYPE",DRINKTYPE]
 ];
 
@@ -224,7 +232,7 @@ var Inns = [
 ["The $NAME and the $NAME $MAYBEPLACE."],
 ["The $ADJETIVE $NAME and the $ADJETIVE $NAME $MAYBEPLACE."],
 ["The $ADJETIVE $PERSON$MAYBEAPS $REST $MAYBEPLACE."],
-["The $NOBLEMAYBEAPS $REST $MAYBEPLACE."]
+["The $NOBLE$MAYBEAPS $REST $MAYBEPLACE."]
 ];
 
 var InnStuff = [
@@ -232,7 +240,9 @@ var InnStuff = [
 ["It's famous for its $DRINKQUALITY $DRINKTYPE."],
 ["Inside always seems to be people playing $GAME."],
 ["It's guarded by a $BOUNCER bouncer."],
-["They serve halfling-made pies filled with $PIEFILLING."]
+["They serve halfling-made pies filled with $PIEFILLING."],
+["The place has a stable and offers horse rentals for guests."],
+["The walls are covered $COVERED."]
 ];
 
 var RoomOffer =[
