@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Random Magic Grimoire Generator</title>
+    <script>
+        // Arcane spell list
+        var Arcane = [
+            ["Aethyric Armour", 2],
+            ["Aethyric Arms", 2],
+            ["Arrow Shield", 3],
+            ["Blast", 4],
+            ["Bolt", 4],
+            ["Breath", 6],
+            ["Bridge", 4],
+            ["Chain Attack", 6],
+            ["Corrosive Blood", 4],
+            ["Dark Vision", 1],
+            ["Distracting", 4],
+            ["Dome", 7],
+            ["Drop", 1],
+            ["Entangle", 3],
+            ["Fearsome", 3],
+            ["Flight", 3],
+            ["Magic Shield", 4],
+            ["Move Object", 4],
+            ["Mundane Aura", 4],
+            ["Push", 6],
+            ["Teleport", 5],
+            ["Terrifying", 7],
+            ["Ward", 5]
+        ];
+
+        // Placeholder for Lore spells (you can fill in the actual spells)
+        var LoreSpells = {
+            "Lore of Beasts": [["Amber Talons", 6], ["Beast Form", 5], ["Beast Master", 10], 
+                ["Beast Tongue", 3], ["Flock of Doom", 8], ["Hunter’s Hide", 6], 
+                ["The Amber Spear", 8], ["Wyssan’s Wildform", 8]],
+            "Lore of Death": [["Caress of Laniph", 7], ["Dying Words", 6], ["Purple Pall of Shyish", 6],
+                ["Sanctify", 6], ["Scythe of Shyish", 6], ["Soul Vortex", 8], 
+                ["Steal Life", 7], ["Swift Passing", 6]],
+            "Lore of Fire": [["Aqshy’s Aegis", 5], ["Cauterise", 4], ["Crown of Flame", 8], 
+                ["Flaming Hearts", 8], ["Firewall", 6], ["Lore of Fire (6)", 0], ["Lore of Fire (7)", 0], ["Lore of Fire (8)", 0]],
+            "Lore of Heavens": [["Lore of Heavens (1)", 0], ["Lore of Heavens (2)", 0], ["Lore of Heavens (3)", 0], ["Lore of Heavens (4)", 0], ["Lore of Heavens (5)", 0], ["Lore of Heavens (6)", 0], ["Lore of Heavens (7)", 0], ["Lore of Heavens (8)", 0]],
+            "Lore of Metal": [["Lore of Metal (1)", 0], ["Lore of Metal (2)", 0], ["Lore of Metal (3)", 0], ["Lore of Metal (4)", 0], ["Lore of Metal (5)", 0], ["Lore of Metal (6)", 0], ["Lore of Metal (7)", 0], ["Lore of Metal (8)", 0]],
+            "Lore of Life": [["Lore of Life (1)", 0], ["Lore of Life (2)", 0], ["Lore of Life (3)", 0], ["Lore of Life (4)", 0], ["Lore of Life (5)", 0], ["Lore of Life (6)", 0], ["Lore of Life (7)", 0], ["Lore of Life (8)", 0]],
+            "Lore of Light": [["Lore of Light (1)", 0], ["Lore of Light (2)", 0], ["Lore of Light (3)", 0], ["Lore of Light (4)", 0], ["Lore of Light (5)", 0], ["Lore of Light (6)", 0], ["Lore of Light (7)", 0], ["Lore of Light (8)", 0]],
+            "Lore of Shadows": [["Lore of Shadows (1)", 0], ["Lore of Shadows (2)", 0], ["Lore of Shadows (3)", 0], ["Lore of Shadows (4)", 0], ["Lore of Shadows (5)", 0], ["Lore of Shadows (6)", 0], ["Lore of Shadows (7)", 0], ["Lore of Shadows (8)", 0]],
+            "Lore of Hedgecraft": [["Lore of Hedgecraft (1)", 0], ["Lore of Hedgecraft (2)", 0], ["Lore of Hedgecraft (3)", 0], ["Lore of Hedgecraft (4)", 0], ["Lore of Hedgecraft (5)", 0], ["Lore of Hedgecraft (6)", 0], ["Lore of Hedgecraft (7)", 0], ["Lore of Hedgecraft (8)", 0]],
+            "Lore of Witchcraft": [["Lore of Witchcraft (1)", 0], ["Lore of Witchcraft (2)", 0], ["Lore of Witchcraft (3)", 0], ["Lore of Witchcraft (4)", 0], ["Lore of Witchcraft (5)", 0], ["Lore of Witchcraft (6)", 0], ["Lore of Witchcraft (7)", 0], ["Lore of Witchcraft (8)", 0]],
+            "Lore of Daemonology": [["Lore of Daemonology (1)", 0], ["Lore of Daemonology (2)", 0], ["Lore of Daemonology (3)", 0], ["Lore of Daemonology (4)", 0], ["Lore of Daemonology (5)", 0], ["Lore of Daemonology (6)", 0], ["Lore of Daemonology (7)", 0], ["Lore of Daemonology (8)", 0]],
+            "Lore of Necromancy": [["Lore of Necromancy (1)", 0], ["Lore of Necromancy (2)", 0], ["Lore of Necromancy (3)", 0], ["Lore of Necromancy (4)", 0], ["Lore of Necromancy (5)", 0], ["Lore of Necromancy (6)", 0], ["Lore of Necromancy (7)", 0], ["Lore of Necromancy (8)", 0]],
+            "Lore of Nurgle": [["Lore of Nurgle (1)", 0], ["Lore of Nurgle (2)", 0], ["Lore of Nurgle (3)", 0], ["Lore of Nurgle (4)", 0], ["Lore of Nurgle (5)", 0], ["Lore of Nurgle (6)", 0], ["Lore of Nurgle (7)", 0], ["Lore of Nurgle (8)", 0]],
+            "Lore of Slaanesh": [["Lore of Slaanesh (1)", 0], ["Lore of Slaanesh (2)", 0], ["Lore of Slaanesh (3)", 0], ["Lore of Slaanesh (4)", 0], ["Lore of Slaanesh (5)", 0], ["Lore of Slaanesh (6)", 0], ["Lore of Slaanesh (7)", 0], ["Lore of Slaanesh (8)", 0]],
+            "Lore of Tzeentch": [["Lore of Tzeentch (1)", 0], ["Lore of Tzeentch (2)", 0], ["Lore of Tzeentch (3)", 0], ["Lore of Tzeentch (4)", 0], ["Lore of Tzeentch (5)", 0], ["Lore of Tzeentch (6)", 0], ["Lore of Tzeentch (7)", 0], ["Lore of Tzeentch (8)", 0]]
+        };
+        var LORECOLOUR = {
+            "Lore of Beasts": [["amber","brown","tan"]],
+            "Lore of Death": [["purple","black","dark"]],
+            "Lore of Fire": [["red","orange","yellow"]],
+            "Lore of Heavens": [["blue","celeste","silver"]],
+            "Lore of Metal": [["golden","yellow","bronze"]],
+            "Lore of Life": [["green","jade","tan"]],
+            "Lore of Light": [["white","silver","ivory"]],
+            "Lore of Shadows": [["black","dark","grey"]],
+            "Lore of Hedgecraft": [["green","brown","tan","black"]],
+            "Lore of Witchcraft": [["black","purple","red","blue","white","dark grey"]],
+            "Lore of Daemonology": [["black","purple","red","blue","white","dark grey"]],
+            "Lore of Necromancy":  [["black","purple","red","blue","white","dark grey"]],
+            "Lore of Nurgle": [["green","brown","tan","black"]],
+            "Lore of Slaanesh": [["pink","purple","black","dark"]],
+            "Lore of Tzeentch": [["blue","celeste","silver","gold","multicoloured"]]
+        };
+        var LOREMATERIAL = {
+            "Lore of Beasts": [["hide", "$COLOUR leather", "fur covered", "bone covered"]],
+            "Lore of Death": [["$COLOUR velvet", "$COLOUR silk", "bone covered"]],
+            "Lore of Fire": [["iron covered","darkened $COLOUR leather","charred $COLOUR cloth"]],
+            "Lore of Heavens": [["$COLOUR silk", "$COLOUR velvet"]],
+            "Lore of Metal": [["gold covered", "$COLOUR metal covered"]],
+            "Lore of Life": [["jade covered", "$COLOUR cloth", "wood covered"]],
+            "Lore of Light": [["$COLOUR cloth","silver covered","ivory covered"]],
+            "Lore of Shadows": [["velvet","silk","canvas"]],
+            "Lore of Hedgecraft": [["plain canvas","wood covered"]],
+            "Lore of Witchcraft": [["$COLOUR leather"]],
+            "Lore of Daemonology": [["$COLOUR velvet","$COLOUR silk","bone","extrange $COLOUR leather"]],
+            "Lore of Necromancy":  [["bone covered", "extrange $COLOUR leather"]],
+            "Lore of Nurgle": [["moist $COLOUR leather","rotting $COLOUR leather","rotting $COLOUR hide"]],
+            "Lore of Slaanesh": [["supple $COLOUR leather","$COLOUR silk","$COLOUR velvet"]],
+            "Lore of Tzeentch": [["$COLOUR velvet","$COLOUR silk","bone covered","extrange $COLOUR leather","gold","$COLOUR metal","$COLOUR wood","$COLOUR bone","$COLOUR parchment"]]
+        };
+        // Colors and book decorations
+        var COLOUR = [
+            "$LORECOLOUR", "$LORECOLOUR", "$LORECOLOUR", "black",
+            "purple", "red", "blue", "white", "dark gray", 
+            "yellow", "tan", "green", "brown"
+        ];
+
+        var BOOKDECORATION = [
+            "",
+            "", // Empty string for no decoration
+            ", within it are a few pressed flowers",
+            " with a few $COLOUR ribbons to bookmark it",
+            " with a few $COLOUR strings to bookmark it",
+            " with strange illuminations in the margins",
+            " with a few $COLOUR feathers tucked inside",
+            " with a hefty lock and key to keep it closed",
+            " with a few $COLOUR gems embedded in the cover",
+            " with an ilegible ex-libris on its first page"
+        ];
+        var BOOKCOVERMATERIAL = [
+            "$LOREMATERIAL", "$LOREMATERIAL", "$COLOUR leather", "$COLOUR parchment", "$COLOUR silk", "$COLOUR velvet", "$COLOUR canvas", "wooden cover", "thin metal"
+        ];
+        var BOOKLOOKS = [
+            "old and worn", "new and pristine", "well-used", "well-loved", "ancient", "mysterious"
+        ];
+
+        // ALLSTRINGS array to map placeholders to arrays
+        var ALLSTRINGS = [
+            ["$COLOUR", COLOUR],
+            ["$BOOKCOVERMATERIAL", BOOKCOVERMATERIAL],
+            ["$BOOKLOOKS", BOOKLOOKS],
+            ["$BOOKDECORATION", BOOKDECORATION]
+        ];
+        
+        var BOOK = [
+            "A $BOOKLOOKS $BOOKCOVERMATERIAL book $BOOKDECORATION",
+        ];
+
+        // Helper function to generate random number between min and max (inclusive)
+        function randomBetween(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        // Helper function to randomly select N spells from a given list
+        function getRandomSpells(spellList, count) {
+            let spells = [];
+            while (spells.length < count) {
+                let spell = spellList[randomBetween(0, spellList.length - 1)];
+                if (!spells.includes(spell)) { // Avoid duplicates
+                    spells.push(spell);
+                }
+            }
+            return spells;
+        }
+
+        // Function to generate a random grimoire
+        function generateGrimoire() {
+            // Get the chosen Lore
+            let loreNames = Object.keys(LoreSpells);
+            let chosenLore = document.getElementById("loreSelect").value;
+            if (chosenLore === "Random") {
+                let loreNames = Object.keys(LoreSpells);
+                chosenLore = loreNames[randomBetween(0, loreNames.length - 1)];
+            }
+            
+            // Determine the number of spells (4-8) with weighted probabilities
+            let spellCount = getSpellCount();
+
+            // Get the spells: mix between Arcane and the specific Lore spells
+            let arcaneSpells = getRandomSpells(Arcane, randomBetween(1, spellCount - 1)); // At least one Arcane spell
+            let loreSpells = getRandomSpells(LoreSpells[chosenLore], spellCount - arcaneSpells.length);
+
+            let allSpells = arcaneSpells.concat(loreSpells);
+
+            // Create the grimoire text
+            let grimoireText = "Grimoire of " + chosenLore + ":\n";
+            allSpells.forEach(spell => {
+                grimoireText += `- ${spell[0]} (CN: ${spell[1]})\n`;
+            });
+
+            // Add random decoration
+            grimoireText += "\nAppearance: " + generateBookAppearance(chosenLore);
+
+            // Display the generated grimoire
+            document.getElementById("grimoire").textContent = grimoireText;
+        }
+
+        // Function to get spell count with weighted probabilities
+        function getSpellCount() {
+            let random = Math.random();
+            if (random < 0.30) return 4;
+            if (random < 0.55) return 5;
+            if (random < 0.75) return 6;
+            if (random < 0.90) return 7;
+            return 8;
+        }
+
+        // Function to generate a random book appearance
+        function generateBookAppearance(chosenLore) {
+            let template = getRandomElement(BOOK);
+            return replacePlaceholders(template, chosenLore);
+        }
+
+        // Helper function to get a random element from an array
+        function getRandomElement(arr) {
+            return arr[Math.floor(Math.random() * arr.length)];
+        }
+
+        function replacePlaceholders(originalString, chosenLore) {
+            let notdone = true;
+
+            while (notdone) {
+                notdone = false;
+
+                // Handle LOREXXXXX placeholders first
+                if (originalString.includes("$LORECOLOUR")) {
+                    const replacement = getRandomElement(LORECOLOUR[chosenLore][0]);
+                    originalString = originalString.replace("$LORECOLOUR", replacement);
+                    notdone = true;
+                }
+                if (originalString.includes("$LOREMATERIAL")) {
+                    const replacement = getRandomElement(LOREMATERIAL[chosenLore][0]);
+                    originalString = originalString.replace("$LOREMATERIAL", replacement);
+                    notdone = true;
+                }
+
+
+                // Replace other placeholders using ALLSTRINGS
+                for (let i = 0; i < ALLSTRINGS.length; i++) {
+                    let lookingFor = ALLSTRINGS[i][0];
+                    let possibleValues = ALLSTRINGS[i][1];
+
+                    if (originalString.includes(lookingFor)) {
+                        const replacement = getRandomElement(possibleValues);
+                        originalString = originalString.replace(lookingFor, replacement);
+                        notdone = true;
+                    }
+                }
+            }
+
+            return originalString;
+        }
+        
+        // Function to generate a random book appearance
+        function generateBookAppearance(chosenLore) {
+            let template = BOOK[randomBetween(0, BOOK.length - 1)];
+            return replacePlaceholders(template, chosenLore);
+        }
+
+    </script>
+</head>
+<body>
+    <h1>Random Magic Grimoire Generator</h1>
+    <label for="loreSelect">Select Lore:</label>
+    <select id="loreSelect">
+        <option value="Random">Random</option>
+        <option value="Lore of Beasts">Lore of Beasts</option>
+        <option value="Lore of Death">Lore of Death</option>
+        <option value="Lore of Fire">Lore of Fire</option>
+        <option value="Lore of Heavens">Lore of Heavens</option>
+        <option value="Lore of Metal">Lore of Metal</option>
+        <option value="Lore of Life">Lore of Life</option>
+        <option value="Lore of Light">Lore of Light</option>
+        <option value="Lore of Shadows">Lore of Shadows</option>
+        <option value="Lore of Hedgecraft">Lore of Hedgecraft</option>
+        <option value="Lore of Witchcraft">Lore of Witchcraft</option>
+        <option value="Lore of Daemonology">Lore of Daemonology</option>
+        <option value="Lore of Necromancy">Lore of Necromancy</option>
+        <option value="Lore of Nurgle">Lore of Nurgle</option>
+        <option value="Lore of Slaanesh">Lore of Slaanesh</option>
+        <option value="Lore of Tzeentch">Lore of Tzeentch</option>
+    </select>
+    <button type="button" onclick="generateGrimoire()">Generate Grimoire</button>
+    <pre id="grimoire"></pre> <!-- 'pre' to preserve formatting of the output -->
+</body>
+</html>
