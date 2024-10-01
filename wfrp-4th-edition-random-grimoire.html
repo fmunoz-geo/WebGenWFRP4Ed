@@ -30,8 +30,10 @@
             ["Ward", 5]
         ];
 
-        // Placeholder for Lore spells (you can fill in the actual spells)
         var LoreSpells = {
+            // Combined spells from all sources will be merged here
+        };
+        var LoreSpellsCore = {
             "Lore of Beasts": [["Amber Talons", 6], ["Beast Form", 5], ["Beast Master", 10], 
                 ["Beast Tongue", 3], ["Flock of Doom", 8], ["Hunter’s Hide", 6], 
                 ["The Amber Spear", 8], ["Wyssan’s Wildform", 8]],
@@ -67,6 +69,22 @@
             "Lore of Slaanesh": [["Acquiescence", 5]],
             "Lore of Tzeentch": [["Treason of Tzeentch", 6]]
         };
+        var LoreSpellsBloodAndBramble = {
+            "Lore of Hedgecraft": [["Badwill", 0], ["Bonesetter", 0], ["Cleanslate", 0]],
+            "Lore of Witchcraft": [["Banishment of Böl", 8], ["Bonesnapper", 6], ["Congeal", 4]],
+            // (more spells)
+        };
+        var LoreSpellsSullasara = {
+            "Lore of Beasts": [["Beast Made Well", 3], ["Cruelty’s Deserts", 2], ["Wyssan’s Ally", 4], 
+                ["Wildercall", 2]],
+            "Lore of Death": [["Stay Death’s Hand", 3], ["Deathsight", 2], ["Preservation", 5]],
+            "Lore of Fire": [["Flashcook", 2], ["Comfort", 3], ["Ceaseless Flame", 2]],
+            "Lore of Heavens": [["Birdspeech", 4], ["Weathervane", 2], ["Gale", 5]],
+            "Lore of Metal": [["Tale of Metal", 3], ["Rigor of Steel", 3],["Sense Metal", 1]],
+            "Lore of Life": [["Ferment", 3], ["Timbervault", 4], ["Track’s Tale Told", 3]],
+            "Lore of Light": [["Cleansing Glow", 3], ["Disgust", 5], ["Illuminate", 3]],
+            "Lore of Shadows": [["Shadows of Splendour", 4], ["Cloak Activity", 6], ["Pall of Darkness", 5]]
+        };        
         var LORECOLOUR = {
             "Lore of Beasts": [["amber","brown","tan"]],
             "Lore of Death": [["purple","black","dark"]],
@@ -168,9 +186,34 @@
             }
             return spells;
         }
+        function mergeSpells() {
+            // Reset LoreSpells
+            LoreSpells = {};
 
+            // Always include the base Rulebook spells
+            Object.keys(LoreSpellsCore).forEach(lore => {
+                if (!LoreSpells[lore]) LoreSpells[lore] = [];
+                LoreSpells[lore] = LoreSpells[lore].concat(LoreSpellsCore[lore]);
+            });
+
+            // If "Blood and Bramble" is selected, merge those spells
+            if (document.getElementById("bloodAndBramble").checked) {
+                Object.keys(LoreSpellsBloodAndBramble).forEach(lore => {
+                    if (!LoreSpells[lore]) LoreSpells[lore] = [];
+                    LoreSpells[lore] = LoreSpells[lore].concat(LoreSpellsBloodAndBramble[lore]);
+                });
+            }
+            if (document.getElementById("sullasaraSpells").checked) {
+                Object.keys(LoreSpellsSullasara).forEach(lore => {
+                    if (!LoreSpells[lore]) LoreSpells[lore] = [];
+                    LoreSpells[lore] = LoreSpells[lore].concat(LoreSpellsSullasara[lore]);
+                });
+            }
+        }
         // Function to generate a random grimoire
         function generateGrimoire() {
+            // Call mergeSpells to update LoreSpells based on user selections
+            mergeSpells();
             // Get the chosen Lore
             let loreNames = Object.keys(LoreSpells);
             let chosenLore = document.getElementById("loreSelect").value;
@@ -286,10 +329,16 @@
         <option value="Lore of Slaanesh">Lore of Slaanesh</option>
         <option value="Lore of Tzeentch">Lore of Tzeentch</option>
     </select>
+    <div>
+        <label><input type="checkbox" id="bloodAndBramble" value="Blood and Bramble"> Include "Blood and Bramble" Expansion</label><br>
+        <label><input type="checkbox" id="sullasaraSpells" value="Sullasara’s Spells"> Include "Sullasara’s Spells of Unrivaled Utility" Expansion</label>
+    </div>
     <button type="button" onclick="generateGrimoire()">Generate Grimoire</button>
     <pre id="grimoire"></pre> <!-- 'pre' to preserve formatting of the output -->
     <p id="Acknowledgements">Code: Francisco Mu&ntilde;oz 2024.
         <br>Based on the Grimoires entry on page 238, and the spell lists of the <a href="https://www.drivethrurpg.com/product/248284/Warhammer-Fantasy-Roleplay-Fourth-Edition-Rulebook?affiliate_id=91369">Warhammer Fantasy Roleplay Fourth Edition Rulebook</a>.
+        <br>Based on the spell lists of <a href="https://www.drivethrurpg.com/es/product/354584/warhammer-fantasy-role-play-sullasara-s-spells-of-unrivalled-utility?affiliate_id=91369"">Sullasara’s Spells of Unrivaled Utility</a>.
+        <br>Based on the spell lists of <a href="https://www.drivethrurpg.com/es/product/305317/warhammer-fantasy-role-play-blood-and-bramble?affiliate_id=91369"">Blood and Bramble</a>.
         <br>Inspiration: <a href="http://www.windsofchaos.com/wp-content/uploads/encroachment/html/generator-random-treasure-01.html">Encroatchment of Chaos, Treasure Generator by Dave Graffam</a>.
         <br>Inspiration: <a href="http://orteil.dashnet.org/randomgen/?gen=https://pastebin.com/raw/JcxC8pMx">WFRP 4e Equipment Generator</a>.
         <br>Inspiration: <a href="https://ratujmywfrp2pl.files.wordpress.com/2010/01/treasure-tables.pdf">Dan White's WFRP RANDOM TREASURE GENERATION</a>.
