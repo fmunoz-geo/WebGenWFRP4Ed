@@ -84,7 +84,32 @@
             "Lore of Life": [["Ferment", 3], ["Timbervault", 4], ["Track’s Tale Told", 3]],
             "Lore of Light": [["Cleansing Glow", 3], ["Disgust", 5], ["Illuminate", 3]],
             "Lore of Shadows": [["Shadows of Splendour", 4], ["Cloak Activity", 6], ["Pall of Darkness", 5]]
-        };        
+        };
+        var LoreSpellsEnemyInShadowsCompanion = {
+            "Lore of Tzeentch": [
+                ["Boon of Tzeentch", 9], ["The Purple Hand", 3], ["Curse of Tzeentch", 9], 
+                ["Blue Fire of Tzeentch", 6], ["Bolt of Change", 9], 
+                ["The Flickering Flames of Fickle Fate", 4], ["Master of Fortune", 8],
+                ["Mindfire", 6], ["Pink Fire of Tzeentch", 6], ["Sense the Skein", 3],
+                ["Transformation of Tzeentch", 10], ["Tzeentch’s Firestorm", 11],
+                ["Tzeentch’s Golden Aura", 7], ["Word of Tzeentch", 7]
+            ]
+        };
+
+        // Spells from "Power Behind the Throne Companion"
+        var LoreSpellsPowerBehindTheThroneCompanion = {
+            "Lore of Slaanesh": [
+                ["Acquiescence", 8], ["Aura of Acquiescence", 12], ["Bonds of Slaanesh", 8],
+                ["Breath of Inspiration", 8], ["Blissful Throes", 6], ["Cacophonic Caress", 6],
+                ["Careless Whispers", 8], ["Chaos Spawn", 10], ["Cursed Caress", 8], 
+                ["Cutting Wit", 6], ["Delicious Excruciation", 6], ["Fleshy Curse", 10], 
+                ["Flesh Puppet", 10], ["From Pain, Pleasure", 6], ["Lash of Slaanesh", 6],
+                ["Gift of Slaanesh", 8], ["Luxurious Torment", 8], ["Mask of Desire", 8], 
+                ["Pavane of Slaanesh", 8], ["Phantasmagoria", 8], ["Succubus’s Caress", 8], 
+                ["Summon Daemonette", 12], ["Summon Daemonette Pack", 25], 
+                ["Titillating Delusions", 8]
+            ]
+        };                
         var LORECOLOUR = {
             "Lore of Beasts": [["amber","brown","tan"]],
             "Lore of Death": [["purple","black","dark"]],
@@ -209,6 +234,21 @@
                     LoreSpells[lore] = LoreSpells[lore].concat(LoreSpellsSullasara[lore]);
                 });
             }
+            // If "Enemy in Shadows Companion" is selected, merge those spells
+            if (document.getElementById("enemyInShadows").checked) {
+                Object.keys(LoreSpellsEnemyInShadowsCompanion).forEach(lore => {
+                    if (!LoreSpells[lore]) LoreSpells[lore] = [];
+                    LoreSpells[lore] = LoreSpells[lore].concat(LoreSpellsEnemyInShadowsCompanion[lore]);
+                });
+            }
+
+            // If "Power Behind the Throne Companion" is selected, merge those spells
+            if (document.getElementById("powerBehindThrone").checked) {
+                Object.keys(LoreSpellsPowerBehindTheThroneCompanion).forEach(lore => {
+                    if (!LoreSpells[lore]) LoreSpells[lore] = [];
+                    LoreSpells[lore] = LoreSpells[lore].concat(LoreSpellsPowerBehindTheThroneCompanion[lore]);
+                });
+            }            
         }
         // Function to generate a random grimoire
         function generateGrimoire() {
@@ -330,15 +370,19 @@
         <option value="Lore of Tzeentch">Lore of Tzeentch</option>
     </select>
     <div>
-        <label><input type="checkbox" id="bloodAndBramble" value="Blood and Bramble"> Include "Blood and Bramble" Expansion</label><br>
-        <label><input type="checkbox" id="sullasaraSpells" value="Sullasara’s Spells"> Include "Sullasara’s Spells of Unrivaled Utility" Expansion</label>
+        <label><input type="checkbox" id="bloodAndBramble" value="Blood and Bramble"> Include <a href="https://www.drivethrurpg.com/es/product/305317/warhammer-fantasy-role-play-blood-and-bramble?affiliate_id=91369">"Blood and Bramble"</a> Expansion</label><br>
+        <label><input type="checkbox" id="sullasaraSpells" value="Sullasara’s Spells"> Include <a href="https://www.drivethrurpg.com/es/product/354584/warhammer-fantasy-role-play-sullasara-s-spells-of-unrivalled-utility?affiliate_id=91369">"Sullasara’s Spells of Unrivaled Utility"</a> Expansion</label><br>
+        <label><input type="checkbox" id="enemyInShadows" value="Enemy in Shadows"> Include <a href="https://www.drivethrurpg.com/es/product/293881/warhammer-fantasy-roleplay-enemy-in-shadows-companion?affiliate_id=91369">"Enemy in Shadows Companion"</a> Expansion</label><br>
+        <label><input type="checkbox" id="powerBehindThrone" value="Power Behind the Throne"> Include <a href="https://www.drivethrurpg.com/es/product/303926/warhammer-fantasy-role-play-power-behind-the-throne-companion?affiliate_id=91369">"Power Behind the Throne Companion"</a> Expansion</label>
     </div>
     <button type="button" onclick="generateGrimoire()">Generate Grimoire</button>
     <pre id="grimoire"></pre> <!-- 'pre' to preserve formatting of the output -->
     <p id="Acknowledgements">Code: Francisco Mu&ntilde;oz 2024.
         <br>Based on the Grimoires entry on page 238, and the spell lists of the <a href="https://www.drivethrurpg.com/product/248284/Warhammer-Fantasy-Roleplay-Fourth-Edition-Rulebook?affiliate_id=91369">Warhammer Fantasy Roleplay Fourth Edition Rulebook</a>.
-        <br>Based on the spell lists of <a href="https://www.drivethrurpg.com/es/product/354584/warhammer-fantasy-role-play-sullasara-s-spells-of-unrivalled-utility?affiliate_id=91369"">Sullasara’s Spells of Unrivaled Utility</a>.
-        <br>Based on the spell lists of <a href="https://www.drivethrurpg.com/es/product/305317/warhammer-fantasy-role-play-blood-and-bramble?affiliate_id=91369"">Blood and Bramble</a>.
+        <br>Based on the spell lists of <a href="https://www.drivethrurpg.com/es/product/354584/warhammer-fantasy-role-play-sullasara-s-spells-of-unrivalled-utility?affiliate_id=91369">Sullasara’s Spells of Unrivaled Utility</a>.
+        <br>Based on the spell lists of <a href="https://www.drivethrurpg.com/es/product/305317/warhammer-fantasy-role-play-blood-and-bramble?affiliate_id=91369">Blood and Bramble</a>.
+        <br>Based on the spell lists of <a href="https://www.drivethrurpg.com/es/product/293881/warhammer-fantasy-roleplay-enemy-in-shadows-companion?affiliate_id=91369">Enemy in Shadows Companion</a>.
+        <br>Based on the spell lists of <a href="https://www.drivethrurpg.com/es/product/303926/warhammer-fantasy-role-play-power-behind-the-throne-companion?affiliate_id=91369">Power Behind the Throne Companion</a>.
         <br>Inspiration: <a href="http://www.windsofchaos.com/wp-content/uploads/encroachment/html/generator-random-treasure-01.html">Encroatchment of Chaos, Treasure Generator by Dave Graffam</a>.
         <br>Inspiration: <a href="http://orteil.dashnet.org/randomgen/?gen=https://pastebin.com/raw/JcxC8pMx">WFRP 4e Equipment Generator</a>.
         <br>Inspiration: <a href="https://ratujmywfrp2pl.files.wordpress.com/2010/01/treasure-tables.pdf">Dan White's WFRP RANDOM TREASURE GENERATION</a>.
