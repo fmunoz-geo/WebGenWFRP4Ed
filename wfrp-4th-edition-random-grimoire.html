@@ -3,7 +3,8 @@
 <head>
     <title>Random Magic Grimoire Generator</title>
     <script>
-        // Arcane spell list
+        // Arcane spell list placeholder
+        var AllArcane = [];
         var Arcane = [
             ["Aethyric Armour", 2],
             ["Aethyric Arms", 2],
@@ -29,7 +30,11 @@
             ["Terrifying", 7],
             ["Ward", 5]
         ];
-
+        var ArcaneChaos = [
+            ["Blast of Corruption", 8], ["Bolt of Corruption", 8], ["Daemonic Mien", 8],
+            ["Foul Messenger", 8], ["Joyous Aspect", 4], ["Obsession", 8], 
+            ["Power of Chaos", 4], ["Rend Aethyr", 16], ["Slave to Darkness", 8]
+        ];
         var LoreSpells = {
             // Combined spells from all sources will be merged here
         };
@@ -211,9 +216,10 @@
             }
             return spells;
         }
-        function mergeSpells() {
+        function mergeSpells(chosenLore) {
             // Reset LoreSpells
             LoreSpells = {};
+            AllArcane = Arcane;
 
             // Always include the base Rulebook spells
             Object.keys(LoreSpellsCore).forEach(lore => {
@@ -240,6 +246,9 @@
                     if (!LoreSpells[lore]) LoreSpells[lore] = [];
                     LoreSpells[lore] = LoreSpells[lore].concat(LoreSpellsEnemyInShadowsCompanion[lore]);
                 });
+                if (chosenLore === "Lore of Nurgle" || chosenLore === "Lore of Slaanesh" || chosenLore === "Lore of Tzeentch") {
+                    AllArcane = Arcane.concat(ArcaneChaos);  // Add Arcane Chaos spells to the Arcane spell list
+                }
             }
 
             // If "Power Behind the Throne Companion" is selected, merge those spells
@@ -252,21 +261,22 @@
         }
         // Function to generate a random grimoire
         function generateGrimoire() {
-            // Call mergeSpells to update LoreSpells based on user selections
-            mergeSpells();
+
             // Get the chosen Lore
             let loreNames = Object.keys(LoreSpells);
             let chosenLore = document.getElementById("loreSelect").value;
             if (chosenLore === "Random") {
-                let loreNames = Object.keys(LoreSpells);
+                let loreNames = Object.keys(LoreSpellsCore);
                 chosenLore = loreNames[randomBetween(0, loreNames.length - 1)];
             }
-            
+            console.log("Chosen Lore: " + chosenLore);
+            // Call mergeSpells to update LoreSpells based on user selections
+            mergeSpells(chosenLore); 
             // Determine the number of spells (4-8) with weighted probabilities
             let spellCount = getSpellCount();
 
             // Get the spells: mix between Arcane and the specific Lore spells
-            let arcaneSpells = getRandomSpells(Arcane, Math.max(randomBetween(1, spellCount - 1), spellCount - LoreSpells[chosenLore].length)); // At least one Arcane spell
+            let arcaneSpells = getRandomSpells(AllArcane, Math.max(randomBetween(1, spellCount - 1), spellCount - LoreSpells[chosenLore].length)); // At least one Arcane spell
             let loreSpells = getRandomSpells(LoreSpells[chosenLore], spellCount - arcaneSpells.length);
 
             let allSpells = arcaneSpells.concat(loreSpells);
@@ -352,7 +362,7 @@
     <h1>Random Magic Grimoire Generator</h1>
     <label for="loreSelect">Select Lore:</label>
     <select id="loreSelect">
-        <option value="Random">Random</option>
+        <option value="Random" selected="selected">Random</option>
         <option value="Lore of Beasts">Lore of Beasts</option>
         <option value="Lore of Death">Lore of Death</option>
         <option value="Lore of Fire">Lore of Fire</option>
