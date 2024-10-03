@@ -100,7 +100,13 @@
                 ["Tzeentch’s Golden Aura", 7], ["Word of Tzeentch", 7]
             ]
         };
-
+        var LoreSpellsDeathInTheReikCompanion = {
+            "Lore of Tzeentch": [
+                ["Bension of Tzeentch", 9], ["Enrage Beast", 6], ["Climb", 5],
+                ["Tremor", 8], ["Subvert Strength", 11], ["Gift of the Beast", 8],
+                ["Transformation of the Beast", 12]
+            ]
+        };
         // Spells from "Power Behind the Throne Companion"
         var LoreSpellsPowerBehindTheThroneCompanion = {
             "Lore of Slaanesh": [
@@ -250,7 +256,12 @@
                     AllArcane = Arcane.concat(ArcaneChaos);  // Add Arcane Chaos spells to the Arcane spell list
                 }
             }
-
+            if (document.getElementById("deathInTheReik").checked) {
+                Object.keys(LoreSpellsDeathInTheReikCompanion).forEach(lore => {
+                    if (!LoreSpells[lore]) LoreSpells[lore] = [];
+                    LoreSpells[lore] = LoreSpells[lore].concat(LoreSpellsDeathInTheReikCompanion[lore]);
+                });
+            }
             // If "Power Behind the Throne Companion" is selected, merge those spells
             if (document.getElementById("powerBehindThrone").checked) {
                 Object.keys(LoreSpellsPowerBehindTheThroneCompanion).forEach(lore => {
@@ -383,6 +394,7 @@
         <label><input type="checkbox" id="bloodAndBramble" value="Blood and Bramble"> Include <a href="https://www.drivethrurpg.com/es/product/305317/warhammer-fantasy-role-play-blood-and-bramble?affiliate_id=91369">"Blood and Bramble"</a> Expansion</label><br>
         <label><input type="checkbox" id="sullasaraSpells" value="Sullasara’s Spells"> Include <a href="https://www.drivethrurpg.com/es/product/354584/warhammer-fantasy-role-play-sullasara-s-spells-of-unrivalled-utility?affiliate_id=91369">"Sullasara’s Spells of Unrivaled Utility"</a> Expansion</label><br>
         <label><input type="checkbox" id="enemyInShadows" value="Enemy in Shadows"> Include <a href="https://www.drivethrurpg.com/es/product/293881/warhammer-fantasy-roleplay-enemy-in-shadows-companion?affiliate_id=91369">"Enemy in Shadows Companion"</a> Expansion</label><br>
+        <label><input type="checkbox" id="deathInTheReik" value="Death in the Reik"> Include <a href="https://www.drivethrurpg.com/es/product/303922/warhammer-fantasy-role-play-death-on-the-reik-companion?affiliate_id=91369"">"Death in the Reik Companion"</a> Expansion</label><br
         <label><input type="checkbox" id="powerBehindThrone" value="Power Behind the Throne"> Include <a href="https://www.drivethrurpg.com/es/product/303926/warhammer-fantasy-role-play-power-behind-the-throne-companion?affiliate_id=91369">"Power Behind the Throne Companion"</a> Expansion</label>
     </div>
     <button type="button" onclick="generateGrimoire()">Generate Grimoire</button>
@@ -392,6 +404,7 @@
         <br>Based on the spell lists of <a href="https://www.drivethrurpg.com/es/product/354584/warhammer-fantasy-role-play-sullasara-s-spells-of-unrivalled-utility?affiliate_id=91369">Sullasara’s Spells of Unrivaled Utility</a>.
         <br>Based on the spell lists of <a href="https://www.drivethrurpg.com/es/product/305317/warhammer-fantasy-role-play-blood-and-bramble?affiliate_id=91369">Blood and Bramble</a>.
         <br>Based on the spell lists of <a href="https://www.drivethrurpg.com/es/product/293881/warhammer-fantasy-roleplay-enemy-in-shadows-companion?affiliate_id=91369">Enemy in Shadows Companion</a>.
+        <br>Based on the spell lists of <a href="https://www.drivethrurpg.com/es/product/303922/warhammer-fantasy-role-play-death-on-the-reik-companion?affiliate_id=91369"">Death in the Reik Companion</a>.
         <br>Based on the spell lists of <a href="https://www.drivethrurpg.com/es/product/303926/warhammer-fantasy-role-play-power-behind-the-throne-companion?affiliate_id=91369">Power Behind the Throne Companion</a>.
         <br>Inspiration: <a href="http://www.windsofchaos.com/wp-content/uploads/encroachment/html/generator-random-treasure-01.html">Encroatchment of Chaos, Treasure Generator by Dave Graffam</a>.
         <br>Inspiration: <a href="http://orteil.dashnet.org/randomgen/?gen=https://pastebin.com/raw/JcxC8pMx">WFRP 4e Equipment Generator</a>.
