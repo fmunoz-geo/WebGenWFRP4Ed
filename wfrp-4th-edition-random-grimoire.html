@@ -35,6 +35,11 @@
             ["Foul Messenger", 8], ["Joyous Aspect", 4], ["Obsession", 8], 
             ["Power of Chaos", 4], ["Rend Aethyr", 16], ["Slave to Darkness", 8]
         ];
+        var ArcaneWindsOfMagic = [
+            ["Belligerence of the Bloodmarsh", 2], ["Collapse Construct", 6], ["Decipher Curse", 4],
+            ["Disrupt Magic", 8], ["Fly-Infested Rotweed", 4], ["Lifebloom Silt", 4],
+            ["Silence", 4]
+       ];
         var LoreSpells = {
             // Combined spells from all sources will be merged here
         };
@@ -73,6 +78,92 @@
             "Lore of Nurgle": [["Stream of Corruption", 6]],
             "Lore of Slaanesh": [["Acquiescence", 5]],
             "Lore of Tzeentch": [["Treason of Tzeentch", 6]]
+        };
+
+        var LoreSpellsWindsOfMagic = {
+            "Lore of Light": [
+                ["Abulla’s Snare", 5], ["Assault of Stone", 12], ["Banishment", 12], 
+                ["Blinding Light", 5], ["Clarity of Thought", 6], ["Crevasse", 8], 
+                ["Daemonbane", 10], ["Dazzling Brightness", 5], ["Driving Intent", 4], 
+                ["Healing Light", 9], ["Erect the Edifice", 9], ["Eyes of Volans", 6], 
+                ["Hands of Karkora", 8], ["Illuminate the Edifice", 4], ["Light of Purity", 6], 
+                ["Meissner’s Instantaneous Librarian", 2], ["Net of Amyntok", 8], 
+                ["Orb of Hysh", 5], ["Perfect Comprehension", 5], ["Phâ’s Protection", 10], 
+                ["Pierce the Veil", 4], ["Shimmering Cloak", 9], ["Speed of Thought", 8], 
+                ["Time Amok", 11]
+            ],
+            "Lore of Metal": [
+                ["Armour of Tin", 4], ["Breach the Unknown", 4], ["Crucible of Chamon", 7], 
+                ["Curse of Rust", 4], ["Enchant Weapon", 6], ["Fault of Form", 2], 
+                ["Feather of Lead", 5], ["Fool’s Gold", 4], ["Forge of Chamon", 9], 
+                ["Gehenna’s Golden Globe", 13], ["Gilded Cage", 9], ["Glittering Robe", 5], 
+                ["Golden Touch", 7], ["Goldsteel Shielding", 10], ["Inscription", 2], 
+                ["Knot Untied", 5], ["Metal Mended", 4], ["Meteoric Ironclad", 7], 
+                ["Mutable Metal", 5], ["Prismatic Refraction of Habermas", 5], 
+                ["Puchta’s Silver Compass", 2], ["Replication of Levorg", 6], 
+                ["Transmutation of Chamon", 12], ["Trial and Error", 3]
+            ],
+            "Lore of Life": [
+                ["Almanac", 4], ["Barkskin", 3], ["Dwellers Below", 13], ["Earthblood", 6], 
+                ["Earthpool", 8], ["Fat of the Land", 4], ["Flesh of Stone", 9], 
+                ["Forest of Thorns", 6], ["Gardener’s Warcry", 9], ["Geyser", 8], 
+                ["Invigorating Chant", 6], ["Jade Casket", 6], ["Leaf Fall", 6], 
+                ["Leyfinding", 5], ["Lie of the Land", 5], ["Lifebloom", 8], 
+                ["Nature’s Whisper", 8], ["Paranoth’s Pathway", 4], ["Regenerate", 6], 
+                ["Spiral Stair", 6], ["Vaunted Transmogrification of Colchis", 6], 
+                ["Verdant Apotheosis", 16], ["Vital Growth", 7], ["Wood Shape", 8]
+            ],
+            "Lore of Heavens": [
+                ["Azure Blades", 6], ["Cerulean Shield", 7], ["Comet of Casandora", 10], 
+                ["Curse of Fate", 8], ["Divination", 3], ["Enemy Foreseen", 4], 
+                ["Fantastic Foresight", 7], ["Fate’s Fickle Fingers", 6], ["Fate Illuminated", 5], 
+                ["Lens on the Sky", 3], ["Let the Four Winds Blow!", 9], 
+                ["Mistral From the Stratosphere", 7], ["Mystic Mirror", 7], ["Polish and Glean", 1], 
+                ["Project Spirit", 7], ["Sapphire Arch", 6], ["Starcrossed", 7], ["Starshine", 8], 
+                ["Storm of Shemtek", 11], ["T’Essla’s Arc", 7], ["The First Portent of Amul", 3], 
+                ["The Second Portent of Amul", 6], ["The Third Portent of Amul", 12], 
+                ["Thorsen’s Thunderstorm", 11]
+            ],
+            "Lore of Shadows": [
+                ["Bewilder", 5], ["Black Horrors", 6], ["Bridge of Shadows", 6], 
+                ["Choking Shadows", 6], ["Dance of Despair", 13], ["Deep Pockets", 5], 
+                ["Doppelganger", 10], ["Grand Illusion", 14], ["Grey Wings", 6], 
+                ["Horn of Andar", 5], ["Hush", 3], ["Illusion", 8], ["Mindslip", 6], 
+                ["Mutable Visage", 4], ["Mystifying Miasma", 6], ["Pit of Tarnus", 8], 
+                ["Ribauld’s Retroactive Illusion", 11], ["Shadow Grove", 5], 
+                ["Shadowsteed", 6], ["Shadowstep", 8], ["Shroud of Invisibility", 8], 
+                ["Substance of Shadow", 9], ["Traitor of Tarn", 12]
+            ],
+            "Lore of Death": [
+                ["Acceptance of Fate", 6], ["Amaranth", 7], ["Animus Imprisoned", 12], 
+                ["Ashes and Dust", 9], ["Caress of Laniph", 4], ["Compel Spirits", 6], 
+                ["Crystal Maze", 13], ["Death’s Release", 5], ["Dying Words", 6], 
+                ["Fate of Bjuna", 8], ["Iyrtu’s Embrace", 4], ["Limbwither", 5], 
+                ["Purple Pall of Shyish", 9], ["Sanctify", 10], ["Scythe of Shyish", 6], 
+                ["Shyish Uncovered", 4], ["Soul Vortex", 8], ["Speed of Lykos", 3], 
+                ["Steal Life", 7], ["Swift Passing", 6], ["Taste of Death", 7], 
+                ["Telepathy", 1], ["Tide of Years", 3], ["Wild Kin of Zandox", 5]
+            ],
+            "Lore of Fire": [
+                ["Aqshy’s Aegis", 5], ["Body of Fire", 5], ["Boiling Blood", 5], 
+                ["Burning Head", 6], ["Captivating Flame", 3], ["Cauterise", 4], 
+                ["Choleric", 2], ["Crown of Flame", 8], ["Firewall", 6], 
+                ["Flamestorm", 8], ["Flaming Hearts", 8], ["Flaming Sword of Rhuin", 8], 
+                ["Forge of Tarnus", 6], ["Great Fires of U’Zhul", 10], ["Ignite", 3], 
+                ["Inextinguishable Flame", 3], ["Kindleflame", 2], ["Kindred of the Hearth", 4], 
+                ["Magma Storm", 13], ["Purge", 10], ["Sanguine Swords", 6], 
+                ["Taste of Fire", 2], ["Withering Heat", 6], ["Ygethmor’s Flaming Blizzard", 12]
+            ],
+            "Lore of Beasts": [
+                ["Amber Talons", 6], ["Amber Trance", 4], ["Awakening of the Wood", 8], 
+                ["Beast Form", 5], ["Beast Master", 10], ["Beast Tongue", 3], 
+                ["Beast Unbroken", 4], ["Curse of Anraheir", 5], ["Eyes of the Pack", 3], 
+                ["Flock of Doom", 8], ["Follow Scent", 4], ["Hunter’s Hide", 6], 
+                ["Hunter’s Moons", 8], ["Merciw’s Monstrous Regiment", 13], ["Musk Spray", 2], 
+                ["Quick Passage", 4], ["Summon Mount", 6], ["The Amber Spear", 8], 
+                ["The Ox Stands", 5], ["Transformation of Kadon", 14], ["Vengeful Hood", 7], 
+                ["Winter Coat", 2], ["Writhing Worm", 4], ["Wyssan’s Wildform", 8]
+            ]
         };
         var LoreSpellsBloodAndBramble = {
             "Lore of Hedgecraft": [["Badwill", 0], ["Bonesetter", 0], ["Cleanslate", 0]],
@@ -151,7 +242,7 @@
             "Lore of Metal": [["gold covered", "$COLOUR metal covered"]],
             "Lore of Life": [["jade covered", "$COLOUR cloth", "wood covered"]],
             "Lore of Light": [["$COLOUR cloth","silver covered","ivory covered"]],
-            "Lore of Shadows": [["velvet","silk","canvas"]],
+            "Lore of Shadows": [["$COLOUR velvet","$COLOUR silk","$COLOUR canvas"]],
             "Lore of Hedgecraft": [["plain canvas","wood covered"]],
             "Lore of Witchcraft": [["$COLOUR leather"]],
             "Lore of Daemonology": [["$COLOUR velvet","$COLOUR silk","bone covered","extrange $COLOUR leather"]],
@@ -160,28 +251,48 @@
             "Lore of Slaanesh": [["supple $COLOUR leather","$COLOUR silk","$COLOUR velvet"]],
             "Lore of Tzeentch": [["$COLOUR velvet","$COLOUR silk","bone covered","extrange $COLOUR leather","gold","$COLOUR metal","$COLOUR wood","$COLOUR bone","$COLOUR parchment"]]
         };
+        var LOREDECORATION = {
+            "Lore of Beasts": [[" with strings of animal teeth hanging from its spine", " adorned with a few wild feathers", " decorated with sharp claws strung along the edges"]],
+            "Lore of Death": [[" with skulls embossed on the cover"," with a few small bones pinned on it"," decorated with black and purple roses printed on the front"]],
+            "Lore of Fire": [[" etched with flames along the borders"," secured with a lock and seven keys"," adorned with fiery motifs blazing across the cover"]],
+            "Lore of Heavens": [[" covered with intricate star patterns"," with a few feathers"," illustrated with constellation motif"]],
+            "Lore of Metal": [[" covered with extrange alchemical simbols","reinforced with metal corner guards", " with metal chains to keep it closed"]],
+            "Lore of Life": [[" within it, a few pressed flowers"," decorated with leaves motifs"," with a few petals tucked inside"]],
+            "Lore of Light": [[" adorned with winding serpent motifs"," with candle wax drip stains"," decorated with piramid motifs"]],
+            "Lore of Shadows": [[" with a few raven feathers to bookmark it"," looking like a common edition of a mundane book"," reinforced and rugged, prepared for travel"]],
+            "Lore of Hedgecraft": [[" with a few pressed herbs tucked inside"," with a few small bones pinned on it"," looking handmade"]],
+            "Lore of Witchcraft": [[" with a few small bones pinned on it"," spattered dark crimsom stains"]],
+            "Lore of Daemonology": [[" spattered dark crimsom stains"," with a few small bones pinned on it"]],
+            "Lore of Necromancy":  [[" with a few small bones pinned on it"," with skulls embossed on the cover"," spattered dark crimsom stains",", it smells distinctly of dust"]],
+            "Lore of Nurgle": [[" that attracks flies"," with a few flatten maggots inside"," with a few small bones pinned on it"]],
+            "Lore of Slaanesh": [[", it smells of honey and perfume"," with a pleasant touch", " adorned tasteful gold inlays over it"]],
+            "Lore of Tzeentch": [[" illuminated with strange symbols in the margin"," with a few $COLOUR feathers tucked inside"," with a few $COLOUR gems embedded in the cover"]]
+        };
         // Colors and book decorations
         var COLOUR = [
-            "$LORECOLOUR", "$LORECOLOUR", "$LORECOLOUR", "black",
-            "purple", "red", "blue", "white", "dark gray", 
+            "$LORECOLOUR", "$LORECOLOUR", "$LORECOLOUR", "$LORECOLOUR",
+            "black", "purple", "red", "blue", "white", "dark gray", 
             "yellow", "tan", "green", "brown"
         ];
 
         var BOOKDECORATION = [
             "",
             "", // Empty string for no decoration
-            ", within it are a few pressed flowers",
-            " with a few $COLOUR ribbons to bookmark it",
-            " with a few $COLOUR strings to bookmark it",
-            " with strange illuminations in the margins",
-            " with a few $COLOUR feathers tucked inside",
-            " with a hefty lock and key to keep it closed",
-            " with a few $COLOUR gems embedded in the cover",
-            " with an ilegible ex-libris on its first page"
+            "$LOREDECORATION","$LOREDECORATION","$LOREDECORATION",
+            ", within it are a few dried, pressed flowers between the pages",
+            " with a few $COLOUR ribbons carefully placed as bookmarks",
+            " with several $COLOUR strings tied around the spine as bookmarks",
+            " with intricate illuminations drawn in the margins",
+            " with a few $COLOUR feathers tucked between the pages", 
+            " secured with a hefty lock and key to keep it closed",
+            " adorned with $COLOUR gems embedded in the cover", 
+            " with an illegible ex-libris scrawled on its first page", 
+            " reinforced with sturdy metal corner guards" 
         ];
         var BOOKCOVERMATERIAL = [
-            "$LOREMATERIAL", "$LOREMATERIAL", "$LOREMATERIAL", "$COLOUR leather", "$COLOUR parchment", 
-            "$COLOUR silk", "$COLOUR velvet", "$COLOUR canvas", "wooden covered", "thin metal covered"
+            "$LOREMATERIAL", "$LOREMATERIAL", "$LOREMATERIAL", "$LOREMATERIAL", 
+            "$COLOUR leather", "$COLOUR parchment", "$COLOUR silk", "$COLOUR velvet",
+            "$COLOUR canvas", "wooden covered", "thin metal covered"
         ];
         var BOOKLOOKS = [
             "old and worn", "new and pristine", "well-used", "well-loved", "ancient", "dog-eared"
@@ -196,7 +307,7 @@
         ];
         
         var BOOK = [
-            "A $BOOKLOOKS $BOOKCOVERMATERIAL book $BOOKDECORATION",
+            "A $BOOKLOOKS $BOOKCOVERMATERIAL book$BOOKDECORATION",
         ];
 
         // Helper function to generate random number between min and max (inclusive)
@@ -206,13 +317,13 @@
 
         function removedoublespaces (str) {
             str = str.replace(/ +(?= )/g,'');
+            str = str.replace(/\s+,/g, ','); 
             str = str.replace(/ \./g,'.');
             return str;
         }
 
         function aanmanagement( str) {
             var strnew = str.replace(/\b(a)\s([aeiou])/ig,'$1n $2');
-            strnew = strnew.replace(/\b(a)\s<I>([aeiou])/ig,'$1n <I>$2');
             return strnew;
         }
 
@@ -237,7 +348,14 @@
                 if (!LoreSpells[lore]) LoreSpells[lore] = [];
                 LoreSpells[lore] = LoreSpells[lore].concat(LoreSpellsCore[lore]);
             });
-
+            // If "Winds of Magic" is selected, replace those spells
+            if (document.getElementById("windsOfMagic").checked) {
+                Object.keys(LoreSpellsWindsOfMagic).forEach(lore => {
+                    if (!LoreSpells[lore]) LoreSpells[lore] = [];
+                    LoreSpells[lore] = LoreSpellsWindsOfMagic[lore];
+                });
+                AllArcane = Arcane.concat(ArcaneWindsOfMagic);  // Add Arcane Winds of Magic spells to the Arcane spell list
+            }
             // If "Blood and Bramble" is selected, merge those spells
             if (document.getElementById("bloodAndBramble").checked) {
                 Object.keys(LoreSpellsBloodAndBramble).forEach(lore => {
@@ -354,7 +472,11 @@
                     originalString = originalString.replace("$LOREMATERIAL", replacement);
                     notdone = true;
                 }
-
+                if (originalString.includes("$LOREDECORATION")) {
+                    const replacement = getRandomElement(LOREDECORATION[chosenLore][0]);
+                    originalString = originalString.replace("$LOREDECORATION", replacement);
+                    notdone = true;
+                }
 
                 // Replace other placeholders using ALLSTRINGS
                 for (let i = 0; i < ALLSTRINGS.length; i++) {
@@ -402,6 +524,7 @@
         <option value="Lore of Tzeentch">Lore of Tzeentch</option>
     </select>
     <div>
+        <label><input type="checkbox" id="windsOfMagic" value="Winds Of Magic"> Include <a href="https://www.drivethrurpg.com/es/product/388109/warhammer-fantasy-roleplay-winds-of-magic?affiliate_id=91369">"Winds Of Magic"</a> Expansion (Replace Colour Lore Spells)</label><br>
         <label><input type="checkbox" id="bloodAndBramble" value="Blood and Bramble"> Include <a href="https://www.drivethrurpg.com/es/product/305317/warhammer-fantasy-role-play-blood-and-bramble?affiliate_id=91369">"Blood and Bramble"</a> Expansion</label><br>
         <label><input type="checkbox" id="sullasaraSpells" value="Sullasara’s Spells"> Include <a href="https://www.drivethrurpg.com/es/product/354584/warhammer-fantasy-role-play-sullasara-s-spells-of-unrivalled-utility?affiliate_id=91369">"Sullasara’s Spells of Unrivaled Utility"</a> Expansion</label><br>
         <label><input type="checkbox" id="enemyInShadows" value="Enemy in Shadows"> Include <a href="https://www.drivethrurpg.com/es/product/293881/warhammer-fantasy-roleplay-enemy-in-shadows-companion?affiliate_id=91369">"Enemy in Shadows Companion"</a> Expansion</label><br>
@@ -413,6 +536,7 @@
     <pre id="grimoire"></pre> <!-- 'pre' to preserve formatting of the output -->
     <p id="Acknowledgements">Code: Francisco Mu&ntilde;oz 2024.
         <br>Based on the Grimoires entry on page 238, and the spell lists of the <a href="https://www.drivethrurpg.com/product/248284/Warhammer-Fantasy-Roleplay-Fourth-Edition-Rulebook?affiliate_id=91369">Warhammer Fantasy Roleplay Fourth Edition Rulebook</a>.
+        <br>Based on the spell lists of <a href="https://www.drivethrurpg.com/es/product/388109/warhammer-fantasy-roleplay-winds-of-magic?affiliate_id=91369">Winds Of Magic</a>.
         <br>Based on the spell lists of <a href="https://www.drivethrurpg.com/es/product/354584/warhammer-fantasy-role-play-sullasara-s-spells-of-unrivalled-utility?affiliate_id=91369">Sullasara’s Spells of Unrivaled Utility</a>.
         <br>Based on the spell lists of <a href="https://www.drivethrurpg.com/es/product/305317/warhammer-fantasy-role-play-blood-and-bramble?affiliate_id=91369">Blood and Bramble</a>.
         <br>Based on the spell lists of <a href="https://www.drivethrurpg.com/es/product/293881/warhammer-fantasy-roleplay-enemy-in-shadows-companion?affiliate_id=91369">Enemy in Shadows Companion</a>.
@@ -423,7 +547,7 @@
         <br>Inspiration: <a href="http://orteil.dashnet.org/randomgen/?gen=https://pastebin.com/raw/JcxC8pMx">WFRP 4e Equipment Generator</a>.
         <br>Inspiration: <a href="https://ratujmywfrp2pl.files.wordpress.com/2010/01/treasure-tables.pdf">Dan White's WFRP RANDOM TREASURE GENERATION</a>.
         <br>Inspiration: <a href="http://www.goatmansgoblet.com/2020/08/warhammer-fantasy-apothecary.html">Goatman's Goblet: WFRP The Apothecary (Trappings/Randomizers)</a>.
-        <br>Game: Games Workshop and Cubicle 7
+        <br>Game: Games Worshop and Cubicle 7
         <br>Other random generators: <a href="https://randroll.com/archive/warhammer-fantasy-roleplay-generators-guide/">https://randroll.com/archive/warhammer-fantasy-roleplay-generators-guide/</a></p>
 </body>
 </html>
