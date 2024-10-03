@@ -120,7 +120,12 @@
                 ["Summon Daemonette", 12], ["Summon Daemonette Pack", 25], 
                 ["Titillating Delusions", 8]
             ]
-        };                
+        };
+        var LoreSpellsEmpireInRuinsCompanion = {
+            "Lore of Necromancy": [
+                ["Spirit Walk", 6]
+            ]
+        };              
         var LORECOLOUR = {
             "Lore of Beasts": [["amber","brown","tan"]],
             "Lore of Death": [["purple","black","dark"]],
@@ -268,7 +273,13 @@
                     if (!LoreSpells[lore]) LoreSpells[lore] = [];
                     LoreSpells[lore] = LoreSpells[lore].concat(LoreSpellsPowerBehindTheThroneCompanion[lore]);
                 });
-            }            
+            }
+            if (document.getElementById("empireInRuins").checked) {
+                Object.keys(LoreSpellsEmpireInRuinsCompanion).forEach(lore => {
+                    if (!LoreSpells[lore]) LoreSpells[lore] = [];
+                    LoreSpells[lore] = LoreSpells[lore].concat(LoreSpellsEmpireInRuinsCompanion[lore]);
+                });
+            }           
         }
         // Function to generate a random grimoire
         function generateGrimoire() {
@@ -394,8 +405,9 @@
         <label><input type="checkbox" id="bloodAndBramble" value="Blood and Bramble"> Include <a href="https://www.drivethrurpg.com/es/product/305317/warhammer-fantasy-role-play-blood-and-bramble?affiliate_id=91369">"Blood and Bramble"</a> Expansion</label><br>
         <label><input type="checkbox" id="sullasaraSpells" value="Sullasara’s Spells"> Include <a href="https://www.drivethrurpg.com/es/product/354584/warhammer-fantasy-role-play-sullasara-s-spells-of-unrivalled-utility?affiliate_id=91369">"Sullasara’s Spells of Unrivaled Utility"</a> Expansion</label><br>
         <label><input type="checkbox" id="enemyInShadows" value="Enemy in Shadows"> Include <a href="https://www.drivethrurpg.com/es/product/293881/warhammer-fantasy-roleplay-enemy-in-shadows-companion?affiliate_id=91369">"Enemy in Shadows Companion"</a> Expansion</label><br>
-        <label><input type="checkbox" id="deathInTheReik" value="Death in the Reik"> Include <a href="https://www.drivethrurpg.com/es/product/303922/warhammer-fantasy-role-play-death-on-the-reik-companion?affiliate_id=91369"">"Death in the Reik Companion"</a> Expansion</label><br
-        <label><input type="checkbox" id="powerBehindThrone" value="Power Behind the Throne"> Include <a href="https://www.drivethrurpg.com/es/product/303926/warhammer-fantasy-role-play-power-behind-the-throne-companion?affiliate_id=91369">"Power Behind the Throne Companion"</a> Expansion</label>
+        <label><input type="checkbox" id="deathInTheReik" value="Death in the Reik"> Include <a href="https://www.drivethrurpg.com/es/product/303922/warhammer-fantasy-role-play-death-on-the-reik-companion?affiliate_id=91369"">"Death in the Reik Companion"</a> Expansion</label><br>
+        <label><input type="checkbox" id="powerBehindThrone" value="Power Behind the Throne"> Include <a href="https://www.drivethrurpg.com/es/product/303926/warhammer-fantasy-role-play-power-behind-the-throne-companion?affiliate_id=91369">"Power Behind the Throne Companion"</a> Expansion</label><br>
+        <label><input type="checkbox" id="empireInRuins" value="Empire in Ruins"> Include <a href="https://www.drivethrurpg.com/es/product/303942/warhammer-fantasy-role-play-empire-in-ruins-companion?affiliate_id=91369">"Empire in Ruins Companion"</a> Expansion</label>
     </div>
     <button type="button" onclick="generateGrimoire()">Generate Grimoire</button>
     <pre id="grimoire"></pre> <!-- 'pre' to preserve formatting of the output -->
@@ -404,13 +416,14 @@
         <br>Based on the spell lists of <a href="https://www.drivethrurpg.com/es/product/354584/warhammer-fantasy-role-play-sullasara-s-spells-of-unrivalled-utility?affiliate_id=91369">Sullasara’s Spells of Unrivaled Utility</a>.
         <br>Based on the spell lists of <a href="https://www.drivethrurpg.com/es/product/305317/warhammer-fantasy-role-play-blood-and-bramble?affiliate_id=91369">Blood and Bramble</a>.
         <br>Based on the spell lists of <a href="https://www.drivethrurpg.com/es/product/293881/warhammer-fantasy-roleplay-enemy-in-shadows-companion?affiliate_id=91369">Enemy in Shadows Companion</a>.
-        <br>Based on the spell lists of <a href="https://www.drivethrurpg.com/es/product/303922/warhammer-fantasy-role-play-death-on-the-reik-companion?affiliate_id=91369"">Death in the Reik Companion</a>.
+        <br>Based on the spell lists of <a href="https://www.drivethrurpg.com/es/product/303922/warhammer-fantasy-role-play-death-on-the-reik-companion?affiliate_id=91369">Death in the Reik Companion</a>.
         <br>Based on the spell lists of <a href="https://www.drivethrurpg.com/es/product/303926/warhammer-fantasy-role-play-power-behind-the-throne-companion?affiliate_id=91369">Power Behind the Throne Companion</a>.
+        <br>Based on the spell lists of <a href="https://www.drivethrurpg.com/es/product/303942/warhammer-fantasy-role-play-empire-in-ruins-companion?affiliate_id=91369">Empire in Ruins Companion</a>
         <br>Inspiration: <a href="http://www.windsofchaos.com/wp-content/uploads/encroachment/html/generator-random-treasure-01.html">Encroatchment of Chaos, Treasure Generator by Dave Graffam</a>.
         <br>Inspiration: <a href="http://orteil.dashnet.org/randomgen/?gen=https://pastebin.com/raw/JcxC8pMx">WFRP 4e Equipment Generator</a>.
         <br>Inspiration: <a href="https://ratujmywfrp2pl.files.wordpress.com/2010/01/treasure-tables.pdf">Dan White's WFRP RANDOM TREASURE GENERATION</a>.
         <br>Inspiration: <a href="http://www.goatmansgoblet.com/2020/08/warhammer-fantasy-apothecary.html">Goatman's Goblet: WFRP The Apothecary (Trappings/Randomizers)</a>.
-        <br>Game: Games Worshop and Cubicle 7
+        <br>Game: Games Workshop and Cubicle 7
         <br>Other random generators: <a href="https://randroll.com/archive/warhammer-fantasy-roleplay-generators-guide/">https://randroll.com/archive/warhammer-fantasy-roleplay-generators-guide/</a></p>
 </body>
 </html>
