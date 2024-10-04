@@ -338,67 +338,86 @@
             }
             return spells;
         }
+
+        function markSpellsWithSource(spellList, marker, markSource) {
+            return spellList.map(spell => markSource ? [spell[0] + `<sup>${marker}</sup>`, spell[1]] : spell);
+        }
+
         function mergeSpells(chosenLore) {
             // Reset LoreSpells
             LoreSpells = {};
             AllArcane = Arcane;
+
+            // Check if source marking is enabled
+            let markSource = document.getElementById("markSource").checked;
 
             // Always include the base Rulebook spells
             Object.keys(LoreSpellsCore).forEach(lore => {
                 if (!LoreSpells[lore]) LoreSpells[lore] = [];
                 LoreSpells[lore] = LoreSpells[lore].concat(LoreSpellsCore[lore]);
             });
-            // If "Winds of Magic" is selected, replace those spells
+
+            // Add Winds of Magic spells with marker if selected
             if (document.getElementById("windsOfMagic").checked) {
                 Object.keys(LoreSpellsWindsOfMagic).forEach(lore => {
                     if (!LoreSpells[lore]) LoreSpells[lore] = [];
-                    LoreSpells[lore] = LoreSpellsWindsOfMagic[lore];
+                    LoreSpells[lore] = LoreSpells[lore].concat(markSpellsWithSource(LoreSpellsWindsOfMagic[lore], "WoM", markSource));
                 });
-                AllArcane = Arcane.concat(ArcaneWindsOfMagic);  // Add Arcane Winds of Magic spells to the Arcane spell list
+                AllArcane = Arcane.concat(markSpellsWithSource(ArcaneWindsOfMagic, "WoM", markSource));
             }
-            // If "Blood and Bramble" is selected, merge those spells
+
+            // Add Blood and Bramble spells with marker if selected
             if (document.getElementById("bloodAndBramble").checked) {
                 Object.keys(LoreSpellsBloodAndBramble).forEach(lore => {
                     if (!LoreSpells[lore]) LoreSpells[lore] = [];
-                    LoreSpells[lore] = LoreSpells[lore].concat(LoreSpellsBloodAndBramble[lore]);
+                    LoreSpells[lore] = LoreSpells[lore].concat(markSpellsWithSource(LoreSpellsBloodAndBramble[lore], "BnB", markSource));
                 });
             }
+
+            // Add Sullasara’s Spells with marker if selected
             if (document.getElementById("sullasaraSpells").checked) {
                 Object.keys(LoreSpellsSullasara).forEach(lore => {
                     if (!LoreSpells[lore]) LoreSpells[lore] = [];
-                    LoreSpells[lore] = LoreSpells[lore].concat(LoreSpellsSullasara[lore]);
+                    LoreSpells[lore] = LoreSpells[lore].concat(markSpellsWithSource(LoreSpellsSullasara[lore], "SS", markSource));
                 });
             }
-            // If "Enemy in Shadows Companion" is selected, merge those spells
+
+            // Add Enemy in Shadows Companion spells with marker if selected
             if (document.getElementById("enemyInShadows").checked) {
                 Object.keys(LoreSpellsEnemyInShadowsCompanion).forEach(lore => {
                     if (!LoreSpells[lore]) LoreSpells[lore] = [];
-                    LoreSpells[lore] = LoreSpells[lore].concat(LoreSpellsEnemyInShadowsCompanion[lore]);
+                    LoreSpells[lore] = LoreSpells[lore].concat(markSpellsWithSource(LoreSpellsEnemyInShadowsCompanion[lore], "EiSC", markSource));
                 });
                 if (chosenLore === "Lore of Nurgle" || chosenLore === "Lore of Slaanesh" || chosenLore === "Lore of Tzeentch") {
-                    AllArcane = Arcane.concat(ArcaneChaos);  // Add Arcane Chaos spells to the Arcane spell list
+                    AllArcane = Arcane.concat(markSpellsWithSource(ArcaneChaos, "EiSC", markSource));
                 }
             }
+
+            // Add Death in the Reik Companion spells with marker if selected
             if (document.getElementById("deathInTheReik").checked) {
                 Object.keys(LoreSpellsDeathInTheReikCompanion).forEach(lore => {
                     if (!LoreSpells[lore]) LoreSpells[lore] = [];
-                    LoreSpells[lore] = LoreSpells[lore].concat(LoreSpellsDeathInTheReikCompanion[lore]);
+                    LoreSpells[lore] = LoreSpells[lore].concat(markSpellsWithSource(LoreSpellsDeathInTheReikCompanion[lore], "DitR", markSource));
                 });
             }
-            // If "Power Behind the Throne Companion" is selected, merge those spells
+
+            // Add Power Behind the Throne Companion spells with marker if selected
             if (document.getElementById("powerBehindThrone").checked) {
                 Object.keys(LoreSpellsPowerBehindTheThroneCompanion).forEach(lore => {
                     if (!LoreSpells[lore]) LoreSpells[lore] = [];
-                    LoreSpells[lore] = LoreSpells[lore].concat(LoreSpellsPowerBehindTheThroneCompanion[lore]);
+                    LoreSpells[lore] = LoreSpells[lore].concat(markSpellsWithSource(LoreSpellsPowerBehindTheThroneCompanion[lore], "PBtT", markSource));
                 });
             }
+
+            // Add Empire in Ruins Companion spells with marker if selected
             if (document.getElementById("empireInRuins").checked) {
                 Object.keys(LoreSpellsEmpireInRuinsCompanion).forEach(lore => {
                     if (!LoreSpells[lore]) LoreSpells[lore] = [];
-                    LoreSpells[lore] = LoreSpells[lore].concat(LoreSpellsEmpireInRuinsCompanion[lore]);
+                    LoreSpells[lore] = LoreSpells[lore].concat(markSpellsWithSource(LoreSpellsEmpireInRuinsCompanion[lore], "EiR", markSource));
                 });
-            }           
+            }
         }
+
         // Function to generate a random grimoire
         function generateGrimoire() {
 
@@ -524,6 +543,7 @@
         <option value="Lore of Tzeentch">Lore of Tzeentch</option>
     </select>
     <div>
+        <label><input type="checkbox" id="markSource" value="Mark Source"> Mark spells from expansions</label><br>
         <label><input type="checkbox" id="windsOfMagic" value="Winds Of Magic"> Include <a href="https://www.drivethrurpg.com/es/product/388109/warhammer-fantasy-roleplay-winds-of-magic?affiliate_id=91369">"Winds Of Magic"</a> Expansion (Replace Colour Lore Spells)</label><br>
         <label><input type="checkbox" id="bloodAndBramble" value="Blood and Bramble"> Include <a href="https://www.drivethrurpg.com/es/product/305317/warhammer-fantasy-role-play-blood-and-bramble?affiliate_id=91369">"Blood and Bramble"</a> Expansion</label><br>
         <label><input type="checkbox" id="sullasaraSpells" value="Sullasara’s Spells"> Include <a href="https://www.drivethrurpg.com/es/product/354584/warhammer-fantasy-role-play-sullasara-s-spells-of-unrivalled-utility?affiliate_id=91369">"Sullasara’s Spells of Unrivaled Utility"</a> Expansion</label><br>
