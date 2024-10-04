@@ -256,7 +256,7 @@
             "Lore of Death": [[" with skulls embossed on the cover"," with a few small bones pinned on it"," decorated with black and purple roses printed on the front"]],
             "Lore of Fire": [[" etched with flames along the borders"," secured with a lock and seven keys"," adorned with fiery motifs blazing across the cover"]],
             "Lore of Heavens": [[" covered with intricate star patterns"," with a few feathers"," illustrated with constellation motif"]],
-            "Lore of Metal": [[" covered with extrange alchemical simbols","reinforced with metal corner guards", " with metal chains to keep it closed"]],
+            "Lore of Metal": [[" covered with extrange alchemical simbols"," reinforced with metal corner guards", " with metal chains to keep it closed"]],
             "Lore of Life": [[" within it, a few pressed flowers"," decorated with leaves motifs"," with a few petals tucked inside"]],
             "Lore of Light": [[" adorned with winding serpent motifs"," with candle wax drip stains"," decorated with piramid motifs"]],
             "Lore of Shadows": [[" with a few raven feathers to bookmark it"," looking like a common edition of a mundane book"," reinforced and rugged, prepared for travel"]],
@@ -422,16 +422,16 @@
             let allSpells = arcaneSpells.concat(loreSpells);
 
             // Create the grimoire text
-            let grimoireText = "Grimoire of " + chosenLore + ":\n";
+            let grimoireText = "Grimoire of " + chosenLore + ":<br>";
             allSpells.forEach(spell => {
-                grimoireText += `- ${spell[0]} (CN: ${spell[1]})\n`;
+                grimoireText += `- ${spell[0]} (CN: ${spell[1]})<br>`;
             });
 
             // Add random decoration
-            grimoireText += "\nAppearance: " + aanmanagement(removedoublespaces(generateBookAppearance(chosenLore)));
+            grimoireText += "<br>Appearance: " + aanmanagement(removedoublespaces(generateBookAppearance(chosenLore)));
 
             // Display the generated grimoire
-            document.getElementById("grimoire").textContent = grimoireText;
+            document.getElementById("grimoire").innerHTML = grimoireText;
         }
 
         // Function to get spell count with weighted probabilities
@@ -533,7 +533,7 @@
         <label><input type="checkbox" id="empireInRuins" value="Empire in Ruins"> Include <a href="https://www.drivethrurpg.com/es/product/303942/warhammer-fantasy-role-play-empire-in-ruins-companion?affiliate_id=91369">"Empire in Ruins Companion"</a> Expansion</label>
     </div>
     <button type="button" onclick="generateGrimoire()">Generate Grimoire</button>
-    <pre id="grimoire"></pre> <!-- 'pre' to preserve formatting of the output -->
+    <p id="grimoire"></p> <!-- 'pre' to preserve formatting of the output -->
     <p id="Acknowledgements">Code: Francisco Mu&ntilde;oz 2024.
         <br>Based on the Grimoires entry on page 238, and the spell lists of the <a href="https://www.drivethrurpg.com/product/248284/Warhammer-Fantasy-Roleplay-Fourth-Edition-Rulebook?affiliate_id=91369">Warhammer Fantasy Roleplay Fourth Edition Rulebook</a>.
         <br>Based on the spell lists of <a href="https://www.drivethrurpg.com/es/product/388109/warhammer-fantasy-roleplay-winds-of-magic?affiliate_id=91369">Winds Of Magic</a>.
