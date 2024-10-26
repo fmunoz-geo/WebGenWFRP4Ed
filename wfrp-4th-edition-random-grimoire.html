@@ -166,6 +166,13 @@
                 ["Winter Coat", 2], ["Writhing Worm", 4], ["Wyssan’s Wildform", 8]
             ]
         };
+        var LoreSpellsArchivesOfEmpire3 = {
+        "Lore of Hedgecraft": [ ["Dagger of the Art", 4],  ["Fellstave", 9], 
+                ["Goodwill", 0],  ["Invigorate", 2],  ["Lovelock", 10],
+                ["Mirkride", 0], ["Nepenthe", 0], ["Nostrum", 0],
+                ["Part the Branches", 0],  ["Protection Pouch", 5], ["Protective Charm", 0],
+                ["Sightstep", 7], ["Silvertide", 4], ["The Ousting", 8], ["Wyrd Ward", 0]]
+        };
         var LoreSpellsBloodAndBramble = {
             "Lore of Hedgecraft": [["Badwill", 0], ["Bonesetter", 0], ["Cleanslate", 0]],
             "Lore of Witchcraft": [["Banishment of Böl", 8], ["Bonesnapper", 6], ["Congeal", 4]],
@@ -217,7 +224,11 @@
             "Lore of Necromancy": [
                 ["Spirit Walk", 6]
             ]
-        };              
+        };
+        var LoreSpellsSeaOfClaws = {
+            "Lore of Heavens": [["Living Mire", 8], ["Watter Water Everywhere", 6], ["Whirlpool", 6]],
+            "Lore of Life": [["Blessings of Bel Shaaner", 2], ["Niezlib's Optimal Firing Solution", 6], ["Sea of Glass", 10]]
+        };                      
         var LORECOLOUR = {
             "Lore of Beasts": [["amber","brown","tan"]],
             "Lore of Death": [["purple","black","dark"]],
@@ -417,6 +428,21 @@
                     LoreSpells[lore] = LoreSpells[lore].concat(markSpellsWithSource(LoreSpellsEmpireInRuinsCompanion[lore], "EiR", markSource));
                 });
             }
+
+            // Add Archives of Empire 3 spells with marker if selected
+            if (document.getElementById("archivesOfEmpire3").checked) {
+                Object.keys(LoreSpellsArchivesOfEmpire3).forEach(lore => {
+                    if (!LoreSpells[lore]) LoreSpells[lore] = [];
+                    LoreSpells[lore] = markSpellsWithSource(LoreSpellsArchivesOfEmpire3[lore], "AotE3", markSource);
+                });
+            }
+            //Add Sea of Claws spells with marker if selected
+            if (document.getElementById("seaOfClaws").checked) {
+                Object.keys(LoreSpellsSeaOfClaws).forEach(lore => {
+                    if (!LoreSpells[lore]) LoreSpells[lore] = [];
+                    LoreSpells[lore] = LoreSpells[lore].concat(markSpellsWithSource(LoreSpellsSeaOfClaws[lore], "SoC", markSource));
+                });
+            }
         }
 
         // Function to generate a random grimoire
@@ -549,9 +575,11 @@
         <label><input type="checkbox" id="bloodAndBramble" value="Blood and Bramble"> Include <a href="https://www.drivethrurpg.com/es/product/305317/warhammer-fantasy-role-play-blood-and-bramble?affiliate_id=91369">"Blood and Bramble"</a> Expansion</label><br>
         <label><input type="checkbox" id="sullasaraSpells" value="Sullasara’s Spells"> Include <a href="https://www.drivethrurpg.com/es/product/354584/warhammer-fantasy-role-play-sullasara-s-spells-of-unrivalled-utility?affiliate_id=91369">"Sullasara’s Spells of Unrivaled Utility"</a> Expansion</label><br>
         <label><input type="checkbox" id="enemyInShadows" value="Enemy in Shadows"> Include <a href="https://www.drivethrurpg.com/es/product/293881/warhammer-fantasy-roleplay-enemy-in-shadows-companion?affiliate_id=91369">"Enemy in Shadows Companion"</a> Expansion</label><br>
-        <label><input type="checkbox" id="deathInTheReik" value="Death in the Reik"> Include <a href="https://www.drivethrurpg.com/es/product/303922/warhammer-fantasy-role-play-death-on-the-reik-companion?affiliate_id=91369"">"Death in the Reik Companion"</a> Expansion</label><br>
+        <label><input type="checkbox" id="deathInTheReik" value="Death in the Reik"> Include <a href="https://www.drivethrurpg.com/es/product/303922/warhammer-fantasy-role-play-death-on-the-reik-companion?affiliate_id=91369">"Death in the Reik Companion"</a> Expansion</label><br>
         <label><input type="checkbox" id="powerBehindThrone" value="Power Behind the Throne"> Include <a href="https://www.drivethrurpg.com/es/product/303926/warhammer-fantasy-role-play-power-behind-the-throne-companion?affiliate_id=91369">"Power Behind the Throne Companion"</a> Expansion</label><br>
-        <label><input type="checkbox" id="empireInRuins" value="Empire in Ruins"> Include <a href="https://www.drivethrurpg.com/es/product/303942/warhammer-fantasy-role-play-empire-in-ruins-companion?affiliate_id=91369">"Empire in Ruins Companion"</a> Expansion</label>
+        <label><input type="checkbox" id="empireInRuins" value="Empire in Ruins"> Include <a href="https://www.drivethrurpg.com/es/product/303942/warhammer-fantasy-role-play-empire-in-ruins-companion?affiliate_id=91369">"Empire in Ruins Companion"</a> Expansion</label><br>
+        <label><input type="checkbox" id="archivesOfEmpire3" value="Empire in Ruins"> Include <a href="https://www.drivethrurpg.com/es/product/388125/warhammer-fantasy-roleplay-archives-of-the-empire-3?affiliate_id=91369">"Archives of the Empire 3"</a> Expansion (Replace Hedgecraft Spells)</label><br>
+        <label><input type="checkbox" id="seaOfClaws" value="Sea of Claws"> Include <a href="https://www.drivethrurpg.com/es/product/388101/warhammer-fantasy-roleplay-sea-of-claws?affiliate_id=91369">"Sea of Claws"</a> Expansion</label>
     </div>
     <button type="button" onclick="generateGrimoire()">Generate Grimoire</button>
     <p id="grimoire"></p> <!-- 'pre' to preserve formatting of the output -->
@@ -565,6 +593,8 @@
         <br>Based on the spell lists of <a href="https://www.drivethrurpg.com/es/product/303922/warhammer-fantasy-role-play-death-on-the-reik-companion?affiliate_id=91369">Death in the Reik Companion</a>.
         <br>Based on the spell lists of <a href="https://www.drivethrurpg.com/es/product/303926/warhammer-fantasy-role-play-power-behind-the-throne-companion?affiliate_id=91369">Power Behind the Throne Companion</a>.
         <br>Based on the spell lists of <a href="https://www.drivethrurpg.com/es/product/303942/warhammer-fantasy-role-play-empire-in-ruins-companion?affiliate_id=91369">Empire in Ruins Companion</a>
+        <br>Based on the spell lists of <a href="https://www.drivethrurpg.com/es/product/388125/warhammer-fantasy-roleplay-archives-of-the-empire-3?affiliate_id=91369">Archives of the Empire 3</a>
+        <br>Based on the spell lists of <a href="https://www.drivethrurpg.com/es/product/388101/warhammer-fantasy-roleplay-sea-of-claws?affiliate_id=91369">Sea of Claws</a>
         <br>Inspiration: <a href="http://www.windsofchaos.com/wp-content/uploads/encroachment/html/generator-random-treasure-01.html">Encroatchment of Chaos, Treasure Generator by Dave Graffam</a>.
         <br>Inspiration: <a href="http://orteil.dashnet.org/randomgen/?gen=https://pastebin.com/raw/JcxC8pMx">WFRP 4e Equipment Generator</a>.
         <br>Inspiration: <a href="https://ratujmywfrp2pl.files.wordpress.com/2010/01/treasure-tables.pdf">Dan White's WFRP RANDOM TREASURE GENERATION</a>.
