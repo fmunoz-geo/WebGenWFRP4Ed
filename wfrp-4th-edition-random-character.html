@@ -19,6 +19,7 @@ th {
   height: 100%;
   background-color: rgba(0, 0, 0, 0.4);
 }
+
 .custom-dialog-content {
   position: absolute;
   top: 50%;
@@ -30,12 +31,18 @@ th {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  max-height: 80%; /* Limits the height to 80% of the screen */
+  width: 50%; /* Adjust width as needed */
+  overflow-y: auto; /* Adds a scroll bar if content exceeds max-height */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
+
 .custom-dialog-buttons {
   display: flex;
   justify-content: space-around;
   margin-top: 10px;
 }
+
 .custom-dialog-buttons button {
   background-color: #4caf50;
   border: none;
@@ -157,6 +164,9 @@ async function showCareerDialog(careers) {
 }
 
 // ["WS","BS","S","T","I","AG","DEX","INT","WP","FEL","M","W"];
+const StatsName = ["WS","BS","S","T","Ag","I","Dex","Int","WP","Fel"];
+const StatsBonusName = ["WSB","BSB","SB","TB","AgB","IB","DexB","IntB","WPB","FelB"];
+
 const ST_WS = 0;
 const ST_BS = 1;
 const ST_S = 2;
@@ -174,7 +184,9 @@ async function generateChar(SpeciesChoice) {
 "use strict";
 var Name = "";
 var NameTxt = "";
+var extraXP = parseInt(document.getElementById("extraXPInput").value) || 0; // Get extra XP value, default to 0 if empty or invalid
 var xp = 0;
+xp += extraXP; // Add the extra XP to the total XP
 var xpSpend = 0;
 var XpTxt = "";
 var SpeciesTxt ="";
@@ -437,7 +449,6 @@ var CareerSocial = ["Brass 3","Brass 4","Brass 4","Brass 1",
 "Silver 2","Silver 1","Silver 3","Brass 4",
 "Brass 2","Brass 2","Silver 1","Brass 2"];
 var StatsTxt = "";
-var StatsName = ["WS","BS","S","T","AG","I","DEX","INT","WP","FEL"];
 var StatsR = [0,0,0,0,0,0,0,0,0,0];
 var StatsHuman = [20,20,20,20,20,20,20,20,20,20,20];
 var StatsDwarf = [30,20,20,30,10,20,30,20,40,10];
@@ -1518,6 +1529,46 @@ function getMouseOverText(Name, MOArray){
     }
     return MOTxt;
 }
+// Normalize talent names to match dataTalents keys
+function normalizeTalentName(talentName) {
+    return talentName.replace(/\s+/g, "").replace(/\(.*?\)/g, "").toLowerCase();
+}
+
+// Function to calculate stat bonus
+function calculateStatBonus(statValue) {
+    return Math.floor(statValue / 10);
+}
+
+// Function to get the max level for a given talent
+function getTalentMax(talentName) {
+    const normalizedTalentName = normalizeTalentName(talentName);
+    let maxLevel = 1; // Default max level if not found in dataTalents
+
+    for (const talent of dataTalents) {
+        const normalizedDataTalentName = normalizeTalentName(talent[0]);
+        if (normalizedTalentName === normalizedDataTalentName) {
+            if (!isNaN(talent[1])) {
+                // Fixed max level (e.g., "2")
+                maxLevel = parseInt(talent[1], 10);
+            } else {
+                // Stat-based max level (e.g., "BSB")
+                const statIndex = StatsBonusName.indexOf(talent[1]);
+                if (statIndex !== -1) {
+                    const totalStat =
+                        StatsR[statIndex] +
+                        StatsBase[statIndex] +
+                        StatsTalents[statIndex] +
+                        StatsAdvance[statIndex];
+                    maxLevel = calculateStatBonus(totalStat);
+                }
+            }
+            break;
+        }
+    }
+
+    return maxLevel;
+}
+
 function refreshCharacterDisplay () {
     document.getElementById("nameB").innerHTML = NameTxt;
     document.getElementById("speciesB").innerHTML = SpeciesTxt;
@@ -1599,32 +1650,43 @@ CareerName = CareerAll[CareerN];
 /*If we agree keep the 1st career so no changes just less xp*/
 if ((document.getElementById("careerCheck").checked == true) ) {
    refreshCharacterDisplay();
-    const keepCurrentCareer = await showCustomDialog("Keep career as " + SpeciesTxt + " " + CareerName);
-    if (keepCurrentCareer) {
+   const keepCurrentCareer = await showCustomDialog(`Keep career as ${SpeciesTxt} ${CareerName}?`);
+   if (keepCurrentCareer) {
       var newCareerRoll = [CareerRoll, 0, 0];
       var newCareerN = [CareerN, 0, 0];
       var newCareerName = [CareerName, "", ""];
 
-      for (i = 1; i < 3; i += 1) {
-        newCareerRoll[i] = roll1d100();
-        x = 0;
-        while (CareerSpecies[x] < newCareerRoll[i]) {
-          x += 1;
-        }
-        newCareerN[i] = x;
-        newCareerName[i] = CareerAll[x];
-      }
-
-      const selectedIndex = await showCareerDialog(newCareerName);
-      CareerRoll = newCareerRoll[selectedIndex];
-      CareerN = newCareerN[selectedIndex];
-      CareerName = newCareerName[selectedIndex];
-      xp += 25;
+      if (keepCurrentCareer) {
+            const newCareerOptions = [CareerName];
+            const newCareerRolls = [CareerRoll];
+            while (newCareerOptions.length < 3) {
+                let newRoll = roll1d100();
+                let newIndex = 0;
+                while (CareerSpecies[newIndex] < newRoll) newIndex++;
+                let newCareer = CareerAll[newIndex];
+                if (!newCareerOptions.includes(newCareer)) {
+                    newCareerOptions.push(newCareer);
+                    newCareerRolls.push(newRoll);
+                }
+            }
+            const selectedIndex = await showCareerDialog([...newCareerOptions, "Pick from full list"]);
+            if (selectedIndex === newCareerOptions.length) {
+                // Full career list selection
+                const fullCareerIndex = await showCareerDialog(CareerAll);
+                CareerN = fullCareerIndex;
+                CareerName = CareerAll[CareerN];
+                xp += 0; // No XP bonus
+            } else {
+                CareerN = CareerSpecies.findIndex((val) => val >= newCareerRolls[selectedIndex]);
+                CareerName = newCareerOptions[selectedIndex];
+                xp += 25; // Smaller XP bonus
+            }
     } else {
       xp += 50;
-    }
+    }} else {
+      xp += 50;}
   } else {
-    xp += 50;
+      xp += 50;
   }
 ClassN = Math.floor(CareerN / 8);
 StatsCareer[ CareerAdvance[CareerN][0] ] = 1;
@@ -1721,14 +1783,14 @@ var Trapping = rollTrappings(TrappingClass[ClassN] + ", " + TrappingCareer[Caree
 var Money = rollMoney(CareerSocial [ CareerN ]);
 /* Generate the final strings */
 CareerTxt ="(" + ClassAll [ ClassN ] + ") " + CareerName + ", Social Level "+ CareerSocial [ CareerN ] ;
-XpTxt = "<b>XP:</b> " + xp + "/" + xpSpend;
+XpTxt = "<b>XP:</b> " + xp - xpSpend + "/" + xp;
 for (i = 0; i < SkillNames.length ; i += 1) {
     var MouseOverTxt = getMouseOverText (SkillNames[i],mouseoverSkills);
     SkillTxt += "<span title = '" + MouseOverTxt + "'>" + SkillNames[i] + ":" + SkillValues[i] + "</span>; ";
 }
 for (i = 0; i < TalentNames.length ; i += 1) {
     var MouseOverTxt = getMouseOverText (TalentNames[i],mouseoverTalents);
-     TalentTxt += "<span title = '" + MouseOverTxt + "'>" + TalentNames[i] + ":" + TalentValues[i] + "</span>; ";
+     TalentTxt += "<span title = '" + MouseOverTxt + "'>" + TalentNames[i] + ":" + TalentValues[i] + "/" + getTalentMax(TalentNames[i]) + "</span>; ";
 }
 if (DoomingTxt != "") {
  TalentTxt += "<br><B>Dooming:</B> "+ DoomingTxt;
@@ -1779,6 +1841,10 @@ Ask Reroll Stats: </td><td><input type="checkbox" id="reRollCheck">
 Ask Reroll Career: </td><td><input type="checkbox" id="careerCheck">
 </td></tr><tr><td>
 Ask Simple Choices:</td><td><input type="checkbox" id="choiceCheck">
+</td></tr><tr><td>
+Randomly Expend XP:</td><td><input type="checkbox" id="randomExpendXP">
+</td></tr><tr><td>
+Extra XP </td><td> <input type="number" id="extraXPInput" min="0" placeholder="Extra XP">
 </td></tr>
 </table>
 <div id="characterPrint">
