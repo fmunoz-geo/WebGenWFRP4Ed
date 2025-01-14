@@ -126,43 +126,48 @@ async function showCustomDialog(message, buttonLabels = ['Yes', 'No']) {
     customDialog.style.display = 'block';
   });
 }
-async function showCareerDialog(careers) {
+async function showSelectionDialog(options, title) {
   return new Promise((resolve) => {
-    const careerDialog = document.getElementById('careerDialog');
-    const careerForm = document.getElementById('careerForm');
-    const careerDialogSubmit = document.getElementById('careerDialogSubmit');
+    const dialog = document.getElementById('selectionDialog');
+    const form = document.getElementById('selectionForm');
+    const submitButton = document.getElementById('selectionDialogSubmit');
+    const titleElement = document.getElementById('selectionDialogTitle');
 
-    // Clear the form and add radio buttons for the given careers
-    careerForm.innerHTML = '';
-    careers.forEach((career, index) => {
+    // Set the dialog title dynamically
+    titleElement.textContent = title;
+
+    // Clear the form and add radio buttons for the given options
+    form.innerHTML = '';
+    options.forEach((option, index) => {
       const radioButton = document.createElement('input');
       radioButton.type = 'radio';
-      radioButton.name = 'career';
+      radioButton.name = 'selection';
       radioButton.value = index;
-      radioButton.id = `career${index}`;
+      radioButton.id = `selection${index}`;
 
       const label = document.createElement('label');
-      label.htmlFor = `career${index}`;
-      label.textContent = career;
+      label.htmlFor = `selection${index}`;
+      label.textContent = option;
 
-      careerForm.appendChild(radioButton);
-      careerForm.appendChild(label);
-      careerForm.appendChild(document.createElement('br'));
+      form.appendChild(radioButton);
+      form.appendChild(label);
+      form.appendChild(document.createElement('br'));
     });
 
     // Select the first radio button by default
-    careerForm.elements[0].checked = true;
+    if (form.elements.length > 0) {
+      form.elements[0].checked = true;
+    }
 
-    careerDialogSubmit.onclick = () => {
-      careerDialog.style.display = 'none';
-      const selectedIndex = parseInt(careerForm.elements['career'].value, 10);
+    submitButton.onclick = () => {
+      dialog.style.display = 'none';
+      const selectedIndex = parseInt(form.elements['selection'].value, 10);
       resolve(selectedIndex);
     };
 
-    careerDialog.style.display = 'block';
+    dialog.style.display = 'block';
   });
 }
-
 // ["WS","BS","S","T","I","AG","DEX","INT","WP","FEL","M","W"];
 const StatsName = ["WS","BS","S","T","Ag","I","Dex","Int","WP","Fel"];
 const StatsBonusName = ["WSB","BSB","SB","TB","AgB","IB","DexB","IntB","WPB","FelB"];
@@ -551,6 +556,8 @@ var SkillTxt ="";
 var SkillStart;
 var SkillNames = [];
 var SkillValues = [];
+var SkillCareer = [];
+
 var TalentStartHuman = ["Doomed","Savvy or Suave","Random","Random","Random" ];
 var TalentStartDwarf = ["Magic Resistance","Night Vision","Read/Write or Relentless","Resolute or Strong-Minded","Sturdy"];
 var TalentStartHalfling = ["Acute Sense (Taste)", "Night Vision", "Resistance (Chaos)", "Small", "Random", "Random"];
@@ -1429,26 +1436,48 @@ function parseSkillAny (SkillArray) {
     }
     return SkillArray;
 }
-function dedupeNameValue(NameArray,ValueArray) {
-    var i;
-    var j;
+function dedupeNameValue(NameArray, ValueArray, CareerArray = []) {
+    var i, j;
     var toremove = [];
-    for (i = 0; i< (NameArray.length - 1); i += 1) {
-        for (j = i + 1; j < (NameArray.length ) ; j += 1) {
-            if( (NameArray[i]).localeCompare(NameArray[j]) == 0) { 
-                toremove.push(j);
+    var hasCareerArray = CareerArray.length > 0; // Check if CareerArray is provided
+
+    // Identify duplicates
+    for (i = 0; i < (NameArray.length - 1); i += 1) {
+        for (j = i + 1; j < NameArray.length; j += 1) {
+            if (NameArray[i].localeCompare(NameArray[j]) === 0) { 
+                // Combine values
                 ValueArray[i] += ValueArray[j];
+
+                // Combine CareerArray if applicable
+                if (hasCareerArray) {
+                    CareerArray[i] = CareerArray[i] || CareerArray[j];
+                }
+
+                // Mark duplicate for removal
+                toremove.push(j);
             }
         }
     }
+
+    // Remove duplicates
     if (toremove.length > 0) {
-        for (i in toremove) {
-            NameArray.splice ( toremove[i] , 1);
-            ValueArray.splice ( toremove[i] , 1);
+        // Sort indices in reverse to avoid shifting issues when splicing
+        toremove.sort((a, b) => b - a);
+        for (i of toremove) {
+            NameArray.splice(i, 1);
+            ValueArray.splice(i, 1);
+            if (hasCareerArray) {
+                CareerArray.splice(i, 1);
+            }
         }
     }
-    var CombinedArray = [NameArray, ValueArray];
-    return CombinedArray;
+
+    // Return arrays, including CareerArray if applicable
+    if (hasCareerArray) {
+        return [NameArray, ValueArray, CareerArray];
+    } else {
+        return [NameArray, ValueArray];
+    }
 }
 async function parseOrParenthesis(NameArray) {
      var i;
@@ -1494,6 +1523,7 @@ function rollTrappings(TrapString) {
    return TrapString;
 }
 function rollMoney (SocialString) {
+    console.log("Generating money: "+SocialString);
     var money = "";
     var ParsedSocial = SocialString.split(" ");
     switch (ParsedSocial[0]) {
@@ -1504,7 +1534,11 @@ function rollMoney (SocialString) {
             money =   rollXd10(ParsedSocial[1]) + " Silver Shillings.";
             break;
         case "Brass":
-            money =   rollXd10(ParsedSocial[1]*2) + " Brass Pennies.";
+            if (ParsedSocial[1]>0) {
+                money =   rollXd10(ParsedSocial[1]*2) + " Brass Pennies.";
+            } else {
+                money =   "Not a single Brass Penny.";
+            }
             break;
         default:
             money =  "Not a single coin.";
@@ -1624,15 +1658,22 @@ NameTxt = NamesSpecies[ Math.floor(Math.random() * NamesSpecies.length) ] + " "
 SkillStart = SkillStartAll[ SpeciesN - 1 ];
 console.log(SkillStart);
 for (i = 0; i < 6; i += 1) {
-     var skrandom = Math.floor(Math.random() * SkillStart.length);
-     SkillNames.push ( SkillStart.splice (skrandom , 1)[0] );
-     var skvar;
-     if ( i < 3 ) {
-         skvar = 5;
-     } else {
-         skvar = 3;
-     }
-     SkillValues.push ( skvar );
+    const skillPoints = i < 3 ? 5 : 3; // Determine skill points based on `i`
+    let selectedIndex;
+    if (document.getElementById("choiceCheck").checked == true) {
+      // Show the skill dialog and wait for user input
+      selectedIndex = await showSelectionDialog([...SkillStart,"Pick One at Random"], "Select "+ SpeciesTxt+" skill with +"+ skillPoints +" :");
+      // Add the selected skill to the character's skill list
+      if (selectedIndex === SkillStart.length) {
+        selectedIndex = Math.floor(Math.random() * SkillStart.length);
+      }
+      } else {
+      // Randomly select a skill if manual selection is not enabled
+      selectedIndex = Math.floor(Math.random() * SkillStart.length);
+    }
+    SkillNames.push(SkillStart.splice(selectedIndex, 1)[0]);
+    SkillValues.push ( skillPoints );
+    SkillCareer.push ( 0 );
 }
 console.log(SkillStart);
 console.log(SkillNames);
@@ -1669,10 +1710,10 @@ if ((document.getElementById("careerCheck").checked == true) ) {
                     newCareerRolls.push(newRoll);
                 }
             }
-            const selectedIndex = await showCareerDialog([...newCareerOptions, "Pick from full list"]);
+            const selectedIndex = await showSelectionDialog([...newCareerOptions, "Pick from full list"], "Select career:");
             if (selectedIndex === newCareerOptions.length) {
                 // Full career list selection
-                const fullCareerIndex = await showCareerDialog(CareerAll);
+                const fullCareerIndex = await showSelectionDialog(CareerAll, "Select career:");
                 CareerN = fullCareerIndex;
                 CareerName = CareerAll[CareerN];
                 xp += 0; // No XP bonus
@@ -1749,6 +1790,7 @@ for (i = 0; i < 8; i += 1) {
      SkillNames.push ( ski.splice (skirand , 1)[0] );
      var skvar = randSki[i]; 
      SkillValues.push ( skvar );
+     SkillCareer.push ( 1 );
 }
 console.log(SkillNames);
 var randTalent = Math.floor(Math.random() * 4);
@@ -1775,18 +1817,23 @@ if (TalentNames.includes("Doomed")) {
  DoomingTxt = DoomingsAll[Math.floor(Math.random() * DoomingsAll.length)];
 };
 
-var SkillNamesValue = dedupeNameValue(SkillNames, SkillValues );
+var SkillNamesValue = dedupeNameValue(SkillNames, SkillValues, SkillCareer );
 SkillNames = SkillNamesValue[0].slice(0);
 SkillValues = SkillNamesValue[1].slice(0);
+SkillCareer = SkillNamesValue[2].slice(0);
+
 console.log(SkillNames);
 var Trapping = rollTrappings(TrappingClass[ClassN] + ", " + TrappingCareer[CareerN]);
 var Money = rollMoney(CareerSocial [ CareerN ]);
 /* Generate the final strings */
 CareerTxt ="(" + ClassAll [ ClassN ] + ") " + CareerName + ", Social Level "+ CareerSocial [ CareerN ] ;
-XpTxt = "<b>XP:</b> " + xp - xpSpend + "/" + xp;
+XpTxt = "<b>XP:</b> " + (xp - xpSpend) + "/" + xp;
 for (i = 0; i < SkillNames.length ; i += 1) {
     var MouseOverTxt = getMouseOverText (SkillNames[i],mouseoverSkills);
-    SkillTxt += "<span title = '" + MouseOverTxt + "'>" + SkillNames[i] + ":" + SkillValues[i] + "</span>; ";
+    var openITag = SkillCareer[i] === 1 ? "<i>" : "";
+    var closeITag = SkillCareer[i] === 1 ? "</i>" : "";
+
+    SkillTxt += "<span title = '" + MouseOverTxt + "'>" + openITag + SkillNames[i] + closeITag + ":" + SkillValues[i] + "</span>; ";
 }
 for (i = 0; i < TalentNames.length ; i += 1) {
     var MouseOverTxt = getMouseOverText (TalentNames[i],mouseoverTalents);
@@ -1883,13 +1930,13 @@ Extra XP </td><td> <input type="number" id="extraXPInput" min="0" placeholder="E
     <div id="customDialogButtons" class="custom-dialog-buttons"></div>
   </div>
 </div>
-<div id="careerDialog" class="custom-dialog">
+<div id="selectionDialog" class="custom-dialog" style="display: none;">
   <div class="custom-dialog-content">
-    <p>Select a career:</p>
-    <form id="careerForm">
+    <p id="selectionDialogTitle">Select an option:</p>
+    <form id="selectionForm">
       <!-- Radio buttons will be added here using JavaScript -->
     </form>
-    <button id="careerDialogSubmit">Submit</button>
+    <button id="selectionDialogSubmit">Submit</button>
   </div>
 </div>
 <p id="Links">
@@ -1898,7 +1945,7 @@ If you need a more dangerous set you might check my <a href="https://pacomiscela
 You can also create the loot carried by them using my <a href="https://pacomiscelaneousstuff.blogspot.com/2019/08/treasure-generator.html">Random Treasure Generator</a>.<br>
 To have a more detailed Old Worlders you can use the list of my <a href="https://pacomiscelaneousstuff.blogspot.com/2018/09/generic-npc-stats-for-4th-edition.html">Generic NPCs stats for 4th edition</a>.<br>
 </p>
-<p id="Acknowledgements"><a href="https://github.com/fmunoz-geo/WebGenWFRP4Ed">Code: Francisco Mu&ntilde;oz 2018-2020.</a>
+<p id="Acknowledgements"><a href="https://github.com/fmunoz-geo/WebGenWFRP4Ed">Code: Francisco Mu&ntilde;oz 2018-2025.</a>
 <br>Skill advance selection and misc data: Jay Alexander Hafner 2018
 <br>Skill description: Ryan Graham 2018
 <br>Core character creation: <a href="https://www.drivethrurpg.com/product/248284/Warhammer-Fantasy-Roleplay-Fourth-Edition-Rulebook?affiliate_id=91369">Warhammer Fantasy Roleplay Fourth Edition Rulebook</a>
