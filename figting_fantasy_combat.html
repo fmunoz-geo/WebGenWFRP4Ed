@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fighting Fantasy Combat Simulator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+        }
+        h1, h3 {
+            font-family: 'Cinzel', serif;
+            font-weight: bold;
+            text-align: center;
+        }
+        .adventure-sheet {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .stat-box {
+            border: 2px solid black;
+            width: 120px;
+            height: 130px;
+            text-align: center;
+            margin: 0 10px;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .stat-box label {
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+        .stat-box input {
+            width: 80%;
+            text-align: center;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+        .current-value {
+            font-size: 1em;
+            font-weight: bold;
+            border: 1px solid #ccc;
+            background-color: #f3f3f3;
+            padding: 5px;
+        }
+        button {
+            margin-top: 10px;
+            margin-right: 10px;
+        }
+        .log {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-top: 20px;
+            background-color: #f9f9f9;
+            height: 300px;
+            overflow-y: scroll;
+        }
+    </style>
+</head>
+<body>
+    <h1>Fighting Fantasy Combat Simulator</h1>
+    
+    <h3>Player Stats</h3>
+    <div class="adventure-sheet">
+        <div class="stat-box">
+            <label for="player-skill">SKILL</label>
+            <input type="number" id="player-skill" required>
+            <input type="number" id="current-skill" class="current-value">
+        </div>
+        <div class="stat-box">
+            <label for="player-stamina">STAMINA</label>
+            <input type="number" id="player-stamina" required>
+            <input type="number" id="current-stamina" class="current-value">
+        </div>
+        <div class="stat-box">
+            <label for="player-luck">LUCK</label>
+            <input type="number" id="player-luck" required>
+            <input type="number" id="current-luck" class="current-value">
+        </div>
+    </div>
+
+    <h3>Monster Stats</h3>
+    <div class="adventure-sheet">
+        <div class="stat-box">
+            <label for="enemy-skill">SKILL</label>
+            <input type="number" id="enemy-skill" required>
+        </div>
+        <div class="stat-box">
+            <label for="enemy-stamina">STAMINA</label>
+            <input type="number" id="enemy-stamina" required>
+        </div>
+    </div>
+
+    <form id="combat-form">
+        <button type="submit">Start Combat</button>
+        <button type="button" id="clear-combat">Clear Combat</button>
+    </form>
+
+    <div class="log" id="log">
+        <strong>Combat Log:</strong>
+        <hr>
+    </div>
+    <button id="next-round" style="display: none;">Next Round</button>
+    <button id="use-luck" style="display: none;">Use Luck</button>
+  <footer>
+        <p>
+            Code: Francisco Muñoz 2024. <br>
+            Based on the rules: <a href="https://www.fightingfantasy.com/" target="_blank">Fighting Fantasy</a> by Ian Livingstone and Steve Jackson. <br>
+            No claim is made to the Fighting Fantasy intellectual property.
+        </p>
+    </footer>
+    <script>
+        const form = document.getElementById('combat-form');
+        const log = document.getElementById('log');
+        const nextRoundBtn = document.getElementById('next-round');
+        const useLuckBtn = document.getElementById('use-luck');
+        const clearCombatBtn = document.getElementById('clear-combat');
+
+        const currentSkillInput = document.getElementById('current-skill');
+        const currentStaminaInput = document.getElementById('current-stamina');
+        const currentLuckInput = document.getElementById('current-luck');
+
+        let player = {};
+        let enemy = {};
+        let round = 1;
+        let lastHit = null;
+
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            // Initialize player and enemy stats
+            player = {
+                skill: parseInt(document.getElementById('player-skill').value),
+                stamina: parseInt(document.getElementById('player-stamina').value),
+                luck: parseInt(document.getElementById('player-luck').value)
+            };
+
+            enemy = {
+                skill: parseInt(document.getElementById('enemy-skill').value),
+                stamina: parseInt(document.getElementById('enemy-stamina').value)
+            };
+
+            // Set current values
+            currentSkillInput.value = player.skill;
+            currentStaminaInput.value = player.stamina;
+            currentLuckInput.value = player.luck;
+
+            // Reset the log and buttons
+            log.innerHTML = "<strong>Combat Log:</strong><hr>";
+            round = 1;
+            lastHit = null;
+
+            logMessage(`Combat started! Player vs Monster`);
+            logMessage(`Player Stamina: ${player.stamina}, Monster Stamina: ${enemy.stamina}`);
+            nextRoundBtn.style.display = "inline";
+            useLuckBtn.style.display = "none";
+        });
+
+        currentSkillInput.addEventListener('change', () => {
+            const newSkill = parseInt(currentSkillInput.value);
+            logMessage(`Player's SKILL changed to ${newSkill}.`);
+        });
+
+        currentStaminaInput.addEventListener('change', () => {
+            const newStamina = parseInt(currentStaminaInput.value);
+            logMessage(`Player's STAMINA changed to ${newStamina}.`);
+        });
+
+        currentLuckInput.addEventListener('change', () => {
+            const newLuck = parseInt(currentLuckInput.value);
+            logMessage(`Player's LUCK changed to ${newLuck}.`);
+        });
+
+        nextRoundBtn.addEventListener('click', function() {
+            simulateRound();
+        });
+
+        useLuckBtn.addEventListener('click', function() {
+            useLuck();
+        });
+
+        clearCombatBtn.addEventListener('click', function() {
+            log.innerHTML = "<strong>Combat Log:</strong><hr>";
+            nextRoundBtn.style.display = "none";
+            useLuckBtn.style.display = "none";
+        });
+
+        function rollDice() {
+            return Math.floor(Math.random() * 6) + 1;
+        }
+
+        function simulateRound() {
+            logMessage(`Round ${round}`);
+            
+            const playerRoll = rollDice() + rollDice();
+            const enemyRoll = rollDice() + rollDice();
+
+            const playerAttackStrength = parseInt(currentSkillInput.value) + playerRoll;
+            const enemyAttackStrength = enemy.skill + enemyRoll;
+
+            logMessage(`Player rolls ${playerRoll} (Attack Strength: ${playerAttackStrength})`);
+            logMessage(`Monster rolls ${enemyRoll} (Attack Strength: ${enemyAttackStrength})`);
+
+            if (playerAttackStrength > enemyAttackStrength) {
+                logMessage("Player hits the monster for 2 damage!");
+                enemy.stamina -= 2;
+                lastHit = "player";
+            } else if (enemyAttackStrength > playerAttackStrength) {
+                logMessage("Monster hits the player for 2 damage!");
+                currentStaminaInput.value -= 2;
+                lastHit = "enemy";
+            } else {
+                logMessage("Both attacks are equal. No damage dealt.");
+                lastHit = null;
+            }
+
+            logMessage(`Player Stamina: ${currentStaminaInput.value}, Monster Stamina: ${enemy.stamina}`);
+            logMessage("<hr>");
+
+            if (currentStaminaInput.value <= 0 || enemy.stamina <= 0) {
+                nextRoundBtn.style.display = "none";
+                useLuckBtn.style.display = "none";
+                if (currentStaminaInput.value <= 0) {
+                    logMessage("Player has been defeated. Game Over.");
+                } else {
+                    logMessage("The monster has been defeated. Victory!");
+                }
+            } else {
+                if (lastHit) useLuckBtn.style.display = "inline";
+                round++;
+            }
+        }
+
+        function useLuck() {
+            if (!lastHit) return;
+
+            const luckRoll = rollDice() + rollDice();
+            logMessage(`Player rolls ${luckRoll} for Luck (Luck: ${currentLuckInput.value})`);
+
+            if (luckRoll <= currentLuckInput.value) {
+                logMessage("Luck successful!");
+                if (lastHit === "player") {
+                    logMessage("Player deals an extra 1 damage!");
+                    enemy.stamina -= 1;
+                } else if (lastHit === "enemy") {
+                    logMessage("Player reduces damage taken by 1!");
+                    currentStaminaInput.value = parseInt(currentStaminaInput.value) + 1;
+                }
+            } else {
+                logMessage("Luck failed!");
+                if (lastHit === "player") {
+                    logMessage("Player deals 1 less damage.");
+                    enemy.stamina += 1;
+                } else if (lastHit === "enemy") {
+                    logMessage("Player takes 1 extra damage.");
+                    currentStaminaInput.value = parseInt(currentStaminaInput.value) - 1;
+                }
+            }
+
+            currentLuckInput.value -= 1;
+            logMessage(`Player Luck is now ${currentLuckInput.value}`);
+            logMessage("<hr>");
+            useLuckBtn.style.display = "none";
+
+            if (currentStaminaInput.value <= 0 || enemy.stamina <= 0) {
+                nextRoundBtn.style.display = "none";
+                useLuckBtn.style.display = "none";
+                if (currentStaminaInput.value <= 0) {
+                    logMessage("Player has been defeated. Game Over.");
+                } else {
+                    logMessage("The monster has been defeated. Victory!");
+                }
+            }
+        }
+
+        function logMessage(message) {
+            log.innerHTML += message + "<br>";
+            log.scrollTop = log.scrollHeight; // Auto-scroll to the latest log
+        }
+    </script>
+</body>
+</html>
