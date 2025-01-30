@@ -571,6 +571,7 @@ var TalentStartAll = [TalentStartHuman,
 var TalentTxt ="";
 var TalentNames = [];
 var TalentValues = [];
+var TalentCareer = [];
 var TalentRandom = [3, 6, 9, 12, 15, 18, 21, 24, 28, 31, 34, 38, 41, 44, 47, 50, 52, 55, 58, 62, 65, 68, 71, 74, 78, 81, 84, 87, 91, 94, 97, 100];
 var TalentRandomName = ["Acute Sense (Any one)",
 "Ambidextrous",
@@ -1359,8 +1360,29 @@ async function parseInicialTalent(TalentArray) {
      return TalentArray;
 }
 function splitFateResilience ( extraPoints ) {
-    var x = Math.floor(Math.random() * extraPoints ) +1;
+    var x = Math.floor(Math.random() * (extraPoints + 1));
     return [ x, extraPoints - x ]
+}
+async function selectCareerTalent(CareerTalents, CareerN, CareerName) {
+    let selectedTalent;
+    if (document.getElementById("choiceCheck").checked) {
+        console.log(`Showing dialog for ${CareerName} talents`);
+        const selectedIndex = await showSelectionDialog(
+            [...CareerTalents[CareerN], "Pick One at Random"],
+            "Select initial " + CareerName + " talent:"
+        );
+        if (selectedIndex === CareerTalents[CareerN].length) {
+            selectedTalent = CareerTalents[CareerN][Math.floor(Math.random() * CareerTalents[CareerN].length)];
+            console.log(`Randomly selected talent: ${selectedTalent}`);
+        } else {
+            selectedTalent = CareerTalents[CareerN][selectedIndex];
+            console.log(`User selected talent: ${selectedTalent}`);
+        }
+    } else {
+        selectedTalent = CareerTalents[CareerN][Math.floor(Math.random() * CareerTalents[CareerN].length)];
+        console.log(`Randomly selected talent: ${selectedTalent}`);
+    }
+    return selectedTalent;
 }
 function parseTalent2Stats (TalentArray) {
     var x;
@@ -1408,33 +1430,115 @@ function parseTalent2Stats (TalentArray) {
     }
     return stat;
 }
-function parseTalentAny (TalentArray) {
-    var x;
-    var y;
-    for (x in TalentArray) {
-        if (TalentArray[x].indexOf("(Any one)") > -1 ) {
-           for (y in AnyTalents) {
-               if ( (TalentArray[x]).localeCompare(AnyTalents[y][0]) == 0  ) {
-                TalentArray[x] = AnyTalents[y][ Math.floor( Math.random() * ( AnyTalents[y].length - 1 ) + 1 ) ];
+async function parseTalentAny(TalentArray) {
+    for (let x = 0; x < TalentArray.length; x++) {
+        if (TalentArray[x].indexOf("(Any one)") > -1) {
+            for (let y = 0; y < AnyTalents.length; y++) {
+                // Ensure AnyTalents[y] is defined and has at least one element
+                if (AnyTalents[y] && AnyTalents[y].length > 0 && TalentArray[x].localeCompare(AnyTalents[y][0]) === 0) {
+                    if (document.getElementById("choiceCheck").checked) {
+                        // Create a list of talents to select from, removing duplicates
+                        let TalentsToSelect = [...new Set(AnyTalents[y].slice(1))]; // Remove duplicates
+                        // Show the dialog to select a talent
+                        const selectedIndex = await showSelectionDialog(
+                            [...TalentsToSelect, "Pick One at Random"],
+                            "Select specialization for: " + TalentArray[x]
+                        );
+                        // If the user selects "Pick One at Random", use the random selection
+                        if (selectedIndex === TalentsToSelect.length) {
+                            TalentArray[x] = AnyTalents[y][Math.floor(Math.random() * (AnyTalents[y].length - 1)) + 1];
+                        } else {
+                            TalentArray[x] = TalentsToSelect[selectedIndex];
+                            console.log("Selected: " + TalentArray[x]);
+                        }
+                    } else {
+                        // If choiceCheck is not checked, use the random selection
+                        TalentArray[x] = AnyTalents[y][Math.floor(Math.random() * (AnyTalents[y].length - 1)) + 1];
+                    }
                 }
-           }
-       }
+            }
+        }
     }
     return TalentArray;
 }
-function parseSkillAny (SkillArray) { 
-    var x;
-    var y;
-    for (x in SkillArray) {
+async function parseSkillAny(SkillArray) {
+    for (let x = 0; x < SkillArray.length; x++) {
         if (SkillArray[x].indexOf("(Any one)") > -1) {
-           for (y in AnySkills) {
-               if ((SkillArray[x]).localeCompare(AnySkills[y][0]) == 0 ) {
-                SkillArray[x] = AnySkills[y][ Math.floor( Math.random() * ( AnySkills[y].length - 1 ) + 1 ) ];
+            console.log(`Processing skill: ${SkillArray[x]}`);
+            for (let y = 0; y < AnySkills.length; y++) {
+                console.log(`Checking AnySkills[${y}]:`, AnySkills[y]);
+                if (AnySkills[y] && AnySkills[y].length > 0 && SkillArray[x].localeCompare(AnySkills[y][0]) === 0) {
+                    console.log(`Match found for ${SkillArray[x]} in AnySkills[${y}]`);
+                    if (document.getElementById("choiceCheck").checked) {
+                        let SkillsToSelect = [...new Set(AnySkills[y].slice(1))];
+                        console.log(`Skills to select:`, SkillsToSelect);
+                        const selectedIndex = await showSelectionDialog(
+                            [...SkillsToSelect, "Pick One at Random"],
+                            "Select specialization for: " + SkillArray[x]
+                        );
+                        if (selectedIndex === SkillsToSelect.length) {
+                            SkillArray[x] = AnySkills[y][Math.floor(Math.random() * (AnySkills[y].length - 1)) + 1];
+                        } else {
+                            SkillArray[x] = SkillsToSelect[selectedIndex];
+                            console.log("Selected: " + SkillArray[x]);
+                        }
+                    } else {
+                        SkillArray[x] = AnySkills[y][Math.floor(Math.random() * (AnySkills[y].length - 1)) + 1];
+                    }
                 }
-           }
-       }
+            }
+        }
     }
     return SkillArray;
+}
+function addSkillsFromTalents(TalentArray, SkillNames, SkillValues, SkillCareer) {
+    for (let talent of TalentArray) {
+        console.log(`Processing talent: ${talent}`);
+        switch (true) {
+            case talent === "Artistic":
+                SkillNames.push("Art (Any one)");
+                SkillValues.push(0);
+                SkillCareer.push(1);
+                console.log(`Added skill: Art (Any one)`);
+                break;
+
+            case talent.split(" ")[0] === "Craftsman":
+                const specialty = talent.match(/\(([^)]+)\)/)?.[1];
+                if (specialty) {
+                    SkillNames.push(`Trade (${specialty})`);
+                    SkillValues.push(0);
+                    SkillCareer.push(1);
+                    console.log(`Added skill: Trade (${specialty})`);
+                }
+                break;
+
+            case talent === "Perfect Pitch":
+                SkillNames.push("Entertain (Sing)");
+                SkillValues.push(0);
+                SkillCareer.push(1);
+                console.log(`Added skill: Entertain (Sing)`);
+                break;
+
+            case talent === "Seasoned Traveller":
+                SkillNames.push("Lore (Local)");
+                SkillValues.push(0);
+                SkillCareer.push(1);
+                console.log(`Added skill: Lore (Local)`);
+                break;
+
+            case talent === "Witch!":
+                SkillNames.push("Language (Magick)");
+                SkillValues.push(0);
+                SkillCareer.push(1);
+                console.log(`Added skill: Language (Magick)`);
+                break;
+
+            default:
+                console.log(`No additional skill for talent: ${talent}`);
+                break;
+        }
+    }
+    return [SkillNames, SkillValues, SkillCareer]
 }
 function dedupeNameValue(NameArray, ValueArray, CareerArray = []) {
     var i, j;
@@ -1450,7 +1554,7 @@ function dedupeNameValue(NameArray, ValueArray, CareerArray = []) {
 
                 // Combine CareerArray if applicable
                 if (hasCareerArray) {
-                    CareerArray[i] = CareerArray[i] || CareerArray[j];
+                    CareerArray[i] = CareerArray[i] + CareerArray[j];
                 }
 
                 // Mark duplicate for removal
@@ -1680,6 +1784,7 @@ console.log(SkillNames);
 TalentNames = TalentStartAll [ SpeciesN - 1 ];
 TalentNames = await parseInicialTalent (TalentNames);
 TalentValues = Array(TalentNames.length).fill(1);
+TalentCareer = Array(TalentNames.length).fill(0);
 var CareerSpecies = CareerSpeciesAll [ SpeciesN - 1 ];
 var CareerRoll = roll1d100();
 i = 0;
@@ -1793,20 +1898,24 @@ for (i = 0; i < 8; i += 1) {
      SkillCareer.push ( 1 );
 }
 console.log(SkillNames);
-var randTalent = Math.floor(Math.random() * 4);
-TalentNames.push( CareerTalents[CareerN][randTalent]);
+TalentNames.push( await selectCareerTalent(CareerTalents, CareerN, CareerName) );
 TalentValues.push(1);
+TalentCareer.push(1);
 StatsTalents = parseTalent2Stats(TalentNames);
- 
-TalentNames = parseTalentAny(TalentNames).slice(0);
+var ExtraSkills = addSkillsFromTalents(TalentNames, SkillNames, SkillValues, SkillCareer)
+SkillNames = ExtraSkills[0];
+SkillValues = ExtraSkills[1];
+SkillCareer = ExtraSkills[2];
+TalentNames = await parseTalentAny(TalentNames);
 SkillNames = await parseOrParenthesis(SkillNames);
 SkillNames = SkillNames.slice(0)
 console.log(SkillNames);
-SkillNames = parseSkillAny(SkillNames).slice(0);
+SkillNames = await parseSkillAny(SkillNames);
  console.log(SkillNames);
-var TalentNamesValue = dedupeNameValue(TalentNames, TalentValues );
+var TalentNamesValue = dedupeNameValue(TalentNames, TalentValues, TalentCareer );
 TalentNames = TalentNamesValue[0].slice(0);
 TalentValues = TalentNamesValue[1].slice(0);
+TalentCareer = TalentNamesValue[2].slice(0);
 /* After getting talents we check if we are an human noble or have nobleblood*/
 /*SurnameSuffixHumanNoble*/
 if ((SpeciesN == 1) && ((CareerName == "Noble") || (TalentNames.includes("Noble Blood")))) {
@@ -1830,8 +1939,8 @@ CareerTxt ="(" + ClassAll [ ClassN ] + ") " + CareerName + ", Social Level "+ Ca
 XpTxt = "<b>XP:</b> " + (xp - xpSpend) + "/" + xp;
 for (i = 0; i < SkillNames.length ; i += 1) {
     var MouseOverTxt = getMouseOverText (SkillNames[i],mouseoverSkills);
-    var openITag = SkillCareer[i] === 1 ? "<i>" : "";
-    var closeITag = SkillCareer[i] === 1 ? "</i>" : "";
+    var openITag = SkillCareer[i] > 0 ? "<i>" : "";
+    var closeITag = SkillCareer[i] > 0 ? "</i>" : "";
 
     SkillTxt += "<span title = '" + MouseOverTxt + "'>" + openITag + SkillNames[i] + closeITag + ":" + SkillValues[i] + "</span>; ";
 }
