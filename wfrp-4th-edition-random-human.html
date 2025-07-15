@@ -9,6 +9,58 @@ th {
     background-color: black;
     color: white;
 }
+.custom-dialog {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.custom-dialog-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 80%; /* Limits the height to 80% of the screen */
+  width: 50%; /* Adjust width as needed */
+  overflow-y: auto; /* Adds a scroll bar if content exceeds max-height */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.custom-dialog-buttons {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 10px;
+}
+
+.custom-dialog-buttons button {
+  background-color: #4caf50;
+  border: none;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  width: 100px;
+  height: 30px;
+  line-height: 30px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.custom-dialog-buttons button:hover {
+  background-color: #45a049;
+}
 </style>
 <head><title>WFRP 4th Edition Human Random character</title>
 <script>
@@ -64,11 +116,78 @@ function createPDF () {
 	win.  print ();  // PRINT THE CONTENTS.
 }
 
-function generateChar(SpeciesChoice) {
+async function showCustomDialog(message, buttonLabels = ['Yes', 'No']) {
+  return new Promise((resolve) => {
+    const customDialog = document.getElementById('customDialog');
+    const customDialogText = document.getElementById('customDialogText');
+    const customDialogButtons = document.getElementById('customDialogButtons');
+
+    customDialogText.textContent = message;
+
+    // Clear existing buttons and add new ones
+    customDialogButtons.innerHTML = '';
+    buttonLabels.forEach((label, index) => {
+      const button = document.createElement('button');
+      button.textContent = label;
+      button.onclick = () => {
+        customDialog.style.display = 'none';
+        resolve(index);
+      };
+      customDialogButtons.appendChild(button);
+    });
+    customDialog.style.display = 'block';
+  });
+}
+async function showSelectionDialog(options, title) {
+  return new Promise((resolve) => {
+    const dialog = document.getElementById('selectionDialog');
+    const form = document.getElementById('selectionForm');
+    const submitButton = document.getElementById('selectionDialogSubmit');
+    const titleElement = document.getElementById('selectionDialogTitle');
+
+    // Set the dialog title dynamically
+    titleElement.textContent = title;
+
+    // Clear the form and add radio buttons for the given options
+    form.innerHTML = '';
+    options.forEach((option, index) => {
+      const radioButton = document.createElement('input');
+      radioButton.type = 'radio';
+      radioButton.name = 'selection';
+      radioButton.value = index;
+      radioButton.id = `selection${index}`;
+
+      const label = document.createElement('label');
+      label.htmlFor = `selection${index}`;
+      label.textContent = option;
+
+      form.appendChild(radioButton);
+      form.appendChild(label);
+      form.appendChild(document.createElement('br'));
+    });
+
+    // Select the first radio button by default
+    if (form.elements.length > 0) {
+      form.elements[0].checked = true;
+    }
+
+    submitButton.onclick = () => {
+      dialog.style.display = 'none';
+      const selectedIndex = parseInt(form.elements['selection'].value, 10);
+      resolve(selectedIndex);
+    };
+
+    dialog.style.display = 'block';
+  });
+}
+
+async function generateChar(SpeciesChoice) {
 "use strict";
 var Name = "";
 var NameTxt = "";
+var extraXP = parseInt(document.getElementById("extraXPInput").value) || 0; // Get extra XP value, default to 0 if empty or invalid
 var xp = 0;
+xp += extraXP; // Add the extra XP to the total XP
 var xpSpend = 0;
 var XpTxt = "";
 var SpeciesTxt ="";
@@ -292,7 +411,7 @@ var CareerSocial = ["Brass 3","Brass 4","Brass 4","Brass 1",
 var StatsTxt = "";
 var StatsName = ["WS","BS","S","T","AG","I","DEX","INT","WP","FEL"];
 var StatsR = [0,0,0,0,0,0,0,0,0,0];
-var StatsHuman = [20,20,20,20,20,20,20,20,20,20,20];
+var StatsHuman = [20,20,20,20,20,20,20,20,20,20];
 
 var StatsAll = [StatsHuman, StatsHuman, StatsHuman, StatsHuman];
 var StatsCareer = [0,0,0,0,0,0,0,0,0,0];
@@ -664,7 +783,7 @@ var DoomingTxt = "";
    ,"A child shall be Morr's herald."
    ,"A consequence of lust will end ye."
    ,"A curse "+randPick(ShallBe)+" "+randPick(ThyDemise)+"."
-   ,"A drunken blunder shall end your comedy."
+   ,"A drunken blunder shall end thy comedy."
    ,"A four legged beast "+randPick(ShallBe)+" "+randPick(ThyDemise)+"."
    ,"A helmet "+randPick(ShallBe)+" your undoing."
    ,"A hero slays thee and with a good reason."
@@ -879,14 +998,14 @@ var AnyTalents = [ ["Acute Sense (Any one)","Acute Sense (Vision)","Acute Sense 
 /* Extra changes for more usual cults*/
 "Bless (Sigmar)","Bless (Sigmar)","Bless (Ulric)"],
 ["Craftsman (Any one)","Craftsman (Apothecary)","Craftsman (Artist)","Craftsman (Bowyer)","Craftsman (Brewing)",
-"Craftsman (Calligrapher)","Craftsman (Candlemaker)","Craftsman (Carpentry)","Craftsman (Cartographer)",
-"Craftsman (Cook)","Craftsman (Cooper)","Craftsman (Embalmer)","Craftsman (Engineering)","Craftsman (Farmer)",
-"Craftsman (Farrier)", "Craftsman (Gem Cutter)","Craftsman (Goldsmith)","Craftsman (Gunsmith)",
-"Craftsman (Herbalist)","Craftsman (Jewellry Making)","Craftsman (Landlord)","Craftsman (Manager)",
-"Craftsman (Mason)","Craftsman (Merchant)","Craftsman (Miller)","Craftsman (Miner)","Craftsman (Prospector)",
-"Craftsman (Shipwright)","Craftsman (Shoemaker)","Craftsman (Smithing)","Craftsman (Tailor)","Craftsman (Tanner)",
+"Craftsman (Any one)", "Craftsman (Calligrapher)", "Craftsman (Candlemaker)", "Craftsman (Carpentry)", "Craftsman (Cartographer)",
+"Craftsman (Cook)", "Craftsman (Cooper)", "Craftsman (Embalmer)", "Craftsman (Engineering)", "Craftsman (Farmer)",
+"Craftsman (Farrier)", "Craftsman (Gem Cutter)", "Craftsman (Goldsmith)", "Craftsman (Gunsmith)",
+"Craftsman (Herbalist)", "Craftsman (Jewellry Making)", "Craftsman (Landlord)", "Craftsman (Manager)",
+"Craftsman (Mason)", "Craftsman (Merchant)", "Craftsman (Miller)", "Craftsman (Miner)", "Craftsman (Prospector)",
+"Craftsman (Shipwright)", "Craftsman (Shoemaker)", "Craftsman (Smithing)", "Craftsman (Tailor)", "Craftsman (Tanner)",
 /* Extra changes for more usual adventuring crafts*/
-"Craftsman (Mason)","Craftsman (Smithing)","Craftsman (Carpentry)","Craftsman (Cook)","Craftsman (Engineering)"],
+"Craftsman (Mason)", "Craftsman (Smithing)", "Craftsman (Carpentry)", "Craftsman (Cook)", "Craftsman (Engineering)"],
 ["Etiquette (Any one)","Etiquette (Criminals)","Etiquette (Cultists)","Etiquette (Guilders)","Etiquette (Nobles)","Etiquette (Scholar)","Etiquette (Servants)","Etiquette (Soldiers)"],
 ["Fearless (Any one)", "Fearless (Beastmen)", "Fearless (Greenskins)", "Fearless (Outlaws)", "Fearless (Vampires)", "Fearless (Watchmen)", "Fearless (Witches)"],
 ["Hatred (Any one)","Hatred (Goblinoids)","Hatred (Beastmen)"],
@@ -1016,7 +1135,7 @@ var dataTalents = [["Accurate Shot","BSB","+1 dmg on all ranged weapons."],
 ["Feint","WSB","Fencing (Feinting); Feint as action, opposed melee test, attack before next round cannot be opposed."],
 ["Field Dressing","IntB","Heal; You may reverse dice results if it results in success."],
 ["Fisherman","IntB","Fishing; Find enough fish to feed your party."],
-["Flagellant","TB","Resisting ruinous powers Pray number of wounds equal to level in flagellant. Frenzy immediately without testing."],
+["Flagellant","TB","Pray number of wounds equal to level in flagellant. Frenzy immediately without testing."],
 ["Flee","AgiB","Athletics (fleeing); Movement +1 when fleeing"],
 ["Fleet Footed","1","+1 to Movement Attribute"],
 ["Frenzy","1","You can Frenzy"],
@@ -1646,5 +1765,30 @@ To have a more detailed Old Worlders you can use the list of my <a href="https:/
 <br>Dooming List: <a href="http://www.bindslet.dk/rpg/wfrpdoom.html">http://www.bindslet.dk/rpg/wfrpdoom.html</a>
 <br>Dooming List: <a href="https://www.drivethrurpg.com/product/63678/Warhammer-Fantasy-Roleplay-2nd-Edition-Tome-of-Salvation?affiliate_id=91369">WFRP 2nd Edition - Tome of Salvation</a>
 <br>Game: Games Worshop and Cubicle 7</p>
+
+<p> You can also check my <a href="wfrp-4th-edition-random-character.html">Random Character generator</a>.</p>
+    <button type="button" onclick="generateChar(-1)">Generate Now!</button> <label>Amount of Extra XP to spend on Advances: <input type="text" maxlength="4" value= "0" size="4" id="extraXPInput"/></label><br>
+    <div id="characterPrint">
+
+<div id="customDialog" class="custom-dialog">
+  <div class="custom-dialog-content">
+    <p id="customDialogText"></p>
+    <div id="customDialogButtons">
+      <!-- Buttons will be added here dynamically -->
+    </div>
+  </div>
+</div>
+
+<div id="selectionDialog" class="custom-dialog">
+  <div class="custom-dialog-content">
+    <h3 id="selectionDialogTitle"></h3>
+    <form id="selectionForm">
+      <!-- Radio buttons will be added here dynamically -->
+    </form>
+    <div class="custom-dialog-buttons">
+      <button id="selectionDialogSubmit">Submit</button>
+    </div>
+  </div>
+</div>
 </body>
 </html>
