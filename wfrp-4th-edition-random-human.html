@@ -1204,7 +1204,7 @@ var dataTalents = [["Accurate Shot","BSB","+1 dmg on all ranged weapons."],
 ["Schemer","IntB","Intelligence tests GM will provide you with observations about current situation based on SL."],
 ["Sea Legs","TB","Tests to resist sea sickness; Ignore penalties to tests to ignore sea sickness."],
 ["Seasoned Traveller","IntB","Lore local Add lore Local to current career."],
-["Secret Identity","IntB","Entertain Acting You may use social status of disguised career."],
+["Secret Identity","IntB","Entertain Acting You may use social status of disguised career"],
 ["Second Sight","IB","Detect winds of magic You now have the sight."],
 ["Shadow","AgiB","Any skill shadowing Use shadowing rules without doing combined test. Use perception or stealth."],
 ["Sharp","1","Gain a permanent +5 to starting initiative."],
@@ -1534,39 +1534,45 @@ CareerN = i;
 CareerName = CareerAll[CareerN];
 /*If we agree keep the 1st career so no changes just less xp*/
 if ((document.getElementById("careerCheck").checked == true) ) {
-    refreshCharacterDisplay ();
-    if ( !confirm("Keep career as " + SpeciesTxt + " " + CareerName) ) {
-        var newCareerRoll = [CareerRoll,0,0];
-        var newCareerN = [CareerN,0,0];
-        var newCareerName = [CareerName,"",""];
-        var x;
-        for (i=1;i<3; i += 1) {
-            newCareerRoll[i] = roll1d100();
-            x = 0;
-            while (CareerSpecies[x] < newCareerRoll[i] ) {
-                x += 1;
+   refreshCharacterDisplay();
+   const keepCurrentCareer = await showCustomDialog(`Keep career as ${SpeciesTxt} ${CareerName}?`);
+   if (keepCurrentCareer) {
+      var newCareerRoll = [CareerRoll, 0, 0];
+      var newCareerN = [CareerN, 0, 0];
+      var newCareerName = [CareerName, "", ""];
+
+      if (keepCurrentCareer) {
+            const newCareerOptions = [CareerName];
+            const newCareerRolls = [CareerRoll];
+            while (newCareerOptions.length < 3) {
+                let newRoll = roll1d100();
+                let newIndex = 0;
+                while (CareerSpecies[newIndex] < newRoll) newIndex++;
+                let newCareer = CareerAll[newIndex];
+                if (!newCareerOptions.includes(newCareer)) {
+                    newCareerOptions.push(newCareer);
+                    newCareerRolls.push(newRoll);
+                }
             }
-            newCareerN[i] = x;
-            newCareerName[i] = CareerAll[x];
-        }
-        if (!confirm("Keep first from " + newCareerName.toString())) {
-            if (confirm("Keep second from " + newCareerName.toString())) {
-                CareerRoll = newCareerRoll[1];
-                CareerN = newCareerN[1];
-                CareerName=newCareerName[1];
+            const selectedIndex = await showSelectionDialog([...newCareerOptions, "Pick from full list"], "Select career:");
+            if (selectedIndex === newCareerOptions.length) {
+                // Full career list selection
+                const fullCareerIndex = await showSelectionDialog(CareerAll, "Select career:");
+                CareerN = fullCareerIndex;
+                CareerName = CareerAll[CareerN];
+                xp += 0; // No XP bonus
             } else {
-                CareerRoll = newCareerRoll[2];
-                CareerN = newCareerN[2];
-                CareerName=newCareerName[2];
+                CareerN = CareerSpecies.findIndex((val) => val >= newCareerRolls[selectedIndex]);
+                CareerName = newCareerOptions[selectedIndex];
+                xp += 25; // Smaller XP bonus
             }
-        } 
-        xp += 25;
-    }  else  {
-        xp += 50;
-    }
-} else {
-        xp += 50;
-}
+    } else {
+      xp += 50;
+    }} else {
+      xp += 50;}
+  } else {
+      xp += 50;
+  }
 ClassN = Math.floor(CareerN / 8);
 StatsCareer[ CareerAdvance[CareerN][0] ] = 1;
 StatsCareer[ CareerAdvance[CareerN][1] ] = 1;
