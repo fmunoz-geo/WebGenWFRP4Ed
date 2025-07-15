@@ -1584,11 +1584,12 @@ for (i in StatsR) {
 }
 if ((document.getElementById("reRollCheck").checked == true) ) {
     refreshCharacterDisplay ();
-    if ( !confirm(StatsR) ) {
+    const keepCurrentStats = await showCustomDialog("Keep current stats: " + StatsR.toString());
+    if (keepCurrentStats) {
         for (i in StatsR) {
             StatsR[i] = roll2d10();
         }
-        alert (StatsR);
+        await showCustomDialog("New stats: " + StatsR.toString(), ["OK"]);
         xp += 25;
     }  else  {
         xp += 50;
