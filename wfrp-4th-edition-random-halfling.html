@@ -1667,23 +1667,15 @@ refreshCharacterDisplay ();
 var SpeciesRoll = roll1d100();
 var i;
 var x;
-if (SpeciesRoll <= 89) {
+if (SpeciesRoll <= 16) {
      SpeciesN = 1;
-} else if (SpeciesRoll <= 90) {
-     SpeciesN = 6;
-} else if (SpeciesRoll <= 95) {
-     SpeciesN = 2;
-} else if (SpeciesRoll <= 98) {
-     SpeciesN = 3;
-} else if (SpeciesRoll <= 99) {
-     SpeciesN = 4;
 } else {
-     SpeciesN = 5;
+     SpeciesN = Math.floor(Math.random() * 12) + 2;
 }
 if  (SpeciesChoice>0) {
     SpeciesN = SpeciesChoice;
 } else {
-    xp += 20;
+    xp += 0;
 }
 console.log(SpeciesN);
 SpeciesTxt = SpeciesAll[ SpeciesN - 1 ];
@@ -1724,7 +1716,7 @@ TalentNames = TalentStartAll [ SpeciesN - 1 ];
 TalentNames = await parseInicialTalent (TalentNames);
 TalentValues = Array(TalentNames.length).fill(1);
 TalentCareer = Array(TalentNames.length).fill(0);
-var CareerSpecies = CareerSpeciesAll [ SpeciesN - 1 ];
+var CareerSpecies = CareerSpeciesAll [ 0 ];
 var CareerRoll = roll1d100();
 i = 0;
 while (CareerSpecies[i] < CareerRoll ) {
