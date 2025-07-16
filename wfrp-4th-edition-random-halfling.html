@@ -1,0 +1,2018 @@
+<!DOCTYPE html>
+<html lang="en">
+<style>
+th, td {
+    padding: 5px;
+  text-align: center;
+}
+th {
+    background-color: black;
+    color: white;
+}
+.custom-dialog {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.custom-dialog-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 80%; /* Limits the height to 80% of the screen */
+  width: 50%; /* Adjust width as needed */
+  overflow-y: auto; /* Adds a scroll bar if content exceeds max-height */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.custom-dialog-buttons {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 10px;
+}
+
+.custom-dialog-buttons button {
+  background-color: #4caf50;
+  border: none;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  width: 100px;
+  height: 30px;
+  line-height: 30px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.custom-dialog-buttons button:hover {
+  background-color: #45a049;
+}
+</style>
+<head><title>WFRP 4th Edition Random Halfling character</title>
+<script>
+//<![CDATA[
+function roll1d10(){
+"use strict";
+ return Math.floor(Math.random() * 10) + 1;
+}
+function rollXd10(x) {
+  return Array.from({ length: x }, roll1d10).reduce((a, b) => a + b);
+}
+function roll2d10(){
+"use strict";
+ return rollXd10(2);
+}
+function roll1d100(){
+"use strict";
+ return Math.floor(Math.random() * 100) + 1;
+}
+function randPick(myArray) {
+    var l = myArray.length;
+    var i = Math.floor(Math.random() * l);
+    return myArray[i];
+}
+function createPDF () {
+	var sTable = document.  getElementById ('characterPrint').innerHTML;
+	var style = "<style>";
+	style = style + "table {width: 100%;font: 17px Calibri;}";
+	style = style + "table, th, td {border: solid 1px #DDD; border-collapse: collapse;";
+	style = style + "padding: 2px 3px;text-align: center;}";
+	style = style + "</style>";
+	// CREATE A WINDOW OBJECT.
+	var win = window.  open ('', '', 'height=700,width=700');
+	win.document.write('<html><head>');
+	win.document.write('<title>Profile</title>');  // <title> FOR PDF HEADER.
+	win.document.write(style);  // ADD STYLE INSIDE THE HEAD TAG.
+	win.document.write('</head>');
+	win.document.write('<body>');
+	win.document.write(sTable);  // THE TABLE CONTENTS INSIDE THE BODY TAG.
+	win.document.write('</body></html>');
+	win.document.  close ();  // CLOSE THE CURRENT WINDOW.
+	win.  print ();  // PRINT THE CONTENTS.
+}
+async function showCustomDialog(message, buttonLabels = ['Yes', 'No']) {
+  return new Promise((resolve) => {
+    const customDialog = document.getElementById('customDialog');
+    const customDialogText = document.getElementById('customDialogText');
+    const customDialogButtons = document.getElementById('customDialogButtons');
+
+    customDialogText.textContent = message;
+
+    // Clear existing buttons and add new ones
+    customDialogButtons.innerHTML = '';
+    buttonLabels.forEach((label, index) => {
+      const button = document.createElement('button');
+      button.textContent = label;
+      button.onclick = () => {
+        customDialog.style.display = 'none';
+        resolve(index);
+      };
+      customDialogButtons.appendChild(button);
+    });
+    customDialog.style.display = 'block';
+  });
+}
+async function showSelectionDialog(options, title) {
+  return new Promise((resolve) => {
+    const dialog = document.getElementById('selectionDialog');
+    const form = document.getElementById('selectionForm');
+    const submitButton = document.getElementById('selectionDialogSubmit');
+    const titleElement = document.getElementById('selectionDialogTitle');
+
+    // Set the dialog title dynamically
+    titleElement.textContent = title;
+
+    // Clear the form and add radio buttons for the given options
+    form.innerHTML = '';
+    options.forEach((option, index) => {
+      const radioButton = document.createElement('input');
+      radioButton.type = 'radio';
+      radioButton.name = 'selection';
+      radioButton.value = index;
+      radioButton.id = `selection${index}`;
+
+      const label = document.createElement('label');
+      label.htmlFor = `selection${index}`;
+      label.textContent = option;
+
+      form.appendChild(radioButton);
+      form.appendChild(label);
+      form.appendChild(document.createElement('br'));
+    });
+
+    // Select the first radio button by default
+    if (form.elements.length > 0) {
+      form.elements[0].checked = true;
+    }
+
+    submitButton.onclick = () => {
+      dialog.style.display = 'none';
+      const selectedIndex = parseInt(form.elements['selection'].value, 10);
+      resolve(selectedIndex);
+    };
+
+    dialog.style.display = 'block';
+  });
+}
+// ["WS","BS","S","T","I","AG","DEX","INT","WP","FEL","M","W"];
+const StatsName = ["WS","BS","S","T","Ag","I","Dex","Int","WP","Fel"];
+const StatsBonusName = ["WSB","BSB","SB","TB","AgB","IB","DexB","IntB","WPB","FelB"];
+
+const ST_WS = 0;
+const ST_BS = 1;
+const ST_S = 2;
+const ST_T = 3;
+const ST_I = 4;
+const ST_AG = 5;
+const ST_DEX = 6;
+const ST_INT = 7;
+const ST_WP = 8;
+const ST_FEL = 9;
+const ST_M = 10;
+const ST_W = 11;
+
+async function generateChar(SpeciesChoice) {
+"use strict";
+var Name = "";
+var NameTxt = "";
+var extraXP = parseInt(document.getElementById("extraXPInput").value) || 0; // Get extra XP value, default to 0 if empty or invalid
+var xp = 0;
+xp += extraXP; // Add the extra XP to the total XP
+var xpSpend = 0;
+var XpTxt = "";
+var SpeciesTxt ="";
+var SpeciesN;
+var SpeciesAll = ["Halfling (Core Book)","Halfling Clan Ashfield","Halfling Clan Brambledom","Halfling Clan Brandysnap","Halfling Clan Hayfoot","Halfling Clan Hollyfoot","Halfling Clan Hayfoot-Hollyfoot","Halfling Clan Lostpockets","Halfling Clan Lowhaven","Halfling Clan Rumster","Halfling Clan Skelfsider","Halfling Clan Thorncobble","Halfling Clan Tumbleberry"];
+var Sex = 0;
+var NamesHalflingMale = ["Alton","Ander","Cade","Corrin", "Eldon", "Errich,",
+"Finnan", "Garret", "Lindal", "Lyle", "Merrie", "Milo", "Osborn", "Perrin",
+"Reed", "Roscoe", "Wellby", "Ferdinand", "Heironymus", "Maximillian","Theodosius",
+"Helembertus","Pancracius","Nicodemus","Phillipus","Zacharius"];
+var NamesHalflingFemale = ["Andry", "Bree", "Callie", "Cora", "Euphemia", "Jillian", "Kithri", "Lavinia",
+"Lidda", "Meda", "Nedda", "Paela", "Portia", "Seraphina", "Shaena", "Trym",
+"Vani", "Verna", "Antoniella", "Esmerelda", "Thomasina",
+"Bellina","Gertrude","Isidora","Lisabeth","Maybelle"];
+
+var NamesAllMale = [ NamesHalflingMale ];
+var NamesAllFemale = [ NamesHalflingFemale ];
+var NamesAll = [NamesAllMale, NamesAllFemale];
+
+var SurnamesHalfling = ["Alderberries","Cinderhill","Dibbleweed","Fairfoot","Fairfeet","Haleberries","Hempland","Hogberries","Kettledale","Millipond","Pandyapple","Ridwood",
+"Brushgather","Goodbarrel","Greenbottle","Highhill",
+"Hilltopple", "Leagallow", "Tealeaf", "Thorngage", "Tosscobble", "Underbough"];
+var SurnamesAshfield = ["Ashfield"];
+var SurnamesBrambledom = ["Brambledom"];
+var SurnamesBrandysnap = ["Brandysnap"];
+var SurnamesHayfoot = ["Hayfoot"];
+var SurnamesHollyfoot = ["Hollyfoot"];
+var SurnamesHayfootHollyfoot = ["Hayfoot-Hollyfoot"];
+var SurnamesLostpockets = ["Lostpockets"];
+var SurnamesLowhaven = ["Lowhaven","Shortbottom (Lowhaven)"];
+var SurnamesRumster = ["Rumster"];
+var SurnamesSkelfsider = ["Skelfsider"];
+var SurnamesThorncobble = ["Thorncobble"];
+var SurnamesTumbleberry = ["Tumbleberry"];
+
+
+
+var SurnamesAll = [ SurnamesHalfling, SurnamesAshfield, SurnamesBrambledom, SurnamesBrandysnap, SurnamesHayfoot, SurnamesHollyfoot, SurnamesHayfootHollyfoot, SurnamesLostpockets, SurnamesLowhaven, SurnamesRumster, SurnamesSkelfsider, SurnamesThorncobble, SurnamesTumbleberry];
+var ClassN;
+var ClassAll = ["Academic","Burgher","Courtier","Peasant","Ranger","Riverfolk",
+"Rogue","Warrior"];
+var CareerN;
+var CareerName;
+var CareerAll = ["Apothecary","Engineer","Lawyer","Nun",
+"Physician","Priest","Scholar","Wizard",
+"Agitator","Artisan","Beggar","Investigator",
+"Merchant","Rat Catcher","Townsman","Watchman",
+"Advisor","Artist","Duellist","Envoy",
+"Noble","Servant","Spy","Warden",
+"Bailiff","Hedge Witch","Herbalist","Hunter",
+"Miner","Mystic","Scout","Villager",
+"Bounty Hunter","Coachman","Entertainer","Flagellant",
+"Messenger","Pedlar","Roadwarden","Witch Hunter",
+"Boatman","Huffer","Riverwoman","Riverwarden",
+"Seaman","Smuggler","Stevedore","Wrecker",
+"Bawd","Charlatan","Fence","Grave Robber",
+"Outlaw","Racketeer","Thief","Witch",
+"Cavalryman","Guard","Knight","Pit Fighter",
+"Protagonist","Soldier","Troll Slayer","Warrior Priest"];
+var CareerHalfling = [1,2,4,-1,6,-1,8,-1,10,15,19,21,25,28,31,33,34,36,-1,37,-1,
+43,44,46,47,-1,50,52,53,-1,54,57,58,60,63,-1,65,67,68,-1,69,70,73,74,75,79,84,-1,
+85,86,87,88,89,93,94,-1,-1,96,-1,97,-1,100,-1,-1];
+var CareerSpeciesAll = [CareerHalfling];
+var CareerSpecies = [];
+var CareerTxt ="";
+var CareerAdvance = [ [3,6,7],[1,6,7],[5,6,7],[6,7,9],
+[6,7,8],[3,4,8],[3,7,8],[0,7,8],
+[1,7,9],[2,3,6],[3,4,9],[5,4,7],
+[4,8,9],[0,1,8],[4,7,9],[0,2,9],
+[3,5,4],[2,5,6],[0,5,4],[3,4,9],
+[0,5,6],[2,3,4],[4,8,9],[2,3,8],
+[0,5,8],[3,5,6],[3,5,4],[2,3,6],
+[2,3,8],[5,6,9],[3,5,4],[2,3,4],
+[0,3,4],[1,3,8],[4,6,9],[0,2,3],
+[3,5,4],[3,6,8],[1,3,5],[3,5,8],
+[2,3,4],[0,3,5],[3,4,6],[1,2,9],
+[4,6,9],[4,6,8],[0,3,5],[0,2,5],
+[4,6,9],[5,4,9],[5,4,9],[2,5,8],
+[0,2,3],[5,4,8],[0,2,3],[0,3,8],
+[0,2,4],[0,3,4],[2,5,4],[0,2,3],
+[2,3,4],[0,2,8],[0,3,8],[0,8,9]
+];
+var CareerSocial = ["Brass 3","Brass 4","Brass 4","Brass 1",
+"Brass 4","Brass 2","Brass 3","Brass 3",
+"Brass 1","Brass 2","Brass 0","Silver 1",
+"Silver 2","Brass 2","Silver 1","Brass 3",
+"Silver 2","Silver 1","Silver 3","Silver 2",
+"Gold 1","Silver 1","Brass 3","Silver 1",
+"Silver 1","Brass 1","Brass 2","Brass 2",
+"Brass 2","Brass 1","Brass 3","Brass 2",
+"Silver 1","Silver 1","Brass 3","Brass 0",
+"Brass 3","Brass 1","Brass 5","Silver 1",
+"Silver 1","Brass 4","Brass 2","Silver 1",
+"Silver 1","Brass 2","Brass 3","Brass 2",
+"Brass 1","Brass 3","Silver 1","Brass 2",
+"Brass 1","Brass 1","Brass 3","Brass 1",
+"Silver 2","Silver 1","Silver 3","Brass 4",
+"Brass 2","Brass 2","Silver 1","Brass 2"];
+var StatsTxt = "";
+var StatsName = ["WS","BS","S","T","AG","I","DEX","INT","WP","FEL"];
+var StatsR = [0,0,0,0,0,0,0,0,0,0];
+var StatsHalfling = [10,30,10,20,20,20,30,20,30,30];
+var StatsAll = [StatsHalfling];
+var StatsCareer = [0,0,0,0,0,0,0,0,0,0];
+var StatsAdvance = [0,0,0,0,0,0,0,0,0,0];
+var StatsBase = [0,0,0,0,0,0,0,0,0,0];
+var StatsTalents  = [0,0,0,0,0,0,0,0,0,0];
+var FateResilienceTxt = "";
+var StatsExtraName = ["W","M","Fate","Resilience", "Extra"];
+var StatsExtraHalfling = [ 0, 3, 0, 2, 3];
+var StatsExtraAll = [StatsExtraHalfling];
+var StatsExtraBase = [ 0, 0, 0, 0, 0 ];
+var StatsExtra = [ 0, 0, 0, 0, 0 ];
+var SkillStartHalfling = ["Charm",
+"Consume Alcohol",
+"Dodge",
+"Gamble",
+"Haggle",
+"Intuition",
+"Language (Mootish)",
+"Lore (Reikland)",
+"Perception",
+"Sleight of Hand",
+"Stealth (Any one)",
+"Trade (Cook)"];
+
+var SkillStartAshfield = ["Charm",
+"Consume Alcohol",
+"Dodge",
+"Lore (Reikland)",
+"Perception",
+"Sleight of Hand",
+"Stealth (Any one)",
+"Trade (Cook)",
+"Cool",
+"Intuition",
+"Language (Mootish)",
+"Ranged (Any one)"];
+
+var SkillStartBranbledown = ["Charm",
+"Consume Alcohol",
+"Dodge",
+"Lore (Reikland)",
+"Perception",
+"Sleight of Hand",
+"Stealth (Any one)",
+"Trade (Cook)",
+"Language (Mootish)",
+"Navigation",
+"Outdoor Survival",
+"Swim"];
+
+var SkillStartBrandysnap = ["Charm",
+"Consume Alcohol",
+"Dodge",
+"Lore (Reikland)",
+"Perception",
+"Sleight of Hand",
+"Stealth (Any one)",
+"Trade (Cook)",
+"Animal Care", 
+"Gamble", 
+"Language (Mootish)",
+"Lore (Herbs)"];
+
+var SkillStartHayfoot = ["Charm",
+"Consume Alcohol",
+"Dodge",
+"Lore (Reikland)",
+"Perception",
+"Sleight of Hand",
+"Stealth (Any one)",
+"Trade (Cook)",
+"Gamble", 
+"Haggle", 
+"Evaluate", 
+"Language (Mootish)"];
+
+var SkillStartHollyfoot = ["Charm",
+"Consume Alcohol",
+"Dodge",
+"Lore (Reikland)",
+"Perception",
+"Sleight of Hand",
+"Stealth (Any one)",
+"Trade (Cook)",
+"Evaluate", 
+"Haggle", 
+"Language (Mootish)",
+"Trade (Any one)"];
+
+var SkillStartHayfootHollyfoot = ["Charm",
+"Consume Alcohol",
+"Dodge",
+"Lore (Reikland)",
+"Perception",	
+"Sleight of Hand",
+"Stealth (Any one)",
+"Trade (Cook)",
+"Bribery", 
+"Haggle", 
+"Gossip", 
+"Language (Mootish)"];
+
+var SkillStartLostpockets = ["Charm",
+"Consume Alcohol",
+"Dodge",
+"Lore (Reikland)",
+"Perception",
+"Sleight of Hand",
+"Stealth (Any one)",
+"Trade (Cook)",
+"Endurance",
+"Gamble", 
+"Gossip", 
+"Intuition"];
+
+var SkillStartLowhaven = ["Charm",
+"Consume Alcohol",
+"Dodge",
+"Lore (Reikland)",
+"Perception",
+"Sleight of Hand",
+"Stealth (Any one)",
+"Trade (Cook)",
+"Bribery", 
+"Haggle", 
+"Intimidate", 
+"Language (Mootish)"];
+
+var SkillStartRumster = ["Charm",
+"Consume Alcohol",
+"Dodge",
+"Lore (Reikland)",
+"Perception",
+"Sleight of Hand",
+"Stealth (Any one)",
+"Trade (Cook)",
+"Endurance", 
+"Gossip", 
+"Haggle", 
+"Language (Mootish)"];
+
+var SkillStartSkelfsider = ["Charm",
+"Consume Alcohol",
+"Dodge",
+"Lore (Reikland)",
+"Perception",
+"Sleight of Hand",
+"Stealth (Any one)",
+"Trade (Cook)",
+"Endurance", 
+"Gamble", 
+"Gossip",
+"Language (Mootish)"];
+
+var SkillStartThorncobble = ["Charm",
+"Consume Alcohol",
+"Dodge",
+"Lore (Reikland)",
+"Perception",
+"Sleight of Hand",
+"Stealth (Any one)",
+"Trade (Cook)",
+"Gossip", 
+"Leadership", 
+"Lore (Heraldry)",
+"Language (Mootish)"];
+
+var SkillStartTumbleberry = ["Charm",
+"Consume Alcohol",
+"Dodge",
+"Lore (Reikland)",
+"Perception",
+"Sleight of Hand",
+"Stealth (Any one)",
+"Trade (Cook)",
+"Gossip", 
+"Haggle", 
+"Lore (Any)",
+"Language (Mootish)"];
+
+var SkillStartAll = [SkillStartHalfling,
+SkillStartAshfield,SkillStartBranbledown,SkillStartBrandysnap,SkillStartHayfoot,SkillStartHollyfoot,SkillStartHayfootHollyfoot, 
+SkillStartLostpockets,SkillStartLowhaven, SkillStartRumster, SkillStartSkelfsider,SkillStartThorncobble, SkillStartTumbleberry
+];
+var SkillTxt ="";
+var SkillStart;
+var SkillNames = [];
+var SkillValues = [];
+var SkillCareer = [];
+var TalentStartHalfling = ["Acute Sense (Taste)", "Night Vision", "Resistance (Chaos)", "Small", "Random", "Random"];
+var TalentStartAshfield = ["Acute Sense (Taste)", "Night Vision", "Resistance (Chaos)", "Small", "Acute Sense (Sight) or Etiquette (Soldiers)", "Random"];
+var TalentStartBrambledown = ["Acute Sense (Taste)", "Night Vision", "Resistance (Chaos)", "Small", "Gregarious or Seasoned Traveller", "Random"];
+var TalentStartBrandysnap = ["Acute Sense (Taste)", "Night Vision", "Resistance (Chaos)", "Small", "Craftsman (Farmer) or Sturdy", "Random"];
+var TalentStartHayfoot = ["Acute Sense (Taste)", "Night Vision", "Resistance (Chaos)", "Small", "Dealmaker or Etiquette (Guilders)", "Random"];
+var TalentStartHollyfoot = ["Acute Sense (Taste)", "Night Vision", "Resistance (Chaos)", "Small", "Craftsman (Any one) or Nimble-Fingered", "Random"];
+var TalentStartHayfootHollyfoot = ["Acute Sense (Taste)", "Night Vision", "Resistance (Chaos)", "Small", "Argumentative or Numismatics", "Random"];
+var TalentStartLostpockets = ["Acute Sense (Taste)", "Night Vision", "Resistance (Chaos)", "Small", "Hardy or Stone Soup", "Random"];
+var TalentStartLowhaven = ["Acute Sense (Taste)", "Night Vision", "Resistance (Chaos)", "Small", "Criminal or Etiquette (Criminals) or Etiquette (Guilders)", "Random"];
+var TalentStartRumster = ["Acute Sense (Taste)", "Night Vision", "Resistance (Chaos)", "Small", "Craftsman (Cook) or Dealmaker", "Random"];
+var TalentStartSkelfsider = ["Acute Sense (Taste)", "Night Vision", "Resistance (Chaos)", "Small", "Beneath Notice or Etiquette (Servants)", "Random"];
+var TalentStartThorncobble = ["Acute Sense (Taste)", "Night Vision", "Resistance (Chaos)", "Small", "Read/Write or Etiquette (Nobles) or Etiquette (Scholars)", "Random"];
+var TalentStartTumbleberry = ["Acute Sense (Taste)", "Night Vision", "Resistance (Chaos)", "Small", "Read/Write or Etiquette (Burghers) or Etiquette (Guilders)", "Random"];
+
+var TalentStartAll = [TalentStartHalfling,
+TalentStartAshfield,
+TalentStartBrambledown,
+TalentStartBrandysnap,
+TalentStartHayfoot,
+TalentStartHollyfoot,
+TalentStartHayfootHollyfoot,
+TalentStartLostpockets,
+TalentStartLowhaven,
+TalentStartRumster,
+TalentStartSkelfsider,
+TalentStartThorncobble,
+TalentStartTumbleberry
+ ];
+var TalentTxt ="";
+var TalentNames = [];
+var TalentValues = [];
+var TalentCareer = [];
+var TalentRandom = [3, 6, 9, 12, 15, 18, 21, 24, 28, 31, 34, 38, 41, 44, 47, 50, 52, 55, 58, 62, 65, 68, 71, 74, 78, 81, 84, 87, 91, 94, 97, 100];
+var TalentRandomName = ["Acute Sense (Any one)",
+"Ambidextrous",
+"Animal Affinity",
+"Artistic",
+"Attractive",
+"Coolheaded",
+"Craftsman (Any one)",
+"Flee!",
+"Hardy",
+"Lightning Reflexes",
+"Linguistics",
+"Luck",
+"Marksman",
+"Mimic",
+"Night Vision",
+"Nimble Fingered",
+"Noble Blood",
+"Orientation",
+"Perfect Pitch",
+"Pure Soul",
+"Read/Write",
+"Resistance (Any one)",
+"Savvy",
+"Sharp",
+"Sixth Sense",
+"Strong Legs",
+"Sturdy",
+"Suave",
+"Super Numerate",
+"Very Resilient",
+"Very Strong",
+"Warrior Born"];
+var CareerTalents = [ ["Concoct","Craftsman (Apothecary)","Etiquette (Scholar)","Read/Write"],
+["Artistic","Gunner","Read/Write","Tinker"],
+["Blather","Etiquette (Scholar)","Read/Write","Speedreader"],
+["Bless (Any one)","Stone Soup","Panhandle","Read/Write"],
+["Bookish","Field Dressing","Read/Write","Strike to Stun"],
+["Bless (Any one)","Holy Visions","Read/Write","Suave"],
+["Carouser","Read/Write","Savvy","Super Numerate"],
+["Aethyric Attunement","Petty Magic","Read/Write","Second Sight"],
+["Blather","Gregarious","Panhandle","Read/Write"],
+["Artistic","Craftsman (Any one)","Strong Back","Very Strong"],
+["Panhandle","Resistance (Disease)","Stone Soup","Very Resilient"],
+["Alley Cat","Beneath Notice","Read/Write","Sharp"],
+["Blather","Dealmaker","Read/Write","Suave"],
+["Night Vision","Resistance (Disease)","Strike Mighty Blow","Strike to Stun"],
+["Alley Cat","Beneath Notice","Etiquette (Servants)","Sturdy"],
+["Drilled","Hardy","Strike to Stun","Tenacious"],
+["Beneath Notice","Etiquette (Any one)","Gregarious","Read/Write"],
+["Artistic","Sharp","Strong Back","Tenacious"],
+["Beat Blade","Distract","Feint","Step Aside"],
+["Blather","Etiquette (Nobles)","Read/Write","Suave"],
+["Etiquette (Nobles)","Luck","Noble Blood","Read/Write"],
+["Beneath Notice","Strong Back","Strong-minded","Sturdy"],
+["Blather","Carouser","Gregarious","Shadow"],
+["Menacing","Night Vision","Sharp","Strike to Stun"],
+["Embezzle","Numismatics","Strong Back","Tenacious"],
+["Fast-Hands","Petty Magic","Rover","Strider (Woodlands)"],
+["Acute Sense (Taste)","Orientation","Rover","Strider (Any one)"],
+["Hardy","Rover","Strider (Any one)","Trapper"],
+["Rover","Strider (Rocky)","Sturdy","Tenacious"],
+["Attractive","Luck","Second Sight","Suave"],
+["Orientation","Rover","Sharp","Strider (Any one)"],
+["Rover","Strong Back","Strong-minded","Stone Soup"],
+["Break and Enter","Shadow","Strike to Stun","Suave"],
+["Animal Affinity","Seasoned Traveller","Trick-Riding","Tenacious"],
+["Attractive","Mimic","Public-Speaking","Suave"],
+["Berserk Charge","Frenzy","Read/Write","Stone Soup"],
+["Flee!","Fleet Footed","Sprinter","Step Aside"],
+["Fisherman","Flee!","Rover","Tinker"],
+["Coolheaded","Embezzle","Marksman","Numismatics"],
+["Coolheaded","Menacing","Read/Write","Resolute"],
+["Dirty Fighting","Fisherman","Strong Back","Strong Swimmer"],
+["Fisherman","Night Vision","Orientation","Waterman"],
+["Strong Swimmer","Strong Back","Very Strong","Waterman"],
+["Fisherman","Gregarious","Strider (Marshes)","Strong Swimmer"],
+["Fisherman","Strider (Coastal)","Strong Back","Strong Swimmer"],
+["Criminal","Fisherman","Strider (Marshes)","Strong Back"],
+["Dirty Fighting","Strong Back","Sturdy","Very Strong"],
+["Break and Enter","Criminal","Fisherman","Strong Back"],
+//Class Rogues
+["Attractive","Alley Cat","Blather","Gregarious"],
+["Cardsharp","Diceman","Etiquette (Any one)","Luck"],
+["Alley Cat","Cardsharp","Dealmaker","Gregarious"],
+["Alley Cat","Criminal","Flee!","Strong Back"],
+["Combat Aware","Criminal","Rover","Flee!"],
+["Criminal","Etiquette (Criminals)","Menacing","Strike Mighty Blow"],
+["Alley Cat","Criminal","Etiquette (Criminals)","Flee!"],
+["Criminal","Menacing","Petty Magic","Instinctive Diction"],
+//Class Warriors
+["Combat Aware","Crack the Whip","Lightning Reflexes","Roughrider"],
+["Diceman","Etiquette (Servants)","Strike to Stun","Tenacious"],
+["Etiquette (Any one)","Roughrider","Sturdy","Warrior Born"],
+["Dirty Fighting","In-fighter","Iron Jaw","Reversal"],
+["In-fighter","Dirty Fighting","Menacing","Warrior Born"],
+["Diceman","Marksman","Strong Back","Warrior Born"],
+["Duel Wielder","Fearless (Everything)","Frenzy","Slayer"],
+["Bless (Any one)","Etiquette (Cultists)","Read/Write","Strong-minded"] ];
+var CareerSkill = [
+//Class Academics
+["Consume Alcohol","Heal","Language (Classical)","Lore (Chemistry)","Lore (Medicine)","Lore (Plants)","Trade (Apothecary)","Trade (Poisoner)"],
+["Consume Alcohol","Cool","Endurance","Language (Classical)","Lore (Science)","Perception","Ranged (Blackpowder)","Trade (Engineer)"],
+["Consume Alcohol","Endurance","Haggle","Language (Classical)","Lore (Law)","Lore (Theology)","Perception","Research"],
+["Art (Calligraphy)","Cool","Endurance","Entertain (Storyteller)","Gossip","Heal","Lore (Theology)","Pray"],
+["Bribery","Cool","Drive","Endurance","Gossip","Heal","Perception","Sleight of Hand"],
+["Athletics","Cool","Endurance","Intuition","Lore (Theology)","Perception","Pray","Research"],
+["Consume Alcohol","Entertain (Storytelling)","Gamble","Gossip","Haggle","Language (Classical)","Lore (Any one)","Research"],
+["Channelling","Dodge","Intuition","Language (Magick)","Lore (Magic)","Melee (Basic)","Melee (Polearm)","Perception"],
+["Art (Writing)","Bribery","Charm","Consume Alcohol","Gossip","Haggle","Lore (Politics)","Trade (Printing)"],
+["Athletics","Cool","Consume Alcohol","Dodge","Endurance","Evaluate","Stealth (Urban)","Trade (Any one)"],
+["Athletics","Charm","Consume Alcohol","Cool","Dodge","Endurance","Intuition","Stealth (Urban)"],
+["Charm","Climb","Cool","Gossip","Intuition","Perception","Stealth (Urban)","Track"],
+["Animal Care","Bribery","Charm","Consume Alcohol","Drive","Gamble","Gossip","Haggle"],
+["Athletics","Animal Training (Dog)","Charm Animal","Consume Alcohol","Endurance","Melee (Basic)","Ranged (Sling)","Stealth (Underground or Urban)"],
+["Charm","Climb","Consume Alcohol","Drive","Dodge","Gamble","Gossip","Haggle"],
+["Athletics","Climb","Consume Alcohol","Dodge","Endurance","Gamble","Melee (Basic)","Perception"],
+["Bribery","Consume Alcohol","Endurance","Gossip","Haggle","Language (Classical)","Lore (Politics)","Perception"],
+["Art (Any one)","Cool","Consume Alcohol","Evaluate","Endurance","Gossip","Perception","Stealth (Urban)"],
+["Athletics","Dodge","Endurance","Heal","Intuition","Language (Classical)","Melee (Any one)","Perception"],
+["Athletics","Charm","Drive","Dodge","Endurance","Intuition","Ride (Horse)","Row"],
+["Bribery","Consume Alcohol","Gamble","Intimidate","Leadership","Lore (Heraldry)","Melee (Fencing)","Play (Any one)"],
+["Athletics","Climb","Drive","Dodge","Endurance","Intuition","Perception","Stealth (Any one)"],
+["Bribery","Charm","Cool","Gamble","Gossip","Haggle","Perception","Stealth (Any one)"],
+["Athletics","Charm Animal","Consume Alcohol","Cool","Endurance","Intuition","Perception","Trade (Any one)"],
+["Cool","Dodge","Endurance","Gossip","Haggle","Intimidate","Melee (Basic)","Perception"],
+["Channelling","Endurance","Intuition","Lore (Folklore)","Lore (Herbs)","Outdoor Survival","Perception","Trade (Charms)"],
+["Charm Animal","Climb","Endurance","Lore (Herbs)","Outdoor Survival","Perception","Swim","Trade (Herbalist)"],
+["Charm Animal","Climb","Endurance","Lore (Beasts)","Outdoor Survival","Perception","Ranged (Sling)","Set Trap"],
+["Cool","Endurance","Intuition","Lore (Local)","Melee (Two-handed)","Outdoor Survival","Perception","Swim"],
+["Charm","Entertain (Fortune Telling)","Dodge","Gossip","Haggle","Intuition","Perception","Sleight of Hand"],
+["Charm Animal","Climb","Endurance","Gossip","Lore (Local)","Melee (Basic)","Outdoor Survival","Perception"],
+["Animal Care","Athletics","Consume Alcohol","Endurance","Gossip","Melee (Brawling)","Lore (Local)","Outdoor Survival"],
+["Bribery","Charm","Gossip","Haggle","Intuition","Melee (Basic)","Outdoor Survival","Perception"],
+["Animal Care","Charm Animal","Climb","Drive","Endurance","Perception","Ranged (Entangling)","Ride (Horse)"],
+["Athletics","Charm","Entertain (Any one)","Gossip","Haggle","Perform (Any one)","Play (Any one)","Sleight of Hand"],
+["Dodge","Endurance","Heal","Intimidate","Intuition","Lore (Theology)","Melee (Flail)","Outdoor Survival"],
+["Athletics","Climb","Dodge","Endurance","Gossip","Navigation","Perception","Melee (Brawling)"],
+["Charm","Endurance","Entertain (Storytelling)","Gossip","Haggle","Intuition","Outdoor Survival","Stealth (Rural or Urban)"],
+["Bribery","Consume Alcohol","Gamble","Gossip","Haggle","Melee (Basic)","Perception","Ranged (Crossbow)"],
+["Charm","Consume Alcohol","Heal","Intimidate","Intuition","Lore (Torture)","Melee (Basic)","Perception"],
+["Consume Alcohol","Dodge","Endurance","Gossip","Melee (Basic)","Row","Sail","Swim"],
+["Consume Alcohol","Gossip","Intuition","Lore (Local)","Lore (Riverways)","Perception","Row","Swim"],
+["Athletics","Consume Alcohol","Dodge","Endurance","Gossip","Outdoor Survival","Row","Swim"],
+["Athletics","Dodge","Endurance","Melee (Basic)","Perception","Row","Sail","Swim"],
+["Climb","Consume Alcohol","Gamble","Gossip","Row","Melee (Brawling)","Sail","Swim"],
+["Athletics","Bribery","Cool","Consume Alcohol","Row","Sail","Stealth (Rural or Urban)","Swim"],
+["Athletics","Climb","Consume Alcohol","Dodge","Endurance","Gossip","Melee (Basic)","Swim"],
+["Climb","Consume Alcohol","Dodge","Endurance","Row","Melee (Basic)","Outdoor Survival","Swim"],
+["Bribery","Charm","Consume Alcohol","Entertain (Any one)","Gamble","Gossip","Haggle","Intimidate"],
+["Bribery","Consume Alcohol","Charm","Entertain (Storytelling)","Gamble","Gossip","Haggle","Sleight of Hand"],
+["Charm","Dodge","Evaluate","Gamble","Gamble","Gossip","Haggle","Melee (Basic)"],
+["Climb","Cool","Dodge","Drive","Gossip","Intuition","Perception","Stealth (Any one)"],
+["Athletics","Consume Alcohol","Cool","Endurance","Gamble","Intimidate","Melee (Basic)","Outdoor Survival"],
+["Athletics","Climb","Cool","Dodge","Endurance","Intuition","Perception","Stealth (Urban)"],
+["Consume Alcohol","Cool","Dodge","Endurance","Intimidate","Lore (Local)","Melee (Brawling)","Stealth (Urban)"],
+["Channelling","Cool","Endurance","Gossip","Intimidate","Language (Magick)","Sleight of Hand","Stealth (Rural)"],
+//Class Warriors
+["Animal Care","Charm Animal","Endurance","Language (Battle)","Melee (Basic)","Outdoor Survival","Perception","Ride (Horse)"],
+["Consume Alcohol","Endurance","Entertain (Storytelling)","Gamble","Gossip","Intuition","Melee (Basic)","Perception"],
+["Athletics","Animal Care","Charm Animal","Heal","Lore (Heraldry)","Melee (Cavalry)","Ride (Horse)","Trade (Farrier)"],
+["Athletics","Cool","Dodge","Endurance","Gamble","Intimidate","Melee (Any one)","Melee (Brawling)"],
+["Athletics","Dodge","Endurance","Entertain (Taunt)","Gossip","Haggle","Intimidate","Melee (Any one)",""],
+["Athletics","Climb","Cool","Dodge","Endurance","Language (Battle)","Melee (Basic)","Play (Drum or Fife)"],
+["Consume Alcohol","Cool","Dodge","Endurance","Gamble","Heal","Lore (Trolls)","Melee (Basic)"],
+["Cool","Dodge","Endurance","Heal","Leadership","Lore (Theology)","Melee (Any one)","Pray"]
+];
+
+var ThyDemise = [
+    "thy death",
+    "thy demise",
+    "thy destruction",
+    "thy dying",
+    "thy doom",
+    "thy downfall",
+    "thine end",
+    "thy fall"
+];
+var ThyDemiseUpper = [
+    "Thy death",
+    "Thy demise",
+    "Thy destruction",
+    "Thy dying",
+    "Thy doom",
+    "Thy downfall",
+    "Thine end",
+    "Thy fall"
+];
+var ShallBe = [
+    "shall be",
+    "shall be",
+    "shall be",
+    "shall annunce",
+    "shall mark",
+    "shall herald"
+];
+
+var DoomingTxt = "";
+  var DoomingsAll = [
+  //List from http://www.bindslet.dk/rpg/wfrpdoom.html
+   randPick(ThyDemiseUpper)+" shalt be a sticky one.","Briny waters are poison to thy tongue"
+   ,"When abandoned and alone, Morr shalt befriend thee.","Beasts of the field have eyes for thee."
+   ,"Workings of the Witchling Star are "+randPick(ThyDemise)+".","A stalled blade bringeth a sharp end."
+   ,"The written word shall spell "+randPick(ThyDemise)+".","Thy body shalt break after thy spirit is crushed."
+   ,"Be not curious, only in ignorance art thou safe.","Lack of breath fills thy last moments."
+   ,"Tie not the ribbon, nor the feather wear; yea, the peacock is thine enemy."
+   ,"Be not like Gnuthus, for thy master counts thy days.","Three is thy number."
+   ,"A beast of brass bellows for thee.","Ulric's cold hand shall lead thee to Morr."
+   ,"Watch for the cloven hoof, it is thine enemy.","Eat neither the chitterlings nor the meat with tubes."
+   ,"As thee began, so shalt thou end.",""+randPick(ThyDemiseUpper)+" already knows thee, though knows it not."
+   ,"A stranger shalt bring thee more than a gift.","Beware the young, the child, yea, even the babe."
+   ,"Take heed of Mammit and Mummit, for both see to lay thee low."
+   ,"Beware the purse, the sack, the velvet bag.","The raven answers to Verena's call, yea, but Her scales are weighted."
+   ,"The tiniest of Taal's children shalt feast upon thy gut."
+   ,"The limner's line shalt be false.","The holy day "+randPick(ShallBe)+" thy last day."
+   ,"Thou shalt die in bed, but not thine own!","Thou shalt feed the barren soil with thy blood."
+   ,"When thy need is greatest, Shallya shalt turn Her back to thee.","The scythe shall reap thy flesh."
+   ,"Thy soul, consumed with anger, shall be blinded to the unseen enemy."
+   ,"A friend in need brings "+randPick(ThyDemise)+" with speed.","Thy last breath is drawn by Morrleib's light."
+   ,"Rats wearing the Horns of Taal shalt bite at thy heels.","The sword shalt bring no justice, only suffering."
+   ,"The twin-tailed comet doth soar as thou dost fall.","Water of all kinds is thy nemesis. "
+   ,""+randPick(ThyDemiseUpper)+" lieth hidden in the gloaming.","High places promise a low end."
+   ,"Thy last exclamation is love.","Beware the man that is not a man!","Beware the Blind Maiden for Her scales shalt weight thy soul."
+   ,"Thy broken cart shalt herald "+randPick(ThyDemise)+".","The bun, the pastry, and the pie, yea, they art Morr's dishes!"
+   ,"When the bell doth toll, it doth toll for thee.","The laurel wreath hides a poisoned thorn."
+   ,"Longer not upon the privvie, nor the long drop neither.","Cacklefax grips tight to coins of they doom."
+   ,"The hourglass shatters before thy last grain falls. ","From the darkness cometh the raven."
+   ,"High-born blood shalt spill thine own.","From above comes "+randPick(ThyDemise)+"."
+   ,"Plague and dark disease shalt bring thee to thine knees."
+   ,"Beware skin of green, it shalt afflict thee."
+   ,"Beware the verdant depths, within doth lie disaster."
+   ,"Be like the dancer for rude words bring Morr to thy side."
+   ,"The darkest rot shall eat thee from within."
+   ,"The Gods watch over "+randPick(ThyDemise)+"."
+   ,"Heed not the smith, in his artifice lies "+randPick(ThyDemise)+"."
+   ,"Wear not Grugni's baldric, for it shall carry "+randPick(ThyDemise)+"."
+   ,"Ready your coins on the thirteenth chime."
+   ,"The drummer beats out "+randPick(ThyDemise)+"."
+   ,"Katya's eye and vanity shalt speed thee to death."
+   ,""+randPick(ThyDemiseUpper)+" burns with flames unseen."
+   ,"An ill reputation shalt an ill man make."
+   ,"Morr finds thee naked as the day of thy birth."
+   ,"One bullock is safe, two bullocks bringeth the raven."
+   ,"Thirst not for blood, for it thirst for thee."
+   ,"In thy surest moment, thou shalt fail."
+   ,"Beware the beast in the wood, it is Morr's Messenger."
+   ,"Thou shalt sup from the cup of corruption."
+   ,"Fear the workings of the bonesaw, they are the source of "+randPick(ThyDemise)+"."
+   ,"Thy generosity bringeth tuppence and a sword in return."
+   ,"The withering eye is thy reward, and "+randPick(ThyDemise)+"."
+   ,"Torture and pain echo "+randPick(ThyDemise)+"."
+   ,"Follow not the steps of Dragomas."
+   ,""+randPick(ThyDemiseUpper)+" is wrought of violence."
+   ,"Those born of Rhy's cauldron shalt build thee a ravenstone."
+   ,"Absence makes thy heart grow weaker."
+   ,"The Mymidian spring is thy poison."
+   ,"Beware the crow, honour the raven."
+   ,"A greased goat is safer than keeping secrets."
+   ,"Manann's folk shalt love thee not."
+   ,"When thou art thrice haunted, Morr brings peace."
+   ,"Walk with Vobist, for certainty shall take thy breath."
+   ,"Beware the Lord of Murder's barb - it awaits to strike at thee from the darkness."
+   ,"The flashing blade shalt carve "+randPick(ThyDemise)+"."
+   ,"Fearsome engines belch forth fires of "+randPick(ThyDemise)+"."
+   ,"Thy end is not the end!"
+   , ""+randPick(ThyDemiseUpper)+" is not "+randPick(ThyDemise)+"!"
+   ,"As the piper plays his tune thy heart shall break."
+   ,"Green shalt undo thee."
+   ,"As dark news comes knocking, Morr shalt surely follow."
+   ,"Thou shalt stand like Wymund until Shallya courts thy enemies."
+   ,"Ranald shalt abandon thee."
+   ,"Think not beyond thy station, for change is the herald of Morr."
+   ,"Morr sends a maiden."
+   ,"Without the big cross, thou shalt make the wrong decision."
+   ,"Just before he uttered your doom, the doomsayer died, his face frozen in a mask of horror."
+   // added
+   ,"When the beasts fall silent, "+randPick(ThyDemise)+" is near."
+   // from http://www.windsofchaos.com/wp-content/uploads/encroachment/expanded-characters-module.pdf
+   ,"A beast shall end thee, but the beast shall die first."
+   ,"A blunt knife will cause "+randPick(ThyDemise)+"."
+   ,"A child shall be Morr's herald."
+   ,"A consequence of lust will end ye."
+   ,"A curse "+randPick(ShallBe)+" "+randPick(ThyDemise)+"."
+   ,"A drunken blunder shall end your comedy."
+   ,"A four legged beast "+randPick(ShallBe)+" "+randPick(ThyDemise)+"."
+   ,"A helmet "+randPick(ShallBe)+" your undoing."
+   ,"A hero slays thee and with a good reason."
+   ,"A kiss shall end thy days."
+   ,"A passion that is forbidden to you "+randPick(ShallBe)+" your undoing."
+   ,"A raging fire shall claim thee."
+   ,"As sharp sting and then nothing."
+   ,"A short life but a merry one."
+   ,"A slip, a trip or a fall."
+   ,"A small misfortune leads to a bigger misfortune which leads to "+randPick(ThyDemise)+"."
+   ,"A spear will pass through your belly and you will linger long in pain before "+randPick(ThyDemise)+"."
+   ,"A sweet song accompanies thy dying breath."
+   ,"A terrible stench precedes "+randPick(ThyDemise)+"."
+   ,"A warriors's death, be thee warrior or not."
+   ,"Absence makes thy heart grow weaker."
+   ,"Accidents will happen."
+   ,"All is not as it seems."
+   ,"A great celebration you shall leave this world."
+   ,"An unmarked grave shall house thy bone."
+   ,"Arrogance will provide "+randPick(ThyDemise)+"."
+   ,"As dark clous gather, "+randPick(ThyDemise)+" looms over thee."
+   ,"As the leaves fall, so shall you."
+   // http://www.windsofchaos.com Chargens
+   ,"A black cat."
+   ,"A blunt knife will cause "+randPick(ThyDemise)+"."
+   ,""+randPick(ThyDemise)+", a brutal finish."
+   ,"A child shall be Morr's herald."
+   ,"A consequence of lust shall end thee."
+   ,"A coward's death, you shall suffer."
+   ,"A drunken blunder shall end thy comedy."
+   ,"A fear unnamed shall claim you."
+   ,"A filthy rat-thing "+randPick(ShallBe)+" "+randPick(ThyDemise)+"."
+   ,"A forbidden passion shall lay thee low."
+   ,"A great fish "+randPick(ShallBe)+" "+randPick(ThyDemise)+"."
+   ,"A green-skinned defiler "+randPick(ShallBe)+" "+randPick(ThyDemise)+"."
+   ,"A hero slays thee, and with good reason."
+   ,"A howling in the night announces "+randPick(ThyDemise)+"."
+   ,"Among a great celebration shall you leave this world."
+   ,"An ancient horror shall drag thee to madness before death."
+   ,"Another shall die so that you may live, but it is for nought."
+   ,"An unmarked grave is to be yours."
+   ,"A person of virtue shall slay thee."
+   ,"A profanity "+randPick(ShallBe)+" "+randPick(ThyDemise)+"."
+   ,"A raging fire "+randPick(ShallBe)+" "+randPick(ThyDemise)+".","A rope will break."
+   ,"Arrogance will steal your life."
+   ,"As dark clouds gather, "+randPick(ThyDemise)+" looms."
+   ,"A small misfortune shall lead you to ruin."
+   ,"A song on the wind shall lure thee to thy grave."
+   ,"A spotted dog "+randPick(ShallBe)+" "+randPick(ThyDemise)+"."
+   ,"As the leaves fall, so dost thou."
+   ,"As the snow falls, so dost thou."
+   ,"As the sun is rising, you shall forever rest."
+   ,"As the sun is setting, so shall you rest."
+   ,"A terrible pain in thy entrails."
+   ,"A thing so black, it has no name."
+   ,"A thing that gazes with no eye."
+   ,"A thing that should not be."
+   ,"A turning wheel shall break thee."
+   ,"A tusked beast "+randPick(ShallBe)+" "+randPick(ThyDemise)+"."
+   ,"A warrior's death shall be yours."
+   ,"A white cat shall be "+randPick(ThyDemise)+"."
+   ,"Beware the stench of death, else you will join it."
+   ,"Carried off on a sea of blood."
+   ,"Cold hands shall drag thee away."
+   ,"Death comes from above."
+   ,"Death comes from below."
+   ,"Death comes packaged as a gift."
+   ,"Death sings sweetly."
+   ,"Death strikes unseen."
+   ,"Death waits at the river's side."
+   ,"Death wears a black hat."
+   ,"Drowning, but not in water."
+   ,"Executed by the order of law."
+   ,"First, you shall be buried. Only later shall you die."
+   ,"Honeyed words shall curdle thy soul."
+   ,"Ill-gotten treasures."
+   ,"Indulgence in thy dark desires shall end thee."
+   ,"Manaan shall abandon thee."
+   ,"Misplaced faith "+randPick(ShallBe)+" "+randPick(ThyDemise)+"."
+   ,"Murdered by a stranger."
+   ,"Murdered by one you hold dear."
+   ,"One drink too many."
+   ,"On the battlefield."
+   ,"Pierced with countless blades."
+   ,"Poison in thy cup."
+   ,"Ranald shall forsake thee."
+   ,"Rhya shall forsake thee."
+   ,"Something too horrible to name."
+   ,"The gods shall forsake thee."
+   ,"The heirs of Sigmar shall perish, and you with them."
+   ,"The rains of spring bring with them disease and death."
+   ,"The summer sun shall bleach your bones."
+   ,"The walking dead will walk thou to death."
+   ,"The whisper of a foreigner shall undo you."
+   ,"They shall not know what to do with thy remains."
+   ,"Thou shalt be offered immortality, but 'tis a swindle."
+   ,"Thou shalt die from lack while surrounded by plenty."
+   ,"Thou shalt fall under the weight of thine own gold."
+   ,"Thou shalt share thy grave with a dog."
+   ,"Thrice shall the bell ring. There shall not be a fourth."
+   ,"Through a chink in thy armour."
+   ,"Through a window it comes."
+   ,""+randPick(ThyDemiseUpper)+" shall mirror thy birth."
+   ,""+randPick(ThyDemiseUpper)+" is so terrible, it cannot be uttered."
+   ,"Thy god shall abandon thee."
+   ,"Thy own faith shall end thee."
+   ,"Thy own strength shall end thee."
+   ,"Thy own weakness shall end thee."
+   ,"Under a cloudy sky, it comes."
+   ,"Under an oak shall you find "+randPick(ThyDemise)+"."
+   ,"Verena shall abandon thee."
+   ,"Vermin in multitudes."
+   ,"When all seems lost, it will be."
+   ,"Your blood shall pay for a forgotten debt."
+   ,""+randPick(ThyDemiseUpper)+" will come at the time you choose."
+   ,"Your father's sins shall doom you."
+   ,"Your final breath shall be of mountain air."
+   ,"Your remains shall never be found."
+   ,"You shall die many times before "+randPick(ThyDemise)+"."
+   ,"You shall have the last laugh."
+   ,"You shall perish amid gun smoke."
+   ,"You shall stray from a path and never return."
+   ,"You shall be ordered to "+randPick(ThyDemise)+"."
+   ,"You shall be within sight of salvation when the end comes."
+   ,"You will die so that another may live."
+   ,"You will linger long in the knowledge of "+randPick(ThyDemise)+"."
+];
+
+var TrappingTxt = "";
+var TrappingClass = ["Clothing, Dagger, Pouch, Sling Bag containing Writing Kit and 1d10 sheets of Parchment",
+"Cloak, Clothing, Dagger, Hat, Pouch, Sling Bag containing Lunch",
+"Fine Clothing, Dagger, Pouch containing Tweezers, Ear Pick and a Comb",
+"Cloak, Clothing, Dagger, Pouch, Sling Bag containing Rations (1 day)",
+"Cloak, Clothing, Dagger, Pouch, Backpack containing Tinderbox, Blanket, Rations (1 day)",
+"Cloak, Clothing, Dagger, Pouch, Sling Bag containing a Flask of Spirits",
+"Clothing, Dagger, Pouch, Sling Bag containing 2 Candles, 1d10 Matches, a Hood or Mask",
+"Clothing, Hand Weapon, Dagger, Pouch"];
+var TrappingCareer = [
+ //Class Academics
+"Book (Blank), Healing Draft, Leather Jerkin, Pestle and Mortar",
+"<a href='https://pacomiscelaneousstuff.blogspot.com/2020/02/wfrp4-random-book-generator.html'>Book (Engineer)</a>, Hammer and Spikes",
+"<a href='https://pacomiscelaneousstuff.blogspot.com/2020/02/wfrp4-random-book-generator.html'>Book (Law)</a>, Magnifying Glass",
+"Religious Symbol, Robes",
+"Bandages, Healing Draught",
+"Religious Symbol, Robes",
+"Alcohol, <a href='https://pacomiscelaneousstuff.blogspot.com/2020/02/wfrp4-random-book-generator.html'>Book</a>, Opinions, Writing Kit",
+"Grimoire, Quarterstaff",
+"Writing Kit, Hammer and Nails, Pile of Leaflets",
+"Chalk, Leather Jerkin, 1d10 rags",
+"Poor Quality Blanket, Cup",
+"Lantern, Lamp Oil, Journal, Quill and Ink",
+"Abacus, Mule and Cart, Canvas Tarpaulin, 3d10 Silver Shillings",
+"Sling with Ammunition, Sack, <a href='https://pacomiscelaneousstuff.blogspot.com/2020/03/wfrp-4th-edition-random-dog-companion.html'>Small but Vicious Dog</a>",
+"Lodgings, Sturdy Boots",
+"Hand Weapon, Leather Jack, Uniform",
+"Writing Kit",
+"Brush or Chisel or Quill Pen",
+"Basic Weapon or Rapier, Sling Bag containing Clothing and 1d10 Bandages",
+"Leather Jack, Livery, Scroll Case",
+"Courtly Garb, Foil or Hand Mirror, Jewellery worth 3d10 gc, Personal Servant",
+"Floor Brush",
+"Charcoal Stick, Sling Bag with 2 different sets of clothing and Hooded Cloak",
+"Keys, Lantern, Lamp Oil, Livery",
+"Hand Weapon, Small Lock Box",
+"d10 Lucky Charms, Quarterstaff, Backpack",
+"Boots, Cloak, Sling Bag containing an Assortment of Herbs",
+"Selection of Animal Traps, Hand Weapon, Sling with 10 Stone Bullets, Sturdy Boots and Cloak",
+"Charcoal Stick, Crude Map, Pan, Spade",
+"Deck of Cards or Set of Dice, Chep Jewellery",
+"Hand Weapon, Leather Jack, Sturdy Boots and Cloak, Rope",
+"None",
+"Hand Weapon, Leather Jerkin, Rope",
+"Warm Coat and Gloves, Whip",
+"Bowl, Instrument",
+"Flail, Tattered Robes",
+"Scroll Case",
+"Backpack, Bedroll, Goods worth 2d10 brass, Tent",
+"Crossbow with 10 Bolts, Leather Jack",
+"Hand Weapon, Instruments of Torture",
+"Hand Weapon (Boat Hook), Leather Jack, Pole",
+"Hand Weapon (Boat Hook), Storm Lantern and Oil",
+"Bucket, Fishing Rod and Bait, Leather Leggings",
+"Hand Weapon (Sword), Leather Jack, Uniform",
+"Bucket, Brush, Mop",
+"Large Sack, Mask or Scarves, Tinderbox, Storm Lantern and Oil",
+"Hand Weapon (Boat Hook), Leather Gloves",
+"Crowbar, Large Sack, Leather Gloves",
+//Class Rogues
+"Flask of Spirits",
+"Backpack, 2 Sets of Clothing, Deck of Cars, Dice",
+"Hand Weapon, Stolen goods worth 3d10 Shillings",
+"Crowbar, Handcart, Hooded Cloak, Tarpaulin",
+"Bedroll, Hand Weapon, Leather Jerkin, Tinderbox",
+"Crowbar, Leather Jerkin, Sack",
+"Brass Knuckles, Leather Jack",
+"Candles, Chalk, Doll, Pins",
+//Class Warriors
+"Hand Weapon, Leather Jack, <a href='https://pacomiscelaneousstuff.blogspot.com/2020/03/wfrp-4th-edition-random-horse-companion.html'>Riding Horse</a> with Saddle and Tack",
+"Hand Weapon, Leather Jerkin, Storm Lantern with Oil",
+"Leather Jack, Mail Shirt, <a href='https://pacomiscelaneousstuff.blogspot.com/2020/03/wfrp-4th-edition-random-horse-companion.html'>Riding Horse</a> with Saddle and Tack, Shield and Trade Tools (Farrier)",
+"Bandages, Brass Knuckles, Hand Weapon, Leather Jack",
+"Brass Knuckles, Hood or Mask, Leather Jack",
+"Axe, Flask of Spirits, Shame, Tattoos",
+"Hand Weapon (Sword), Leather Armor, Uniform",
+"<a href='https://pacomiscelaneousstuff.blogspot.com/2020/02/wfrp4-random-book-generator.html'>Book (Religion)</a>, Leather Jerkin, Religious Symbol, Robes, Weapon (Any one)"];
+/* Grouped Talents to select random group*/
+var AnyTalents = [ ["Acute Sense (Any one)","Acute Sense (Vision)","Acute Sense (Taste)","Acute Sense (Touch)", "Acute Sense (Hearing)", "Acute Sense (Smell)"],
+["Bless (Any one)","Bless (Manann)","Bless (Morr)","Bless (Myrmidia)",
+"Bless (Ranald)","Bless (Taal)","Bless (Shallya)","Bless (Sigmar)","Bless (Ulric)","Bless (Verena)",
+/* Extra changes for more usual cults*/
+"Bless (Sigmar)","Bless (Sigmar)","Bless (Ulric)"],
+["Craftsman (Any one)","Craftsman (Apothecary)","Craftsman (Artist)","Craftsman (Bowyer)","Craftsman (Brewing)",
+"Craftsman (Calligrapher)","Craftsman (Candlemaker)","Craftsman (Carpentry)","Craftsman (Cartographer)",
+"Craftsman (Cook)","Craftsman (Cooper)","Craftsman (Embalmer)","Craftsman (Engineering)","Craftsman (Farmer)",
+"Craftsman (Farrier)", "Craftsman (Gem Cutter)","Craftsman (Goldsmith)","Craftsman (Gunsmith)",
+"Craftsman (Herbalist)","Craftsman (Jewellry Making)","Craftsman (Landlord)","Craftsman (Manager)",
+"Craftsman (Mason)","Craftsman (Merchant)","Craftsman (Miller)","Craftsman (Miner)","Craftsman (Prospector)",
+"Craftsman (Shipwright)","Craftsman (Shoemaker)","Craftsman (Smithing)","Craftsman (Tailor)","Craftsman (Tanner)",
+/* Extra changes for more usual adventuring crafts*/
+"Craftsman (Mason)","Craftsman (Smithing)","Craftsman (Carpentry)","Craftsman (Cook)","Craftsman (Engineering)"],
+["Etiquette (Any one)","Etiquette (Criminals)","Etiquette (Cultists)","Etiquette (Guilders)","Etiquette (Nobles)","Etiquette (Scholar)","Etiquette (Servants)","Etiquette (Soldiers)"],
+["Fearless (Any one)", "Fearless (Beastmen)", "Fearless (Greenskins)", "Fearless (Outlaws)", "Fearless (Vampires)", "Fearless (Watchmen)", "Fearless (Witches)"],
+["Hatred (Any one)","Hatred (Goblinoids)","Hatred (Beastmen)"],
+["Master Tradesman (Any one)","Master Tradesman (Apthecary)","Master Tradesman (Cook)"],
+["Resistance (Any one)", "Resistance(Chaos)", "Resistance(Disease)", "Resistance(Poison)"] ,
+["Savant (Any one)", "Savant (Medicine)", "Savant (Law)"],
+["Strider (Any one)", "Strider (Coastal)", "Strider (Deserts)", "Strider (Marshes)", "Strider (Rocky)", "Strider (Tundra)", "Strider (Woodlands)"]
+];
+/* Grouped skills to select random group*/
+var AnySkills = [ 
+["Art (Any one)", "Art (Calligraphy)", "Art (Writing)",  "Art (Sculpture)", "Art (Painting)", "Art (Weaving)", "Art (Tatoo)", "Art (Mosaics)"],
+["Entertain (Any one)","Entertain (Fortune Telling)", "Entertain (Sing)", "Entertain (Acting)", "Entertain (Comedy)",
+"Entertain (Storytelling)","Entertain (Taunt)",
+/* Duplicate to get more common stuff*/
+"Entertain (Acting)", "Entertain (Sing)"
+],
+["Melee (Any one)", "Melee (Parry)", "Melee (Polearm)", "Melee (Fencing)", "Melee (Two-handed)", "Melee (Flail)", "Melee (Cavalry)", "Melee (Brawling)",
+/* Duplicate to get more common stuff, No Melee (Basic) */
+ "Melee (Parry)", "Melee (Polearm)", "Melee (Fencing)", "Melee (Two-handed)"
+],
+["Play (Any one)","Play (Drum)","Play (Fife)","Play (Lute)","Play (Bagpipes)"],
+["Trade (Any one)","Trade (Apothecary)","Trade (Cook)","Trade (Charms)","Trade (Engineer)",
+"Trade (Farrier)","Trade (Printing)", "Trade (Poisoner)", "Trade (Smithing)","Trade (Carpentry)"],
+["Lore (Any one)", "Lore (Reikland)", "Lore (Dwarfs)", "Lore (Geology)", "Lore (Metallurgy)", "Lore (Chemistry)", 
+"Lore (Medicine)", "Lore (Plants)", "Lore (Science)", "Lore (Law)", "Lore (Theology)","Lore (Magic)", "Lore (Politics)",
+"Lore (Heraldry)", "Lore (Folklore)", "Lore (Herbs)", "Lore (Beasts)", "Lore (Local)", "Lore (Torture)",
+"Lore (Riverways)", "Lore (Trolls)","Lore (History)", "Lore ()"],
+["Perform (Any one)", "Perform (Acrobatics)", "Perform (Firebrathing)"],
+["Ranged (Any one)", "Ranged (Bow)", "Ranged (Sling)","Ranged (Crossbow)"], /*No firearms for halflings*/
+["Stealth (Any one)", "Stealth (Urban)", "Stealth (Rural)", "Stealth (Underground)"]
+];
+var mouseoverSkills = ["Art (Basic, Grouped), Dex, Create works of Art in your chosen medium.",
+"Athletics (Basic), Ag, Impacts on your movement abilities in combat.",
+"Bribery (Basic), Fel, Will tell you if a target may be bribed and allow you to guess a target number.",
+"Charm (Basic), Fel, Opposed Charm/Cool to influence.",
+"Charm Animal (Basic), WP, Influence an animal.",
+"Climb (Basic), S, How easy to scale surfaces.",
+"Cool (Basic), WP, Resist psychology and charm etc.",
+"Consume Alcohol (Basic), T, Ability to resist drunkenness.",
+"Dodge (Basic), Ag, Ability to avoid blows.",
+"Drive (Basic), Ag, Ability to guide vehicles.",
+"Endurance (Basic), T, Withstand hardship.",
+"Entertain (Basic, Grouped), Fel, Act/sing etc.",
+"Gamble (Basic), Int, Measure the likelihood of a bet paying off.",
+"Gossip (Basic), Fel, Learn interesting information.",
+"Haggle (Basic), Fel, Opposed test to reduce price.",
+"Intimidate (Basic), S, Bully your opponent.",
+"Intuition (Basic), I, Suss if something is wrong or give you an advantage in combat.",
+"Leadership (Basic), Fel, Issue orders or bolster psychology tests.",
+"Melee (Basic/Advanced, Grouped), WS, Represents training in weapons.",
+"Navigation (Basic), I, Find your way around.",
+"Outdoor Survival (Basic), Int, Forage, build shelters, fish etc.",
+"Perception (Basic), I, Ability to spot things/oppose stealth.",
+"Ride (Basic, Grouped, Ag, How skilled at riding animals.",
+"Row (Basic), S, How effective at rowing in dangerous situations.",
+"Stealth (Basic, Grouped), Ag, Concealment vs opposed perception.",
+"Animal Care (Advanced), Int, Tend animals if they become sick or wounded.",
+"Animal Training (Advanced, Grouped), Int, Train/intimidate animals.",
+"Channelling (Advanced, Grouped), WP, Ability to control the winds of magic.",
+"Evaluate (Advanced), Int, Determine the value of objects.",
+"Heal (Advanced), Int, Heal disease, infection, wound pg 123.",
+"Language (Advanced, Grouped), Int, Speak the tongue. Language(Magick) is used to cast spells.",
+"Lore (Advanced, Grouped), Int, formally taught in that area, allowing you to recall facts.",
+"Perform (Advanced, Grouped), Ag, Acrobatics, dancing etc.",
+"Pick lock (Advanced), Dex, Breaking into locks.",
+"Play (Advanced, Grouped), Dex, Playing an instrument.",
+"Pray (Advanced), Fel, Used to pray to a deity with blessings.",
+"Ranged (Advanced, Grouped), BS, Applies to using ranged weapons.",
+"Research (Advanced), Int, Pulling information from libraries, scrolls, etc.",
+"Sail (Advanced, Grouped), Ag, Manoeuvring with sails.",
+"Secret Signs (Advanced, Grouped), Int, How to use special markings or signs in a group.",
+"Set Trap (Advanced), Dex, Set and disarm traps",
+"Sleight of Hand (Advanced), Dex, Picking pockets etc",
+"Swim (Advanced), S, How well you can swim without drowning.",
+"Track (Advanced), I, Ability to follow trails and signs left by others.",
+"Trade (Advanced, Grouped), Dex, Earn money with your service"];
+var dataTalents = [["Accurate Shot","BSB","+1 dmg on all ranged weapons."],
+["Acute Sense","IB","Perception; Choose 1 sense. Perception test using sense to spot imperceptible detail."],
+["Aethyric Attunement","IB","Channeling; No miscast if double rolled on successful channel test."],
+["Alley Cat","IB","Stealth (Urban); Stealth (Urban) reverse dice of any failed test to check success."],
+["Ambidextrous","2","Off hand -10. (0 if taken twice)."],
+["Animal Affinity","WPB","Charm Animal; All Bestial Trait creatures calm in your presence."],
+["Argumentative","FelB","Charm (debating); Choose either rolled SL or number rolled onunits die."],
+["Arcane Magic (Lore)","IntB","Know 1 of the 8 Arcane Lores of magic."],
+["Artistic","DexB","Trade (Artist); Produce precise sketches. Add Trade (Artist) to any career."],
+["Attractive","FelB","Charm (to attracted); Choose either rolled SL or number rolled onunits die."],
+["Battle Rage","WPB","Melee (Frenzied); You can end your Frenzy with successful Cool Test at end of round."],
+["Beneath Notice","FelB","Stealth (in plain sight); Higher status tier ignore you / don't get advantage in combat with you."],
+["Beat Blade","WSB","Melee (fencing); Before attack, perform Melee(fencing) test. Opponent - 1 Advantage (extra per SL)."],
+["Berserk Charge","SB","Melee; + 1 damage on charge per times taken."],
+["Blather","FelB","Charm (to blather); Opposed Blather/ intelligence to giveopponent stunned condition."],
+["Bless","1","You can empower prayers."],
+["Bookish","IntB","Research; Reverse dice of any failed test to check success."],
+["Break and Enter","SB","Melee (vs inanimate); +1dmg vs objects per times taken."],
+["Briber","FelB","Bribery; Reduce base cost of bribe by 10%."],
+["Cardsharp","IntB","Gamble / Sleight of Hand; Use either rolled SL or units die num."],
+["Careful Strike","IB","Modify hit loc. +/- 10 per times taken."],
+["Carouser","TB","Consume alcohol; Reverse dice of failed Consume Alcohol Test to score Success."],
+["Catfall","AgB","Athletics (on falling); Reduce fall by 1 yard + 1 per SL for damage"],
+["Cat Tongued","FelB","Charm (on lying); Listeners do not oppose on intuition."],
+["Chaos Magic (Lore)","None","Learn chaos magic spells!"],
+["Combat Aware","I B Perception (Melee); Challenging Perception Test to ignore surprise."],
+["Combat Master","AgiB","Each time taken, count as +1 person for outnumbered."],
+["Combat Reflexes","IB","Initiative counts as 10 for combat."],
+["Commanding Presence","FelB","Leadership; Lower status cannot resist leadership with opposed willpower."],
+["Concot","1","1/2 time taken to use Trade(apothecary)."],
+["Contortionist","AgiB","When using contort; Squeeze and bend through unlikely gaps."],
+["Cool Headed","1","Permanent +5 to starting Willpower."],
+["Crack the whip","DexB","Drive / Ride; Fleeing/running animal +1 Movement with whip."],
+["Craftsman (Trade)","DexB","Trade; Add trade skill or -5xp cost to career"],
+["Criminal","None) Take money as income."],
+["Deadeye Shot","1","Don't reverse die for location, pick."],
+["Dealmaker","FelB","Haggle Reduce or increase price 10%."],
+["Detect Artefact","IntB","Intuition test determines if item is magical."],
+["Diceman","IntB","Gamble / Sleight of Hand; Use either rolled SL or number on units die for success."],
+["Dirty Fighting","WSB","Melee (Brawling); +1 dmg for melee(Brawling) for each level."],
+["Disarm","IB","Melee (while disarming); Use action for opposed melee, opponent loses held weapon."],
+["Distract","AgiB","Athletics (while distracting); Use move to opposed Athletics/cool. Opponent cannot gain advantage til next round."],
+["Doomed","1","If character dies in this manner, 1/2 xp goes to next one."],
+["Drilled","WSB","Melee besides ally When standing next to Ally with drilled and lose Advantage, keep 1."],
+["Dual Wielder","AgiB","Melee Attack with both weapons"],
+["Embezzle","IntB","Embezzling Opposed intelligence test against employer to skim money."],
+["Enclosed Fighter","AgiB","Dodge Ignore melee penalties in enclosed spaces."],
+["Etiquette","FelB","Charm/ gossip Blend into chosen group"],
+["Fast Hands","DexB","Sleight of hand/ fist No passive perception test against sleight of hand skill."],
+["Fast Shot","AgiB","Ranged (reloading); If loaded, fire outside of normal initiative order."],
+["Fearless","WPB","Cool; With average cool test, ignore psychology against specific enemy."],
+["Feint","WSB","Fencing (Feinting); Feint as action, opposed melee test, attack before next round cannot be opposed."],
+["Field Dressing","IntB","Heal; You may reverse dice results if it results in success."],
+["Fisherman","IntB","Fishing; Find enough fish to feed your party."],
+["Flagellant","TB","Resisting ruinous powers Pray number of wounds equal to level in flagellant. Frenzy immediately without testing."],
+["Flee","AgiB","Athletics (fleeing); Movement +1 when fleeing"],
+["Fleet Footed","1","+1 to Movement Attribute"],
+["Frenzy","1","You can Frenzy"],
+["Frightening","SB","Fear rating of +1 per times taken"],
+["Furious Assault","AgiB","Melee (on extra attacks); Spend advantage or move to make extra attack."],
+["Gregarious","FelB","Gossip; Reverse dice if allows a success"],
+["Gunner","DexB","Add SL to gunner level in extended reload"],
+["Hardy","TB","Add TB to wounds"],
+["Hatred","WPB","Willpower Hatred for chosen group"],
+["Holy Hatred","FelB","+1dmg with miracles per level"],
+["Holy Rage","WPB","Pray when frenzied Can invoke blessings and miracles when frenzied"],
+["Holy Visions","IB","Intuition Intuition test to receive visions"],
+["Huffer","IB","Lore on rivers Easier to traverse dangerous rivers"],
+["Hunter's Eye","IB","Trail Test Hunt down enough game to feed your group"],
+["Impassioned Zeal","FelB","Charm Double Fel to determine public influenced by your speech."],
+["Implacable","TB","Ignore Wound loss from bleeding"],
+["In-Fighter","DexB","Infighting No penalties for fighting against opponent with longer weapon. +10 to hit opponent in infighting."],
+["Inspiring","FelB","Leadership Increase amount of people influenced in war."],
+["Invoke Divine Lore","None","Perform miracles for 1 god."],
+["Instinctive Diction","IB","Lenguage (Magick); No miscast rolling double on sucessfull test."],
+["Iron Jaw","TB","Endurance Challenging endurance test to resist Stunned condition"],
+["Iron Will","WPB","Cool Vs Intimidate; Intimidate skill does not cause you Fear."],
+["Jump up","AgiB","Athletics (Jumping); Challenging agility test to regain feet when Prone."],
+["Kingpin","1","Ignore status loss of Criminal Talent"],
+["Lightning reflexes","1","Permanent +5 to starting Agility"],
+["Lip Reading","IB","Perception Perception test to understand what is said"],
+["Linguistics","IntB","Language; Language exposed to counts as basic instead of advanced with successful intelligence check."],
+["Luck","FelB","Fortune max == Fate max + Luck level"],
+["Magic Resistance","1","Must Oppose any spell with Willpower, may never learn magic"],
+["Magical Sense","IB","Intuition detect wizards Average intuition check when encounter spellcaster"],
+["Magnum Opus","None","Create a high value piece of work."],
+["Marksman","1","Permanent + 5 to BS"],
+["Master of Disguise","FelB","Entertain (Acting); Expert at disguising yourself"],
+["Master Orator","FelB","SL bonus equal to Master Orator Level to charm in public speaking"],
+["Master Tradesman","DexB","Reduce required SL of extended test of trade skill by talent level"],
+["Menacing","SB","When using Intimidate, gain SL bonus == Menacing levels"],
+["Mimic","IB","Entertain (Acting); Replicate any accent with an initiative test"],
+["Nimble Fingered","1","Permanent +5 to starting dex"],
+["Night Vision","IB","Perception (in low light); See clearly for 20y per Night vision level"],
+["Noble Blood","1","Any influenced by status Considered higher status than everyone else unless they have Noble Blood Talent"],
+["Nose for Trouble","IB","Test to spot troublemakers; Intuition test to spot those seeking to cause trouble. Opposed if hiding"],
+["Numismatics","IB","Evaluate worth of coins Judge value of coins without test and can spot forged coins easily"],
+["Old Salt","AgiB","Sail Ignore negative modifiers at sailing tests."],
+["Orientation","IB","Navigation You automatically know which way is north"],
+["Panhandle","FelB","Charm(begging) Charm test to be every half hour instead of full hour"],
+["Perfect Pitch","TB","Entertain/ language You can replicate notes perfectly and add performer(sing) to your career"],
+["Petty Magic","WPB","You may cast a number of petty magics"],
+["Pharmacist","IntB","Trade (Apothecary) Reverse any failed Apothecary tests if it means it will succeed"],
+["Pilot","IB","Reverse test to navigate any dangerous waters if it will succeed"],
+["Public Speaker","FelB","Influence a larger number of people when publicly speaking"],
+["Pure Soul","WPB","Gain extra Corruption Points equal to Pure Soul level before taking a corruption test."],
+["Rapid Reload","DexB","Add SL equal to Rapid Reload level to any test to reload."],
+["Reaction Strike","IB","Initiative tests When charged, may attempt a Challenging Initiative test to gain immediate free attack."],
+["Read/Write","1","You can read/write all of the languages you can speak."],
+["Relentless","AgiB","When using advantage to disengage, you may keep advantage equal to Relentless level."],
+["Resolute","SB","Add level of Resolute to Strength bonus on Charge."],
+["Resistance(Threat)","TB","Tests to resist threat You automatically pass the first test to resist specified threat."],
+["Reversal","WSB","Melee defending IF you win opposed test, you may take all opponents advantage instead of gaining +1."],
+["Riposte","AgiB","Melee defending If weapon has fast quality, you may cause damage when defending against attacks == to riposte level"],
+["Robust","TB","Reduce all incoming damage by extra +1, but still suffer minimum of 1 wound."],
+["Rough Rider","AgiB","Ride(horse) in combat You can direct your mount to take an action, not just a move."],
+["Rover","AgiB","Stealth in rural environment; By standers do not get passive perception to spot stealth in rural environment."],
+["Savvy","1","Permanent +5 bonus to starting intelligence."],
+["Savant (Lore)","IntB","Lore (chosen Lore) You automatically know a correct number of pieces of information about the relevant issue without Lore test."],
+["Scale Sheer surface","SB","Climb Ignore climb test penalties to climb sheer surfaces."],
+["Schemer","IntB","Intelligence tests GM will provide you with observations about current situation based on SL."],
+["Sea Legs","TB","Tests to resist sea sickness; Ignore penalties to tests to ignore sea sickness."],
+["Seasoned Traveller","IntB","Lore local Add lore Local to current career."],
+["Secret Identity","IntB","Entertain Acting You may use social status of disguised career."],
+["Second Sight","IB","Detect winds of magic You now have the sight."],
+["Shadow","AgiB","Any skill shadowing Use shadowing rules without doing combined test. Use perception or stealth."],
+["Sharp","1","Gain a permanent +5 to starting initiative."],
+["Sharpshooter","IB","Ignore size penalties to ranged tests."],
+["Shieldsman","AgiB","Parry test with shield When using Melee(Parry) with shield, you gain advantage equal to this talent if you lose."],
+["Sixth Sense","IB","Intuition You get a strange feeling when you are in danger. You may ignore surprise on Intuition Test."],
+["Slayer","1","On dmg SB is increased to opponent's TB if lower."],
+["Small","1","You are small."],
+["Sniper","4","Ranged No penalties for long range, 1/2 penalties for extreme range."],
+["Speed reader","IntB","Language Research and language Read and understand number of pages == SL + speed reader level."],
+["Sprinter","AgiB","Athletics (running); Movement counts as 1 higher when running."],
+["Strider (terrain)","AgiB","Athletics (to cross terrain); You ignore movement penalties in chosen terrain."],
+["Step Aside","AgiB","Dodge tests If you use Dodge to defend and win opposed test, you may move up to 2 yards without free attack penalty."],
+["Strike Mighty Blow","SB","Add Strike Mighty Blow level to Dmg."],
+["Strike to Stun","WSB","Melee (to stun tests); Ignore called shot penalty to use head hit location with weapon with pummel quality."],
+["Stone Soup","TB","Endurance to resist hunger; 1/2 food required to avoid penalties, test for starvation every 3 days."],
+["Strong Back","SB","Row and swim; Add levels in Strong Back to Opposed strength tests and carry additional encumbrance."],
+["Strong Legs","SB","Add Strong legs level to SL in Athletics tests in leaping."],
+["Strong Swimmer","SB","Swim; Add Strong Swimmer level to TB for holding breath."],
+["Strong Minded","WPB","Add Strong Minded level to maximum resolve pool."],
+["Stout Hearted","WPB","Cool Tests to remove broken May attempt cool test at the end of each of your turns as well as at the end of the round."],
+["Sturdy","SB","Strength test when lifting; Increase Encumbrance points by sturdy *2."],
+["Suave","1","Permanent +5 to starting Fellowship."],
+["Suffuse with Ulgu","1","Sthealth (Any); Can use Channelling (Ulgu) instead of Stealth skill."],
+["Super Numerate","IB","Evaluate, Gamble; You may use a simple calculator to represent what your PC is capable of mentally thinking."],
+["Supportive","FelB","Social test to influence superior Use either SL or units rolled to influence superior."],
+["Sure Shot","IB","You may ignore armour points == Sure shot level."],
+["Surgery","IntB","Heal (outside combat); Treat any critical wound marked as needing surgery. Extended Challenging Heal test to resolve internal healing issues."],
+["Tenacious","TB","Endurance; Double the length of time needed to perform successful Endurance tests."],
+["Tinker","TB","Trade to repair broken items All non magical trade skills count as basic when repairing broken items."],
+["Tower of Memories","IntB","Perfectly recall a sequence of facts as long as your intelligence without having to make a test."],
+["Trapper","","Set Trap Perception to spot traps/ set traps; Can make perception tests automatically without telling the GM of your intention."],
+["Trick Riding","AgiB","Dodge (test on horseback); Use perform and dodge skill whilst mounted. You can also move at start of round instead of your turn."],
+["Tunnel Rat","AgiB","Stealth tests underground By standers get no passive perception test on your stealth underground."],
+["Unshakable","WPB","Cool test to resist Black Powder Panic; You only need to take a cool test to resist broken Condition if you are wounded by black powder weapon."],
+["Very resilient","1","Permanent +5 to starting Toughness Characteristic."],
+["Very Strong","1","Permanent +5 to starting Strength Characteristic."],
+["War Leader","FelB","Command tests during war; All subordinates add your level in War leader to their SL in a Willpower Test."],
+["Warrior Born","1","Permanent +5 to starting Weapon Skill Characteristic."],
+["War Wizard","1","Cast a spell with Casting number of 5 or less without using your action."],
+["Waterman","AgiB","Sail test Ignore negatives to tests when on a barge."],
+["Wealthy","None","When earning you secure +1 GC per times wealthy is taken."],
+["Well Prepared","IB","You may pull the trapping required for any situation provided it has Encumbrance of 0."],
+["Witch!","WPB","Add Language (Magick) to any career, lower cost, can Lear spells spending Resilience."]
+];
+var mouseoverTalents =[];
+for (i in dataTalents) {
+ mouseoverTalents.push(dataTalents[i][0]+" (Max "+dataTalents[i][1]+") "+dataTalents[i][2]);
+}
+/*----------functions-----------*/
+function randomTalent(){
+     var TalentRoll = roll1d100();
+     var i = 0;
+     while (TalentRandom[i] < TalentRoll ) {
+         i += 1;
+     }
+     return TalentRandomName[i];
+}
+async function parseInicialTalent(TalentArray) {
+/* Get Initial Talents */
+     var x;
+     var ch;
+     var Talents;
+     for (x in TalentArray) {
+          Talents = TalentArray[x].split(" or ");
+          if (Talents.length > 1) {
+               if (document.getElementById("choiceCheck").checked == true)  {
+                    refreshCharacterDisplay ();
+			  const selectedIndex = await showCustomDialog(
+				"Select an option: " + TalentArray[x],
+				[Talents[0], Talents[1]]
+			  );
+			  ch = selectedIndex;
+               } else {
+                   ch = Math.floor(Math.random() * Talents.length );
+               }
+           TalentArray[x] = Talents [ch];
+      }
+          if (TalentArray[x] == "Random") {
+               TalentArray[x] = randomTalent();
+          }
+     }
+     return TalentArray;
+}
+function splitFateResilience ( extraPoints ) {
+    var x = Math.floor(Math.random() * (extraPoints + 1));
+    return [ x, extraPoints - x ]
+}
+async function selectCareerTalent(CareerTalents, CareerN, CareerName) {
+    let selectedTalent;
+    if (document.getElementById("choiceCheck").checked) {
+        console.log(`Showing dialog for ${CareerName} talents`);
+        const selectedIndex = await showSelectionDialog(
+            [...CareerTalents[CareerN], "Pick One at Random"],
+            "Select initial " + CareerName + " talent:"
+        );
+        if (selectedIndex === CareerTalents[CareerN].length) {
+            selectedTalent = CareerTalents[CareerN][Math.floor(Math.random() * CareerTalents[CareerN].length)];
+            console.log(`Randomly selected talent: ${selectedTalent}`);
+        } else {
+            selectedTalent = CareerTalents[CareerN][selectedIndex];
+            console.log(`User selected talent: ${selectedTalent}`);
+        }
+    } else {
+        selectedTalent = CareerTalents[CareerN][Math.floor(Math.random() * CareerTalents[CareerN].length)];
+        console.log(`Randomly selected talent: ${selectedTalent}`);
+    }
+    return selectedTalent;
+}
+function parseTalent2Stats (TalentArray) {
+    var x;
+    /* var StatsName = ["WS","BS","S","T","AG","I","DEX","INT","WP","FEL"]; */
+    var stat = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    for (x in TalentArray) {
+        switch (TalentArray[x]) {
+            case "Coolheaded":
+			stat[ST_WP] = 5;
+                break;
+		  case "Fleetfooted":
+                break;
+		  case "Hardy":
+                break;
+            case "Lightning Reflexes":
+			stat[ST_AG] = 5;
+                break;
+            case "Marksman":
+			stat[ST_BS] = 5;
+                break;
+            case "Nimble Fingered":
+			stat[ST_DEX] = 5;
+                break;
+            case "Savvy":
+			stat[ST_INT] = 5;
+                break;
+            case "Sharp":
+			stat[ST_I] = 5;
+                break;
+            case "Suave":
+			stat[ST_FEL] = 5;
+                break;
+            case "Very Resilient":
+			stat[ST_T] = 5;
+                break;
+            case "Very Strong":
+			stat[ST_S] = 5;
+                 break;
+            case "Warrior Born":
+			stat[ST_WS] = 5;
+                 break;
+            default:
+			break;
+        }
+    }
+    return stat;
+}
+async function parseTalentAny(TalentArray) {
+    for (let x = 0; x < TalentArray.length; x++) {
+        if (TalentArray[x].indexOf("(Any one)") > -1 ) {
+            for (let y = 0; y < AnyTalents.length; y++) {
+                // Ensure AnyTalents[y] is defined and has at least one element
+                if (AnyTalents[y] && AnyTalents[y].length > 0 && TalentArray[x].localeCompare(AnyTalents[y][0]) === 0) {
+                    if (document.getElementById("choiceCheck").checked) {
+                        // Create a list of talents to select from, removing duplicates
+                        let TalentsToSelect = [...new Set(AnyTalents[y].slice(1))]; // Remove duplicates
+                        // Show the dialog to select a talent
+                        const selectedIndex = await showSelectionDialog(
+                            [...TalentsToSelect, "Pick One at Random"],
+                            "Select specialization for: " + TalentArray[x]
+                        );
+                        // If the user selects "Pick One at Random", use the random selection
+                        if (selectedIndex === TalentsToSelect.length) {
+                            TalentArray[x] = AnyTalents[y][Math.floor(Math.random() * (AnyTalents[y].length - 1)) + 1];
+                        } else {
+                            TalentArray[x] = TalentsToSelect[selectedIndex];
+                            console.log("Selected: " + TalentArray[x]);
+                        }
+                    } else {
+                        // If choiceCheck is not checked, use the random selection
+                        TalentArray[x] = AnyTalents[y][Math.floor(Math.random() * (AnyTalents[y].length - 1)) + 1];
+                    }
+                }
+           }
+       }
+    }
+    return TalentArray;
+}
+async function parseSkillAny(SkillArray) {
+    for (let x = 0; x < SkillArray.length; x++) {
+        if (SkillArray[x].indexOf("(Any one)") > -1) {
+            console.log(`Processing skill: ${SkillArray[x]}`);
+            for (let y = 0; y < AnySkills.length; y++) {
+                console.log(`Checking AnySkills[${y}]:`, AnySkills[y]);
+                if (AnySkills[y] && AnySkills[y].length > 0 && SkillArray[x].localeCompare(AnySkills[y][0]) === 0) {
+                    console.log(`Match found for ${SkillArray[x]} in AnySkills[${y}]`);
+                    if (document.getElementById("choiceCheck").checked) {
+                        let SkillsToSelect = [...new Set(AnySkills[y].slice(1))];
+                        console.log(`Skills to select:`, SkillsToSelect);
+                        const selectedIndex = await showSelectionDialog(
+                            [...SkillsToSelect, "Pick One at Random"],
+                            "Select specialization for: " + SkillArray[x]
+                        );
+                        if (selectedIndex === SkillsToSelect.length) {
+                            SkillArray[x] = AnySkills[y][Math.floor(Math.random() * (AnySkills[y].length - 1)) + 1];
+                        } else {
+                            SkillArray[x] = SkillsToSelect[selectedIndex];
+                            console.log("Selected: " + SkillArray[x]);
+                        }
+                    } else {
+                        SkillArray[x] = AnySkills[y][Math.floor(Math.random() * (AnySkills[y].length - 1)) + 1];
+                    }
+                }
+           }
+       }
+    }
+    return SkillArray;
+}
+function addSkillsFromTalents(TalentArray, SkillNames, SkillValues, SkillCareer) {
+    for (let talent of TalentArray) {
+        console.log(`Processing talent: ${talent}`);
+        switch (true) {
+            case talent === "Artistic":
+                SkillNames.push("Art (Any one)");
+                SkillValues.push(0);
+                SkillCareer.push(1);
+                console.log(`Added skill: Art (Any one)`);
+                break;
+
+            case talent.split(" ")[0] === "Craftsman":
+                const specialty = talent.match(/\(([^)]+)\)/)?.[1];
+                if (specialty) {
+                    SkillNames.push(`Trade (${specialty})`);
+                    SkillValues.push(0);
+                    SkillCareer.push(1);
+                    console.log(`Added skill: Trade (${specialty})`);
+                }
+                break;
+
+            case talent === "Perfect Pitch":
+                SkillNames.push("Entertain (Sing)");
+                SkillValues.push(0);
+                SkillCareer.push(1);
+                console.log(`Added skill: Entertain (Sing)`);
+                break;
+
+            case talent === "Seasoned Traveller":
+                SkillNames.push("Lore (Local)");
+                SkillValues.push(0);
+                SkillCareer.push(1);
+                console.log(`Added skill: Lore (Local)`);
+                break;
+
+            case talent === "Witch!":
+                SkillNames.push("Language (Magick)");
+                SkillValues.push(0);
+                SkillCareer.push(1);
+                console.log(`Added skill: Language (Magick)`);
+                break;
+
+            default:
+                console.log(`No additional skill for talent: ${talent}`);
+                break;
+        }
+    }
+    return [SkillNames, SkillValues, SkillCareer]
+}
+function dedupeNameValue(NameArray, ValueArray, CareerArray = []) {
+    var i, j;
+    var toremove = [];
+    var hasCareerArray = CareerArray.length > 0; // Check if CareerArray is provided
+
+    // Identify duplicates
+    for (i = 0; i< (NameArray.length - 1); i += 1) {
+        for (j = i + 1; j < NameArray.length; j += 1) {
+            if (NameArray[i].localeCompare(NameArray[j]) === 0) { 
+                // Combine values
+                ValueArray[i] += ValueArray[j];
+
+                // Combine CareerArray if applicable
+                if (hasCareerArray) {
+                    CareerArray[i] = CareerArray[i] + CareerArray[j];
+                }
+
+                // Mark duplicate for removal
+                toremove.push(j);
+            }
+        }
+    }
+
+    // Remove duplicates
+    if (toremove.length > 0) {
+        // Sort indices in reverse to avoid shifting issues when splicing
+        toremove.sort((a, b) => b - a);
+        for (i of toremove) {
+            NameArray.splice(i, 1);
+            ValueArray.splice(i, 1);
+            if (hasCareerArray) {
+                CareerArray.splice(i, 1);
+            }
+        }
+        }
+
+    // Return arrays, including CareerArray if applicable
+    if (hasCareerArray) {
+        return [NameArray, ValueArray, CareerArray];
+    } else {
+        return [NameArray, ValueArray];
+    }
+}
+async function parseOrParenthesis(NameArray) {
+     var i;
+     var Pick;
+     var Base;
+     var ch;
+     for (i in NameArray) {
+        if (NameArray[i].indexOf(" or ") > -1) {
+            Base = (NameArray[i].replace(")","")).split(" (");
+            Pick = Base[1].split(" or ");
+            if (Pick.length > 1) {
+               if (document.getElementById("choiceCheck").checked == true)  {
+			     const selectedIndex = await showCustomDialog(
+					"Select an option: " + NameArray[i],
+					[Pick[0], Pick[1]]
+				   );
+                   ch = selectedIndex;
+               } else {
+                   ch = Math.floor(Math.random() * Pick.length );
+               }
+                NameArray[i] = Base[0] + " ("+ Pick [ ch ] + ")";
+            }
+        }
+     }
+     return NameArray;
+}
+function rollTrappings(TrapString) {
+   if (TrapString.indexOf("d10") > -1) {
+        var r1d10st = roll1d10() +" ";
+        var r2d10st = roll2d10() +" ";
+        var r3d10st = rollXd10(3) +" ";
+        var r4d10st = rollXd10(4) +" ";
+        var r5d10st = rollXd10(5) +" ";
+        TrapString = TrapString.replace(/1d10 /g, r1d10st);
+        TrapString = TrapString.replace(/2d10 /g, r2d10st);
+        TrapString = TrapString.replace(/3d10 /g, r3d10st);
+        /* No trapping with more than 4d10 stuff added a couple more to be sure*/
+        TrapString = TrapString.replace(/4d10 /g, r4d10st);
+        TrapString = TrapString.replace(/5d10 /g, r5d10st);
+        /* Some places uses d10 instead of 1d10*/
+        TrapString = TrapString.replace(/d10 /g, r1d10st );
+   }
+   return TrapString;
+}
+function rollMoney (SocialString) {
+    console.log("Generating money: "+SocialString);
+    var money = "";
+    var ParsedSocial = SocialString.split(" ");
+    switch (ParsedSocial[0]) {
+        case "Gold":
+            money =    ParsedSocial[1] + " Gold Crowns.";
+            break;
+        case "Silver":
+            money =   rollXd10(ParsedSocial[1]) + " Silver Shillings.";
+            break;
+        case "Brass":
+            if (ParsedSocial[1]>0) {
+            money =   rollXd10(ParsedSocial[1]*2) + " Brass Pennies.";
+            } else {
+                money =   "Not a single Brass Penny.";
+            }
+            break;
+        default:
+            money =  "Not a single coin.";
+    }
+    return money;
+}
+function getMouseOverText(Name, MOArray){
+    var NameBase = "";
+    console.log(Name.split(" (")); 
+    if (Name.split(" (").length == 0) {
+        NameBase = Name; 
+    } else {
+        NameBase = Name.split(" (")[0];
+    };
+    var x = 0;
+    var MOTxt = "";
+    /* The Mouse over should have a format XXXX (xxx) xxxxxxxxxx */
+    for (x = 0; x< (MOArray.length); x += 1) {
+        if ( NameBase.indexOf( MOArray[x].split(" (")[0] ) > -1) {
+            MOTxt = MOArray[x];
+        }
+    }
+    return MOTxt;
+}
+// Normalize talent names to match dataTalents keys
+function normalizeTalentName(talentName) {
+    return talentName.replace(/\s+/g, "").replace(/\(.*?\)/g, "").toLowerCase();
+}
+
+// Function to calculate stat bonus
+function calculateStatBonus(statValue) {
+    return Math.floor(statValue / 10);
+}
+
+// Function to get the max level for a given talent
+function getTalentMax(talentName) {
+    const normalizedTalentName = normalizeTalentName(talentName);
+    let maxLevel = 1; // Default max level if not found in dataTalents
+
+    for (const talent of dataTalents) {
+        const normalizedDataTalentName = normalizeTalentName(talent[0]);
+        if (normalizedTalentName === normalizedDataTalentName) {
+            if (!isNaN(talent[1])) {
+                // Fixed max level (e.g., "2")
+                maxLevel = parseInt(talent[1], 10);
+            } else {
+                // Stat-based max level (e.g., "BSB")
+                const statIndex = StatsBonusName.indexOf(talent[1]);
+                if (statIndex !== -1) {
+                    const totalStat =
+                        StatsR[statIndex] +
+                        StatsBase[statIndex] +
+                        StatsTalents[statIndex] +
+                        StatsAdvance[statIndex];
+                    maxLevel = calculateStatBonus(totalStat);
+                }
+            }
+            break;
+        }
+    }
+
+    return maxLevel;
+}
+
+function refreshCharacterDisplay () {
+    document.getElementById("nameB").innerHTML = NameTxt;
+    document.getElementById("speciesB").innerHTML = SpeciesTxt;
+    document.getElementById("careerB").innerHTML = CareerTxt;
+    document.getElementById("xpB").innerHTML = XpTxt;
+    document.getElementById("statsB").innerHTML = StatsTxt;
+    document.getElementById("skillsB").innerHTML = SkillTxt;
+    document.getElementById("fateresilienceB").innerHTML = FateResilienceTxt;
+    document.getElementById("talentsB").innerHTML = TalentTxt;
+    document.getElementById("trappingsB").innerHTML = TrappingTxt;
+}
+/*------ Start Rolling--------*/
+refreshCharacterDisplay ();
+var SpeciesRoll = roll1d100();
+var i;
+var x;
+if (SpeciesRoll <= 89) {
+     SpeciesN = 1;
+} else if (SpeciesRoll <= 90) {
+     SpeciesN = 6;
+} else if (SpeciesRoll <= 95) {
+     SpeciesN = 2;
+} else if (SpeciesRoll <= 98) {
+     SpeciesN = 3;
+} else if (SpeciesRoll <= 99) {
+     SpeciesN = 4;
+} else {
+     SpeciesN = 5;
+}
+if  (SpeciesChoice>0) {
+    SpeciesN = SpeciesChoice;
+} else {
+    xp += 20;
+}
+console.log(SpeciesN);
+SpeciesTxt = SpeciesAll[ SpeciesN - 1 ];
+console.log(SpeciesTxt);
+Sex = Math.floor(Math.random() * 2);
+var NamesSpecies = NamesAll[Sex][0]; /*Same names for all*/
+var SurnamesSpecies;
+SurnamesSpecies  = SurnamesAll[SpeciesN - 1 ];
+var HyphenatedSurname = "";
+if ((SpeciesN > 1) && (Math.random() > 0.8) ){
+	HyphenatedSurname = (SurnamesAll[0])[ Math.floor(Math.random() * (SurnamesAll[0]).length) ] + "-";
+};
+NameTxt = NamesSpecies[ Math.floor(Math.random() * NamesSpecies.length) ] + " " 
+    + HyphenatedSurname +  SurnamesSpecies[ Math.floor(Math.random() * SurnamesSpecies.length) ] ;
+SkillStart = SkillStartAll[ SpeciesN - 1 ];
+console.log(SkillStart);
+for (i = 0; i < 6; i += 1) {
+    const skillPoints = i < 3 ? 5 : 3; // Determine skill points based on `i`
+    let selectedIndex;
+    if (document.getElementById("choiceCheck").checked == true) {
+      // Show the skill dialog and wait for user input
+      selectedIndex = await showSelectionDialog([...SkillStart,"Pick One at Random"], "Select "+ SpeciesTxt+" skill with +"+ skillPoints +" :");
+      // Add the selected skill to the character's skill list
+      if (selectedIndex === SkillStart.length) {
+        selectedIndex = Math.floor(Math.random() * SkillStart.length);
+      }
+     } else {
+      // Randomly select a skill if manual selection is not enabled
+      selectedIndex = Math.floor(Math.random() * SkillStart.length);
+     }
+    SkillNames.push(SkillStart.splice(selectedIndex, 1)[0]);
+    SkillValues.push ( skillPoints );
+    SkillCareer.push ( 0 );
+}
+console.log(SkillStart);
+console.log(SkillNames);
+TalentNames = TalentStartAll [ SpeciesN - 1 ];
+TalentNames = await parseInicialTalent (TalentNames);
+TalentValues = Array(TalentNames.length).fill(1);
+TalentCareer = Array(TalentNames.length).fill(0);
+var CareerSpecies = CareerSpeciesAll [ SpeciesN - 1 ];
+var CareerRoll = roll1d100();
+i = 0;
+while (CareerSpecies[i] < CareerRoll ) {
+     i += 1;
+}
+CareerN = i;
+CareerName = CareerAll[CareerN];
+/*If we agree keep the 1st career so no changes just less xp*/
+if ((document.getElementById("careerCheck").checked == true) ) {
+    refreshCharacterDisplay ();
+   const keepCurrentCareer = await showCustomDialog(`Keep career as ${SpeciesTxt} ${CareerName}?`);
+   if (keepCurrentCareer) {
+        var newCareerRoll = [CareerRoll,0,0];
+        var newCareerN = [CareerN,0,0];
+        var newCareerName = [CareerName,"",""];
+
+      if (keepCurrentCareer) {
+            const newCareerOptions = [CareerName];
+            const newCareerRolls = [CareerRoll];
+            while (newCareerOptions.length < 3) {
+                let newRoll = roll1d100();
+                let newIndex = 0;
+                while (CareerSpecies[newIndex] < newRoll) newIndex++;
+                let newCareer = CareerAll[newIndex];
+                if (!newCareerOptions.includes(newCareer)) {
+                    newCareerOptions.push(newCareer);
+                    newCareerRolls.push(newRoll);
+                }
+            }
+            const selectedIndex = await showSelectionDialog([...newCareerOptions, "Pick from full list"], "Select career:");
+            if (selectedIndex === newCareerOptions.length) {
+                // Full career list selection
+                const fullCareerIndex = await showSelectionDialog(CareerAll, "Select career:");
+                CareerN = fullCareerIndex;
+                CareerName = CareerAll[CareerN];
+                xp += 0; // No XP bonus
+            } else {
+                CareerN = CareerSpecies.findIndex((val) => val >= newCareerRolls[selectedIndex]);
+                CareerName = newCareerOptions[selectedIndex];
+                xp += 25; // Smaller XP bonus
+        } 
+    }  else  {
+        xp += 50;
+    }} else {
+      xp += 50;}
+} else {
+        xp += 50;
+}
+ClassN = Math.floor(CareerN / 8);
+StatsCareer[ CareerAdvance[CareerN][0] ] = 1;
+StatsCareer[ CareerAdvance[CareerN][1] ] = 1;
+StatsCareer[ CareerAdvance[CareerN][2] ] = 1;
+StatsBase = StatsAll [ 0 ];
+StatsExtraBase = StatsExtraAll [ 0 ];
+for (i in StatsR) {
+     StatsR[i] = roll2d10();
+}
+if ((document.getElementById("reRollCheck").checked == true) ) {
+    refreshCharacterDisplay ();
+    const keepCurrentStats = await showCustomDialog("Keep current stats: " + StatsR.toString());
+    if (keepCurrentStats) {
+        for (i in StatsR) {
+            StatsR[i] = roll2d10();
+        }
+        await showCustomDialog("New stats: " + StatsR.toString(), ["OK"]);
+        xp += 25;
+    }  else  {
+        xp += 50;
+    }
+} else {
+        xp += 50;
+}
+/* Advance stats*/
+var sta = CareerAdvance[CareerN];
+var randadvChoice = [ [5,0,0],
+[4,1,0],
+[3,1,1],
+[3,2,0],
+[2,2,1] ];
+var randAdv = randadvChoice[ Math.floor(Math.random() * 5) ];
+for (i = 0; i < 3; i += 1) {
+    var statrand = Math.floor(Math.random() * sta.length);
+    StatsAdvance [  sta.splice (statrand , 1) ] = randAdv[i];
+}
+/* Split the extra fate/resilience */
+var FateResilienceRoll = splitFateResilience(StatsExtraBase[4]);
+StatsExtraBase[2] += FateResilienceRoll[0];
+StatsExtraBase[3] += FateResilienceRoll[1];
+var ski = CareerSkill[CareerN];
+var randskiChoice =  [
+[5,5,5,5,5,5,5,5],
+[5,5,5,5,5,5,5,5],
+[5,5,5,5,5,5,5,5],
+[7,6,5,5,5,5,4,3],
+[6,6,6,5,5,4,4,4],
+[8,7,6,5,5,4,3,2],
+[8,8,7,7,4,2,2,2],
+[9,8,5,5,5,5,2,1],
+[10,8,7,5,5,3,2,0],   
+[10,9,8,7,3,2,1,0],
+[10,10,10,6,1,1,1,1],
+[10,10,10,10,0,0,0,0]
+];
+var randSki = randskiChoice[ Math.floor(Math.random() * randskiChoice.length ) ];
+for (i = 0; i < 8; i += 1) {
+     var skirand = Math.floor(Math.random() * ski.length);
+     SkillNames.push ( ski.splice (skirand , 1)[0] );
+     var skvar = randSki[i]; 
+     SkillValues.push ( skvar );
+     SkillCareer.push ( 1 );
+}
+console.log(SkillNames);
+TalentNames.push( await selectCareerTalent(CareerTalents, CareerN, CareerName) );
+TalentValues.push(1);
+TalentCareer.push(1);
+StatsTalents = parseTalent2Stats(TalentNames);
+var ExtraSkills = addSkillsFromTalents(TalentNames, SkillNames, SkillValues, SkillCareer)
+SkillNames = ExtraSkills[0];
+SkillValues = ExtraSkills[1];
+SkillCareer = ExtraSkills[2];
+TalentNames = await parseTalentAny(TalentNames);
+SkillNames = await parseOrParenthesis(SkillNames);
+SkillNames = SkillNames.slice(0)
+console.log(SkillNames);
+SkillNames = await parseSkillAny(SkillNames);
+ console.log(SkillNames);
+var TalentNamesValue = dedupeNameValue(TalentNames, TalentValues, TalentCareer );
+TalentNames = TalentNamesValue[0].slice(0);
+TalentValues = TalentNamesValue[1].slice(0);
+TalentCareer = TalentNamesValue[2].slice(0);
+/* After getting talents we check if we are an human noble or have nobleblood*/
+/*SurnameSuffixHumanNoble*/
+/*
+if ((SpeciesN == 1) && ((CareerName == "Noble") || (TalentNames.includes("Noble Blood")))) {
+    NameTxt = NameTxt.replace(" "," von ") + SurnameSuffixHumanNoble[Math.floor(Math.random() * SurnameSuffixHumanNoble.length)];
+};
+*/
+/*Dooming*/
+if (TalentNames.includes("Doomed")) {
+ DoomingTxt = DoomingsAll[Math.floor(Math.random() * DoomingsAll.length)];
+};
+
+var SkillNamesValue = dedupeNameValue(SkillNames, SkillValues, SkillCareer );
+SkillNames = SkillNamesValue[0].slice(0);
+SkillValues = SkillNamesValue[1].slice(0);
+SkillCareer = SkillNamesValue[2].slice(0);
+
+console.log(SkillNames);
+var Trapping = rollTrappings(TrappingClass[ClassN] + ", " + TrappingCareer[CareerN]);
+var Money = rollMoney(CareerSocial [ CareerN ]);
+/* Generate the final strings */
+CareerTxt ="(" + ClassAll [ ClassN ] + ") " + CareerName + ", Social Level "+ CareerSocial [ CareerN ] ;
+XpTxt = "<b>XP:</b> " + (xp - xpSpend) + "/" + xp;
+for (i = 0; i < SkillNames.length ; i += 1) {
+    var MouseOverTxt = getMouseOverText (SkillNames[i],mouseoverSkills);
+    var openITag = SkillCareer[i] > 0 ? "<i>" : "";
+    var closeITag = SkillCareer[i] > 0 ? "</i>" : "";
+
+    SkillTxt += "<span title = '" + MouseOverTxt + "'>" + openITag + SkillNames[i] + closeITag + ":" + SkillValues[i] + "</span>; ";
+}
+for (i = 0; i < TalentNames.length ; i += 1) {
+    var MouseOverTxt = getMouseOverText (TalentNames[i],mouseoverTalents);
+     TalentTxt += "<span title = '" + MouseOverTxt + "'>" + TalentNames[i] + ":" + TalentValues[i] + "/" + getTalentMax(TalentNames[i]) + "</span>; ";
+}
+if (DoomingTxt != "") {
+ TalentTxt += "<br><B>Dooming:</B> "+ DoomingTxt;
+
+};
+StatsTxt = "<table><tr>";
+for (i in StatsName) {
+    StatsTxt += "<th><B>" + StatsName[i] +"</B></th>";
+}
+StatsTxt += "</tr><tr style='text-align: right'>";
+for (i in StatsAdvance) {
+     var star = "";
+     if (StatsTalents[i]) { star = "*";}
+    StatsTxt += "<td>" + ( StatsR[i] + StatsBase[i] + StatsTalents[i]  ) + star + "</td>";
+}
+StatsTxt += "</tr><tr style='text-align: right'>";
+for (i in StatsAdvance) {
+     StatsTxt += "<td>" +  ( StatsAdvance[i] ) + "</td>";
+}
+StatsTxt += "</tr><tr style='text-align: right'>";
+for (i in StatsAdvance) {
+    StatsTxt += "<td>" + ( StatsR[i] + StatsBase[i] + StatsTalents[i] + StatsAdvance[i] ) + "</td>";
+}
+StatsTxt += "</tr></table>";
+FateResilienceTxt = "Fate: "+ StatsExtraBase[2] + " Resilience: " + StatsExtraBase[3];
+TrappingTxt = Trapping + ".<br>" + Money;
+/* Put all shit in the screen */
+refreshCharacterDisplay ();
+return 1;
+}
+//]]>
+</script>
+</head>
+<body>
+<h1>Generate character</h1>
+<h2>WFRP 4th Edition Random Halfling character</h2>
+<button type="button" onclick="generateChar(-1)">Generate Now!</button>
+<button type="button" onclick="generateChar(1)">Generate Halfling (Core Book)!</button><br>
+<button type="button" onclick="generateChar(2)">Generate Clan Ashfield Halfling!</button>
+<button type="button" onclick="generateChar(3)">Generate Clan Brambledom Halfling!</button>
+<button type="button" onclick="generateChar(4)">Generate Clan Brandysnap Halfling!</button>
+<button type="button" onclick="generateChar(5)">Generate Clan Hayfoot Halfling!</button>
+<button type="button" onclick="generateChar(6)">Generate Clan Hollyfoot Halfling!</button>
+<button type="button" onclick="generateChar(7)">Generate Clan Hayfoot-Hollyfoot Halfling!</button>
+<button type="button" onclick="generateChar(8)">Generate Clan Lostpockets Halfling!</button>
+<button type="button" onclick="generateChar(9)">Generate Clan Lowhaven Halfling!</button>
+<button type="button" onclick="generateChar(10)">Generate Clan Rumster Halfling!</button>
+<button type="button" onclick="generateChar(11)">Generate Clan Skelfsider Halfling!</button>
+<button type="button" onclick="generateChar(12)">Generate Clan Thorncobble Halfling!</button>
+<button type="button" onclick="generateChar(13)">Generate Clan Tumbleberry Halfling!</button>
+<br>
+
+<table><tr><td>
+Ask Reroll Stats: </td><td><input type="checkbox" id="reRollCheck">
+</td></tr><tr><td>
+Ask Reroll Career: </td><td><input type="checkbox" id="careerCheck">
+</td></tr><tr><td>
+Ask Simple Choices:</td><td><input type="checkbox" id="choiceCheck">
+</td></tr><tr><td>
+Randomly Expend XP:</td><td><input type="checkbox" id="randomExpendXP">
+</td></tr><tr><td>
+Extra XP </td><td> <input type="number" id="extraXPInput" min="0" placeholder="Extra XP">
+</td></tr>
+</table>
+<div id="characterPrint">
+<table><tr><td>
+<h3><span title='Your name you can change it later'>Name</span></h3>
+<p id="nameB">.</p>
+</td><td>
+<h3><span title='One of the playable species of the Old World'>Species</span></h3>
+<p id="speciesB">.</p>
+</td></tr>
+</table>
+<table><tr><td>
+<h3><span title='Your Class determines your general place in society'>Class</span> and <span title='Your Career determines your current job and Status'>Career</span></h3>
+<p id="careerB">.</p>
+</td><td>
+<h3>XP</h3>
+<p id="xpB">0/0</p>
+</td></tr>
+</table>
+<h3>Characteristics</h3>
+<p id="statsB"></p>
+<h3><span title="Your Fate represents your destiny, and is tied with your Fortune">Fate</span> and <span title="Your Resilience represnts your inner strength, and is reltate with your Resolve">Resilience</span></h3>
+<p id="fateresilienceB"></p>
+<h3>Skills</h3>
+<p id="skillsB"></p>
+<h3>Talents</h3>
+<p id="talentsB"></p>
+<h3>Trappings</h3>
+<p id="trappingsB"></p>
+</div>
+<input type="button" value="Create PDF" 
+  id="btPrint" onclick ="createPDF()" />
+<div id="customDialog" class="custom-dialog">
+  <div class="custom-dialog-content">
+    <p id="customDialogText"></p>
+    <div id="customDialogButtons" class="custom-dialog-buttons"></div>
+  </div>
+</div>
+<div id="selectionDialog" class="custom-dialog" style="display: none;">
+  <div class="custom-dialog-content">
+    <p id="selectionDialogTitle">Select an option:</p>
+    <form id="selectionForm">
+      <!-- Radio buttons will be added here using JavaScript -->
+    </form>
+    <button id="selectionDialogSubmit">Submit</button>
+  </div>
+</div>
+<p id="Links">
+This generator gives you a random starting Halfling based on the rules for their clans in the Reiklands from <a href="https://www.drivethrurpg.com/product/303928/WFRP-Archives-of-the-Empire?affiliate_id=91369">Archives of the Empire Volume I, Pages 22-32</a>.<br>
+To generate simpler NPCS like the ones you might meet in a <a href="https://pacomiscelaneousstuff.blogspot.com/2020/03/wfrp-inn-generator.html">tavern</a> check my <a href="https://pacomiscelaneousstuff.blogspot.com/2019/08/npc-generator.html">NPC Generator</a> to create Merchants, Scholar, Soldiers and similar citizens that could be found in an <a href="https://pacomiscelaneousstuff.blogspot.com/2020/03/wfrp-inn-generator.html">inn</a> or belonging to a <a href="https://pacomiscelaneousstuff.blogspot.com/2020/09/wfrp-4th-edition-npc-cults.html">cult</a>.<br>
+If you need a more dangerous set you might check my <a href="https://pacomiscelaneousstuff.blogspot.com/2019/08/monster-generator.html">Monster Generator</a> to create Mutants, Orcs, Goblins or worse.<br>
+You can also create the loot carried by them using my <a href="https://pacomiscelaneousstuff.blogspot.com/2019/08/treasure-generator.html">Random Treasure Generator</a>.<br>
+To have a more detailed Old Worlders you can use the list of my <a href="https://pacomiscelaneousstuff.blogspot.com/2018/09/generic-npc-stats-for-4th-edition.html">Generic NPCs stats for 4th edition</a>.<br>
+</p>
+<div class="separator" style="clear: both;"><a href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi7EUtUgx5PCluxv_CCxIslsGV5R3DDuegNlXlunSvvOV3Wa4ZxqLdCGDhmpsWz6P-c6u-f7D3SZINbORxfIf30M2rgd-Maz0HeHi1zz7hdFy_GZtisbjoPNUgIkwoOJNXH4vTcUM5zgzAU/s1080/07_ENCHANTED.jpg" style="display: block; padding: 1em 0; text-align: center; "><img alt="" border="0" width="200" data-original-height="907" data-original-width="1080" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi7EUtUgx5PCluxv_CCxIslsGV5R3DDuegNlXlunSvvOV3Wa4ZxqLdCGDhmpsWz6P-c6u-f7D3SZINbORxfIf30M2rgd-Maz0HeHi1zz7hdFy_GZtisbjoPNUgIkwoOJNXH4vTcUM5zgzAU/s200/07_ENCHANTED.jpg"/></a></div>
+<p id="Acknowledgements"><a href="https://github.com/fmunoz-geo/WebGenWFRP4Ed">Code: Francisco Mu&ntilde;oz 2018-2021.</a>
+<br>Skill advance selection and misc data: Jay Alexander Hafner 2018
+<br>Skill description: Ryan Graham 2018
+<br>Core character creation: <a href="https://www.drivethrurpg.com/product/248284/Warhammer-Fantasy-Roleplay-Fourth-Edition-Rulebook?affiliate_id=91369">Warhammer Fantasy Roleplay Fourth Edition Rulebook</a>
+<br>Gnomes' creation rules: <a href="https://www.drivethrurpg.com/product/273300/Warhammer-Fantasy-Roleplay-Fourth-Edition-Rough-Nights-and-Hard-Days?affiliate_id=91369">Warhammer Fantasy Roleplay Fourth Edition Rough Nights and Hard Days</a>.
+<br>Halfling Clans creation rules: <a href="https://www.drivethrurpg.com/product/303928/WFRP-Archives-of-the-Empire?affiliate_id=91369">Warhammer Fantasy Roleplay Fourth Edition Archives of the Empire Volume I</a>.<br>
+<br>Dooming List: <a href="http://www.bindslet.dk/rpg/wfrpdoom.html">http://www.bindslet.dk/rpg/wfrpdoom.html</a>
+<br>Dooming List: <a href="https://www.drivethrurpg.com/product/63678/Warhammer-Fantasy-Roleplay-2nd-Edition-Tome-of-Salvation?affiliate_id=91369">WFRP 2nd Edition - Tome of Salvation</a>
+<br>Game: Games Worshop and Cubicle 7</p>
+</body>
+</html>
