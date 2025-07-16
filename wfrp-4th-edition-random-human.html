@@ -9,6 +9,58 @@ th {
     background-color: black;
     color: white;
 }
+.custom-dialog {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.custom-dialog-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 80%; /* Limits the height to 80% of the screen */
+  width: 50%; /* Adjust width as needed */
+  overflow-y: auto; /* Adds a scroll bar if content exceeds max-height */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.custom-dialog-buttons {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 10px;
+}
+
+.custom-dialog-buttons button {
+  background-color: #4caf50;
+  border: none;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  width: 100px;
+  height: 30px;
+  line-height: 30px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.custom-dialog-buttons button:hover {
+  background-color: #45a049;
+}
 </style>
 <head><title>WFRP 4th Edition Human Random character</title>
 <script>
@@ -17,18 +69,12 @@ function roll1d10(){
 "use strict";
  return Math.floor(Math.random() * 10) + 1;
 }
+function rollXd10(x) {
+  return Array.from({ length: x }, roll1d10).reduce((a, b) => a + b);
+}
 function roll2d10(){
 "use strict";
- return Math.floor(Math.random() * 10) + Math.floor(Math.random() * 10) + 2;
-}
-function rollXd10(x){
-"use strict";
-    var j;
-    var roll= 0;
-    for (j = 0; j < x; j += 1) {
-        roll += roll1d10();
-    }
-    return roll;
+ return rollXd10(2);
 }
 function roll1d100(){
 "use strict";
@@ -47,10 +93,8 @@ function createPDF () {
 	style = style + "table, th, td {border: solid 1px #DDD; border-collapse: collapse;";
 	style = style + "padding: 2px 3px;text-align: center;}";
 	style = style + "</style>";
-
 	// CREATE A WINDOW OBJECT.
 	var win = window.  open ('', '', 'height=700,width=700');
-
 	win.document.write('<html><head>');
 	win.document.write('<title>Profile</title>');  // <title> FOR PDF HEADER.
 	win.document.write(style);  // ADD STYLE INSIDE THE HEAD TAG.
@@ -58,17 +102,97 @@ function createPDF () {
 	win.document.write('<body>');
 	win.document.write(sTable);  // THE TABLE CONTENTS INSIDE THE BODY TAG.
 	win.document.write('</body></html>');
-
 	win.document.  close ();  // CLOSE THE CURRENT WINDOW.
-
 	win.  print ();  // PRINT THE CONTENTS.
 }
+async function showCustomDialog(message, buttonLabels = ['Yes', 'No']) {
+  return new Promise((resolve) => {
+    const customDialog = document.getElementById('customDialog');
+    const customDialogText = document.getElementById('customDialogText');
+    const customDialogButtons = document.getElementById('customDialogButtons');
 
-function generateChar(SpeciesChoice) {
+    customDialogText.textContent = message;
+
+    // Clear existing buttons and add new ones
+    customDialogButtons.innerHTML = '';
+    buttonLabels.forEach((label, index) => {
+      const button = document.createElement('button');
+      button.textContent = label;
+      button.onclick = () => {
+        customDialog.style.display = 'none';
+        resolve(index);
+      };
+      customDialogButtons.appendChild(button);
+    });
+    customDialog.style.display = 'block';
+  });
+}
+async function showSelectionDialog(options, title) {
+  return new Promise((resolve) => {
+    const dialog = document.getElementById('selectionDialog');
+    const form = document.getElementById('selectionForm');
+    const submitButton = document.getElementById('selectionDialogSubmit');
+    const titleElement = document.getElementById('selectionDialogTitle');
+
+    // Set the dialog title dynamically
+    titleElement.textContent = title;
+
+    // Clear the form and add radio buttons for the given options
+    form.innerHTML = '';
+    options.forEach((option, index) => {
+      const radioButton = document.createElement('input');
+      radioButton.type = 'radio';
+      radioButton.name = 'selection';
+      radioButton.value = index;
+      radioButton.id = `selection${index}`;
+
+      const label = document.createElement('label');
+      label.htmlFor = `selection${index}`;
+      label.textContent = option;
+
+      form.appendChild(radioButton);
+      form.appendChild(label);
+      form.appendChild(document.createElement('br'));
+    });
+
+    // Select the first radio button by default
+    if (form.elements.length > 0) {
+      form.elements[0].checked = true;
+    }
+
+    submitButton.onclick = () => {
+      dialog.style.display = 'none';
+      const selectedIndex = parseInt(form.elements['selection'].value, 10);
+      resolve(selectedIndex);
+    };
+
+    dialog.style.display = 'block';
+  });
+}
+// ["WS","BS","S","T","I","AG","DEX","INT","WP","FEL","M","W"];
+const StatsName = ["WS","BS","S","T","Ag","I","Dex","Int","WP","Fel"];
+const StatsBonusName = ["WSB","BSB","SB","TB","AgB","IB","DexB","IntB","WPB","FelB"];
+
+const ST_WS = 0;
+const ST_BS = 1;
+const ST_S = 2;
+const ST_T = 3;
+const ST_I = 4;
+const ST_AG = 5;
+const ST_DEX = 6;
+const ST_INT = 7;
+const ST_WP = 8;
+const ST_FEL = 9;
+const ST_M = 10;
+const ST_W = 11;
+
+async function generateChar(SpeciesChoice) {
 "use strict";
 var Name = "";
 var NameTxt = "";
+var extraXP = parseInt(document.getElementById("extraXPInput").value) || 0; // Get extra XP value, default to 0 if empty or invalid
 var xp = 0;
+xp += extraXP; // Add the extra XP to the total XP
 var xpSpend = 0;
 var XpTxt = "";
 var SpeciesTxt ="";
@@ -360,6 +484,7 @@ var SkillTxt ="";
 var SkillStart;
 var SkillNames = [];
 var SkillValues = [];
+var SkillCareer = [];
 var TalentStartReiklander = ["Doomed","Savvy or Suave","Random","Random","Random" ];
 var TalentStartMiddenheimer = ["Doomed","Etiquette (Any one) or Strong Back","Random","Random","Random" ];
 var TalentStartMiddenlander = ["Doomed or Random","Menacing or Warrior Born","Random","Random","Random" ];
@@ -370,6 +495,7 @@ var TalentStartAll = [TalentStartReiklander,
 var TalentTxt ="";
 var TalentNames = [];
 var TalentValues = [];
+var TalentCareer = [];
 var TalentRandom = [3, 6, 9, 12, 15, 18, 21, 24, 28, 31, 34, 38, 41, 44, 47, 50, 52, 55, 58, 62, 65, 68, 71, 74, 78, 81, 84, 87, 91, 94, 97, 100];
 var TalentRandomName = ["Acute Sense (Any one)",
 "Ambidextrous",
@@ -1144,7 +1270,7 @@ function randomTalent(){
      }
      return TalentRandomName[i];
 }
-function parseInicialTalent(TalentArray) {
+async function parseInicialTalent(TalentArray) {
 /* Get Initial Talents */
      var x;
      var ch;
@@ -1154,7 +1280,11 @@ function parseInicialTalent(TalentArray) {
           if (Talents.length > 1) {
                if (document.getElementById("choiceCheck").checked == true)  {
                     refreshCharacterDisplay ();
-                   ch = (confirm (TalentArray[x])?0:1);
+			  const selectedIndex = await showCustomDialog(
+				"Select an option: " + TalentArray[x],
+				[Talents[0], Talents[1]]
+			  );
+			  ch = selectedIndex;
                } else {
                    ch = Math.floor(Math.random() * Talents.length );
                }
@@ -1167,8 +1297,29 @@ function parseInicialTalent(TalentArray) {
      return TalentArray;
 }
 function splitFateResilience ( extraPoints ) {
-    var x = Math.floor(Math.random() * extraPoints ) +1;
+    var x = Math.floor(Math.random() * (extraPoints + 1));
     return [ x, extraPoints - x ]
+}
+async function selectCareerTalent(CareerTalents, CareerN, CareerName) {
+    let selectedTalent;
+    if (document.getElementById("choiceCheck").checked) {
+        console.log(`Showing dialog for ${CareerName} talents`);
+        const selectedIndex = await showSelectionDialog(
+            [...CareerTalents[CareerN], "Pick One at Random"],
+            "Select initial " + CareerName + " talent:"
+        );
+        if (selectedIndex === CareerTalents[CareerN].length) {
+            selectedTalent = CareerTalents[CareerN][Math.floor(Math.random() * CareerTalents[CareerN].length)];
+            console.log(`Randomly selected talent: ${selectedTalent}`);
+        } else {
+            selectedTalent = CareerTalents[CareerN][selectedIndex];
+            console.log(`User selected talent: ${selectedTalent}`);
+        }
+    } else {
+        selectedTalent = CareerTalents[CareerN][Math.floor(Math.random() * CareerTalents[CareerN].length)];
+        console.log(`Randomly selected talent: ${selectedTalent}`);
+    }
+    return selectedTalent;
 }
 function parseTalent2Stats (TalentArray) {
     var x;
@@ -1177,94 +1328,199 @@ function parseTalent2Stats (TalentArray) {
     for (x in TalentArray) {
         switch (TalentArray[x]) {
             case "Coolheaded":
-                stat[8] = 5;
+			stat[ST_WP] = 5;
                 break;
-            case "Fleetfooted": /*Movement*/
+		  case "Fleetfooted":
                 break;
-            case "Hardy": /*Wounds*/
+		  case "Hardy":
                 break;
-            case "Lightning Reflexes":
-                stat[4] = 5;
+          case "Lightning Reflexes":
+			stat[ST_AG] = 5;
                 break;
-            case "Marksman":
-                stat[1] = 5;
+          case "Marksman":
+			stat[ST_BS] = 5;
                 break;
-            case "Nimble Fingered":
-                stat[6] = 5;
+          case "Nimble Fingered":
+			stat[ST_DEX] = 5;
                 break;
             case "Savvy":
-                stat[7] = 5;
+			stat[ST_INT] = 5;
                 break;
             case "Sharp":
-                stat[5] = 5;
+			stat[ST_I] = 5;
                 break;
             case "Suave":
-                stat[9] = 5;
+			stat[ST_FEL] = 5;
                 break;
             case "Very Resilient":
-                stat[3] = 5;
+			stat[ST_T] = 5;
                 break;
             case "Very Strong":
-                stat[2] = 5;
+			stat[ST_S] = 5;
                  break;
             case "Warrior Born":
-                stat[0] = 5;
+			stat[ST_WS] = 5;
                  break;
             default:
+			break;
         }
     }
     return stat;
 }
-function parseTalentAny (TalentArray) {
-    var x;
-    var y;
-    for (x in TalentArray) {
+async function parseTalentAny(TalentArray) {
+    for (let x = 0; x < TalentArray.length; x++) {
         if (TalentArray[x].indexOf("(Any one)") > -1 ) {
-           for (y in AnyTalents) {
-               if ( (TalentArray[x]).localeCompare(AnyTalents[y][0]) == 0  ) {
-                TalentArray[x] = AnyTalents[y][ Math.floor( Math.random() * ( AnyTalents[y].length - 1 ) + 1 ) ];
+            for (let y = 0; y < AnyTalents.length; y++) {
+                // Ensure AnyTalents[y] is defined and has at least one element
+                if (AnyTalents[y] && AnyTalents[y].length > 0 && TalentArray[x].localeCompare(AnyTalents[y][0]) === 0) {
+                    if (document.getElementById("choiceCheck").checked) {
+                        // Create a list of talents to select from, removing duplicates
+                        let TalentsToSelect = [...new Set(AnyTalents[y].slice(1))]; // Remove duplicates
+                        // Show the dialog to select a talent
+                        const selectedIndex = await showSelectionDialog(
+                            [...TalentsToSelect, "Pick One at Random"],
+                            "Select specialization for: " + TalentArray[x]
+                        );
+                        // If the user selects "Pick One at Random", use the random selection
+                        if (selectedIndex === TalentsToSelect.length) {
+                            TalentArray[x] = AnyTalents[y][Math.floor(Math.random() * (AnyTalents[y].length - 1)) + 1];
+                        } else {
+                            TalentArray[x] = TalentsToSelect[selectedIndex];
+                            console.log("Selected: " + TalentArray[x]);
+                        }
+                    } else {
+                        // If choiceCheck is not checked, use the random selection
+                        TalentArray[x] = AnyTalents[y][Math.floor(Math.random() * (AnyTalents[y].length - 1)) + 1];
+                    }
                 }
            }
        }
     }
     return TalentArray;
 }
-function parseSkillAny (SkillArray) { 
-    var x;
-    var y;
-    for (x in SkillArray) {
+async function parseSkillAny(SkillArray) {
+    for (let x = 0; x < SkillArray.length; x++) {
         if (SkillArray[x].indexOf("(Any one)") > -1) {
-           for (y in AnySkills) {
-               if ((SkillArray[x]).localeCompare(AnySkills[y][0]) == 0 ) {
-                SkillArray[x] = AnySkills[y][ Math.floor( Math.random() * ( AnySkills[y].length - 1 ) + 1 ) ];
+            console.log(`Processing skill: ${SkillArray[x]}`);
+            for (let y = 0; y < AnySkills.length; y++) {
+                console.log(`Checking AnySkills[${y}]:`, AnySkills[y]);
+                if (AnySkills[y] && AnySkills[y].length > 0 && SkillArray[x].localeCompare(AnySkills[y][0]) === 0) {
+                    console.log(`Match found for ${SkillArray[x]} in AnySkills[${y}]`);
+                    if (document.getElementById("choiceCheck").checked) {
+                        let SkillsToSelect = [...new Set(AnySkills[y].slice(1))];
+                        console.log(`Skills to select:`, SkillsToSelect);
+                        const selectedIndex = await showSelectionDialog(
+                            [...SkillsToSelect, "Pick One at Random"],
+                            "Select specialization for: " + SkillArray[x]
+                        );
+                        if (selectedIndex === SkillsToSelect.length) {
+                            SkillArray[x] = AnySkills[y][Math.floor(Math.random() * (AnySkills[y].length - 1)) + 1];
+                        } else {
+                            SkillArray[x] = SkillsToSelect[selectedIndex];
+                            console.log("Selected: " + SkillArray[x]);
+                        }
+                    } else {
+                        SkillArray[x] = AnySkills[y][Math.floor(Math.random() * (AnySkills[y].length - 1)) + 1];
+                    }
                 }
            }
        }
     }
     return SkillArray;
 }
-function dedupeNameValue(NameArray,ValueArray) {
-    var i;
-    var j;
+function addSkillsFromTalents(TalentArray, SkillNames, SkillValues, SkillCareer) {
+    for (let talent of TalentArray) {
+        console.log(`Processing talent: ${talent}`);
+        switch (true) {
+            case talent === "Artistic":
+                SkillNames.push("Art (Any one)");
+                SkillValues.push(0);
+                SkillCareer.push(1);
+                console.log(`Added skill: Art (Any one)`);
+                break;
+
+            case talent.split(" ")[0] === "Craftsman":
+                const specialty = talent.match(/\(([^)]+)\)/)?.[1];
+                if (specialty) {
+                    SkillNames.push(`Trade (${specialty})`);
+                    SkillValues.push(0);
+                    SkillCareer.push(1);
+                    console.log(`Added skill: Trade (${specialty})`);
+                }
+                break;
+
+            case talent === "Perfect Pitch":
+                SkillNames.push("Entertain (Sing)");
+                SkillValues.push(0);
+                SkillCareer.push(1);
+                console.log(`Added skill: Entertain (Sing)`);
+                break;
+
+            case talent === "Seasoned Traveller":
+                SkillNames.push("Lore (Local)");
+                SkillValues.push(0);
+                SkillCareer.push(1);
+                console.log(`Added skill: Lore (Local)`);
+                break;
+
+            case talent === "Witch!":
+                SkillNames.push("Language (Magick)");
+                SkillValues.push(0);
+                SkillCareer.push(1);
+                console.log(`Added skill: Language (Magick)`);
+                break;
+
+            default:
+                console.log(`No additional skill for talent: ${talent}`);
+                break;
+        }
+    }
+    return [SkillNames, SkillValues, SkillCareer]
+}
+function dedupeNameValue(NameArray, ValueArray, CareerArray = []) {
+    var i, j;
     var toremove = [];
+    var hasCareerArray = CareerArray.length > 0; // Check if CareerArray is provided
+
+    // Identify duplicates
     for (i = 0; i< (NameArray.length - 1); i += 1) {
-        for (j = i + 1; j < (NameArray.length ) ; j += 1) {
-            if( (NameArray[i]).localeCompare(NameArray[j]) == 0) { 
-                toremove.push(j);
+        for (j = i + 1; j < NameArray.length; j += 1) {
+            if (NameArray[i].localeCompare(NameArray[j]) === 0) { 
+                // Combine values
                 ValueArray[i] += ValueArray[j];
+
+                // Combine CareerArray if applicable
+                if (hasCareerArray) {
+                    CareerArray[i] = CareerArray[i] + CareerArray[j];
+                }
+
+                // Mark duplicate for removal
+                toremove.push(j);
             }
         }
     }
+
+    // Remove duplicates
     if (toremove.length > 0) {
-        for (i in toremove) {
-            NameArray.splice ( toremove[i] , 1);
-            ValueArray.splice ( toremove[i] , 1);
+        // Sort indices in reverse to avoid shifting issues when splicing
+        toremove.sort((a, b) => b - a);
+        for (i of toremove) {
+            NameArray.splice(i, 1);
+            ValueArray.splice(i, 1);
+            if (hasCareerArray) {
+                CareerArray.splice(i, 1);
+            }
         }
+        }
+
+    // Return arrays, including CareerArray if applicable
+    if (hasCareerArray) {
+        return [NameArray, ValueArray, CareerArray];
+    } else {
+        return [NameArray, ValueArray];
     }
-    var CombinedArray = [NameArray, ValueArray];
-    return CombinedArray;
 }
-function parseOrParenthesis(NameArray) {
+async function parseOrParenthesis(NameArray) {
      var i;
      var Pick;
      var Base;
@@ -1275,7 +1531,11 @@ function parseOrParenthesis(NameArray) {
             Pick = Base[1].split(" or ");
             if (Pick.length > 1) {
                if (document.getElementById("choiceCheck").checked == true)  {
-                   ch = (confirm (NameArray[i])?0:1);
+			     const selectedIndex = await showCustomDialog(
+					"Select an option: " + NameArray[i],
+					[Pick[0], Pick[1]]
+				   );
+                   ch = selectedIndex;
                } else {
                    ch = Math.floor(Math.random() * Pick.length );
                }
@@ -1304,6 +1564,7 @@ function rollTrappings(TrapString) {
    return TrapString;
 }
 function rollMoney (SocialString) {
+    console.log("Generating money: "+SocialString);
     var money = "";
     var ParsedSocial = SocialString.split(" ");
     switch (ParsedSocial[0]) {
@@ -1314,7 +1575,11 @@ function rollMoney (SocialString) {
             money =   rollXd10(ParsedSocial[1]) + " Silver Shillings.";
             break;
         case "Brass":
+            if (ParsedSocial[1]>0) {
             money =   rollXd10(ParsedSocial[1]*2) + " Brass Pennies.";
+            } else {
+                money =   "Not a single Brass Penny.";
+            }
             break;
         default:
             money =  "Not a single coin.";
@@ -1339,6 +1604,46 @@ function getMouseOverText(Name, MOArray){
     }
     return MOTxt;
 }
+// Normalize talent names to match dataTalents keys
+function normalizeTalentName(talentName) {
+    return talentName.replace(/\s+/g, "").replace(/\(.*?\)/g, "").toLowerCase();
+}
+
+// Function to calculate stat bonus
+function calculateStatBonus(statValue) {
+    return Math.floor(statValue / 10);
+}
+
+// Function to get the max level for a given talent
+function getTalentMax(talentName) {
+    const normalizedTalentName = normalizeTalentName(talentName);
+    let maxLevel = 1; // Default max level if not found in dataTalents
+
+    for (const talent of dataTalents) {
+        const normalizedDataTalentName = normalizeTalentName(talent[0]);
+        if (normalizedTalentName === normalizedDataTalentName) {
+            if (!isNaN(talent[1])) {
+                // Fixed max level (e.g., "2")
+                maxLevel = parseInt(talent[1], 10);
+            } else {
+                // Stat-based max level (e.g., "BSB")
+                const statIndex = StatsBonusName.indexOf(talent[1]);
+                if (statIndex !== -1) {
+                    const totalStat =
+                        StatsR[statIndex] +
+                        StatsBase[statIndex] +
+                        StatsTalents[statIndex] +
+                        StatsAdvance[statIndex];
+                    maxLevel = calculateStatBonus(totalStat);
+                }
+            }
+            break;
+        }
+    }
+
+    return maxLevel;
+}
+
 function refreshCharacterDisplay () {
     document.getElementById("nameB").innerHTML = NameTxt;
     document.getElementById("speciesB").innerHTML = SpeciesTxt;
@@ -1367,7 +1672,7 @@ if (SpeciesRoll <= 25) {
 if  (SpeciesChoice>0) {
     SpeciesN = SpeciesChoice;
 } else {
-    xp += 0;
+    xp += 20;
 }
 console.log(SpeciesN);
 SpeciesTxt = SpeciesAll[ SpeciesN - 1 ];
@@ -1390,21 +1695,29 @@ NameTxt = NamesSpecies[ Math.floor(Math.random() * NamesSpecies.length) ] + " "
 SkillStart = SkillStartAll[ SpeciesN - 1 ];
 console.log(SkillStart);
 for (i = 0; i < 6; i += 1) {
-     var skrandom = Math.floor(Math.random() * SkillStart.length);
-     SkillNames.push ( SkillStart.splice (skrandom , 1)[0] );
-     var skvar;
-     if ( i < 3 ) {
-         skvar = 5;
+    const skillPoints = i < 3 ? 5 : 3; // Determine skill points based on `i`
+    let selectedIndex;
+    if (document.getElementById("choiceCheck").checked == true) {
+      // Show the skill dialog and wait for user input
+      selectedIndex = await showSelectionDialog([...SkillStart,"Pick One at Random"], "Select "+ SpeciesTxt+" skill with +"+ skillPoints +" :");
+      // Add the selected skill to the character's skill list
+      if (selectedIndex === SkillStart.length) {
+        selectedIndex = Math.floor(Math.random() * SkillStart.length);
+      }
      } else {
-         skvar = 3;
+      // Randomly select a skill if manual selection is not enabled
+      selectedIndex = Math.floor(Math.random() * SkillStart.length);
      }
-     SkillValues.push ( skvar );
+    SkillNames.push(SkillStart.splice(selectedIndex, 1)[0]);
+    SkillValues.push ( skillPoints );
+    SkillCareer.push ( 0 );
 }
 console.log(SkillStart);
 console.log(SkillNames);
 TalentNames = TalentStartAll [ SpeciesN - 1 ];
-TalentNames = parseInicialTalent (TalentNames);
+TalentNames = await parseInicialTalent (TalentNames);
 TalentValues = Array(TalentNames.length).fill(1);
+TalentCareer = Array(TalentNames.length).fill(0);
 var CareerSpecies = CareerSpeciesAll [ SpeciesN - 1 ];
 var CareerRoll = roll1d100();
 i = 0;
@@ -1416,35 +1729,41 @@ CareerName = CareerAll[CareerN];
 /*If we agree keep the 1st career so no changes just less xp*/
 if ((document.getElementById("careerCheck").checked == true) ) {
     refreshCharacterDisplay ();
-    if ( !confirm("Keep career as " + SpeciesTxt + " " + CareerName) ) {
+   const keepCurrentCareer = await showCustomDialog(`Keep career as ${SpeciesTxt} ${CareerName}?`);
+   if (keepCurrentCareer) {
         var newCareerRoll = [CareerRoll,0,0];
         var newCareerN = [CareerN,0,0];
         var newCareerName = [CareerName,"",""];
-        var x;
-        for (i=1;i<3; i += 1) {
-            newCareerRoll[i] = roll1d100();
-            x = 0;
-            while (CareerSpecies[x] < newCareerRoll[i] ) {
-                x += 1;
+
+      if (keepCurrentCareer) {
+            const newCareerOptions = [CareerName];
+            const newCareerRolls = [CareerRoll];
+            while (newCareerOptions.length < 3) {
+                let newRoll = roll1d100();
+                let newIndex = 0;
+                while (CareerSpecies[newIndex] < newRoll) newIndex++;
+                let newCareer = CareerAll[newIndex];
+                if (!newCareerOptions.includes(newCareer)) {
+                    newCareerOptions.push(newCareer);
+                    newCareerRolls.push(newRoll);
+                }
             }
-            newCareerN[i] = x;
-            newCareerName[i] = CareerAll[x];
-        }
-        if (!confirm("Keep first from " + newCareerName.toString())) {
-            if (confirm("Keep second from " + newCareerName.toString())) {
-                CareerRoll = newCareerRoll[1];
-                CareerN = newCareerN[1];
-                CareerName=newCareerName[1];
+            const selectedIndex = await showSelectionDialog([...newCareerOptions, "Pick from full list"], "Select career:");
+            if (selectedIndex === newCareerOptions.length) {
+                // Full career list selection
+                const fullCareerIndex = await showSelectionDialog(CareerAll, "Select career:");
+                CareerN = fullCareerIndex;
+                CareerName = CareerAll[CareerN];
+                xp += 0; // No XP bonus
             } else {
-                CareerRoll = newCareerRoll[2];
-                CareerN = newCareerN[2];
-                CareerName=newCareerName[2];
-            }
+                CareerN = CareerSpecies.findIndex((val) => val >= newCareerRolls[selectedIndex]);
+                CareerName = newCareerOptions[selectedIndex];
+                xp += 25; // Smaller XP bonus
         } 
-        xp += 25;
     }  else  {
         xp += 50;
-    }
+    }} else {
+      xp += 50;}
 } else {
         xp += 50;
 }
@@ -1459,11 +1778,12 @@ for (i in StatsR) {
 }
 if ((document.getElementById("reRollCheck").checked == true) ) {
     refreshCharacterDisplay ();
-    if ( !confirm(StatsR) ) {
+    const keepCurrentStats = await showCustomDialog("Keep current stats: " + StatsR.toString());
+    if (keepCurrentStats) {
         for (i in StatsR) {
             StatsR[i] = roll2d10();
         }
-        alert (StatsR);
+        await showCustomDialog("New stats: " + StatsR.toString(), ["OK"]);
         xp += 25;
     }  else  {
         xp += 50;
@@ -1490,6 +1810,8 @@ StatsExtraBase[3] += FateResilienceRoll[1];
 var ski = CareerSkill[CareerN];
 var randskiChoice =  [
 [5,5,5,5,5,5,5,5],
+[5,5,5,5,5,5,5,5],
+[5,5,5,5,5,5,5,5],
 [7,6,5,5,5,5,4,3],
 [6,6,6,5,5,4,4,4],
 [8,7,6,5,5,4,3,2],
@@ -1506,21 +1828,27 @@ for (i = 0; i < 8; i += 1) {
      SkillNames.push ( ski.splice (skirand , 1)[0] );
      var skvar = randSki[i]; 
      SkillValues.push ( skvar );
+     SkillCareer.push ( 1 );
 }
 console.log(SkillNames);
-var randTalent = Math.floor(Math.random() * 4);
-TalentNames.push( CareerTalents[CareerN][randTalent]);
+TalentNames.push( await selectCareerTalent(CareerTalents, CareerN, CareerName) );
 TalentValues.push(1);
+TalentCareer.push(1);
 StatsTalents = parseTalent2Stats(TalentNames);
- 
-TalentNames = parseTalentAny(TalentNames).slice(0);
-SkillNames = parseOrParenthesis(SkillNames).slice(0);
+var ExtraSkills = addSkillsFromTalents(TalentNames, SkillNames, SkillValues, SkillCareer)
+SkillNames = ExtraSkills[0];
+SkillValues = ExtraSkills[1];
+SkillCareer = ExtraSkills[2];
+TalentNames = await parseTalentAny(TalentNames);
+SkillNames = await parseOrParenthesis(SkillNames);
+SkillNames = SkillNames.slice(0)
 console.log(SkillNames);
-SkillNames = parseSkillAny(SkillNames).slice(0);
+SkillNames = await parseSkillAny(SkillNames);
  console.log(SkillNames);
-var TalentNamesValue = dedupeNameValue(TalentNames, TalentValues );
+var TalentNamesValue = dedupeNameValue(TalentNames, TalentValues, TalentCareer );
 TalentNames = TalentNamesValue[0].slice(0);
 TalentValues = TalentNamesValue[1].slice(0);
+TalentCareer = TalentNamesValue[2].slice(0);
 /* After getting talents we check if we are an human noble or have nobleblood*/
 /*SurnameSuffixHumanNoble*/
 if ((SpeciesN >= 1) && ((CareerName == "Noble") || (TalentNames.includes("Noble Blood")))) {
@@ -1531,22 +1859,27 @@ if (TalentNames.includes("Doomed")) {
  DoomingTxt = DoomingsAll[Math.floor(Math.random() * DoomingsAll.length)];
 };
 
-var SkillNamesValue = dedupeNameValue(SkillNames, SkillValues );
+var SkillNamesValue = dedupeNameValue(SkillNames, SkillValues, SkillCareer );
 SkillNames = SkillNamesValue[0].slice(0);
 SkillValues = SkillNamesValue[1].slice(0);
+SkillCareer = SkillNamesValue[2].slice(0);
+
 console.log(SkillNames);
 var Trapping = rollTrappings(TrappingClass[ClassN] + ", " + TrappingCareer[CareerN]);
 var Money = rollMoney(CareerSocial [ CareerN ]);
 /* Generate the final strings */
 CareerTxt ="(" + ClassAll [ ClassN ] + ") " + CareerName + ", Social Level "+ CareerSocial [ CareerN ] ;
-XpTxt = "<b>XP:</b> " + xp + "/" + xpSpend;
+XpTxt = "<b>XP:</b> " + (xp - xpSpend) + "/" + xp;
 for (i = 0; i < SkillNames.length ; i += 1) {
     var MouseOverTxt = getMouseOverText (SkillNames[i],mouseoverSkills);
-    SkillTxt += "<span title = '" + MouseOverTxt + "'>" + SkillNames[i] + ":" + SkillValues[i] + "</span>; ";
+    var openITag = SkillCareer[i] > 0 ? "<i>" : "";
+    var closeITag = SkillCareer[i] > 0 ? "</i>" : "";
+
+    SkillTxt += "<span title = '" + MouseOverTxt + "'>" + openITag + SkillNames[i] + closeITag + ":" + SkillValues[i] + "</span>; ";
 }
 for (i = 0; i < TalentNames.length ; i += 1) {
     var MouseOverTxt = getMouseOverText (TalentNames[i],mouseoverTalents);
-     TalentTxt += "<span title = '" + MouseOverTxt + "'>" + TalentNames[i] + ":" + TalentValues[i] + "</span>; ";
+     TalentTxt += "<span title = '" + MouseOverTxt + "'>" + TalentNames[i] + ":" + TalentValues[i] + "/" + getTalentMax(TalentNames[i]) + "</span>; ";
 }
 if (DoomingTxt != "") {
  TalentTxt += "<br><B>Dooming:</B> "+ DoomingTxt;
@@ -1595,6 +1928,10 @@ Ask Reroll Stats: </td><td><input type="checkbox" id="reRollCheck">
 Ask Reroll Career: </td><td><input type="checkbox" id="careerCheck">
 </td></tr><tr><td>
 Ask Simple Choices:</td><td><input type="checkbox" id="choiceCheck">
+</td></tr><tr><td>
+Randomly Expend XP:</td><td><input type="checkbox" id="randomExpendXP">
+</td></tr><tr><td>
+Extra XP </td><td> <input type="number" id="extraXPInput" min="0" placeholder="Extra XP">
 </td></tr>
 </table>
 <div id="characterPrint">
@@ -1627,7 +1964,21 @@ Ask Simple Choices:</td><td><input type="checkbox" id="choiceCheck">
 </div>
 <input type="button" value="Create PDF" 
   id="btPrint" onclick ="createPDF()" />
-
+<div id="customDialog" class="custom-dialog">
+  <div class="custom-dialog-content">
+    <p id="customDialogText"></p>
+    <div id="customDialogButtons" class="custom-dialog-buttons"></div>
+  </div>
+</div>
+<div id="selectionDialog" class="custom-dialog" style="display: none;">
+  <div class="custom-dialog-content">
+    <p id="selectionDialogTitle">Select an option:</p>
+    <form id="selectionForm">
+      <!-- Radio buttons will be added here using JavaScript -->
+    </form>
+    <button id="selectionDialogSubmit">Submit</button>
+  </div>
+</div>
 <p id="Links">
 The rules for the humans of Middenheim, Middenland and Norland are fron the book  
 <a href="https://www.drivethrurpg.com/product/303929/WFRP-Middenheim-City-of-the-White-Wolf?affiliate_id=91369">Middenheim: City of the White Wolf</a>.<br>
@@ -1638,7 +1989,7 @@ If you need a more dangerous set you might check my <a href="https://pacomiscela
 You can also create the loot carried by them using my <a href="https://pacomiscelaneousstuff.blogspot.com/2019/08/treasure-generator.html">Random Treasure Generator</a>.<br>
 To have a more detailed Old Worlders you can use the list of my <a href="https://pacomiscelaneousstuff.blogspot.com/2018/09/generic-npc-stats-for-4th-edition.html">Generic NPCs stats for 4th edition</a>.<br>
 </p>
-<p id="Acknowledgements"><a href="https://github.com/fmunoz-geo/WebGenWFRP4Ed">Code: Francisco Mu&ntilde;oz 2018-2022.</a>
+<p id="Acknowledgements"><a href="https://github.com/fmunoz-geo/WebGenWFRP4Ed">Code: Francisco Mu&ntilde;oz 2018-2025.</a>
 <br>Skill advance selection and misc data: Jay Alexander Hafner 2018
 <br>Skill description: Ryan Graham 2018
 <br>Core character creation: <a href="https://www.drivethrurpg.com/product/248284/Warhammer-Fantasy-Roleplay-Fourth-Edition-Rulebook?affiliate_id=91369">Warhammer Fantasy Roleplay Fourth Edition Rulebook</a>
