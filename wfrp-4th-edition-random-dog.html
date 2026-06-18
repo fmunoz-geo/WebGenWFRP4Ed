@@ -278,7 +278,7 @@ function generateNPC(SpeciesChoice) {
 
     for (statIndex = 0; statIndex < baseStats.length; statIndex += 1) {
       if (baseStats[statIndex] !== 0 && baseStats[statIndex] !== -1) {
-        difference = finalStats[statIndex] - baseStats[statIndex];
+        difference = finalStats[statIndex] - baseStats[statIndex] + 10;
         if (difference >= 5) {
           price += Math.floor(difference / 5);
         } else if (difference <= -5) {
