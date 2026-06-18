@@ -43,8 +43,19 @@ function generateNPC(SpeciesChoice) {
   var i;
   var NameTxt = "";
   var SpeciesTxt = "";
+  var PriceTxt = "";
   var SpeciesN;
   var SpeciesAll = ["Herd Dog", "Hound Dog", "Hunting Dog", "Lap Dog", "Mongrel Dog", "Pit Dog", "Terrier Dog", "War Dog"];
+  var DogMarket = [
+    {costShillings: 40, availability: "Common"},
+    {costShillings: 40, availability: "Rare"},
+    {costShillings: 40, availability: "Scarce"},
+    {costShillings: 20, availability: "Common"},
+    {costShillings: 10, availability: "Common"},
+    {costShillings: 40, availability: "Scarce"},
+    {costShillings: 20, availability: "Common"},
+    {costShillings: 80, availability: "Rare"}
+  ];
   var StatsTxt = "";
   var StatsName = STAT_NAMES;
   var StatsR = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
@@ -183,7 +194,7 @@ function generateNPC(SpeciesChoice) {
         break;
       case "Elite":
         stat[STAT.WS] += 20;
-        stat[STAT.BS] += 20;
+        // stat[STAT.BS] += 20;
         stat[STAT.WP] += 20;
         break;
       case "Fast":
@@ -247,9 +258,48 @@ function generateNPC(SpeciesChoice) {
     return Math.floor(statTotal(statIndex) / 10);
   }
 
+  function formatPrice(shillings) {
+    var gc = Math.floor(shillings / 20);
+    var remainder = shillings % 20;
+
+    if (gc > 0 && remainder > 0) {
+      return gc + " GC " + remainder + "/-";
+    }
+    if (gc > 0) {
+      return gc + " GC";
+    }
+    return remainder + "/-";
+  }
+
+  function calculatePriceShillings(baseStats, finalStats, baseCostShillings, talentCount) {
+    var price = baseCostShillings;
+    var statIndex;
+    var difference;
+
+    for (statIndex = 0; statIndex < baseStats.length; statIndex += 1) {
+      if (baseStats[statIndex] !== 0 && baseStats[statIndex] !== -1) {
+        difference = finalStats[statIndex] - baseStats[statIndex] + 10;
+        if (statIndex === STAT.M) {
+          difference *= 5;        // Movement is worth 5x
+        } else if (statIndex === STAT.W) {
+          difference = 0;         // Wounds do not affect price
+        }       
+        if (difference >= 5) {
+          price += Math.floor(difference / 5);
+        } else if (difference <= -5) {
+          price -= Math.floor(Math.abs(difference) / 5);
+        }
+      }
+    }
+
+    price += talentCount;
+    return price;
+  }
+
   function refreshCharacterDisplay() {
     document.getElementById("nameB").innerHTML = NameTxt;
     document.getElementById("speciessexcarredB").innerHTML = SpeciesTxt + ", " + CareerName + " " + XPTxt;
+    document.getElementById("priceB").innerHTML = PriceTxt;
     document.getElementById("statsB").innerHTML = StatsTxt;
     document.getElementById("skillsB").innerHTML = SkillTxt;
     document.getElementById("traitsB").innerHTML = TraitTxt;
@@ -278,6 +328,7 @@ function generateNPC(SpeciesChoice) {
 
   CareerName = CareerAll[CareerN];
   StatsBase = StatsAll[SpeciesN - 1].slice();
+  var StatsBaseForPrice = StatsBase.slice();
 
   for (i in StatsR) {
     if (document.getElementById("reRollCheck").checked === true) {
@@ -369,6 +420,19 @@ function generateNPC(SpeciesChoice) {
     }
   }
 
+  var FinalStatsForPrice = [];
+  for (i = 0; i < StatsBase.length; i += 1) {
+    FinalStatsForPrice.push(StatsR[i] + StatsBase[i] + StatsTraits[i] + StatsAdvance[i]);
+  }
+
+  var FinalPriceShillings = calculatePriceShillings(
+    StatsBaseForPrice,
+    FinalStatsForPrice,
+    DogMarket[SpeciesN - 1].costShillings,
+    TalentNames.length
+  );
+  PriceTxt = "Cost: " + formatPrice(FinalPriceShillings) + " (base " + formatPrice(DogMarket[SpeciesN - 1].costShillings) + "); Availability: " + DogMarket[SpeciesN - 1].availability;
+
   StatsTxt = "<table><tr>";
   for (i in StatsName) {
     StatsTxt += "<th><B>" + StatsName[i] + "</B></th>";
@@ -451,6 +515,7 @@ You can also create the loot carried by them using my <a href="https://pacomisce
 
 <h3><p id="nameB">.</p></h3>
 <h4><p id="speciessexcarredB"></p></h4>
+<h4><p id="priceB"></p></h4>
 <h3>Characteristics</h3>
 <p id="statsB"></p>
 <h3>Skills</h3>
