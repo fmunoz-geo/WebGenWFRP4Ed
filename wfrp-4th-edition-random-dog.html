@@ -363,7 +363,7 @@ function generateNPC(SpeciesChoice) {
         modifier = Math.trunc(difference / 5);
 
         if (statIndex === STAT.M) {
-          modifier *= 5;
+          modifier =  (finalStats[statIndex] - (baseStats[statIndex] ) *5;
         } else if (statIndex === STAT.W) {
           modifier = 0;
         }
@@ -372,8 +372,8 @@ function generateNPC(SpeciesChoice) {
       }
     }
 
-    price += talentCount;
-    price += extraTraitCount;
+    price += talentCount * 10;
+    // price += extraTraitCount * 10;
     return Math.max(price, 0);
   }
 
@@ -510,7 +510,7 @@ function generateNPC(SpeciesChoice) {
     FinalStatsForPrice.push(StatsR[i] + StatsBase[i] + StatsTraits[i] + StatsAdvance[i]);
   }
 
-  var ExtraTraitCount = Math.max(TraitNames.length - OriginalTraitNames.length, 0);
+  // var ExtraTraitCount = Math.max(TraitNames.length - OriginalTraitNames.length, 0);
   var BaseCostShillings = PurebredChoice === null ? DogMarket[SpeciesN - 1].costShillings : PurebredChoice.costShillings;
   var Availability = PurebredChoice === null ? DogMarket[SpeciesN - 1].availability : PurebredChoice.availability;
   var FinalPriceShillings = calculatePriceShillings(
