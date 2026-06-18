@@ -146,6 +146,7 @@ function generateNPC(SpeciesChoice) {
     {name: "Sollin Hunting Dog", speciesIndex: 7, costShillings: 132, availability: "Rare", description: "Originally bred as a coursing dog in old Solland, the Sollin Hunting Dog is now almost exclusively used by the State Armies of Averland, Wissenland, and Stirland. A sleek and brutal beast, the dun-coated Sollin has short fur and a shorter temper. Standing at around 30 inches (75 cm) at the withers, the Sollin is a particularly imposing animal.", stats: [30, -1, 35, 30, 20, 15, 0, 5, 15, 5, 6, 0], traits: ["Armour 1 (Hide)", "Belligerent", "Bestial", "Bite SB+4", "Night Vision", "Skittish", "Stride", "Tracker", "Trained (Broken)", "Weapon SB+3"]},
     {name: "Verhungern Geisthund", speciesIndex: 7, costShillings: 162, availability: "Rare", description: "It is said the shaggy Verhungern Geisthund was first bred by Blessed Aethelbert the Vigilant, a Morrian saint from Stirland. Such was his love for the dogs, he is said to have blessed the entire breed. A rangy, black-coated dog, the Geisthund now supports Morrian Raven Knights as they patrol the haunted marshes and woods of Sylvania searching for evidence of the Restless Dead.", stats: [50, -1, 35, 25, 20, 20, 5, 5, 40, 5, 6, 0], traits: ["Armour 2 (Hide)", "Bestial", "Bite SB+4", "Dark Vision", "Magical", "Skittish", "Stride", "Swimmer", "Trained (Broken)", "Weapon SB+3"]}
   ];
+
   var PurebredChoice = null;
   if (document.getElementById("purebredCheck").checked === true) {
     var PurebredSelect = document.getElementById("purebredSelect");
@@ -357,7 +358,7 @@ function generateNPC(SpeciesChoice) {
         modifier = Math.trunc(difference / 5);
 
         if (statIndex === STAT.M) {
-          modifier =  (finalStats[statIndex] - (baseStats[statIndex] ) *5;
+          modifier =  (finalStats[statIndex] - baseStats[statIndex]) * 5;
         } else if (statIndex === STAT.W) {
           modifier = 0;
         }
@@ -580,41 +581,41 @@ You can also create the loot carried by them using my <a href="https://pacomisce
 <span id="purebredOptions" style="display: none;">
   <select id="purebredSelect">
     <option value="-1" selected="selected">Random</option>
-    <option value="0">Jagermark Collie - 2 GC 14/-</option>
-    <option value="1">Nordwach Shepherd - 3 GC 2/-</option>
-    <option value="2">Old Aver Sheepdog - 3 GC 4/-</option>
-    <option value="3">Sarheim Cattle Dog - 2 GC 18/-</option>
-    <option value="4">Ulzhammer Shepherd Dog - 4 GC 3/-</option>
-    <option value="5">Hound Purebred 1 - 2 GC</option>
-    <option value="6">Hound Purebred 2 - 2 GC</option>
-    <option value="7">Hound Purebred 3 - 2 GC</option>
-    <option value="8">Hound Purebred 4 - 2 GC</option>
-    <option value="9">Hound Purebred 5 - 2 GC</option>
-    <option value="10">Hunting Dog Purebred 1 - 2 GC</option>
-    <option value="11">Hunting Dog Purebred 2 - 2 GC</option>
-    <option value="12">Hunting Dog Purebred 3 - 2 GC</option>
-    <option value="13">Hunting Dog Purebred 4 - 2 GC</option>
-    <option value="14">Hunting Dog Purebred 5 - 2 GC</option>
-    <option value="15">Lap Dog Purebred 1 - 1 GC</option>
-    <option value="16">Lap Dog Purebred 2 - 1 GC</option>
-    <option value="17">Lap Dog Purebred 3 - 1 GC</option>
-    <option value="18">Lap Dog Purebred 4 - 1 GC</option>
-    <option value="19">Lap Dog Purebred 5 - 1 GC</option>
-    <option value="20">Telland Pit Bull - 3 GC 10/-</option>
-    <option value="21">Pit Dog Purebred 2 - 2 GC</option>
-    <option value="22">Pit Dog Purebred 3 - 2 GC</option>
-    <option value="23">Pit Dog Purebred 4 - 2 GC</option>
-    <option value="24">Pit Dog Purebred 5 - 2 GC</option>
-    <option value="25">Terrier Purebred 1 - 1 GC</option>
-    <option value="26">Terrier Purebred 2 - 1 GC</option>
-    <option value="27">Terrier Purebred 3 - 1 GC</option>
-    <option value="28">Terrier Purebred 4 - 1 GC</option>
-    <option value="29">Terrier Purebred 5 - 1 GC</option>
-    <option value="30">War Dog Purebred 1 - 4 GC</option>
-    <option value="31">War Dog Purebred 2 - 4 GC</option>
-    <option value="32">War Dog Purebred 3 - 4 GC</option>
-    <option value="33">War Dog Purebred 4 - 4 GC</option>
-    <option value="34">War Dog Purebred 5 - 4 GC</option>
+    <option value="0">Herd Dog - Jagermark Collie</option>
+    <option value="1">Herd Dog - Nordwach Shepherd</option>
+    <option value="2">Herd Dog - Old Aver Sheepdog</option>
+    <option value="3">Herd Dog - Sarheim Cattle Dog</option>
+    <option value="4">Herd Dog - Ulzhammer Shepherd Dog</option>
+    <option value="5">Hound Dog - Gobhound</option>
+    <option value="6">Hound Dog - Hammerhound</option>
+    <option value="7">Hound Dog - Mohlhund</option>
+    <option value="8">Hound Dog - Nordmark Elfhound</option>
+    <option value="9">Hound Dog - Vorberg Beagle</option>
+    <option value="10">Hunting Dog - Brazen Retriever</option>
+    <option value="11">Hunting Dog - Couronner</option>
+    <option value="12">Hunting Dog - Gertzen Pointer</option>
+    <option value="13">Hunting Dog - Mirror Spaniel</option>
+    <option value="14">Hunting Dog - Reikland Setter</option>
+    <option value="15">Lap Dog - Khyprian</option>
+    <option value="16">Lap Dog - Leden Lapdog</option>
+    <option value="17">Lap Dog - Mottenohren</option>
+    <option value="18">Lap Dog - Rzedinskiener</option>
+    <option value="19">Lap Dog - Sachen Zwergpinscher</option>
+    <option value="20">Pit Dog - Bärenbiter</option>
+    <option value="21">Pit Dog - Kolitz Gryphon Baiter</option>
+    <option value="22">Pit Dog - Oblast Spirit Dog</option>
+    <option value="23">Pit Dog - Stirland Fighting Dog</option>
+    <option value="24">Pit Dog - Telland Pit Bull</option>
+    <option value="25">Terrier - Ahalvallen White Terrier</option>
+    <option value="26">Terrier - Greenleaf Fox Terrier</option>
+    <option value="27">Terrier - Kranken Terrier</option>
+    <option value="28">Terrier - Nordland Terrier</option>
+    <option value="29">Terrier - Wargen Grey Terrier</option>
+    <option value="30">War Dog - Borgrad Bandogge</option>
+    <option value="31">War Dog - Imperial Mastiff</option>
+    <option value="32">War Dog - Kalw Cane</option>
+    <option value="33">War Dog - Sollin Hunting Dog</option>
+    <option value="34">War Dog - Verhungern Geisthund</option>
   </select>
 </span><br>
 <button class="standardDogButton" type="button" onclick="generateNPC(1)">Generate Herd Dog!</button>
