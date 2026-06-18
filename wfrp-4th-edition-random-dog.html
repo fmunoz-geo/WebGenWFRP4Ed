@@ -37,6 +37,20 @@ function roll2d10() {
   return roll1d10() + roll1d10();
 }
 
+function togglePurebredMode() {
+  "use strict";
+
+  var isPurebred = document.getElementById("purebredCheck").checked;
+  var buttons = document.getElementsByClassName("standardDogButton");
+  var i;
+
+  for (i = 0; i < buttons.length; i += 1) {
+    buttons[i].disabled = isPurebred;
+  }
+
+  document.getElementById("purebredOptions").style.display = isPurebred ? "inline" : "none";
+}
+
 function generateNPC(SpeciesChoice) {
   "use strict";
 
@@ -55,6 +69,17 @@ function generateNPC(SpeciesChoice) {
     {costShillings: 40, availability: "Scarce"},
     {costShillings: 20, availability: "Common"},
     {costShillings: 80, availability: "Rare"}
+  ];
+
+  var DogDescriptions = [
+    "Herd Dogs are clever farm dogs bred for herding, guarding, and other rural work. They are usually lively, excitable, and happiest with space to run.",
+    "Hound Dogs are scent-focused trackers with strong stamina and persistence, often used to follow trails or course larger game.",
+    "Hunting Dogs are active working animals trained to fetch, point, flush out, and pursue small game; they need regular activity to stay settled.",
+    "Lap Dogs are small, sociable companions kept across many layers of society, valued more for company than labour.",
+    "Mongrel Dogs are mixed-breed dogs without a specialised lineage. They are common, varied, and can display a wide range of traits.",
+    "Pit Dogs are stocky, powerful dogs bred for blood sports and tenacity, prized for keeping hold despite pain or exhaustion.",
+    "Terrier Dogs are small, fearless vermin hunters with wiry frames, fierce tempers, and strong loyalty to their owners.",
+    "War Dogs are large, brave, strong animals bred to attack dangerous foes, guard property, and sometimes fight with armour or spiked collars."
   ];
   var StatsTxt = "";
   var StatsName = STAT_NAMES;
@@ -83,6 +108,61 @@ function generateNPC(SpeciesChoice) {
   var TraitStartTerrier = ["Bestial", "Bite SB+3", "Night Vision", "Size (Small)", "Skittish", "Stride", "Trained (Broken)", "Weapon SB+3", "Random Dog Trait"];
   var TraitStartWar = ["Bestial", "Bite SB+3", "Night Vision", "Size (Medium)", "Skittish", "Stride", "Trained (Broken)", "Weapon SB+3", "Random Dog Trait"];
   var TraitStartAll = [TraitStartHerd, TraitStartHound, TraitStartHunting, TraitStartLap, TraitStartMongrel, TraitStartPit, TraitStartTerrier, TraitStartWar];
+
+  var PurebredDogs = [
+    {name: "Jagermark Collie", speciesIndex: 0, costShillings: 54, availability: "Common", description: "A sharp, alert herding collie from the Jagermark, valued for quick responses and close work with flocks.", stats: StatsHerd.slice(), traits: TraitStartHerd.slice()},
+    {name: "Nordwach Shepherd", speciesIndex: 0, costShillings: 62, availability: "Common", description: "A sturdy northern shepherd dog bred for harsh weather, stock guarding, and reliable farm service.", stats: StatsHerd.slice(), traits: TraitStartHerd.slice()},
+    {name: "Old Aver Sheepdog", speciesIndex: 0, costShillings: 64, availability: "Common", description: "A shaggy traditional sheepdog, patient with flocks and trusted by rural families for steady herding work.", stats: StatsHerd.slice(), traits: TraitStartHerd.slice()},
+    {name: "Sarheim Cattle Dog", speciesIndex: 0, costShillings: 58, availability: "Common", description: "A lively cattle dog bred to drive stubborn beasts, combining farm sense with enough nerve to face larger stock.", stats: StatsHerd.slice(), traits: TraitStartHerd.slice()},
+    {name: "Ulzhammer Shepherd Dog", speciesIndex: 0, costShillings: 83, availability: "Common", description: "A brown-and-black Middenlander shepherd dog bred to watch over southern stock; tougher and more formidable than a generic herd dog.", stats: [35, -1, 25, 20, 35, 35, 0, 5, 25, 0, 6, 0], traits: ["Armour 1 (Hide)", "Bestial", "Bite SB+3", "Night Vision", "Size (Small)", "Skittish", "Stride", "Tracker", "Trained (Broken)", "Weapon SB+3"]},
+
+    {name: "Hound Purebred 1", speciesIndex: 1, costShillings: 40, availability: "Rare", description: "Placeholder hound purebred based on the generic Hound Dog profile.", stats: StatsHound.slice(), traits: TraitStartHound.slice()},
+    {name: "Hound Purebred 2", speciesIndex: 1, costShillings: 40, availability: "Rare", description: "Placeholder hound purebred based on the generic Hound Dog profile.", stats: StatsHound.slice(), traits: TraitStartHound.slice()},
+    {name: "Hound Purebred 3", speciesIndex: 1, costShillings: 40, availability: "Rare", description: "Placeholder hound purebred based on the generic Hound Dog profile.", stats: StatsHound.slice(), traits: TraitStartHound.slice()},
+    {name: "Hound Purebred 4", speciesIndex: 1, costShillings: 40, availability: "Rare", description: "Placeholder hound purebred based on the generic Hound Dog profile.", stats: StatsHound.slice(), traits: TraitStartHound.slice()},
+    {name: "Hound Purebred 5", speciesIndex: 1, costShillings: 40, availability: "Rare", description: "Placeholder hound purebred based on the generic Hound Dog profile.", stats: StatsHound.slice(), traits: TraitStartHound.slice()},
+
+    {name: "Hunting Dog Purebred 1", speciesIndex: 2, costShillings: 40, availability: "Scarce", description: "Placeholder hunting purebred based on the generic Hunting Dog profile.", stats: StatsHunting.slice(), traits: TraitStartHunting.slice()},
+    {name: "Hunting Dog Purebred 2", speciesIndex: 2, costShillings: 40, availability: "Scarce", description: "Placeholder hunting purebred based on the generic Hunting Dog profile.", stats: StatsHunting.slice(), traits: TraitStartHunting.slice()},
+    {name: "Hunting Dog Purebred 3", speciesIndex: 2, costShillings: 40, availability: "Scarce", description: "Placeholder hunting purebred based on the generic Hunting Dog profile.", stats: StatsHunting.slice(), traits: TraitStartHunting.slice()},
+    {name: "Hunting Dog Purebred 4", speciesIndex: 2, costShillings: 40, availability: "Scarce", description: "Placeholder hunting purebred based on the generic Hunting Dog profile.", stats: StatsHunting.slice(), traits: TraitStartHunting.slice()},
+    {name: "Hunting Dog Purebred 5", speciesIndex: 2, costShillings: 40, availability: "Scarce", description: "Placeholder hunting purebred based on the generic Hunting Dog profile.", stats: StatsHunting.slice(), traits: TraitStartHunting.slice()},
+
+    {name: "Lap Dog Purebred 1", speciesIndex: 3, costShillings: 20, availability: "Common", description: "Placeholder lap dog purebred based on the generic Lap Dog profile.", stats: StatsLap.slice(), traits: TraitStartLap.slice()},
+    {name: "Lap Dog Purebred 2", speciesIndex: 3, costShillings: 20, availability: "Common", description: "Placeholder lap dog purebred based on the generic Lap Dog profile.", stats: StatsLap.slice(), traits: TraitStartLap.slice()},
+    {name: "Lap Dog Purebred 3", speciesIndex: 3, costShillings: 20, availability: "Common", description: "Placeholder lap dog purebred based on the generic Lap Dog profile.", stats: StatsLap.slice(), traits: TraitStartLap.slice()},
+    {name: "Lap Dog Purebred 4", speciesIndex: 3, costShillings: 20, availability: "Common", description: "Placeholder lap dog purebred based on the generic Lap Dog profile.", stats: StatsLap.slice(), traits: TraitStartLap.slice()},
+    {name: "Lap Dog Purebred 5", speciesIndex: 3, costShillings: 20, availability: "Common", description: "Placeholder lap dog purebred based on the generic Lap Dog profile.", stats: StatsLap.slice(), traits: TraitStartLap.slice()},
+
+    {name: "Telland Pit Bull", speciesIndex: 5, costShillings: 70, availability: "Scarce", description: "A named pit dog breed with more speed, willpower, and training than a common pit dog, known for tracking and guarding as well as fighting.", stats: [30, -1, 15, 20, 20, 25, 0, 5, 30, 5, 6, 0], traits: ["Bestial", "Bite SB+3", "Night Vision", "Size (Small)", "Skittish", "Stride", "Tracker", "Trained (Broken)", "Trained (Guard)", "Weapon SB+3"]},
+    {name: "Pit Dog Purebred 2", speciesIndex: 5, costShillings: 40, availability: "Scarce", description: "Placeholder pit dog purebred based on the generic Pit Dog profile.", stats: StatsPit.slice(), traits: TraitStartPit.slice()},
+    {name: "Pit Dog Purebred 3", speciesIndex: 5, costShillings: 40, availability: "Scarce", description: "Placeholder pit dog purebred based on the generic Pit Dog profile.", stats: StatsPit.slice(), traits: TraitStartPit.slice()},
+    {name: "Pit Dog Purebred 4", speciesIndex: 5, costShillings: 40, availability: "Scarce", description: "Placeholder pit dog purebred based on the generic Pit Dog profile.", stats: StatsPit.slice(), traits: TraitStartPit.slice()},
+    {name: "Pit Dog Purebred 5", speciesIndex: 5, costShillings: 40, availability: "Scarce", description: "Placeholder pit dog purebred based on the generic Pit Dog profile.", stats: StatsPit.slice(), traits: TraitStartPit.slice()},
+
+    {name: "Terrier Purebred 1", speciesIndex: 6, costShillings: 20, availability: "Common", description: "Placeholder terrier purebred based on the generic Terrier Dog profile.", stats: StatsTerrier.slice(), traits: TraitStartTerrier.slice()},
+    {name: "Terrier Purebred 2", speciesIndex: 6, costShillings: 20, availability: "Common", description: "Placeholder terrier purebred based on the generic Terrier Dog profile.", stats: StatsTerrier.slice(), traits: TraitStartTerrier.slice()},
+    {name: "Terrier Purebred 3", speciesIndex: 6, costShillings: 20, availability: "Common", description: "Placeholder terrier purebred based on the generic Terrier Dog profile.", stats: StatsTerrier.slice(), traits: TraitStartTerrier.slice()},
+    {name: "Terrier Purebred 4", speciesIndex: 6, costShillings: 20, availability: "Common", description: "Placeholder terrier purebred based on the generic Terrier Dog profile.", stats: StatsTerrier.slice(), traits: TraitStartTerrier.slice()},
+    {name: "Terrier Purebred 5", speciesIndex: 6, costShillings: 20, availability: "Common", description: "Placeholder terrier purebred based on the generic Terrier Dog profile.", stats: StatsTerrier.slice(), traits: TraitStartTerrier.slice()},
+
+    {name: "War Dog Purebred 1", speciesIndex: 7, costShillings: 80, availability: "Rare", description: "Placeholder war dog purebred based on the generic War Dog profile.", stats: StatsWar.slice(), traits: TraitStartWar.slice()},
+    {name: "War Dog Purebred 2", speciesIndex: 7, costShillings: 80, availability: "Rare", description: "Placeholder war dog purebred based on the generic War Dog profile.", stats: StatsWar.slice(), traits: TraitStartWar.slice()},
+    {name: "War Dog Purebred 3", speciesIndex: 7, costShillings: 80, availability: "Rare", description: "Placeholder war dog purebred based on the generic War Dog profile.", stats: StatsWar.slice(), traits: TraitStartWar.slice()},
+    {name: "War Dog Purebred 4", speciesIndex: 7, costShillings: 80, availability: "Rare", description: "Placeholder war dog purebred based on the generic War Dog profile.", stats: StatsWar.slice(), traits: TraitStartWar.slice()},
+    {name: "War Dog Purebred 5", speciesIndex: 7, costShillings: 80, availability: "Rare", description: "Placeholder war dog purebred based on the generic War Dog profile.", stats: StatsWar.slice(), traits: TraitStartWar.slice()}
+  ];
+  var PurebredChoice = null;
+  if (document.getElementById("purebredCheck").checked === true) {
+    var PurebredSelect = document.getElementById("purebredSelect");
+    var PurebredIndex = 1 * PurebredSelect.value;
+
+    if (PurebredIndex === -1) {
+      PurebredIndex = Math.floor(Math.random() * PurebredDogs.length);
+    }
+
+    PurebredChoice = PurebredDogs[PurebredIndex];
+  }
 
   var CareerAll = ["(Not Henchman)", "Trainee Dog", "Dog", "Trained Dog", "Veteran Dog"];
   var AnyTraits = [
@@ -194,7 +274,7 @@ function generateNPC(SpeciesChoice) {
         break;
       case "Elite":
         stat[STAT.WS] += 20;
-        // stat[STAT.BS] += 20;
+        stat[STAT.BS] += 20;
         stat[STAT.WP] += 20;
         break;
       case "Fast":
@@ -271,29 +351,30 @@ function generateNPC(SpeciesChoice) {
     return remainder + "/-";
   }
 
-  function calculatePriceShillings(baseStats, finalStats, baseCostShillings, talentCount) {
+  function calculatePriceShillings(baseStats, finalStats, baseCostShillings, talentCount, extraTraitCount) {
     var price = baseCostShillings;
     var statIndex;
     var difference;
+    var modifier;
 
     for (statIndex = 0; statIndex < baseStats.length; statIndex += 1) {
       if (baseStats[statIndex] !== 0 && baseStats[statIndex] !== -1) {
-        difference = finalStats[statIndex] - baseStats[statIndex] - 10;
+        difference = finalStats[statIndex] - (baseStats[statIndex] + 10);
+        modifier = Math.trunc(difference / 5);
+
         if (statIndex === STAT.M) {
-          difference = (finalStats[statIndex] - baseStats[statIndex]) * 5;        // Movement is worth 5x
+          modifier *= 5;
         } else if (statIndex === STAT.W) {
-          difference = 0;         // Wounds do not affect price
-        }       
-        if (difference >= 5) {
-          price += Math.floor(difference / 5);
-        } else if (difference <= -5) {
-          price -= Math.floor(Math.abs(difference) / 5);
+          modifier = 0;
         }
+
+        price += modifier;
       }
     }
 
-    price += talentCount * 10;
-    return price;
+    price += talentCount;
+    price += extraTraitCount;
+    return Math.max(price, 0);
   }
 
   function refreshCharacterDisplay() {
@@ -306,13 +387,16 @@ function generateNPC(SpeciesChoice) {
     document.getElementById("talentsB").innerHTML = TalentTxt;
   }
 
-  if (SpeciesChoice > 0) {
+  if (PurebredChoice !== null) {
+    SpeciesN = PurebredChoice.speciesIndex + 1;
+    SpeciesTxt = PurebredChoice.name + " (Purebred " + SpeciesAll[SpeciesN - 1] + ")";
+  } else if (SpeciesChoice > 0) {
     SpeciesN = SpeciesChoice;
+    SpeciesTxt = SpeciesAll[SpeciesN - 1];
   } else {
     SpeciesN = Math.floor(Math.random() * SpeciesAll.length) + 1;
+    SpeciesTxt = SpeciesAll[SpeciesN - 1];
   }
-
-  SpeciesTxt = SpeciesAll[SpeciesN - 1];
 
   var CareerNRadio;
   for (CareerNRadio = 0; CareerNRadio < document.CareerSelection.Career.length; CareerNRadio += 1) {
@@ -327,7 +411,7 @@ function generateNPC(SpeciesChoice) {
   }
 
   CareerName = CareerAll[CareerN];
-  StatsBase = StatsAll[SpeciesN - 1].slice();
+  StatsBase = (PurebredChoice === null ? StatsAll[SpeciesN - 1] : PurebredChoice.stats).slice();
   var StatsBaseForPrice = StatsBase.slice();
 
   for (i in StatsR) {
@@ -346,7 +430,8 @@ function generateNPC(SpeciesChoice) {
   StatsR[STAT.M] = 0;
   StatsR[STAT.W] = 0;
 
-  TraitNames = dedupeName(parseNamesAny(TraitStartAll[SpeciesN - 1], AnyTraits));
+  var OriginalTraitNames = (PurebredChoice === null ? TraitStartAll[SpeciesN - 1] : PurebredChoice.traits).slice();
+  TraitNames = dedupeName(parseNamesAny(OriginalTraitNames, AnyTraits));
   StatsTraits = parseTrait2Stats(TraitNames);
 
   if (CareerN > 0) {
@@ -425,13 +510,18 @@ function generateNPC(SpeciesChoice) {
     FinalStatsForPrice.push(StatsR[i] + StatsBase[i] + StatsTraits[i] + StatsAdvance[i]);
   }
 
+  var ExtraTraitCount = Math.max(TraitNames.length - OriginalTraitNames.length, 0);
+  var BaseCostShillings = PurebredChoice === null ? DogMarket[SpeciesN - 1].costShillings : PurebredChoice.costShillings;
+  var Availability = PurebredChoice === null ? DogMarket[SpeciesN - 1].availability : PurebredChoice.availability;
   var FinalPriceShillings = calculatePriceShillings(
     StatsBaseForPrice,
     FinalStatsForPrice,
-    DogMarket[SpeciesN - 1].costShillings,
-    TalentNames.length
+    BaseCostShillings,
+    TalentNames.length,
+    ExtraTraitCount
   );
-  PriceTxt = "Cost: " + formatPrice(FinalPriceShillings) + " (base " + formatPrice(DogMarket[SpeciesN - 1].costShillings) + "); Availability: " + DogMarket[SpeciesN - 1].availability;
+  var DescriptionTxt = PurebredChoice === null ? DogDescriptions[SpeciesN - 1] : PurebredChoice.description;
+  PriceTxt = DescriptionTxt + "<br>Cost: " + formatPrice(FinalPriceShillings) + " (base " + formatPrice(BaseCostShillings) + "); Availability: " + Availability;
 
   StatsTxt = "<table><tr>";
   for (i in StatsName) {
@@ -491,15 +581,56 @@ To have a more detailed Old Worlders you can use the list of my <a href="https:/
 You can also create the loot carried by them using my <a href="https://pacomiscelaneousstuff.blogspot.com/2019/08/treasure-generator.html">Random Treasure Generator</a>.
 </p>
 
-<button type="button" onclick="generateNPC(-1)">Generate Dog Now!</button><br>
-<button type="button" onclick="generateNPC(1)">Generate Herd Dog!</button>
-<button type="button" onclick="generateNPC(2)">Generate Hound Dog!</button><br>
-<button type="button" onclick="generateNPC(3)">Generate Hunting Dog!</button>
-<button type="button" onclick="generateNPC(4)">Generate Lap Dog!</button><br>
-<button type="button" onclick="generateNPC(5)">Generate Mongrel Dog!</button>
-<button type="button" onclick="generateNPC(6)">Generate Pit Dog!</button><br>
-<button type="button" onclick="generateNPC(7)">Generate Terrier Dog!</button>
-<button type="button" onclick="generateNPC(8)">Generate War Dog!</button><br>
+<button type="button" onclick="generateNPC(-1)">Generate Dog Now!</button>
+<label><input type="checkbox" id="purebredCheck" onchange="togglePurebredMode()"> Purebreds Races</label>
+<span id="purebredOptions" style="display: none;">
+  <select id="purebredSelect">
+    <option value="-1" selected="selected">Random</option>
+    <option value="0">Jagermark Collie - 2 GC 14/-</option>
+    <option value="1">Nordwach Shepherd - 3 GC 2/-</option>
+    <option value="2">Old Aver Sheepdog - 3 GC 4/-</option>
+    <option value="3">Sarheim Cattle Dog - 2 GC 18/-</option>
+    <option value="4">Ulzhammer Shepherd Dog - 4 GC 3/-</option>
+    <option value="5">Hound Purebred 1 - 2 GC</option>
+    <option value="6">Hound Purebred 2 - 2 GC</option>
+    <option value="7">Hound Purebred 3 - 2 GC</option>
+    <option value="8">Hound Purebred 4 - 2 GC</option>
+    <option value="9">Hound Purebred 5 - 2 GC</option>
+    <option value="10">Hunting Dog Purebred 1 - 2 GC</option>
+    <option value="11">Hunting Dog Purebred 2 - 2 GC</option>
+    <option value="12">Hunting Dog Purebred 3 - 2 GC</option>
+    <option value="13">Hunting Dog Purebred 4 - 2 GC</option>
+    <option value="14">Hunting Dog Purebred 5 - 2 GC</option>
+    <option value="15">Lap Dog Purebred 1 - 1 GC</option>
+    <option value="16">Lap Dog Purebred 2 - 1 GC</option>
+    <option value="17">Lap Dog Purebred 3 - 1 GC</option>
+    <option value="18">Lap Dog Purebred 4 - 1 GC</option>
+    <option value="19">Lap Dog Purebred 5 - 1 GC</option>
+    <option value="20">Telland Pit Bull - 3 GC 10/-</option>
+    <option value="21">Pit Dog Purebred 2 - 2 GC</option>
+    <option value="22">Pit Dog Purebred 3 - 2 GC</option>
+    <option value="23">Pit Dog Purebred 4 - 2 GC</option>
+    <option value="24">Pit Dog Purebred 5 - 2 GC</option>
+    <option value="25">Terrier Purebred 1 - 1 GC</option>
+    <option value="26">Terrier Purebred 2 - 1 GC</option>
+    <option value="27">Terrier Purebred 3 - 1 GC</option>
+    <option value="28">Terrier Purebred 4 - 1 GC</option>
+    <option value="29">Terrier Purebred 5 - 1 GC</option>
+    <option value="30">War Dog Purebred 1 - 4 GC</option>
+    <option value="31">War Dog Purebred 2 - 4 GC</option>
+    <option value="32">War Dog Purebred 3 - 4 GC</option>
+    <option value="33">War Dog Purebred 4 - 4 GC</option>
+    <option value="34">War Dog Purebred 5 - 4 GC</option>
+  </select>
+</span><br>
+<button class="standardDogButton" type="button" onclick="generateNPC(1)">Generate Herd Dog!</button>
+<button class="standardDogButton" type="button" onclick="generateNPC(2)">Generate Hound Dog!</button><br>
+<button class="standardDogButton" type="button" onclick="generateNPC(3)">Generate Hunting Dog!</button>
+<button class="standardDogButton" type="button" onclick="generateNPC(4)">Generate Lap Dog!</button><br>
+<button class="standardDogButton" type="button" onclick="generateNPC(5)">Generate Mongrel Dog!</button>
+<button class="standardDogButton" type="button" onclick="generateNPC(6)">Generate Pit Dog!</button><br>
+<button class="standardDogButton" type="button" onclick="generateNPC(7)">Generate Terrier Dog!</button>
+<button class="standardDogButton" type="button" onclick="generateNPC(8)">Generate War Dog!</button><br>
 
 <form name="CareerSelection">
   <input type="radio" name="Career" value="0" checked="checked"> Not Henchman
