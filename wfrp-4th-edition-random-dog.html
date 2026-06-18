@@ -194,7 +194,7 @@ function generateNPC(SpeciesChoice) {
         break;
       case "Elite":
         stat[STAT.WS] += 20;
-        stat[STAT.BS] += 20;
+        // stat[STAT.BS] += 20;
         stat[STAT.WP] += 20;
         break;
       case "Fast":
@@ -279,6 +279,11 @@ function generateNPC(SpeciesChoice) {
     for (statIndex = 0; statIndex < baseStats.length; statIndex += 1) {
       if (baseStats[statIndex] !== 0 && baseStats[statIndex] !== -1) {
         difference = finalStats[statIndex] - baseStats[statIndex] + 10;
+        if (statIndex === STAT.M) {
+          difference *= 5;        // Movement is worth 5x
+        } else if (statIndex === STAT.W) {
+          difference = 0;         // Wounds do not affect price
+        }       
         if (difference >= 5) {
           price += Math.floor(difference / 5);
         } else if (difference <= -5) {
@@ -288,7 +293,7 @@ function generateNPC(SpeciesChoice) {
     }
 
     price += talentCount;
-    return Math.max(price, 0);
+    return price;
   }
 
   function refreshCharacterDisplay() {
