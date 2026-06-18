@@ -278,7 +278,7 @@ function generateNPC(SpeciesChoice) {
 
     for (statIndex = 0; statIndex < baseStats.length; statIndex += 1) {
       if (baseStats[statIndex] !== 0 && baseStats[statIndex] !== -1) {
-        difference = finalStats[statIndex] - baseStats[statIndex] + 10;
+        difference = finalStats[statIndex] - baseStats[statIndex] - 10;
         if (statIndex === STAT.M) {
           difference = (finalStats[statIndex] - baseStats[statIndex]) * 5;        // Movement is worth 5x
         } else if (statIndex === STAT.W) {
