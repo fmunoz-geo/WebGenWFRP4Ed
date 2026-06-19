@@ -269,7 +269,7 @@ function generateNPC(SpeciesChoice) {
         break;
       case "Elite":
         stat[STAT.WS] += 20;
-        stat[STAT.BS] += 20;
+        // stat[STAT.BS] += 20; //No Bows for dogs
         stat[STAT.WP] += 20;
         break;
       case "Fast":
@@ -445,6 +445,10 @@ function generateNPC(SpeciesChoice) {
   StatsBase[STAT.W] = statBonus(STAT.T) * 2 + statBonus(STAT.S) + statBonus(STAT.WP);
 
   for (i in TraitNames) {
+    // Need to check the rules for Tiny
+    if (TraitNames[i] === "Size (Tiny)") {
+      StatsTraits[STAT.W] -= statBonus(STAT.T) + statBonus(STAT.S);
+    }
     if (TraitNames[i] === "Size (Little)") {
       StatsTraits[STAT.W] -= statBonus(STAT.T) + statBonus(STAT.S);
     }
