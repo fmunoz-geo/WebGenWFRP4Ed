@@ -58,7 +58,7 @@ function generateNPC(SpeciesChoice) {
   var CatMarket = [
     {costShillings: 3, availability: "Common"}
   ];
-  car CatDescription = [
+  var CatDescriptions = [
     "Cats are some of the best vermin hunters in the Old World. Confident, silent hunters, they roam everywhere, from the echoing halls of the great and good down to the dirtiest, lowliest hovel. There they catch mice, spiders, rats, and other small creatures. Many are so independent that they don't even require much in the way of feeding. Because they are so common, Cats are some of the cheapest animals to buy."
   ];
   var StatsTxt = "";
@@ -74,8 +74,9 @@ function generateNPC(SpeciesChoice) {
   var TraitNames = [];
   
   var TraitStartCat = [ "Bestial", "Night Vision 2", "Size (Little)", "Skittish", "Stealthy", "Stride", "Trained (Broken)", "Weapon SB+1", "Random Cat Trait", "Random Cat Trait"];
+  var TraitStartAll = [TraitStartCat];
 
-  var PurebredDogs = [
+  var PurebredCats = [
     {name: "Hochland Forest Cat", speciesIndex: 0, costShillings: 5, availability: "Scarce", description: "The Hochland Forest Cat is a native of the Middle Mountains. It is adapted to extremely cold conditions, and has a glossy top coat and wooly undercoat, which somewhat hide the breed's long legs and powerful body. Known for being swift and effective hunters, as well as being intelligent, friendly, and very good with children, the Forest Cat is one of the most popular house cats of the middle Empire.", stats: [4, 30, -1, 15, 15, 35, 35, 0, 15, 15, 20, 0], traits: ["Arboreal", "Bestial", "Night Vision 2", "Size (Little)", "Skittish", "Stealthy", "Stride", "Tracker", "Trained (Broken)", "Weapon SB+1"]},
     {name: "Longhaired Drake", speciesIndex: 0, costShillings: 80, availability: "Rare", description: "The Longhaired Drake is the largest breed of domesticated cat outside the occasional, and very rare, big cat. Larger than most dogs, the breed is usually found wild in western Drakwald Forest where it hunts game of all sizes. A common sight in the coaching inns and fortified hostels of Middenland, the Drake is renowned for its ratting skills, and is even used by some Rat Catchers of Middenheim and Delberz in preference to dogs. Sporting a thick, silky coat, always striped ginger and liver-red, the breed is famous for its bushy tail, sour disposition, and its startlingly golden eyes that appear quite lizard-like. Local myths, most spanning back to the lost Grand Province of Drakwald, claim the Drake has a close association with Dragons, but such tales seem fanciful at best.", stats: [4, 10, -1, 10, 30, 30, 20, 0, 10, 5, 10, 0], traits: ["Armour 1 (Hide)", "Bestial", "Hardy", "Night Vision", "Size (Small)", "Skittish", "Stride", "Trained (Broken)", "Weapon SB+3"]},
     {name: "Nordland Wildcat", speciesIndex: 0, costShillings: 7, availability: "Scarce", description: "Slightly larger and significantly more robust than standard domesticated cats, the Nordland Wildcat is a common sight in the forests of the Northern Empire, and was first tamed over two thousand years ago. Frequently used as housecats in Nordland, the breed is known for its bad temper, dark stripes, and bushy tail. According to the folklore of the north, the breed is famous for keeping ghosts at bay. Because of this, they are a common pet for northern Morrians, and, should hauntings be rumoured, commonfolk often seek out Wildcats to protect themselves.", stats: [4, 10, -1, 10, 30, 30, 20, 0, 10, 5, 10, 0], traits: ["Armour 1 (Hide)", "Bestial", "Hardy", "Night Vision", "Size (Small)", "Skittish", "Stride", "Trained (Broken)", "Weapon SB+3"]},
@@ -89,7 +90,7 @@ function generateNPC(SpeciesChoice) {
     var PurebredIndex = 1 * PurebredSelect.value;
 
     if (PurebredIndex === -1) {
-      PurebredIndex = Math.floor(Math.random() * PurebredDogs.length);
+      PurebredIndex = Math.floor(Math.random() * PurebredCats.length);
     }
 
     PurebredChoice = PurebredCats[PurebredIndex];
@@ -573,7 +574,7 @@ Roll Stats: </td><td><input type="checkbox" id="reRollCheck">
 <h3>Talents</h3>
 <p id="talentsB"></p>
 
-<p id="Acknowledgements">Code: Francisco Mu&ntilde;oz 2019-2026.
+<p id="Acknowledgements">Code: Francisco Mu&ntilde;oz 2019.
 <br>Inspiration: <a href="http://lawhammer.blogspot.com/2020/03/cats-in-cradle.html">"Cats in the Cradle" by Andy Law</a>
 <br>Inspiration: <a href="http://lawhammer.blogspot.com/2020/03/my-kingdom-for-horse.html">"My Kingdom For A Horse" by Andy Law</a>.
 <br>Inspiration: <a href="http://lawhammer.blogspot.com/2020/03/small-medium-and-large-vicious-dogs.html">"Small, Medium, and Large Vicious Dogs" by Andy Law</a>.
