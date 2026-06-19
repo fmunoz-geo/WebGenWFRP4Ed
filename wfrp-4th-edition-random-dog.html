@@ -346,7 +346,7 @@ function generateNPC(SpeciesChoice) {
     return remainder + "/-";
   }
 
-  function calculatePriceShillings(baseStats, finalStats, baseCostShillings, talentCount, extraTraitCount) {
+  function calculatePriceShillings(baseStats, finalStats, baseCostShillings, talentCount) {
     var price = baseCostShillings;
     var statIndex;
     var difference;
@@ -512,8 +512,7 @@ function generateNPC(SpeciesChoice) {
     StatsBaseForPrice,
     FinalStatsForPrice,
     BaseCostShillings,
-    TalentNames.length,
-    ExtraTraitCount
+    TalentNames.length
   );
   var DescriptionTxt = PurebredChoice === null ? DogDescriptions[SpeciesN - 1] : PurebredChoice.description;
   PriceTxt = DescriptionTxt + "<br>Cost: " + formatPrice(FinalPriceShillings) + " (base " + formatPrice(BaseCostShillings) + "); Availability: " + Availability;
