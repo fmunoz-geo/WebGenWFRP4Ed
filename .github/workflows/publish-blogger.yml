@@ -1,0 +1,38 @@
+name: Publish changed HTML to Blogger
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - "*.html"
+      - "blogger-map.json"
+      - "scripts/**"
+
+env:
+  BLOGGER_BLOG_ID: "5786466792766468793"
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install requests
+
+      - name: Publish changed files
+        env:
+          BLOGGER_CLIENT_ID: ${{ secrets.BLOGGER_CLIENT_ID }}
+          BLOGGER_CLIENT_SECRET: ${{ secrets.BLOGGER_CLIENT_SECRET }}
+          BLOGGER_REFRESH_TOKEN: ${{ secrets.BLOGGER_REFRESH_TOKEN }}
+        run: |
+          git diff --name-only ${{ github.event.before }} ${{ github.sha }} \
+            -- '*.html' > changed.txt
+
+          python scripts/blogger_publish.py changed.txt
