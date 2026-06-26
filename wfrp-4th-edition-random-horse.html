@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><title>WFRP 4th Edition Random Horse Companion</title>
+<style>
+td, th {
+  padding: 1px;
+  text-align: center;
+}
+</style>
+<script>
+//<![CDATA[
+const STAT = Object.freeze({
+  M: 0,
+  WS: 1,
+  BS: 2,
+  S: 3,
+  T: 4,
+  AG: 5,
+  I: 6,
+  DEX: 7,
+  INT: 8,
+  WP: 9,
+  FEL: 10,
+  W: 11
+});
+
+const STAT_NAMES = ["M", "WS", "BS", "S", "T", "AG", "I", "DEX", "INT", "WP", "FEL", "W"];
+
+function roll1d10() {
+  "use strict";
+  return Math.floor(Math.random() * 10) + 1;
+}
+
+function roll2d10() {
+  "use strict";
+  return roll1d10() + roll1d10();
+}
+
+function togglePurebredMode() {
+  "use strict";
+
+  var isPurebred = document.getElementById("purebredCheck").checked;
+  var buttons = document.getElementsByClassName("standardHorseButton");
+  var i;
+
+  for (i = 0; i < buttons.length; i += 1) {
+    buttons[i].disabled = isPurebred;
+  }
+
+  document.getElementById("purebredOptions").style.display = isPurebred ? "inline" : "none";
+}
+
+function generateNPC(SpeciesChoice) {
+  "use strict";
+
+  var i;
+  var NameTxt = "";
+  var SpeciesTxt = "";
+  var PriceTxt = "";
+  var SpeciesN;
+  var SpeciesAll = ["Courser","Destrier","Donkey","Dray","Mule","Palfrey","Pony","Rouncey"];
+  var HorseMarket = [
+    {costShillings: 1400, availability: "Common"},
+    {costShillings: 46000, availability: "Scarce"},
+    {costShillings: 40, availability: "Common"},
+    {costShillings: 80, availability: "Common"},
+    {costShillings: 100, availability: "Common"},
+    {costShillings: 3000, availability: "Scarce"},
+    {costShillings: 400, availability: "Common"},
+    {costShillings: 300, availability: "Common"}
+  ];
+
+  var HorseDescriptions = [
+    "Coursers are fast, athletic riding horses bred for speed, endurance, and warfare. They are favoured by scouts, messengers, hunters, and light cavalry, combining agility with enough strength to carry a rider over long distances.",
+    "Destriers are powerful warhorses bred for battle. Larger, stronger, and more aggressive than most riding horses, they are prized by knights, nobles, and elite cavalry for their courage and ability to charge through combat.",
+    "Donkeys are hardy, intelligent beasts of burden known for their sure-footedness and endurance. Common on farms, roads, and mountain trails, they are valued for carrying loads and thriving in difficult conditions.",
+    "Drays are massive draught horses bred to pull heavy loads. Used in agriculture, mining, trade, and transport, they are renowned for their strength, patience, and ability to haul wagons, ploughs, and other heavy equipment.",
+    "Mules are hybrids of horses and donkeys, combining the strength of a horse with the endurance and sure-footedness of a donkey. They are dependable pack and riding animals commonly used by merchants, travellers, and soldiers.",
+    "Palfreys are comfortable riding horses bred for smooth gaits and long journeys. Favoured by merchants, nobles, and wealthy travellers, they provide a gentle ride and are often considered prestigious mounts.",
+    "Ponies are small but sturdy equines known for their resilience, intelligence, and versatility. Popular among farmers, shepherds, children, and travellers, they are capable of carrying riders and loads despite their modest size.",
+    "Rounceys are versatile general-purpose horses suitable for riding, travel, work, and light combat. Affordable and dependable, they are the most common horse owned by freemen, merchants, and professional soldiers."
+  ];
+  var StatsTxt = "";
+  var StatsName = STAT_NAMES;
+  var StatsR = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+  var StatsCourser = [7, 20,-1,40,30,20,30,0,5,20,5, 0];
+  var StatsDestrier =  [5, 30,-1,50,30,10,10,0,5,20,0, 0];
+  var StatsDonkey =    [4, 0,-1,25,30,10,10,0,5,30,0, 0];
+  var StatsDray =      [5, 5, -1,50,30,0,0,0,0,20, 10, 0];
+  var StatsMule =      [5, 5,-1,30,30,10,15,0,5,20,5, 0];
+  var StatsPalfrey =   [6, 5,-1,30,30,10,25,0,5,10,10, 0];
+  var StatsPony =      [5, 0,-1,30,40,20,20,0,0,15,5, 0];
+  var StatsRouncey =   [6, 10,-1,30,30,15,20,0,5,15,10, 0];
+  var StatsAll = [StatsCourser,StatsDestrier, StatsDonkey, StatsDray, StatsMule, StatsPalfrey, StatsPony, StatsRouncey];
+  var StatsAdvance = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+  var StatsBase = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+  var StatsTraits = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+  var TraitTxt = "";
+  var TraitNames = [];
+var TraitStartCourser = [ "Bestial", "Night Vision", "Size (Large)", "Skittish", "Stride", "Trained (Broken)", "Trained (Mount)", "Trained (War)", "Weapon SB+3", "Random Horse Trait", "Random Horse Trait"];
+var TraitStartDestrier = [ "Bestial", "Bite SB+2", "Night Vision", "Rear", "Size (Large)", "Skittish", "Stride", "Trained (Broken)", "Trained (Calm)", "Trained (Mount)", "Trained (War)", "Weapon SB+3", "Random Horse Trait", "Random Horse Trait"];
+var TraitStartDonkey = ["Bestial", "Hardy", "Night Vision", "Skittish", "Stride", "Sure-Feet", "Trained (Broken)", "Trained (Drive)", "Trained (Pack)", "Weapon SB+3", "Random Horse Trait"];
+var TraitStartDray =   [ "Bestial", "Night Vision", "Size (Large)", "Skittish", "Stride", "Trained (Broken)", "Trained (Calm 2)", "Trained (Drive)", "Weapon SB+3", "Random Horse Trait"];
+var TraitStartMule = ["Bestial", "Night Vision", "Skittish", "Stride", "Sure-Feet", "Trained (Broken)", "Trained (Drive)", "Trained (Pack)", "Weapon SB+3", "Random Horse Trait", "Random Horse Trait"];
+var TraitStartPalfrey = ["Amble 3","Bestial", "Size (Large)", "Night Vision", "Skittish", "Stride", "Trained (Broken)", "Trained (Mount)", "Weapon SB+3", "Random Horse Trait", "Random Horse Trait"];
+var TraitStartPony = ["Bestial", "Hardy", "Night Vision 2", "Skittish", "Stride", "Trained (Broken)", "Trained (Drive)", "Trained (Mount)", "Trained (Pack)", "Weapon SB+3", "Random Horse Trait", "Random Horse Trait"];
+var TraitStartRouncey = ["Amble", "Bestial", "Night Vision", "Size (Large)", "Skittish", "Stride", "Trained (Broken)", "Trained (Drive)", "Trained (Mount)", "Trained (Pack)", "Weapon SB+3", "Random Horse Trait", "Random Horse Trait"];
+
+
+  var TraitStartAll = [TraitStartCourser,TraitStartDestrier,
+    TraitStartDonkey,TraitStartDray,
+    TraitStartMule,TraitStartPalfrey,
+    TraitStartPony,TraitStartRouncey];
+
+  var PurebredHorses = [
+  {name: "Arabyan Courser", typeIndex: 0, costShillings: 14000, availability: "Common", description: "A spirited, strong imported courser known for extraordinary endurance, distinctive head shape, long croup, and high tail-carriage.", stats: [8,20,-1,40,60,50,20,0,10,20,0,0], traits: ["Bestial", "Fine 3", "Night Vision 2", "Size (Large)", "Rear", "Skittish", "Stride", "Trained (Broken)", "Trained (Calm)", "Trained (Mount)", "Trained (War)", "Weapon SB+3"]},
+  {name: "Bildhofen", typeIndex: 0, costShillings: 3600, availability: "Common", description: "One of the fastest Imperial coursers, bred for speed, strength, agility, willingness, and trainability.", stats: [9,15,-1,45,45,45,35,0,5,30,5,0], traits: ["Bestial", "Fine", "Night Vision", "Size (Large)", "Skittish", "Stride", "Sure-Feet", "Trained (Broken)", "Trained (Calm 2)", "Trained (Mount)", "Trained (War)", "Weapon SB+3"]},
+  {name: "Oosternian", typeIndex: 0, costShillings: 6400, availability: "Common", description: "A majestic ice-white courser prized by rich Wastelanders, originally used as a warhorse and now often seen in harness-work.", stats: [7,15,-1,40,30,30,25,0,5,20,5,0], traits: ["Bestial", "Fine 2", "Night Vision", "Size (Large)", "Skittish", "Stride", "Trained (Broken)", "Trained (Drive)", "Trained (Mount)", "Trained (War)", "Weapon SB+3"]},
+  {name: "Wasaner Hobby", typeIndex: 0, costShillings: 1400, availability: "Common", description: "A native Stirland warhorse, trainable and friendly, often used by outlaws and lesser nobles.", stats: [7,25,-1,35,25,20,10,0,0,0,20,0], traits: ["Bestial", "Night Vision", "Size (Large)", "Skittish", "Stride", "Trained (Broken)", "Trained (Calm)", "Trained (Mount)", "Trained (War)", "Weapon SB+3"]},
+  {name: "Willenfelder", typeIndex: 0, costShillings: 1800, availability: "Common", description: "A heavy grey-to-black courser of thick muscle and sleek lines, fast for its bulk and calm in battle despite a terrible temper.", stats: [7,20,-1,55,30,10,15,0,5,30,0,0], traits: ["Bestial", "Bite SB+2", "Fury", "Night Vision", "Rear", "Size (Large)", "Stride", "Trained (Broken)", "Trained (Mount)", "Trained (Pack)", "Trained (War)", "Weapon SB+3"]},
+  {name: "Auld Veldter", typeIndex: 1, costShillings: 5000, availability: "Scarce", description: "A towering Ostermark destrier, huge and powerful enough to dominate a battlefield.", stats: [5,30,-1,65,40,10,10,0,5,20,0,0], traits: ["Bestial", "Bite SB+2", "Night Vision", "Rear", "Size (Large)", "Skittish", "Stride", "Trained (Broken)", "Trained (Calm 2)", "Trained (Mount)", "Trained (War)", "Weapon SB+4"]},
+  {name: "Averland Sorrel", typeIndex: 1, costShillings: 4800, availability: "Scarce", description: "A huge chestnut destrier used by southern armies and as a natural draught animal for heavy artillery.", stats: [5,25,-1,60,30,10,5,0,0,20,5,0], traits: ["Bestial", "Night Vision", "Rear", "Size (Large)", "Skittish", "Stride", "Trained (Broken)", "Trained (Calm)", "Trained (Drive 3)", "Trained (Mount)", "Trained (War)", "Weapon SB+3"]},
+  {name: "Ostland Marcher", typeIndex: 1, costShillings: 5100, availability: "Scarce", description: "A compact, hardy northern destrier with heavy confirmation and a powerful battlefield presence.", stats: [6,30,-1,50,50,5,20,0,5,30,10,0], traits: ["Bestial", "Hardy 2", "Night Vision 2", "Rear", "Size (Large)", "Skittish", "Stride", "Trained (Broken)", "Trained (Mount)", "Trained (War)", "Weapon SB+3"]},
+  {name: "Sollander", typeIndex: 1, costShillings: 20000, availability: "Scarce", description: "A colossal yet elegant destrier with a foul temper, expensive and noble in form.", stats: [6,20,-1,70,30,20,30,0,5,30,0,0], traits: ["Bestial", "Bite SB+2", "Fine 2", "Fury", "Hatred (Greenskins)", "Night Vision", "Rear", "Size (Large)", "Skittish", "Stride", "Trained (Broken)", "Trained (Calm)", "Trained (Mount)", "Trained (Pack)", "Trained (War)", "Weapon SB+3"]},
+  {name: "Vorberger", typeIndex: 1, costShillings: 4600, availability: "Scarce", description: "A good-natured Reikland warhorse, squat, muscular, and long associated with military service.", stats: [4,25,-1,40,40,10,10,0,0,0,20,0], traits: ["Amble", "Bestial", "Night Vision", "Size (Large)", "Skittish", "Stride", "Trained (Broken)", "Trained (Mount)", "Trained (Pack 2)", "Trained (War)", "Weapon SB+3"]},
+  {name: "Altahlenean Donkey", typeIndex: 2, costShillings: 54, availability: "Common", description: "A sleek Wissenland Grey Mountain donkey used for agricultural work, harness, pack work, and milk.", stats: [5,0,-1,30,30,20,10,0,5,25,5,0], traits: ["Bestial", "Hardy", "Night Vision", "Skittish", "Stride", "Sure-Feet", "Trained (Broken)", "Trained (Drive)", "Trained (Pack)", "Trained (Ride)", "Weapon SB+3"]},
+  {name: "Greenleaf Honass", typeIndex: 2, costShillings: 66, availability: "Common", description: "A smaller Mootland donkey used for agriculture, carts, mines, milk, and meat.", stats: [3,0,-1,35,30,15,30,0,5,20,10,0], traits: ["Bestial", "Hardy 2", "Night Vision 2", "Skittish", "Stride", "Sure-Feet", "Trained (Broken)", "Trained (Drive)", "Trained (Pack)", "Weapon SB+3"]},
+  {name: "Salinbader", typeIndex: 2, costShillings: 104, availability: "Common", description: "An enormous shaggy donkey from Nordland, affectionate, docile, and strong.", stats: [5,0,-1,45,30,5,10,0,5,10,20,0], traits: ["Armour 2 (Hide)", "Bestial", "Hardy 2", "Night Vision", "Size (Large)", "Skittish", "Stride", "Sure-Feet", "Trained (Broken)", "Trained (Drive 2)", "Trained (Pack)", "Weapon SB+3"]},
+  {name: "Therra Ass", typeIndex: 2, costShillings: 110, availability: "Common", description: "A sizeable Stirland donkey with a smooth gait, notable endurance, and an irascible temper.", stats: [6,10,-1,30,50,15,10,0,5,25,5,0], traits: ["Armour 1 (Hide)", "Bestial", "Fury", "Hardy", "Night Vision", "Skittish", "Size (Large)", "Stride", "Sure-Feet", "Trained (Broken)", "Trained (Drive)", "Trained (Pack 2)", "Trained (Ride)", "Weapon SB+3"]},
+  {name: "Vennland Donkey", typeIndex: 2, costShillings: 35, availability: "Common", description: "A gentle and sure-footed Wissenland donkey with a soft dove-grey coat, common among shepherds and pedlars.", stats: [4,10,-1,25,25,25,15,0,5,20,20,0], traits: ["Bestial", "Night Vision", "Skittish", "Stride", "Sure-Feet", "Trained (Broken)", "Trained (Drive)", "Trained (Pack)", "Weapon SB+3"]},
+  {name: "Bergsburger", typeIndex: 3, costShillings: 160, availability: "Common", description: "A spirited north-west Hochland dray used for agriculture and draught duty since ancient tribal times.", stats: [4,15,-1,40,40,10,5,0,0,0,0,0], traits: ["Bestial", "Hardy", "Night Vision 2", "Size (Large)", "Skittish", "Stride", "Trained (Broken)", "Trained (Calm 2)", "Trained (Drive 5)", "Trained (Pack 2)", "Weapon SB+3"]},
+  {name: "Holswig Kaltblut", typeIndex: 3, costShillings: 60, availability: "Common", description: "A common Reikland dray, patient and muscular, used for ploughing, hauling, and heavy labour.", stats: [5,0,-1,45,30,5,0,0,0,5,10,0], traits: ["Bestial", "Night Vision", "Size (Large)", "Skittish", "Stride", "Trained (Broken)", "Trained (Calm 1)", "Trained (Drive)", "Weapon SB+3"]},
+  {name: "Kislevite Dray", typeIndex: 3, costShillings: 160, availability: "Common", description: "An old northern dray breed, long-lived, lively, and among the strongest horses of the Empire.", stats: [4,10,-1,55,35,0,10,0,0,20,0,0], traits: ["Bestial", "Hardy", "Night Vision", "Size (Large)", "Skittish", "Stride", "Trained (Broken)", "Trained (Calm 2)", "Trained (Drive 5)", "Trained (Pack 3)", "Weapon SB+3"]},
+  {name: "Littener Draught", typeIndex: 3, costShillings: 100, availability: "Common", description: "A golden Wissenland draught horse with powerful hocks, broad chest, and unexpectedly frisky nature.", stats: [5,15,-1,35,35,15,5,0,0,0,10,0], traits: ["Bestial", "Night Vision", "Size (Large)", "Skittish", "Stride", "Trained (Broken)", "Trained (Drive 3)", "Trained (Mount)", "Weapon SB+3"]},
+  {name: "Old Mootland Shire", typeIndex: 3, costShillings: 100, availability: "Common", description: "An enormous black-to-dark brown shire used for farm, forestry, driving, and dock work.", stats: [4,10,-1,50,40,10,5,0,0,10,5,0], traits: ["Bestial", "Night Vision", "Size (Large)", "Skittish", "Stride", "Trained (Broken)", "Trained (Drive 4)", "Trained (Pack)", "Weapon SB+3"]},
+  {name: "Feiner Schritt", typeIndex: 5, costShillings: 3300, availability: "Scarce", description: "A smooth, four-beat gaited palfrey with clean legs, short back, and prominent withers.", stats: [7,0,-1,30,30,30,20,0,5,10,10,0], traits: ["Amble 4", "Bestial", "Size (Large)", "Night Vision", "Skittish", "Stride", "Trained (Broken)", "Trained (Calm)", "Trained (Mount)", "Weapon SB+3"]},
+  {name: "Heiner Horse", typeIndex: 5, costShillings: 7200, availability: "Scarce", description: "A rare Averland palfrey with inward-turning ears, slender elegance, and an exceedingly smooth ride.", stats: [7,10,-1,25,50,40,10,0,10,10,10,0], traits: ["Amble 6", "Bestial", "Size (Large)", "Night Vision", "Skittish", "Stride", "Trained (Broken)", "Trained (Mount)", "Weapon SB+3"]},
+  {name: "Khival", typeIndex: 5, costShillings: 6200, availability: "Scarce", description: "A sought-after Ostermark palfrey with smooth gait, endurance, and a metallic-gold sheen to its coat.", stats: [7,10,-1,25,35,20,15,0,5,20,5,0], traits: ["Amble 2", "Bestial", "Fine", "Size (Large)", "Night Vision", "Skittish", "Stride", "Trained (Broken)", "Trained (Calm)", "Trained (Magical)", "Trained (Mount)", "Weapon SB+3"]},
+  {name: "Siert Palfrey", typeIndex: 5, costShillings: 2300, availability: "Scarce", description: "A cheaper, long-lived Reikland-Westerland palfrey with poor vision and modest intelligence.", stats: [6,15,-1,20,35,20,10,0,0,0,10,0], traits: ["Amble 2", "Bestial", "Size (Large)", "Skittish", "Stride", "Trained (Broken)", "Trained (Mount)", "Weapon SB+3"]},
+  {name: "Vilvizan", typeIndex: 5, costShillings: 3400, availability: "Scarce", description: "A famous Ostermark palfrey breed with a smooth gait, long legs, convex profile, and stubborn nature.", stats: [6,10,-1,30,40,20,15,0,0,40,0,0], traits: ["Amble 4", "Bestial", "Size (Large)", "Sure-Feet", "Night Vision", "Skittish", "Stride", "Trained (Broken)", "Trained (Drive)", "Trained (Mount)", "Weapon SB+3"]},
+  {name: "Aachdenie", typeIndex: 6, costShillings: 140, availability: "Common", description: "A small Ostland riding pony noted for comfort, patience, placid nature, and teaching young riders.", stats: [5,0,-1,25,40,10,20,0,5,20,20,0], traits: ["Amble", "Bestial", "Hardy", "Night Vision", "Skittish", "Stride", "Trained (Broken)", "Trained (Mount)", "Weapon SB+3"]},
+  {name: "Bek Horse", typeIndex: 6, costShillings: 226, availability: "Common", description: "An aggressive Talabecland pony with enthusiasm for warfare, known to kick and bite.", stats: [5,25,-1,35,40,15,25,0,5,20,0,0], traits: ["Bestial", "Bite SB+2", "Hardy", "Night Vision 2", "Skittish", "Stride", "Sure-Feet", "Trained (Broken)", "Trained (Mount)", "Trained (War)", "Weapon SB+3"]},
+  {name: "Bellasechsen", typeIndex: 6, costShillings: 169, availability: "Common", description: "A tiny Averland horse, sometimes kept as a curiosity or guide animal, and more often used to pull carts.", stats: [4,0,-1,10,10,20,25,0,10,15,20,0], traits: ["Bestial", "Hardy", "Night Vision 2", "Size (Small)", "Skittish", "Stride", "Trained (Broken)", "Trained (Drive)", "Trained (Mount)", "Weapon SB+3"]},
+  {name: "Geopony", typeIndex: 6, costShillings: 248, availability: "Common", description: "A small but strong Nordland pony used to scale cliffs and coastal sink-holes.", stats: [4,5,-1,50,40,30,25,0,10,5,15,0], traits: ["Bestial", "Hardy 2", "Night Vision 2", "Skittish", "Stride", "Sure-Feet", "Trained (Broken)", "Trained (Drive 2)", "Trained (Mount)", "Trained (Pack 2)", "Weapon SB+3"]},
+  {name: "Troma Pony", typeIndex: 6, costShillings: 246, availability: "Common", description: "A compact, brave island pony with heavy coat, short legs, muscular body, and surprising intelligence.", stats: [5,5,-1,40,50,10,10,0,15,35,0,0], traits: ["Armour 1 (Hide)", "Bestial", "Hardy 3", "Night Vision 2", "Skittish", "Stride", "Trained (Broken)", "Trained (Drive)", "Trained (Mount)", "Trained (Pack 2)", "Weapon SB+3"]},
+  {name: "Alt-Volgener", typeIndex: 7, costShillings: 272, availability: "Common", description: "A versatile, economical Talabecland rouncey bred for agriculture and plough work.", stats: [5,0,-1,35,20,10,15,0,5,0,5,0], traits: ["Amble", "Bestial", "Night Vision", "Size (Large)", "Skittish", "Stride", "Trained (Broken)", "Trained (Drive)", "Trained (Mount)", "Weapon SB+3"]},
+  {name: "Denkesian", typeIndex: 7, costShillings: 310, availability: "Common", description: "A friendly Hochlander rouncey with distinctive spotted coat, useful for many purposes and popular with travelling fairs.", stats: [6,10,-1,40,30,20,20,0,10,20,15,0], traits: ["Amble", "Bestial", "Night Vision", "Size (Large)", "Skittish", "Stride", "Trained (Broken)", "Trained (Drive)", "Trained (Mount)", "Trained (Pack)", "Weapon SB+3"]},
+  {name: "Grauller Genet", typeIndex: 7, costShillings: 240, availability: "Common", description: "An old Grau valley rouncey, versatile but with relatively poor eyesight.", stats: [5,10,-1,30,25,20,5,0,5,10,5,0], traits: ["Bestial", "Size (Large)", "Skittish", "Stride", "Trained (Broken)", "Trained (Drive)", "Trained (Mount)", "Trained (Pack)", "Weapon SB+3"]},
+  {name: "Strigany Cob", typeIndex: 7, costShillings: 440, availability: "Common", description: "A piebald cob famous for pulling caravans and Strigany vardos, gentle and hard-working.", stats: [5,10,-1,40,30,15,15,0,10,30,15,0], traits: ["Amble", "Bestial", "Calm", "Night Vision", "Size (Large)", "Skittish", "Stride", "Trained (Broken)", "Trained (Drive 2)", "Trained (Mount)", "Trained (Pack 2)", "Weapon SB+3"]},
+  {name: "Vyormytov", typeIndex: 7, costShillings: 328, availability: "Common", description: "An athletic Ostland rouncey bred for everyday use and war, known for endurance and calm nature.", stats: [7,20,-1,30,40,40,25,0,5,35,5,0], traits: ["Amble", "Bestial", "Night Vision", "Size (Large)", "Skittish", "Stride", "Trained (Broken)", "Trained (Drive)", "Trained (Mount)", "Trained (War)", "Weapon SB+3"]}
+  ];
+  var PurebredChoice = null;
+  if (document.getElementById("purebredCheck").checked === true) {
+    var PurebredSelect = document.getElementById("purebredSelect");
+    var PurebredIndex = 1 * PurebredSelect.value;
+
+    if (PurebredIndex === -1) {
+      PurebredIndex = Math.floor(Math.random() * PurebredHorses.length);
+    }
+
+    PurebredChoice = PurebredHorses[PurebredIndex];
+  }
+
+  var CareerAll = ["(Not Henchman)", "Trainee Horse", "Horse", "Trained Horse", "Veteran Horse"];
+  var AnyTraits = [
+    ["Afraid (Any one)","Afraid (Fire)","Afraid (Magic)","Afraid (Guns)"],
+    ["Animosity (Any one)","Animosity (Humans)","Animosity (Dwarfs)","Animosity (Elfs)","Animosity (Halflings)","Animosity (Gnomes)"],
+    ["Random Horse Trait", "Amble 1", "Belligerent", "Big", "Bite SB+2", "Fast", "Hardy", "Night Vision", "Rear", "Stealthy", "Sure-Feet", "Tough", "Trained (Calm)", "Trained (Drive)", "Trained (Pack)", "Trained (Magical)", "Trained (War)"]
+  ];
+
+  var Talents = [
+  ["Strike Mighty Blow", "Sixth Sense", "Flee!", "Sturdy"], /*, Night Vision*/
+  ["Hardy", "Sprinter", "Menacing", "Strong Legs"],
+  ["Fleet Footed", "Frightening", "Resolute", "Strong Back"],
+  ["Berserk Charge", "Implacable", "Robust", "Step Aside"]
+  ];
+
+  var TalentNames = [];
+  var TalentTxt = " ";
+
+  var CareerN;
+  var CareerName;
+
+  var XPs = 0;
+  var XPTxt = "";
+
+  var SkillTxt = "";
+  var SkillStart;
+  var SkillNames = [];
+  var SkillValues = [];
+  var SkillStats = [];
+
+  var StatsNPCHorse = [
+    [1, STAT.WS],
+    [1, STAT.AG],
+    [1, STAT.WP],
+    [2, STAT.S],
+    [3, STAT.T],
+    [4, STAT.I]
+  ];
+
+/* 5, 10, 15, 20 */
+  var StatsXPcost = [125, 275, 475, 725];
+
+  var SkillsNPCHorse = [
+[1, "Athletics", STAT.S],
+[1, "Dodge", STAT.AG],
+[1, "Endurance", STAT.T],
+[1, "Intuition", STAT.I],
+[1, "Outdoor Survival", STAT.INT],
+[1, "Perception", STAT.I],
+[1, "Perform (Obedience)", 4],
+[1, "Swim", STAT.S],
+[2, "Cool", STAT.WP],
+[2, "Intimidate", STAT.S],
+[2, "Melee (Tooth & Hoof)", STAT.WS],
+[2, "Navigation", STAT.I],
+[2, "Perform (Tricks)", STAT.AG],
+[2, "Stealth", STAT.AG],
+[3, "Charm", STAT.FEL],
+[3, "Climb", STAT.S],
+[3, "Drive (Any)", STAT.S],
+[3, "Perform (Tricks)", STAT.AG],
+[4, "Perform (Dressage)", STAT.AG],
+    [4, "Language (Battle)", STAT.INT]
+  ];
+
+/* on steps extra of 5 over the previous */
+  var SkillsXPStepCost = [50, 75, 100, 150];
+  var SkillsXPCost = [
+    SkillsXPStepCost[0],
+    SkillsXPStepCost[0] + SkillsXPStepCost[1],
+    SkillsXPStepCost[0] + SkillsXPStepCost[1] + SkillsXPStepCost[2],
+    SkillsXPStepCost[0] + SkillsXPStepCost[1] + SkillsXPStepCost[2] + SkillsXPStepCost[3]
+  ];
+
+  function parseNamesAny(NamesArray, AnyNames) {
+    var x;
+    var y;
+    var out = NamesArray.slice();
+
+    for (x in out) {
+      if (out[x].indexOf("Random ") > -1) {
+        for (y in AnyNames) {
+          if (out[x].localeCompare(AnyNames[y][0]) === 0) {
+            out[x] = AnyNames[y][Math.floor(Math.random() * (AnyNames[y].length - 1) + 1)];
+          }
+        }
+      }
+    }
+
+    return out;
+  }
+
+  function parseTrait2Stats(TraitArray) {
+    var x;
+    var stat = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+    for (x = 0; x < TraitArray.length; x += 1) {
+      switch (TraitArray[x]) {
+      case "Big":
+        stat[STAT.S] += 10;
+        stat[STAT.T] += 10;
+        stat[STAT.AG] += -5;
+        break;
+      case "Brute":
+        stat[STAT.S] += 10;
+        stat[STAT.T] += 10;
+        stat[STAT.AG] += -10;
+        stat[STAT.M] += -1;
+        break;
+      case "Clever":
+        stat[STAT.I] += 10;
+        stat[STAT.INT] += 20;
+        break;
+      case "Cunning":
+        stat[STAT.I] += 10;
+        stat[STAT.INT] += 10;
+        stat[STAT.FEL] += 10;
+        break;
+      case "Elite":
+        stat[STAT.WS] += 20;
+        stat[STAT.WP] += 20;
+        break;
+      case "Fast":
+        stat[STAT.AG] += 10;
+        stat[STAT.M] += 1;
+        break;
+      case "Hardy":
+       /*This will be reparsed later*/
+        stat[STAT.W] += 1;
+        break;
+      case "Hardy 2":
+       /*This will be reparsed later*/
+        stat[STAT.W] += 2;
+        break;
+      case "Hardy 3":
+       /*This will be reparsed later*/
+        stat[STAT.W] += 3;
+        break;
+      case "Leader":
+        stat[STAT.WP] += 10;
+        stat[STAT.FEL] += 10;
+        break;
+      case "Strong":
+        stat[STAT.S] += 10;
+        break;
+      case "Tough":
+        stat[STAT.T] += 10;
+        stat[STAT.WP] += 10;
+        break;
+      case "Trained (War)":
+        stat[STAT.WS] += 10;
+        break;
+      default:
+        break;
+      }
+    }
+
+    return stat;
+  }
+
+  function parseSBDamage(StringsArray, SB) {
+    var x;
+    var out = StringsArray.slice();
+
+    for (x in out) {
+      out[x] = out[x].replace(" SB+0", " +" + SB);
+      out[x] = out[x].replace(" SB+1", " +" + (SB + 1));
+      out[x] = out[x].replace(" SB+2", " +" + (SB + 2));
+      out[x] = out[x].replace(" SB+3", " +" + (SB + 3));
+      out[x] = out[x].replace(" SB+4", " +" + (SB + 4));
+      out[x] = out[x].replace(" SB+5", " +" + (SB + 5));
+    }
+
+    return out;
+  }
+
+  function dedupeName(NameArray) {
+    var seen = {};
+    var out = [];
+
+    for (var idx = 0; idx < NameArray.length; idx += 1) {
+      if (!seen[NameArray[idx]]) {
+        seen[NameArray[idx]] = true;
+        out.push(NameArray[idx]);
+      }
+    }
+
+    return out;
+  }
+
+  function statTotal(statIndex) {
+    return StatsR[statIndex] + StatsBase[statIndex] + StatsTraits[statIndex] + StatsAdvance[statIndex];
+  }
+
+  function statBonus(statIndex) {
+    return Math.floor(statTotal(statIndex) / 10);
+  }
+
+  function formatPrice(shillings) {
+    var gc = Math.floor(shillings / 20);
+    var remainder = shillings % 20;
+
+    if (gc > 0 && remainder > 0) {
+      return gc + " GC " + remainder + "/-";
+    }
+    if (gc > 0) {
+      return gc + " GC";
+    }
+    return remainder + "/-";
+  }
+
+  function calculatePriceShillings(baseStats, finalStats, baseCostShillings, talentCount) {
+    var price = baseCostShillings;
+    var statIndex;
+    var difference;
+    var modifier;
+
+    for (statIndex = 0; statIndex < baseStats.length; statIndex += 1) {
+      if (baseStats[statIndex] !== 0 && baseStats[statIndex] !== -1) {
+        difference = finalStats[statIndex] - (baseStats[statIndex] + 10);
+        modifier = Math.trunc(difference / 5);
+
+        if (statIndex === STAT.M) {
+          modifier =  (finalStats[statIndex] - baseStats[statIndex]) * 5;
+        } else if (statIndex === STAT.W) {
+          modifier = 0;
+        }
+
+        price += modifier;
+      }
+    }
+
+    price += talentCount * 10;
+    // price += extraTraitCount * 10;
+    return Math.max(price, 0);
+  }
+
+  function refreshCharacterDisplay() {
+    document.getElementById("nameB").innerHTML = NameTxt;
+    document.getElementById("speciessexcarredB").innerHTML = SpeciesTxt + ", " + CareerName + " " + XPTxt;
+    document.getElementById("priceB").innerHTML = PriceTxt;
+    document.getElementById("statsB").innerHTML = StatsTxt;
+    document.getElementById("skillsB").innerHTML = SkillTxt;
+    document.getElementById("traitsB").innerHTML = TraitTxt;
+    document.getElementById("talentsB").innerHTML = TalentTxt;
+  }
+
+/*------ Start Rolling--------*/
+
+  if (PurebredChoice !== null) {
+    SpeciesN = PurebredChoice.speciesIndex + 1;
+    SpeciesTxt = PurebredChoice.name + " (Purebred " + SpeciesAll[SpeciesN - 1] + ")";
+  } else if (SpeciesChoice > 0) {
+    SpeciesN = SpeciesChoice;
+    SpeciesTxt = SpeciesAll[SpeciesN - 1];
+  } else {
+    SpeciesN = Math.floor(Math.random() * SpeciesAll.length) + 1;
+    SpeciesTxt = SpeciesAll[SpeciesN - 1];
+  }
+
+  var CareerNRadio;
+  for (CareerNRadio = 0; CareerNRadio < document.CareerSelection.Career.length; CareerNRadio += 1) {
+    if (document.CareerSelection.Career[CareerNRadio].checked) {
+      break;
+    }
+  }
+
+  CareerN = 1 * document.CareerSelection.Career[CareerNRadio].value;
+
+  if (CareerN === -1) {
+    CareerN = Math.floor(Math.random() * CareerAll.length);
+  }
+
+  CareerName = CareerAll[CareerN];
+  StatsBase = (PurebredChoice === null ? StatsAll[SpeciesN - 1] : PurebredChoice.stats).slice();
+  var StatsBaseForPrice = StatsBase.slice();
+
+  for (i = 0; i < StatsR.length; i += 1) {
+    if (document.getElementById("reRollCheck").checked === true) {
+      StatsR[i] = roll2d10();
+    } else {
+      StatsR[i] = 10;
+    }
+
+    if (StatsBase[i] === -1) {
+      StatsBase[i] = 0;
+      StatsR[i] = 0;
+    }
+  }
+/* No random M nor W*/
+  StatsR[STAT.M] = 0;
+  StatsR[STAT.W] = 0;
+
+  var OriginalTraitNames = (PurebredChoice === null ? TraitStartAll[SpeciesN - 1] : PurebredChoice.traits).slice();
+  TraitNames = dedupeName(parseNamesAny(OriginalTraitNames, AnyTraits));
+  StatsTraits = parseTrait2Stats(TraitNames);
+
+  if (CareerN > 0) {
+    for (i = 0; i < StatsNPCHorse.length; i += 1) {
+      if (StatsNPCHorse[i][0] <= CareerN) {
+        StatsAdvance[StatsNPCHorse[i][1]] = 5 * CareerN;
+        XPs = XPs + StatsXPcost[CareerN - 1];
+      }
+    }
+  }
+
+/*Parse Wounds*/
+  if (StatsTraits[STAT.W] > 0) {
+    StatsTraits[STAT.W] = StatsTraits[STAT.W] * statBonus(STAT.T);
+  }
+
+  StatsBase[STAT.W] = statBonus(STAT.T) * 2 + statBonus(STAT.S) + statBonus(STAT.WP);
+
+  for (i = 0; i < TraitNames.length; i += 1) {
+    // Need to check the rules for Tiny
+    if (TraitNames[i] === "Size (Tiny)") {
+      StatsTraits[STAT.W] -= statBonus(STAT.T) + statBonus(STAT.S);
+    }
+    else if (TraitNames[i] === "Size (Little)") {
+      StatsTraits[STAT.W] -= statBonus(STAT.T) + statBonus(STAT.S);
+    }
+    else if (TraitNames[i] === "Size (Small)") {
+      StatsTraits[STAT.W] -= statBonus(STAT.S);
+    }
+    else if (TraitNames[i] === "Size (Large)") {
+      StatsTraits[STAT.W] += statBonus(STAT.S);
+    }
+  }
+
+  TraitNames = parseSBDamage(TraitNames, statBonus(STAT.S));
+
+
+/*Skills and talents*/
+  if (CareerN > 0) {
+    var SkillsSpecie = SkillsNPCHorse;
+    var k;
+ /* We pick 8 skills each level to raise to max */
+    for (var j = 1; j <= CareerN; j++) { /*We add the skills for the level*/
+      var randomSkill;
+
+      for (k in SkillsSpecie) {
+        if (SkillsSpecie[k][0] === j) {
+          SkillNames.push(SkillsSpecie[k][1]);
+          SkillValues.push(0);
+          SkillStats.push(statTotal(SkillsSpecie[k][2]));
+        }
+      }
+
+    for (i = 1; i <= 8; i++) {
+      randomSkill = Math.floor(Math.random() * SkillNames.length);
+      if (j === 1) {
+        randomSkill = i-1
+        }
+        SkillValues[randomSkill] = 5 * CareerN;
+      }
+    }
+ /* Clean the 0 level skills and compute the XP costs*/
+    for(i = 0; i < SkillNames.length; i++){ 
+      if ( SkillValues[i] === 0) {
+        SkillNames.splice(i, 1); 
+        SkillValues.splice(i, 1); 
+        SkillStats.splice(i, 1); 
+        i--;
+      } else {
+        XPs = XPs + SkillsXPCost[SkillValues[i]/5-1];
+      }
+    }
+
+    for (i = 0; i < CareerN; i += 1) {
+      var randomTalent = Math.floor(Math.random() * Talents[i].length);
+      TalentNames.push(Talents[i][randomTalent]);
+      XPs += 100;
+    }
+  }
+
+  var FinalStatsForPrice = [];
+  for (i = 0; i < StatsBase.length; i += 1) {
+    FinalStatsForPrice.push(StatsR[i] + StatsBase[i] + StatsTraits[i] + StatsAdvance[i]);
+  }
+
+  // var ExtraTraitCount = Math.max(TraitNames.length - OriginalTraitNames.length, 0);
+  var BaseCostShillings = PurebredChoice === null ? HorseMarket[SpeciesN - 1].costShillings : PurebredChoice.costShillings;
+  var Availability = PurebredChoice === null ? HorseMarket[SpeciesN - 1].availability : PurebredChoice.availability;
+  var FinalPriceShillings = calculatePriceShillings(
+    StatsBaseForPrice,
+    FinalStatsForPrice,
+    BaseCostShillings,
+    TalentNames.length
+  );
+  var DescriptionTxt = PurebredChoice === null ? HorseDescriptions[SpeciesN - 1] : PurebredChoice.description;
+  PriceTxt = DescriptionTxt + "<br>Cost: " + formatPrice(FinalPriceShillings) + " (base " + formatPrice(BaseCostShillings) + "); Availability: " + Availability;
+
+  StatsTxt = "<table><tr>";
+  for (i in StatsName) {
+    StatsTxt += "<th><B>" + StatsName[i] + "</B></th>";
+  }
+
+  StatsTxt += "</tr><tr style='text-align: right'>";
+  for (i in StatsAdvance) {
+    var star = "";
+    if (StatsTraits[i]) {
+      star = "*";
+    }
+    StatsTxt += "<td>" + (StatsR[i] + StatsBase[i] + StatsTraits[i]) + star + "</td>";
+  }
+
+  if (CareerN > 0) {
+    StatsTxt += "</tr><tr style='text-align: right'>";
+    for (i in StatsAdvance) {
+      StatsTxt += "<td>" + StatsAdvance[i] + "</td>";
+    }
+
+    StatsTxt += "</tr><tr style='text-align: right'>";
+    for (i in StatsAdvance) {
+      StatsTxt += "<td>" + (StatsR[i] + StatsBase[i] + StatsTraits[i] + StatsAdvance[i]) + "</td>";
+    }
+  }
+
+  StatsTxt += "</tr></table>";
+
+  for (i = 0; i < TraitNames.length; i += 1) {
+    TraitTxt += "<span title=''>" + TraitNames[i] + "</span>; ";
+  }
+
+  for (i = 0; i < SkillNames.length; i += 1) {
+    SkillTxt += "<span title=''>" + SkillNames[i] + ":" + (SkillValues[i] + SkillStats[i]) + "</span>; ";
+  }
+
+  for (i = 0; i < TalentNames.length; i += 1) {
+    TalentTxt += "<span title=''>" + TalentNames[i] + "</span>; ";
+  }
+
+  if (XPs > 0) {
+    XPTxt = "(" + XPs + " Xps)";
+  }
+
+  refreshCharacterDisplay();
+  return 1;
+}
+//]]>
+</script>
+</head>
+<body>
+    <h1>Generate Horse Companion</h1>
+ <p>This is a simple Horse Companion generator (and other equines), it creates random stats for horses with different races and even additional training based on the article <a href="http://lawhammer.blogspot.com/2020/03/my-kingdom-for-horse.html">"My Kingdom For A Horse" by Andy Law</a><br>
+For other companions, check <a href="https://pacomiscelaneousstuff.blogspot.com/2020/03/wfrp-4th-edition-random-dog-companion.html">the dog generator</a> based on the article <a href="http://lawhammer.blogspot.com/2020/03/small-medium-and-large-vicious-dogs.html">"Small, Medium, and Large Vicious Dogs" by Andy Law</a><br>
+If you need people you might meet in a <a href="https://pacomiscelaneousstuff.blogspot.com/2020/03/wfrp-inn-generator.html">tavern</a> check my <a href="https://pacomiscelaneousstuff.blogspot.com/2019/08/npc-generator.html">NPC Generator</a> to create Merchants, Scholar, Soldiers and similar citizens.<br>
+To have a more detailed Old Worlders you can use the list of my <a href="https://pacomiscelaneousstuff.blogspot.com/2018/09/generic-npc-stats-for-4th-edition.html">Generic NPCs stats for 4th edition</a>.<br>
+You can also create the loot carried by them using my <a href="https://pacomiscelaneousstuff.blogspot.com/2019/08/treasure-generator.html">Random Treasure Generator</a>.
+</p>
+
+<button type="button" onclick="generateNPC(-1)">Generate Horse Now!</button>
+<label><input type="checkbox" id="purebredCheck" onchange="togglePurebredMode()"> Purebred Races</label>
+<span id="purebredOptions" style="display: none;">
+  <select id="purebredSelect">
+    <option value="-1" selected="selected">Random</option>
+<option value="0">Courser - Arabyan Courser</option>
+<option value="1">Courser - Bildhofen</option>
+<option value="2">Courser - Oosternian</option>
+<option value="3">Courser - Wasaner Hobby</option>
+<option value="4">Courser - Willenfelder</option>
+<option value="5">Destrier - Auld Veldter</option>
+<option value="6">Destrier - Averland Sorrel</option>
+<option value="7">Destrier - Ostland Marcher</option>
+<option value="8">Destrier - Sollander</option>
+<option value="9">Destrier - Vorberger</option>
+<option value="10">Donkey - Altahlenean Donkey</option>
+<option value="11">Donkey - Greenleaf Honass</option>
+<option value="12">Donkey - Salinbader</option>
+<option value="13">Donkey - Therra Ass</option>
+<option value="14">Donkey - Vennland Donkey</option>
+<option value="15">Dray - Bergsburger</option>
+<option value="16">Dray - Holswig Kaltblut</option>
+<option value="17">Dray - Kislevite Dray</option>
+<option value="18">Dray - Littener Draught</option>
+<option value="19">Dray - Old Mootland Shire</option>
+<option value="20">Palfrey - Feiner Schritt</option>
+<option value="21">Palfrey - Heiner Horse</option>
+<option value="22">Palfrey - Khival</option>
+<option value="23">Palfrey - Siert Palfrey</option>
+<option value="24">Palfrey - Vilvizan</option>
+<option value="25">Pony - Aachdenie</option>
+<option value="26">Pony - Bek Horse</option>
+<option value="27">Pony - Bellasechsen</option>
+<option value="28">Pony - Geopony</option>
+<option value="29">Pony - Troma Pony</option>
+<option value="30">Rouncey - Alt-Volgener</option>
+<option value="31">Rouncey - Denkesian</option>
+<option value="32">Rouncey - Grauller Genet</option>
+<option value="33">Rouncey - Strigany Cob</option>
+<option value="34">Rouncey - Vyormytov</option>
+  </select>
+</span><br>
+ <button class="standardHorseButton" type="button" onclick="generateNPC(1)">Generate Courser Horse!</button>
+ <button class="standardHorseButton" type="button" onclick="generateNPC(2)">Generate Destrier Horse!</button><br>
+ <button class="standardHorseButton" type="button" onclick="generateNPC(3)">Generate Donkey!</button>
+ <button class="standardHorseButton" type="button" onclick="generateNPC(4)">Generate Dray Horse!</button><br>
+ <button class="standardHorseButton" type="button" onclick="generateNPC(5)">Generate Mule!</button>
+ <button class="standardHorseButton" type="button" onclick="generateNPC(6)">Generate Palfrey!</button><br>
+ <button class="standardHorseButton" type="button" onclick="generateNPC(7)">Generate Pony!</button>
+ <button class="standardHorseButton" type="button" onclick="generateNPC(8)">Generate Rouncey!</button><br>
+
+<form name="CareerSelection">
+  <input type="radio" name="Career" id="Career" value="0" checked="checked" > Not Henchman
+  <input type="radio" name="Career" id="Career" value="1"> Trainee Horse
+  <input type="radio" name="Career" id="Career" value="2"> Horse
+  <input type="radio" name="Career" id="Career" value="3"> Trained Horse
+  <input type="radio" name="Career" id="Career" value="4"> Veteran Horse
+  <input type="radio" name="Career" id="Career" value="-1"> Random
+</form>
+<br>
+<table><tr><td>
+Roll Stats: </td><td><input type="checkbox" id="reRollCheck">
+</td></tr>
+</table>
+<h3><p id="nameB">.</p></h3>
+<h4><p id="speciessexcarredB"></p></h4>
+<h4><p id="priceB"></p></h4>
+<h3>Characteristics</h3>
+<p id="statsB"></p>
+<h3>Skills</h3>
+<p id="skillsB"></p>
+<h3>Traits</h3>
+<p id="traitsB"></p>
+<h3>Talents</h3>
+<p id="talentsB"></p>
+
+<p id="Acknowledgements">Code: Francisco Mu&ntilde;oz 2019.
+<br>Inspiration: <a href="http://lawhammer.blogspot.com/2020/03/my-kingdom-for-horse.html">"My Kingdom For A Horse" by Andy Law</a>.
+<br>Inspiration: <a href="http://lawhammer.blogspot.com/2020/03/small-medium-and-large-vicious-dogs.html">"Small, Medium, and Large Vicious Dogs" by Andy Law</a>.
+<br>Inspiration: <a href="http://www.grimnirstavern.com">Grimnir's Tavern, Random NPC Generator for WFRP 4e</a>.
+<br>Game: Games Worshop and Cubicle 7
+<br>Other random generators: <a href="https://randroll.com/archive/warhammer-fantasy-roleplay-generators-guide/">https://randroll.com/archive/warhammer-fantasy-roleplay-generators-guide/</a>
+</p>
+
+</body>
+</html>
