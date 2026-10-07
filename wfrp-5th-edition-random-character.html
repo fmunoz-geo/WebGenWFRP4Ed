@@ -1766,6 +1766,11 @@ for (i = 0; i < 5; i += 1) {
     SkillValues.push ( skillPoints );
     SkillCareer.push ( 0 );
 }
+for (const language of species.initialLanguages) {
+    SkillNames.push("Language (" + language + ")");
+    SkillValues.push(30);
+    SkillCareer.push(0);
+}
 console.log(SkillStart);
 console.log(SkillNames);
 TalentNames = species.initialTalents.slice();
