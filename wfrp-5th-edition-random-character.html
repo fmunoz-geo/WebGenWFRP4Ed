@@ -196,9 +196,14 @@ var xpSpend = 0;
 var XpTxt = "";
 var SpeciesTxt ="";
 var SpeciesN;
-var SpeciesAll = ["Human","Dwarf","Halfling","High Elf","Wood Elf"];
-var Sex = 0;
-var NamesHumanMale = ["Armin", "Adolf", "Adolphus", "Albrecht", "Alexander", "Aldred", "Alfred",
+// Species IDs match the manual generation buttons. Names and surname suffixes use [male, female].
+// Career thresholds follow CareerAll; -1 means that career is unavailable.
+const SpeciesAll = [
+    {
+        id: 1,
+        name: "Human",
+        randomRange: [1, 90],
+        names: [["Armin", "Adolf", "Adolphus", "Albrecht", "Alexander", "Aldred", "Alfred",
 "Anders", "Anton", "Axel", "Bernard", "Bernd", "Bert", "Boris", "Bruno", 
 "Chedwic", "Christian", "Christoph", "Claus", "Clemons", "Conrad", "Konrad", 
 "Dahlbert", "Detlef", "Dieter", "Dirk", "Erberhardt", "Erik", "Erich",
@@ -240,22 +245,7 @@ var NamesHumanMale = ["Armin", "Adolf", "Adolphus", "Albrecht", "Alexander", "Al
 "Steffen", "Sven", "Thadeus", "Theodor", "Theo", "Thomas", "Timotheus",
 "Titus", "Tobias", "Udo", "Ulrich", "Valentin", "Veit", "Viktor", "Volkmar",
 "Volker", "Walter", "Wendel", "Werner", "Wolfgang", "Wolf", "Wilhelm", "Wili",
-"Zacharias"];
-var NamesDwarfMale = ["Adrik","Alberich","Baern","Barendd", "Brouor", "Bruenor",
-"Dain", "Darrak", "Delg", "Eberk", "Einkil", "Fargrim", "Flint", "Gardain",
-"Harbek", "Kildrak", "Morgran", "Orsik", "Oskar", "Rangrim", "Rurik", "Taklinn",
-"Thoradin", "Thorin", "Tordek", "Traubon", "Travok", "Ulfgar", "Veit", "Vondal",
- "Alrik", "Bronda", "Dimzad", "Fenna", "Gottri", "Gudrun", "Snorri"];
-var NamesHalflingMale = ["Alton","Ander","Cade","Corrin", "Eldon", "Errich,",
-"Finnan", "Garret", "Lindal", "Lyle", "Merrie", "Milo", "Osborn", "Perrin",
-"Reed", "Roscoe", "Wellby", "Ferdinand", "Heironymus", "Maximillian",
-"Theodosius"];
-var NamesElfMale = ["Adran", "Aelar", "Aramil", "Arannis", "Aust", "Beiro",
-"Berrian", "Carrie", "Enialis", "Erdan", "Erevan", "Galinndan", "Hadarai",
-"Heian", "Himo", "Immeral", "Ivellios", "Laucian", "Mindartis", "Paelias",
-"Peren", "Quarion", "Riardol", "Rolen", "Soveliss", "Thamior", "Tharivol",
-"Theren", "Varis"];
-var NamesHumanFemale = ["Andrea", "Angelika", "Anita", "Anna-Lise", "Astrid", "Brigid", "Brigitte",
+"Zacharias"], ["Andrea", "Angelika", "Anita", "Anna-Lise", "Astrid", "Brigid", "Brigitte",
 "Camilla", "Celeste", "Charlotte", "Christa", "Christiane", "Clementine",
 "Cordula", "Daniele", "Doris", "Eva", "Edda", "Edith", "Elga", "Elisabeth",
 "Elixabet", "Ellen", "Etti", "Frances", "Frieda", "Gabriel e", "Gaby", "Gerd",
@@ -286,25 +276,8 @@ var NamesHumanFemale = ["Andrea", "Angelika", "Anita", "Anna-Lise", "Astrid", "B
 "Rebekka", "Regina", "Regine", "Renate", "Renata", "Rikarda", "Rosa", "Ruth",
 "Sabine", "Sibyle", "Silvia", "Sophie", "Stefanie", "Stephanie", "Susanne",
 "Susanna", "Therese", "Ulrike", "Ursula", "Ursel", "Valentina", "Verena",
-"Vera", "Veronika", "Viktoria", "Wilhelmine", "Winifred"];
-var NamesDwarfFemale = ["Amber", "Artin", "Audhild", "Bardryn", "Dagnal",
-"Diesa", "Eldeth", "Falkrunn", "Finellen", "Gunnloda", "Gurdis", "Helja",
-"Hlin", "Kathra", "Kristryd", "Hilde", "Liftrasa", "Mardred", "Riswynn",
-"Sannl", "Torbera", "Torgga", "Vistra"];
-var NamesHalflingFemale = ["Andry", "Bree", "Callie", "Cora", "Euphemia", "Jillian", "Kithri", "Lavinia",
-"Lidda", "Meda", "Nedda", "Paela", "Portia", "Seraphina", "Shaena", "Trym",
-"Vani", "Verna", "Antoniella", "Esmerelda", "Thomasina"];
-var NamesElfFemale = ["Adrie", "Althaea", "Anastrianna,", "Andraste", "Antinua",
-"Bethrynna", "Birel", "Caelynn,", "Drusilia", "Enna", "Felosial", "Ielenia",
-"Jelenneth", "Keyleth", "Leshanna", "Lia", "Meriele", "Mialee", "Naivara",
-"Quelenna", "Quillathe", "Sariel", "Shanairra", "Shava", "Silaqui",
-"Theirastra", "Thia", "Vadania", "Valanthe", "Xanaphia"];
-var NamesAllMale = [ NamesHumanMale, NamesDwarfMale, NamesHalflingMale,
- NamesElfMale, NamesElfMale];
-var NamesAllFemale = [ NamesHumanFemale, NamesDwarfFemale, NamesHalflingFemale,
- NamesElfFemale, NamesElfFemale];
-var NamesAll = [NamesAllMale, NamesAllFemale];
-var SurnamesHuman = ["Abel", "Abend", "Abendrot", "Achenbach", "Ackermann", "Adler", "Albers",
+"Vera", "Veronika", "Viktoria", "Wilhelmine", "Winifred"]],
+        surnames: ["Abel", "Abend", "Abendrot", "Achenbach", "Ackermann", "Adler", "Albers",
 "Alendorf", "Alsheimer", "Alt", "Arndt", "Aschendorf", "Baer", "Baumann",
 "Berger", "Biedenkopf", "Blacher", "Blech", "Blum", "Bockenheim", "Bohm",
 "Bohne", "Bohnen", "Bol", "Bormann", "Bornheim", "Brandauer", "Brahms",
@@ -345,27 +318,178 @@ var SurnamesHuman = ["Abel", "Abend", "Abendrot", "Achenbach", "Ackermann", "Adl
 "Wolkenstein", "Zech", "Zieren", "Zimmermann", "Zischer", "Zopf", "Zweifel",
 "Klauen", "Karge", "Shcatten", "Mittel", "Drakens", "Grau", "Axtschlagpass",
 "Gross", "Reik", "Meut", "Niderreik", "Dunkelfeuerpass", "Schwarz", "Duster",
-"Dach", "Welten"];
-var SurnamesDwarf = ["Balderk", "Battlehammer", "Brawnanvil", "Dankil", "Fireforge", "Frostbeard", 
+"Dach", "Welten"],
+        nobleSurnameSuffixes: ["burg","berg","stein","stock","wald"],
+        initialSkills: ["Animal Care",
+"Charm", 
+"Cool",
+"Evaluate",
+"Gossip","Haggle",
+"Language (Bretonnian)",
+"Language (Wastelander)", 
+"Leadership",
+"Lore (Reikland)",
+"Melee (Basic)", 
+"Ranged (Bow)"],
+        initialTalents: ["Doomed","Savvy or Suave","Random","Random","Random" ],
+        stats: [20,20,20,20,20,20,20,20,20,20,20],
+        extraStats: [ 0, 4, 2, 1],
+        careerRanges: [1,2,3,5,6,11,13,14,15,17,19,20,21,23,26,27,28,29,30,31,32,35,
+36,37,38,39,40,42,43,44,45,50,51,52,54,56,57,58,59,60,62,63,66,68,70,71,73,74,
+76,77,78,79,83,86,87,88,90,92,93,94,95,99,-1,100]
+    },
+    {
+        id: 2,
+        name: "Dwarf",
+        randomRange: [95, 98],
+        names: [["Adrik","Alberich","Baern","Barendd", "Brouor", "Bruenor",
+"Dain", "Darrak", "Delg", "Eberk", "Einkil", "Fargrim", "Flint", "Gardain",
+"Harbek", "Kildrak", "Morgran", "Orsik", "Oskar", "Rangrim", "Rurik", "Taklinn",
+"Thoradin", "Thorin", "Tordek", "Traubon", "Travok", "Ulfgar", "Veit", "Vondal",
+ "Alrik", "Bronda", "Dimzad", "Fenna", "Gottri", "Gudrun", "Snorri"], ["Amber", "Artin", "Audhild", "Bardryn", "Dagnal",
+"Diesa", "Eldeth", "Falkrunn", "Finellen", "Gunnloda", "Gurdis", "Helja",
+"Hlin", "Kathra", "Kristryd", "Hilde", "Liftrasa", "Mardred", "Riswynn",
+"Sannl", "Torbera", "Torgga", "Vistra"]],
+        surnames: ["Balderk", "Battlehammer", "Brawnanvil", "Dankil", "Fireforge", "Frostbeard", 
 "Gorunn", "Holderhek", "Ironfist", "Loderr", "Lutgehr", "Rumnaheim", 
 "Strakelin", "Torunn", "Ungart", "Baragraz", "Durak", "Galazil", "Gnoldok", 
 "Nazril", "Okri", "Ardrungan", "Bryntok", "Gazani", "Gromheld", "Harrazlings", 
 "Unboki", "Dokkintroll", "Ganvalgger", "Kvitang", "Thrungtak", "Wyrgrinti", 
-"Zankonk"];
-var SurnamesHalfling = ["Brushgather","Goodbarrel","Greenbottle","High-hill",
+"Zankonk"],
+        patronymicSurname: { chance: 0.5, maleParentChance: 2 / 3, suffixes: [["sson","sson","sson","snev"], ["sdottir","sdottir","sdottir","sniz"]] },
+        initialSkills: ["Consume Alcohol",
+"Cool",
+"Endurance",
+"Entertain (Storytelling)",
+"Evaluate",
+"Intimidate",
+"Language (Khazalid)",
+"Lore (Dwarfs)",
+"Lore (Geology)",
+"Lore (Metallurgy)",
+"Melee (Basic)",
+"Trade (Any one)"],
+        initialTalents: ["Magic Resistance","Night Vision","Read/Write or Relentless","Resolute or Strong-Minded","Sturdy"],
+        stats: [30,20,20,30,10,20,30,20,40,10],
+        extraStats: [ 0, 3, 0, 2],
+        careerRanges: [1,4,6,-1,7,-1,9,-1,11,17,18,20,25,-1,31,34,36,37,38,40,41,42,
+43,45,47,-1,-1,49,54,-1,55,56,60,61,63,-1,65,67,-1,-1,69,70,72,-1,73,75,77,78,
+-1,-1,79,-1,82,83,84,-1,-1,87,-1,90,93,96,100,-1]
+    },
+    {
+        id: 3,
+        name: "Halfling",
+        randomRange: [99, 99],
+        names: [["Alton","Ander","Cade","Corrin", "Eldon", "Errich,",
+"Finnan", "Garret", "Lindal", "Lyle", "Merrie", "Milo", "Osborn", "Perrin",
+"Reed", "Roscoe", "Wellby", "Ferdinand", "Heironymus", "Maximillian",
+"Theodosius"], ["Andry", "Bree", "Callie", "Cora", "Euphemia", "Jillian", "Kithri", "Lavinia",
+"Lidda", "Meda", "Nedda", "Paela", "Portia", "Seraphina", "Shaena", "Trym",
+"Vani", "Verna", "Antoniella", "Esmerelda", "Thomasina"]],
+        surnames: ["Brushgather","Goodbarrel","Greenbottle","High-hill",
 "Hilltopple", "Leagallow", "Tealeaf", "Thorngage", "Tosscobble", "Underbough",
-"Ashfield", "Brandysnap", "Hayfoot", "Rumster", "Shortbottom", "Thorncobble"];
-var SurnamesElf = ["Amakiir(Gemflower)","Amastacia(Starflower)",
+"Ashfield", "Brandysnap", "Hayfoot", "Rumster", "Shortbottom", "Thorncobble"],
+        
+        initialSkills: ["Charm",
+"Consume Alcohol",
+"Dodge",
+"Gamble",
+"Haggle",
+"Intuition",
+"Language (Mootish)",
+"Lore (Reikland)",
+"Perception",
+"Sleight of Hand",
+"Stealth (Any one)",
+"Trade (Cook)"],
+        initialTalents: ["Acute Sense (Taste)", "Night Vision", "Resistance (Chaos)", "Small", "Random", "Random"],
+        stats: [10,30,10,20,20,20,30,20,30,30],
+        extraStats: [ 0, 3, 0, 2],
+        careerRanges: [1,2,4,-1,6,-1,8,-1,10,15,19,21,25,28,31,33,34,36,-1,37,-1,
+43,44,46,47,-1,50,52,53,-1,54,57,58,60,63,-1,65,67,68,-1,69,70,73,74,75,79,84,-1,
+85,86,87,88,89,93,94,-1,-1,96,-1,97,-1,100,-1,-1]
+    },
+    {
+        id: 4,
+        name: "High Elf",
+        randomRange: [100, 100],
+        names: [["Adran", "Aelar", "Aramil", "Arannis", "Aust", "Beiro",
+"Berrian", "Carrie", "Enialis", "Erdan", "Erevan", "Galinndan", "Hadarai",
+"Heian", "Himo", "Immeral", "Ivellios", "Laucian", "Mindartis", "Paelias",
+"Peren", "Quarion", "Riardol", "Rolen", "Soveliss", "Thamior", "Tharivol",
+"Theren", "Varis"], ["Adrie", "Althaea", "Anastrianna,", "Andraste", "Antinua",
+"Bethrynna", "Birel", "Caelynn,", "Drusilia", "Enna", "Felosial", "Ielenia",
+"Jelenneth", "Keyleth", "Leshanna", "Lia", "Meriele", "Mialee", "Naivara",
+"Quelenna", "Quillathe", "Sariel", "Shanairra", "Shava", "Silaqui",
+"Theirastra", "Thia", "Vadania", "Valanthe", "Xanaphia"]],
+        surnames: ["Amakiir(Gemflower)","Amastacia(Starflower)",
 "Galanodel(Moonwhisper)","Holimion(Diamonddew)", "Ilphelkiir(Gemblossom)",
 "Liadon(Silverfrond)", "Meliamne(Oakenheel)", "Natlo(Nightbreeze)",
 "Siannodel(Moonbrook)", "Xiloscient(Goldpetal)", "Emberfell", "Fireborn",
 "Foamheart", "Goldenhair", "Silverspray", "Spellsign", "Fleetriver",
-"Shadowstalker", "Treeshaper", "Weavewatcher", "Willowlimb", "Windrunner"];
-var SurnamesAll = [ SurnamesHuman, SurnamesDwarf, SurnamesHalfling, SurnamesElf, SurnamesElf];
-var SurnameSuffixHumanNoble = ["burg","berg","stein","stock","wald"];
-var SurnameSuffixDwarvenMale = ["sson","sson","sson","snev"];
-var SurnameSuffixDwarvenFemale = ["sdottir","sdottir","sdottir","sniz"];
-var SurnameSuffixDwarvenAll = [SurnameSuffixDwarvenMale, SurnameSuffixDwarvenFemale];
+"Shadowstalker", "Treeshaper", "Weavewatcher", "Willowlimb", "Windrunner"],
+        
+        initialSkills: ["Cool",
+"Entertain (Sing)",
+"Evaluate",
+"Language (Eltharin)",
+"Leadership",
+"Melee (Basic)",
+"Navigation",
+"Perception",
+"Play (Any one)",
+"Ranged (Bow)",
+"Sail",
+"Swim"],
+        initialTalents: ["Acute Sense (Vision)", "Coolheaded or Savvy", "Night Vision", "Second Sight or Sixth Sense", "Read/Write"],
+        stats: [30,30,20,20,30,40,30,30,30,20],
+        extraStats: [ 0, 5, 0, 0],
+        careerRanges: [2,-1,6,-1,8,-1,12,16,-1,19,-1,21,26,-1,28,29,31,32,34,37,40,-1,
+43,45,-1,-1,47,50,-1,-1,56,-1,59,-1,62,-1,63,-1,-1,-1,64,-1,-1,-1,79,80,-1,-1,
+82,85,-1,-1,88,-1,-1,-1,92,94,95,97,98,100,-1,-1]
+    },
+    {
+        id: 5,
+        name: "Wood Elf",
+        randomRange: [91, 94],
+        names: [["Adran", "Aelar", "Aramil", "Arannis", "Aust", "Beiro",
+"Berrian", "Carrie", "Enialis", "Erdan", "Erevan", "Galinndan", "Hadarai",
+"Heian", "Himo", "Immeral", "Ivellios", "Laucian", "Mindartis", "Paelias",
+"Peren", "Quarion", "Riardol", "Rolen", "Soveliss", "Thamior", "Tharivol",
+"Theren", "Varis"], ["Adrie", "Althaea", "Anastrianna,", "Andraste", "Antinua",
+"Bethrynna", "Birel", "Caelynn,", "Drusilia", "Enna", "Felosial", "Ielenia",
+"Jelenneth", "Keyleth", "Leshanna", "Lia", "Meriele", "Mialee", "Naivara",
+"Quelenna", "Quillathe", "Sariel", "Shanairra", "Shava", "Silaqui",
+"Theirastra", "Thia", "Vadania", "Valanthe", "Xanaphia"]],
+        surnames: ["Amakiir(Gemflower)","Amastacia(Starflower)",
+"Galanodel(Moonwhisper)","Holimion(Diamonddew)", "Ilphelkiir(Gemblossom)",
+"Liadon(Silverfrond)", "Meliamne(Oakenheel)", "Natlo(Nightbreeze)",
+"Siannodel(Moonbrook)", "Xiloscient(Goldpetal)", "Emberfell", "Fireborn",
+"Foamheart", "Goldenhair", "Silverspray", "Spellsign", "Fleetriver",
+"Shadowstalker", "Treeshaper", "Weavewatcher", "Willowlimb", "Windrunner"],
+        
+        initialSkills: ["Athletics",
+"Climb",
+"Endurance",
+"Entertain (Sing)",
+"Intimidate",
+"Language (Eltharin)",
+"Melee (Basic)",
+"Outdoor Survival",
+"Perception",
+"Ranged (Bow)",
+"Stealth (Rural)",
+"Track"],
+        initialTalents: ["Acute Sense (Vision)", "Hardy or Second Sight", "Night Vision", "Read/Write or Very Resilient", "Rover"],
+        stats: [30,30,20,20,30,40,30,30,30,20],
+        extraStats: [ 0, 5, 0, 0],
+        careerRanges: [-1,-1,-1,-1,-1,-1,1,5,-1,10,-1,-1,-1,-1,-1,-1,14,18,-1,25,31,
+-1,35,-1,-1,-1,42,53,-1,57,68,-1,70,-1,78,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,
+79,-1,-1,-1,-1,85,-1,-1,-1,90,92,94,96,-1,100,-1,-1]
+    }
+];
+
+var Sex = 0;
 var ClassN;
 var ClassAll = ["Academic","Burgher","Courtier","Peasant","Ranger","Riverfolk",
 "Rogue","Warrior"];
@@ -387,22 +511,6 @@ var CareerAll = ["Apothecary","Engineer","Lawyer","Nun",
 "Outlaw","Racketeer","Thief","Witch",
 "Cavalryman","Guard","Knight","Pit Fighter",
 "Protagonist","Soldier","Troll Slayer","Warrior Priest"];
-var CareerHuman = [1,2,3,5,6,11,13,14,15,17,19,20,21,23,26,27,28,29,30,31,32,35,
-36,37,38,39,40,42,43,44,45,50,51,52,54,56,57,58,59,60,62,63,66,68,70,71,73,74,
-76,77,78,79,83,86,87,88,90,92,93,94,95,99,-1,100];
-var CareerDwarf = [1,4,6,-1,7,-1,9,-1,11,17,18,20,25,-1,31,34,36,37,38,40,41,42,
-43,45,47,-1,-1,49,54,-1,55,56,60,61,63,-1,65,67,-1,-1,69,70,72,-1,73,75,77,78,
--1,-1,79,-1,82,83,84,-1,-1,87,-1,90,93,96,100,-1];
-var CareerHalfling = [1,2,4,-1,6,-1,8,-1,10,15,19,21,25,28,31,33,34,36,-1,37,-1,
-43,44,46,47,-1,50,52,53,-1,54,57,58,60,63,-1,65,67,68,-1,69,70,73,74,75,79,84,-1,
-85,86,87,88,89,93,94,-1,-1,96,-1,97,-1,100,-1,-1];
-var CareerHElf = [2,-1,6,-1,8,-1,12,16,-1,19,-1,21,26,-1,28,29,31,32,34,37,40,-1,
-43,45,-1,-1,47,50,-1,-1,56,-1,59,-1,62,-1,63,-1,-1,-1,64,-1,-1,-1,79,80,-1,-1,
-82,85,-1,-1,88,-1,-1,-1,92,94,95,97,98,100,-1,-1];
-var CareerWElf = [-1,-1,-1,-1,-1,-1,1,5,-1,10,-1,-1,-1,-1,-1,-1,14,18,-1,25,31,
--1,35,-1,-1,-1,42,53,-1,57,68,-1,70,-1,78,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,
-79,-1,-1,-1,-1,85,-1,-1,-1,90,92,94,96,-1,100,-1,-1];
-var CareerSpeciesAll = [CareerHuman, CareerDwarf, CareerHalfling, CareerHElf, CareerWElf];
 var CareerSpecies = [];
 var CareerTxt ="";
 var CareerAdvance = [ [3,6,7],[1,6,7],[5,6,7],[6,7,9],
@@ -440,102 +548,20 @@ var CareerSocial = ["Brass 3","Brass 4","Brass 4","Brass 1",
 "Brass 2","Brass 2","Silver 1","Brass 2"];
 var StatsTxt = "";
 var StatsR = [0,0,0,0,0,0,0,0,0,0];
-var StatsHuman = [20,20,20,20,20,20,20,20,20,20,20];
-var StatsDwarf = [30,20,20,30,10,20,30,20,40,10];
-var StatsHalfling = [10,30,10,20,20,20,30,20,30,30];
-var StatsHElf = [30,30,20,20,30,40,30,30,30,20];
-var StatsWElf = [30,30,20,20,30,40,30,30,30,20];
-var StatsAll = [StatsHuman, StatsDwarf, StatsHalfling, StatsHElf, StatsWElf];
 var StatsCareer = [0,0,0,0,0,0,0,0,0,0];
 var StatsAdvance = [0,0,0,0,0,0,0,0,0,0];
 var StatsBase = [0,0,0,0,0,0,0,0,0,0];
 var StatsTalents  = [0,0,0,0,0,0,0,0,0,0];
 var FateFortuneTxt = "";
 var StatsExtraName = ["W","M","Fate","Fortune"];
-var StatsExtraHuman = [ 0, 4, 2, 1];
-var StatsExtraDwarf = [ 0, 3, 0, 2];
-var StatsExtraHalfling = [ 0, 3, 0, 2];
-var StatsExtraHElf = [ 0, 5, 0, 0];
-var StatsExtraWElf  = [ 0, 5, 0, 0];
-var StatsExtraAll = [StatsExtraHuman, StatsExtraDwarf, StatsExtraHalfling, StatsExtraHElf, StatsExtraWElf];
 var StatsExtraBase = [ 0, 0, 0, 0];
 var StatsExtra = [ 0, 0, 0, 0];
-var SkillStartHuman= ["Animal Care",
-"Charm", 
-"Cool",
-"Evaluate",
-"Gossip","Haggle",
-"Language (Bretonnian)",
-"Language (Wastelander)", 
-"Leadership",
-"Lore (Reikland)",
-"Melee (Basic)", 
-"Ranged (Bow)"];
-var SkillStartDwarf = ["Consume Alcohol",
-"Cool",
-"Endurance",
-"Entertain (Storytelling)",
-"Evaluate",
-"Intimidate",
-"Language (Khazalid)",
-"Lore (Dwarfs)",
-"Lore (Geology)",
-"Lore (Metallurgy)",
-"Melee (Basic)",
-"Trade (Any one)"];
-var SkillStartHalfling = ["Charm",
-"Consume Alcohol",
-"Dodge",
-"Gamble",
-"Haggle",
-"Intuition",
-"Language (Mootish)",
-"Lore (Reikland)",
-"Perception",
-"Sleight of Hand",
-"Stealth (Any one)",
-"Trade (Cook)"];
-var SkillStartHElf = ["Cool",
-"Entertain (Sing)",
-"Evaluate",
-"Language (Eltharin)",
-"Leadership",
-"Melee (Basic)",
-"Navigation",
-"Perception",
-"Play (Any one)",
-"Ranged (Bow)",
-"Sail",
-"Swim"];
-var SkillStartWElf = ["Athletics",
-"Climb",
-"Endurance",
-"Entertain (Sing)",
-"Intimidate",
-"Language (Eltharin)",
-"Melee (Basic)",
-"Outdoor Survival",
-"Perception",
-"Ranged (Bow)",
-"Stealth (Rural)",
-"Track"];
-var SkillStartAll = [SkillStartHuman, 
- SkillStartDwarf, SkillStartHalfling, 
- SkillStartHElf, SkillStartWElf];
 var SkillTxt ="";
 var SkillStart;
 var SkillNames = [];
 var SkillValues = [];
 var SkillCareer = [];
 
-var TalentStartHuman = ["Doomed","Savvy or Suave","Random","Random","Random" ];
-var TalentStartDwarf = ["Magic Resistance","Night Vision","Read/Write or Relentless","Resolute or Strong-Minded","Sturdy"];
-var TalentStartHalfling = ["Acute Sense (Taste)", "Night Vision", "Resistance (Chaos)", "Small", "Random", "Random"];
-var TalentStartHElf = ["Acute Sense (Vision)", "Coolheaded or Savvy", "Night Vision", "Second Sight or Sixth Sense", "Read/Write"];
-var TalentStartWElf = ["Acute Sense (Vision)", "Hardy or Second Sight", "Night Vision", "Read/Write or Very Resilient", "Rover"];
-var TalentStartAll = [TalentStartHuman,
- TalentStartDwarf,TalentStartHalfling,
- TalentStartHElf,TalentStartWElf];
 var TalentTxt ="";
 var TalentNames = [];
 var TalentValues = [];
@@ -1688,41 +1714,32 @@ refreshCharacterDisplay ();
 var SpeciesRoll = roll1d100();
 var i;
 var x;
-if (SpeciesRoll <= 90{
-     SpeciesN = 1;
-} else if (SpeciesRoll <= 94) {
-     SpeciesN = 5
-} else if (SpeciesRoll <= 98) {
-     SpeciesN = 2;
-} else if (SpeciesRoll <= 99 {
-     SpeciesN = 3;
-} else {
-     SpeciesN = 4;
-}
+SpeciesN = SpeciesAll.find(species => SpeciesRoll >= species.randomRange[0] && SpeciesRoll <= species.randomRange[1]).id;
 if  (SpeciesChoice>0) {
     SpeciesN = SpeciesChoice;
 } else {
     xp += 20;
 }
 console.log(SpeciesN);
-SpeciesTxt = SpeciesAll[ SpeciesN - 1 ];
+const species = SpeciesAll.find(entry => entry.id === SpeciesN);
+SpeciesTxt = species.name;
 console.log(SpeciesTxt);
 Sex = Math.floor(Math.random() * 2);
-var NamesSpecies = NamesAll[Sex][SpeciesN - 1 ];
+var NamesSpecies = species.names[Sex];
 var SurnamesSpecies;
 /* Dwarves could get Icelandic style surnames, but from either 66% MAle 33% female */
-if ((SpeciesN == 2) && (Math.random() > .5)) {
-    SurnamesSpecies = NamesAll[Math.floor(Math.random() * 3 / 2)][SpeciesN - 1 ].slice();
-    var suffix = SurnameSuffixDwarvenAll[Sex][ Math.floor(Math.random() * SurnameSuffixDwarvenAll[Sex].length)];
+if (species.patronymicSurname && (Math.random() > 1 - species.patronymicSurname.chance)) {
+    SurnamesSpecies = species.names[Math.random() < species.patronymicSurname.maleParentChance ? 0 : 1].slice();
+    var suffix = species.patronymicSurname.suffixes[Sex][Math.floor(Math.random() * species.patronymicSurname.suffixes[Sex].length)];
         for(i=0;i<SurnamesSpecies.length;i++){
             SurnamesSpecies[i] = SurnamesSpecies[i] + suffix;
         }   
 } else {
-    SurnamesSpecies  = SurnamesAll[SpeciesN - 1 ];
+    SurnamesSpecies  = species.surnames;
 }
 NameTxt = NamesSpecies[ Math.floor(Math.random() * NamesSpecies.length) ] + " " 
     +  SurnamesSpecies[ Math.floor(Math.random() * SurnamesSpecies.length) ] ;
-SkillStart = SkillStartAll[ SpeciesN - 1 ];
+SkillStart = species.initialSkills.slice();
 console.log(SkillStart);
 for (i = 0; i < 6; i += 1) {
     const skillPoints = i < 3 ? 5 : 3; // Determine skill points based on `i`
@@ -1744,11 +1761,11 @@ for (i = 0; i < 6; i += 1) {
 }
 console.log(SkillStart);
 console.log(SkillNames);
-TalentNames = TalentStartAll [ SpeciesN - 1 ];
+TalentNames = species.initialTalents.slice();
 TalentNames = await parseInicialTalent (TalentNames);
 TalentValues = Array(TalentNames.length).fill(1);
 TalentCareer = Array(TalentNames.length).fill(0);
-var CareerSpecies = CareerSpeciesAll [ SpeciesN - 1 ];
+var CareerSpecies = species.careerRanges;
 var CareerRoll = roll1d100();
 i = 0;
 while (CareerSpecies[i] < CareerRoll ) {
@@ -1801,8 +1818,8 @@ ClassN = Math.floor(CareerN / 8);
 StatsCareer[ CareerAdvance[CareerN][0] ] = 1;
 StatsCareer[ CareerAdvance[CareerN][1] ] = 1;
 StatsCareer[ CareerAdvance[CareerN][2] ] = 1;
-StatsBase = StatsAll [ SpeciesN - 1 ];
-StatsExtraBase = StatsExtraAll [ SpeciesN - 1 ];
+StatsBase = species.stats.slice();
+StatsExtraBase = species.extraStats.slice();
 for (i in StatsR) {
      StatsR[i] = roll2d10();
 }
@@ -1876,9 +1893,9 @@ TalentNames = TalentNamesValue[0].slice(0);
 TalentValues = TalentNamesValue[1].slice(0);
 TalentCareer = TalentNamesValue[2].slice(0);
 /* After getting talents we check if we are an human noble or have nobleblood*/
-/*SurnameSuffixHumanNoble*/
-if ((SpeciesN == 1) && ((CareerName == "Noble") || (TalentNames.includes("Noble Blood")))) {
-    NameTxt = NameTxt.replace(" "," von ") + SurnameSuffixHumanNoble[Math.floor(Math.random() * SurnameSuffixHumanNoble.length)];
+/* Noble surname */
+if (species.nobleSurnameSuffixes && ((CareerName == "Noble") || (TalentNames.includes("Noble Blood")))) {
+    NameTxt = NameTxt.replace(" "," von ") + species.nobleSurnameSuffixes[Math.floor(Math.random() * species.nobleSurnameSuffixes.length)];
 };
 /*Dooming*/
 if (TalentNames.includes("Doomed")) {
