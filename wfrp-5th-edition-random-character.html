@@ -364,7 +364,6 @@ const SpeciesAll = [
 "Entertain (Storytelling)",
 "Evaluate",
 "Intimidate",
-"Language (Khazalid)",
 "Lore (Dwarfs)",
 "Lore (Geology)",
 "Lore (Metallurgy)",
@@ -398,7 +397,6 @@ const SpeciesAll = [
 "Gamble",
 "Haggle",
 "Intuition",
-"Language (Mootish)",
 "Lore (Reikland)",
 "Perception",
 "Sleight of Hand",
@@ -435,7 +433,6 @@ const SpeciesAll = [
         initialSkills: ["Cool",
 "Entertain (Sing)",
 "Evaluate",
-"Language (Eltharin)",
 "Leadership",
 "Melee (Basic)",
 "Navigation",
@@ -1751,8 +1748,8 @@ NameTxt = NamesSpecies[ Math.floor(Math.random() * NamesSpecies.length) ] + " "
     +  SurnamesSpecies[ Math.floor(Math.random() * SurnamesSpecies.length) ] ;
 SkillStart = species.initialSkills.slice();
 console.log(SkillStart);
-for (i = 0; i < 6; i += 1) {
-    const skillPoints = i < 3 ? 5 : 3; // Determine skill points based on `i`
+for (i = 0; i < 5; i += 1) {
+    const skillPoints = 5;
     let selectedIndex;
     if (document.getElementById("choiceCheck").checked == true) {
       // Show the skill dialog and wait for user input
