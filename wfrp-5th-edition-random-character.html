@@ -195,6 +195,7 @@ xp += extraXP; // Add the extra XP to the total XP
 var xpSpend = 0;
 var XpTxt = "";
 var SpeciesTxt ="";
+var PhysicalTxt = "";
 var SpeciesN;
 // Species IDs match the manual generation buttons. Names and surname suffixes use [male, female].
 // Career thresholds follow CareerAll; -1 means that career is unavailable.
@@ -202,6 +203,11 @@ const SpeciesAll = [
     {
         id: 1,
         name: "Human",
+        physical: {
+            ageBase: 14, ageDice: 2, heightBase: 57, heightDice: 2,
+            eyeColours: ["Ice Blue", "Green", "Pale Blue", "Blue", "Pale Grey", "Grey", "Brown", "Hazel", "Dark Brown", "Black"],
+            hairColours: ["White Blond", "Golden Blond", "Red Blond", "Golden Brown", "Light Brown", "Dark Brown", "Black", "Auburn", "Red", "Grey"]
+        },
         randomRange: [1, 90],
         names: [["Armin", "Adolf", "Adolphus", "Albrecht", "Alexander", "Aldred", "Alfred",
 "Anders", "Anton", "Axel", "Bernard", "Bernd", "Bert", "Boris", "Bruno", 
@@ -342,6 +348,11 @@ const SpeciesAll = [
     {
         id: 2,
         name: "Dwarf",
+        physical: {
+            ageBase: 15, ageDice: 10, heightBase: 51, heightDice: 1,
+            eyeColours: ["Coal", "Lead", "Steel", "Blue", "Earth Brown", "Bronze", "Hazel", "Green", "Copper", "Gold"],
+            hairColours: ["White", "Grey", "Pale Blond", "Golden", "Copper", "Bronze", "Brown", "Dark Brown", "Reddish Brown", "Black"]
+        },
         randomRange: [95, 98],
         names: [["Adrik","Alberich","Baern","Barendd", "Brouor", "Bruenor",
 "Dain", "Darrak", "Delg", "Eberk", "Einkil", "Fargrim", "Flint", "Gardain",
@@ -380,6 +391,11 @@ const SpeciesAll = [
     {
         id: 3,
         name: "Halfling",
+        physical: {
+            ageBase: 15, ageDice: 5, heightBase: 37, heightDice: 1,
+            eyeColours: ["Light Grey", "Grey", "Pale Blue", "Blue", "Green", "Hazel", "Brown", "Copper", "Dark Brown"],
+            hairColours: ["Grey", "Flaxen", "Russet", "Honey", "Chestnut", "Ginger", "Mustard", "Almond", "Chocolate", "Liquorice"]
+        },
         randomRange: [99, 99],
         names: [["Alton","Ander","Cade","Corrin", "Eldon", "Errich,",
 "Finnan", "Garret", "Lindal", "Lyle", "Merrie", "Milo", "Osborn", "Perrin",
@@ -413,6 +429,11 @@ const SpeciesAll = [
     {
         id: 4,
         name: "High Elf",
+        physical: {
+            ageBase: 30, ageDice: 10, heightBase: 71, heightDice: 1,
+            eyeColours: ["Jet", "Amethyst", "Aquamarine", "Sapphire", "Turquoise", "Emerald", "Amber", "Copper", "Citrine", "Gold"],
+            hairColours: ["Silver", "White", "Pale Blond", "Blond", "Yellow Blond", "Copper Blond", "Red Blond", "Auburn", "Red", "Black"]
+        },
         randomRange: [100, 100],
         names: [["Adran", "Aelar", "Aramil", "Arannis", "Aust", "Beiro",
 "Berrian", "Carrie", "Enialis", "Erdan", "Erevan", "Galinndan", "Hadarai",
@@ -452,6 +473,11 @@ const SpeciesAll = [
     {
         id: 5,
         name: "Wood Elf",
+        physical: {
+            ageBase: 30, ageDice: 10, heightBase: 71, heightDice: 1,
+            eyeColours: ["Ivory", "Charcoal", "Ivy Green", "Mossy Green", "Chestnut", "Dark Brown", "Tan", "Sandy Brown", "Violet"],
+            hairColours: ["Birch Silver", "Ash Blond", "Rose Gold", "Honey Blond", "Brown", "Mahogany Brown", "Dark Brown", "Sienna", "Ebony", "BlueBlack"]
+        },
         randomRange: [91, 94],
         names: [["Adran", "Aelar", "Aramil", "Arannis", "Aust", "Beiro",
 "Berrian", "Carrie", "Enialis", "Erdan", "Erevan", "Galinndan", "Hadarai",
@@ -1708,6 +1734,7 @@ function getTalentMax(talentName) {
 function refreshCharacterDisplay () {
     document.getElementById("nameB").innerHTML = NameTxt;
     document.getElementById("speciesB").innerHTML = SpeciesTxt;
+    document.getElementById("physicalB").innerHTML = PhysicalTxt;
     document.getElementById("careerB").innerHTML = CareerTxt;
     document.getElementById("xpB").innerHTML = XpTxt;
     document.getElementById("statsB").innerHTML = StatsTxt;
@@ -1730,6 +1757,14 @@ if  (SpeciesChoice>0) {
 console.log(SpeciesN);
 const species = SpeciesAll.find(entry => entry.id === SpeciesN);
 SpeciesTxt = species.name;
+// Height bases are stored in inches so rolls carry correctly into feet.
+const physical = species.physical;
+const age = physical.ageBase + rollXd10(physical.ageDice);
+const height = physical.heightBase + rollXd10(physical.heightDice);
+PhysicalTxt = "<b>Age:</b> " + age + " years; <b>Height:</b> "
+    + Math.floor(height / 12) + "&prime;" + (height % 12) + "&Prime;"
+    + "; <b>Eye colour:</b> " + randPick(physical.eyeColours)
+    + "; <b>Hair colour:</b> " + randPick(physical.hairColours);
 console.log(SpeciesTxt);
 Sex = Math.floor(Math.random() * 2);
 var NamesSpecies = species.names[Sex];
@@ -2007,6 +2042,8 @@ Extra XP </td><td> <input type="number" id="extraXPInput" min="0" placeholder="E
 <p id="xpB">0/0</p>
 </td></tr>
 </table>
+<h3>Physical Characteristics</h3>
+<p id="physicalB"></p>
 <h3>Characteristics</h3>
 <p id="statsB"></p>
 <h3><span title="Your Fate represents your destiny">Fate</span> and <span title="Your Fortune represents your luck">Fortune</span></h3>
