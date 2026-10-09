@@ -561,11 +561,13 @@ var CareerName;
 const CareerAll = [
     {
         name: "Apothecary", classIndex: 0,
-        advances: [ST_T,ST_DEX,ST_INT],
+        name1st: "Apothecary's Apprentice",
+        advances: [ST_I,ST_DEX,ST_INT],
         social: "Brass 3",
-        talents: ["Concoct","Craftsman (Apothecary)","Etiquette (Scholar)","Read/Write"],
-        skills: ["Consume Alcohol","Heal","Language (Classical)","Lore (Chemistry)","Lore (Medicine)","Lore (Plants)","Trade (Apothecary)","Trade (Poisoner)"],
-        trappings: "Book (Blank), Healing Draft, Leather Jerkin, Pestle and Mortar"
+        talents: ["Acute Sense (Taste)","Concoct","Craftsman (Apothecary)","Read/Write"],
+        skills: ["Consume Alcohol","Endurance","Haggle","Heal","Language (Classical)","Lore (Chemistry)","Lore (Medicine)","Perception","Trade (Apothecary)","Trade (Poisoner)"],
+        trappings: "Book (Blank), Leather Jerkin, Pestle and Mortar",
+        trappings2nd: "Guild Licence, Trade Tools (Apothecary)"
     },
     {
         name: "Engineer", classIndex: 0,
@@ -635,19 +637,23 @@ const CareerAll = [
     },
     {
         name: "Artisan", classIndex: 1,
+        name1st: "Apprentice Artisan",
         advances: [ST_S,ST_T,ST_DEX],
         social: "Brass 2",
-        talents: ["Artistic","Craftsman (Any one)","Strong Back","Very Strong"],
-        skills: ["Athletics","Cool","Consume Alcohol","Dodge","Endurance","Evaluate","Stealth (Urban)","Trade (Any one)"],
-        trappings: "Chalk, Leather Jerkin, 1d10 rags"
+        talents: ["Craftsman (as Trade)","Strong Back","Tenacious","Very Strong"],
+        skills: ["Art (Any one)","Athletics","Consume Alcohol","Cool","Dodge","Haggle","Endurance","Evaluate","Pick Lock","Trade (Any one)"],
+        trappings: "Chalk, Leather Jerkin, 1d10 Rags",
+        trappings2nd: "Guild Licence, Trade Tools (as Trade)"
     },
     {
         name: "Beggar", classIndex: 1,
-        advances: [ST_T,ST_I,ST_FEL],
+        name1st: "Pauper",
+        advances: [ST_T,ST_AG,ST_FEL],
         social: "Brass 0",
-        talents: ["Panhandle","Resistant (Disease)","Stone Soup","Very Resilient"],
-        skills: ["Athletics","Charm","Consume Alcohol","Cool","Dodge","Endurance","Intuition","Stealth (Urban)"],
-        trappings: "Poor Quality Blanket, Cup"
+        talents: ["Beneath Notice","Panhandle","Resistant (Disease)","Stone Soup"],
+        skills: ["Charm","Consume Alcohol","Dodge","Endurance","Gossip","Intuition","Outdoor Survival","Perception","Secret Signs (Vagabond)","Stealth (Rural or Urban)"],
+        trappings: "Cup, Poor Quality Blanket",
+        trappings2nd: "Bowl, Crutch"
     },
     {
         name: "Investigator", classIndex: 1,
@@ -701,11 +707,13 @@ const CareerAll = [
     },
     {
         name: "Artist", classIndex: 2,
-        advances: [ST_S,ST_AG,ST_DEX],
-        social: "Silver 1",
-        talents: ["Artistic","Sharp","Strong Back","Tenacious"],
-        skills: ["Art (Any one)","Cool","Consume Alcohol","Evaluate","Endurance","Gossip","Perception","Stealth (Urban)"],
-        trappings: "Brush or Chisel or Quill Pen"
+        name1st: "Apprentice Artist",
+        advances: [ST_S,ST_I,ST_DEX],
+        social: "Brass 2",
+        talents: ["Artistic","Read/Write","Sharp","Strong Back"],
+        skills: ["Art (Any one)","Charm","Climb","Consume Alcohol","Evaluate","Gossip","Intuition","Lore (Art)","Perception","Trade (Art Supplies)"],
+        trappings: "Brush or Chisel or Writing Kit",
+        trappings2nd: "Sling Bag containing Trade Tools (Artist)"
     },
     {
         name: "Duellist", classIndex: 2,
@@ -757,11 +765,13 @@ const CareerAll = [
     },
     {
         name: "Bailiff", classIndex: 3,
-        advances: [ST_WS,ST_AG,ST_WP],
+        name1st: "Tax Collector",
+        advances: [ST_WS,ST_S,ST_I],
         social: "Silver 1",
-        talents: ["Embezzle","Numismatics","Strong Back","Tenacious"],
-        skills: ["Cool","Dodge","Endurance","Gossip","Haggle","Intimidate","Melee (Basic)","Perception"],
-        trappings: "Hand Weapon, Small Lock Box"
+        talents: ["Break and Enter","Embezzle","Numismatics","Strong Back"],
+        skills: ["Athletics","Cool","Dodge","Endurance","Evaluate","Gossip","Intimidate","Melee (Basic)","Perception","Pick Lock"],
+        trappings: "Hand Weapon, Small Lock Box",
+        trappings2nd: "Leather Jack, 3 Tax Collectors"
     },
     {
         name: "Hedge Witch", classIndex: 3,
@@ -821,11 +831,13 @@ const CareerAll = [
     },
     {
         name: "Bounty Hunter", classIndex: 4,
-        advances: [ST_WS,ST_T,ST_I],
+        name1st: "Thief-taker",
+        advances: [ST_WS,ST_S,ST_AG],
         social: "Silver 1",
         talents: ["Break and Enter","Shadow","Strike to Stun","Suave"],
-        skills: ["Bribery","Charm","Gossip","Haggle","Intuition","Melee (Basic)","Outdoor Survival","Perception"],
-        trappings: "Hand Weapon, Leather Jerkin, Rope"
+        skills: ["Athletics","Charm","Cool","Gossip","Haggle","Intuition","Melee (Basic)","Perception","Pick Lock","Stealth (Any one)"],
+        trappings: "Hand Weapon, Leather Jerkin, Rope",
+        trappings2nd: "2 Bolas or Crossbow with 10 Bolts or Lasso, Leather Skullcap, Manacles, Net, Warrant Papers"
     },
     {
         name: "Coachman", classIndex: 4,
@@ -885,11 +897,13 @@ const CareerAll = [
     },
     {
         name: "Boatman", classIndex: 5,
-        advances: [ST_S,ST_T,ST_I],
-        social: "Silver 1",
-        talents: ["Dirty Fighting","Fisherman","Strong Back","Strong Swimmer"],
-        skills: ["Consume Alcohol","Dodge","Endurance","Gossip","Melee (Basic)","Row","Sail","Swim"],
-        trappings: "Hand Weapon (Boat Hook), Leather Jack, Pole"
+        name1st: "Boathand",
+        advances: [ST_S,ST_T,ST_AG],
+        social: "Brass 3",
+        talents: ["Fisherman","Strong Back","Strong Swimmer","Waterman"],
+        skills: ["Athletics","Charm","Consume Alcohol","Dodge","Endurance","Gossip","Melee (Brawling)","Row","Sail","Swim"],
+        trappings: "Hand Weapon (Boat Hook), Leather Jack, Pole",
+        trappings2nd: "Rope, Rowboat"
     },
     {
         name: "Pilot", classIndex: 5,
@@ -949,11 +963,13 @@ const CareerAll = [
     },
     {
         name: "Charlatan", classIndex: 6,
-        advances: [ST_AG,ST_I,ST_FEL],
+        name1st: "Swindler",
+        advances: [ST_I,ST_DEX,ST_FEL],
         social: "Brass 3",
-        talents: ["Cardsharp","Diceman","Etiquette (Any one)","Luck"],
-        skills: ["Bribery","Consume Alcohol","Charm","Entertain (Storytelling)","Gamble","Gossip","Haggle","Sleight of Hand"],
-        trappings: "Backpack, 2 Sets of Clothing, Deck of Cars, Dice"
+        talents: ["Cardsharp","Criminal","Dicer","Fast Hands"],
+        skills: ["Charm","Consume Alcohol","Cool","Entertain (Acting)","Entertain (Storytelling)","Gamble","Gossip","Haggle","Intuition","Sleight of Hand"],
+        trappings: "Deck of Cards, Dice, 2 Sets of Clothing",
+        trappings2nd: "Forged Document, Colourful Mixtures, Trinkets and Charms, 2 Sets of Quality Clothing"
     },
     {
         name: "Fence", classIndex: 6,
@@ -1013,11 +1029,13 @@ const CareerAll = [
     },
     {
         name: "Cavalryman", classIndex: 7,
-        advances: [ST_WS,ST_S,ST_I],
-        social: "Silver 2",
-        talents: ["Combat Aware","Crack the Whip","Lightning Reflexes","Roughrider"],
-        skills: ["Animal Care","Charm Animal","Endurance","Language (Battle)","Melee (Basic)","Outdoor Survival","Perception","Ride (Horse)"],
-        trappings: "Hand Weapon, Leather Jack, <a href='https://pacomiscelaneousstuff.blogspot.com/2020/03/wfrp-5th-edition-random-horse-companion.html'>Riding Horse</a> with Saddle and Tack"
+        name1st: "Horseman",
+        advances: [ST_WS,ST_BS,ST_AG],
+        social: "Silver 3",
+        talents: ["Combat Aware","Dual Wielder","Lightning Reflexes","Roughrider"],
+        skills: ["Animal Care","Charm Animal","Consume Alcohol","Cool","Language (Battle)","Melee (Cavalry)","Outdoor Survival","Perception","Ranged (Blackpowder or Bow)","Ride (Horse)"],
+        trappings: "Bow with 10 Arrows or Pistol with 10 Shots, Leather Jack, Light Warhorse",
+        trappings2nd: "Breastplate, Open Helm"
     },
     {
         name: "Guard", classIndex: 7,
