@@ -2169,21 +2169,14 @@ for (i = 0; i < 3; i += 1) {
 }
 var ski = career.skills.slice();
 var randskiChoice =  [
-[5,5,5,5,5,5,5,5],
-[5,5,5,5,5,5,5,5],
-[5,5,5,5,5,5,5,5],
-[7,6,5,5,5,5,4,3],
-[6,6,6,5,5,4,4,4],
-[8,7,6,5,5,4,3,2],
-[8,8,7,7,4,2,2,2],
-[9,8,5,5,5,5,2,1],
-[10,8,7,5,5,3,2,0],   
-[10,9,8,7,3,2,1,0],
-[10,10,10,6,1,1,1,1],
-[10,10,10,10,0,0,0,0]
+[5,5,5,5,5,5,5,5,0,0],
+[10,5,5,5,5,5,5,0,0,0],
+[10,10,5,5,5,5,0,0,0,0],
+[10,10,10,5,5,0,0,0,0,0],
+[10,10,10,10,0,0,0,0,0,0]
 ];
 var randSki = randskiChoice[ Math.floor(Math.random() * randskiChoice.length ) ];
-for (i = 0; i < 8; i += 1) {
+for (i = 0; i < randSki.length && ski.length > 0; i += 1) {
      var skirand = Math.floor(Math.random() * ski.length);
      SkillNames.push ( ski.splice (skirand , 1)[0] );
      var skvar = randSki[i]; 
