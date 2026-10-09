@@ -1916,14 +1916,14 @@ function rollMoney (SocialString) {
     var ParsedSocial = SocialString.split(" ");
     switch (ParsedSocial[0]) {
         case "Gold":
-            money =    ParsedSocial[1] + " Gold Crowns.";
+            money = 2 + ParsedSocial[1] + " Gold Crowns.";
             break;
         case "Silver":
-            money =   rollXd10(ParsedSocial[1]) + " Silver Shillings.";
+            money = 10 + rollXd10(ParsedSocial[1]) + " Silver Shillings.";
             break;
         case "Brass":
             if (ParsedSocial[1]>0) {
-                money =   rollXd10(ParsedSocial[1]*2) + " Brass Pennies.";
+                money = 20 +  rollXd10(ParsedSocial[1]*2) + " Brass Pennies.";
             } else {
                 money =   "Not a single Brass Penny.";
             }
