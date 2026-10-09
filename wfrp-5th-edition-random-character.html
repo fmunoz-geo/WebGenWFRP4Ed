@@ -171,7 +171,7 @@ async function showSelectionDialog(options, title) {
 // ["WS","BS","S","T","I","AG","DEX","INT","WP","FEL","M","W"];
 const StatsName = ["WS","BS","S","T","Ag","I","Dex","Int","WP","Fel"];
 const StatsBonusName = ["WSB","BSB","SB","TB","AgB","IB","DexB","IntB","WPB","FelB"];
-
+// Indices for StatsName, StatsBase, StatsBonus, StatsAdvance, StatsTalents, StatsR.
 const ST_WS = 0;
 const ST_BS = 1;
 const ST_S = 2;
@@ -182,8 +182,11 @@ const ST_DEX = 6;
 const ST_INT = 7;
 const ST_WP = 8;
 const ST_FEL = 9;
-const ST_M = 10;
-const ST_W = 11;
+// Indices for StatsExtraName, StatsExtraBase, StatsExtraBonus.
+const ST_W = 0;
+const ST_M = 1;
+const ST_FATE = 2;
+const ST_FORTUNE = 3;
 
 async function generateChar(SpeciesChoice) {
 "use strict";
@@ -1049,6 +1052,7 @@ var StatsTalents  = [0,0,0,0,0,0,0,0,0,0];
 var FateFortuneTxt = "";
 var StatsExtraName = ["W","M","Fate","Fortune"];
 var StatsExtraBase = [ 0, 0, 0, 0];
+var StatsExtraBonus = [ 0, 0, 0, 0];
 var StatsExtra = [ 0, 0, 0, 0];
 var SkillTxt ="";
 var SkillStart;
@@ -1678,12 +1682,16 @@ function parseTalent2Stats (TalentArray) {
 			stat[ST_WP] = 5;
 			break;
 		  case "Fleetfooted":
+            //TODO add +1 M
 			break;
 		  case "Hardy":
 			break;
 		  case "Lightning Reflexes":
 			stat[ST_AG] = 5;
 			break;
+          case "Luck":
+            //TODO add +1 Fortune
+            break;
 		  case "Marksman":
 			stat[ST_BS] = 5;
 			break;
@@ -2009,10 +2017,10 @@ var SpeciesRoll = roll1d100();
 var i;
 var x;
 SpeciesN = SpeciesAll.find(species => SpeciesRoll >= species.randomRange[0] && SpeciesRoll <= species.randomRange[1]).id;
-if  (SpeciesChoice>0) {
+if  (SpeciesChoice > 0) {
     SpeciesN = SpeciesChoice;
 } else {
-    xp += 20;
+    StatsExtraBonus[ST_FORTUNE] =+ 1;
 }
 console.log(SpeciesN);
 const species = SpeciesAll.find(entry => entry.id === SpeciesN);
@@ -2256,7 +2264,7 @@ for (i in StatsAdvance) {
     StatsTxt += "<td>" + ( StatsR[i] + StatsBase[i] + StatsTalents[i] + StatsAdvance[i] ) + "</td>";
 }
 StatsTxt += "</tr></table>";
-FateFortuneTxt = "Fate: "+ StatsExtraBase[2] + " Fortune: " + StatsExtraBase[3];
+FateFortuneTxt = "Fate: " + (StatsExtraBase[ST_FATE] + StatsExtraBonus[ST_FATE]) + " Fortune: " + (StatsExtraBase[ST_FORTUNE] + StatsExtraBonus[ST_FORTUNE]);
 TrappingTxt = Trapping + ".<br>" + Money;
 /* Put all shit in the screen */
 refreshCharacterDisplay ();
