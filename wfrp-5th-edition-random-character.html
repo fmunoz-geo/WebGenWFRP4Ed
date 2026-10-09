@@ -188,6 +188,39 @@ const ST_M = 1;
 const ST_FATE = 2;
 const ST_FORTUNE = 3;
 
+function distributeStatIncrease(rolls, careerStats, points, random = Math.random) {
+    const increases = rolls.map(() => 0);
+    if (careerStats.length === 0) return increases;
+    const pick = options => options[Math.floor(random() * options.length)];
+    while (points > 0) {
+        const value = index => rolls[index] + increases[index];
+        const atNine = careerStats.filter(index => [9, 19].includes(value(index)));
+        const atFour = careerStats.filter(index => [4, 14].includes(value(index)));
+        const atEight = careerStats.filter(index => [8, 18].includes(value(index)));
+        const strategies = ["lowestOrRandom"];
+        if (atNine.length) strategies.push("nine");
+        if (atFour.length) strategies.push("four");
+        if (points >= 2 && atEight.length) strategies.push("eight");
+        let selected;
+        let spent = 1;
+        switch (pick(strategies)) {
+            case "nine": selected = pick(atNine); break;
+            case "four": selected = pick(atFour); break;
+            case "eight": selected = pick(atEight); spent = 2; break;
+            default: {
+                const lowest = Math.min(...careerStats.map(value));
+                selected = pick(random() < 0.5
+                    ? careerStats.filter(index => value(index) === lowest)
+                    : careerStats);
+            }
+        }
+        increases[selected] += spent;
+        points -= spent;
+    }
+    console.log(`Distributing ${points} points across stats:`, increases);
+    return increases;
+}
+
 async function generateChar(SpeciesChoice) {
 "use strict";
 var Name = "";
@@ -592,11 +625,13 @@ const CareerAll = [
     },
     {
         name: "Agitator", classIndex: 1,
-        advances: [ST_BS,ST_INT,ST_FEL],
+        name1st: "Pamphleteer",
+        advances: [ST_AG,ST_INT,ST_FEL],
         social: "Brass 1",
         talents: ["Blather","Gregarious","Panhandle","Read/Write"],
-        skills: ["Art (Writing)","Bribery","Charm","Consume Alcohol","Gossip","Haggle","Lore (Politics)","Trade (Printing)"],
-        trappings: "Writing Kit, Hammer and Nails, Pile of Leaflets"
+        skills: ["Art (Writing)","Charm","Consume Alcohol","Entertain (Storytelling)","Gossip","Haggle","Lore (Local)","Lore (Politics)","Trade (Printing)","Stealth (Urban)"],
+        trappings: "Hammer and Nails, Pile of Leaflets, Writing Kit",
+        trappings2nd: "Leather Jack, Sturdy Crate"
     },
     {
         name: "Artisan", classIndex: 1,
@@ -656,11 +691,13 @@ const CareerAll = [
     },
     {
         name: "Adviser", classIndex: 2,
-        advances: [ST_T,ST_AG,ST_I],
+        name1st: "Aide",
+        advances: [ST_DEX,ST_INT,ST_FEL],
         social: "Silver 2",
-        talents: ["Beneath Notice","Etiquette (Any one)","Gregarious","Read/Write"],
-        skills: ["Bribery","Consume Alcohol","Endurance","Gossip","Haggle","Language (Classical)","Lore (Politics)","Perception"],
-        trappings: "Writing Kit"
+        talents: ["Beneath Notice","Etiquette (All)","Gregarious","Read/Write"],
+        skills: ["Bribery","Charm","Evaluate","Gossip","Haggle","Intuition","Lore (Local)","Lore (Politics)","Research","Secret Signs (Any One)"],
+        trappings: "Writing Kit",
+        trappings2nd: "Livery"
     },
     {
         name: "Artist", classIndex: 2,
@@ -1045,6 +1082,7 @@ var CareerTxt ="";
 
 var StatsTxt = "";
 var StatsR = [0,0,0,0,0,0,0,0,0,0];
+var StatsIncrease = [0,0,0,0,0,0,0,0,0,0];
 var StatsCareer = [0,0,0,0,0,0,0,0,0,0];
 var StatsAdvance = [0,0,0,0,0,0,0,0,0,0];
 var StatsBase = [0,0,0,0,0,0,0,0,0,0];
@@ -1986,6 +2024,7 @@ function getTalentMax(talentName) {
                 if (statIndex !== -1) {
                     const totalStat =
                         StatsR[statIndex] +
+                        StatsIncrease[statIndex] +
                         StatsBase[statIndex] +
                         StatsTalents[statIndex] +
                         StatsAdvance[statIndex];
@@ -2117,17 +2156,23 @@ if ((document.getElementById("careerCheck").checked == true) ) {
                 CareerN = fullCareerIndex;
                 CareerName = CareerAll[CareerN].name;
                 xp += 0; // No XP bonus
+                // No extra Trappings Bonus
             } else {
                 CareerN = CareerSpecies.findIndex((val) => val >= newCareerRolls[selectedIndex]);
                 CareerName = newCareerOptions[selectedIndex];
-                xp += 25; // Smaller XP bonus
+                xp += 0; // Smaller XP bonus
+                // TODO: Select 1 trapping from 2nd level of career
             }
     } else {
-      xp += 50;
+      xp += 0;
+      // TODO: Select 2 trappings from 2nd level of career
     }} else {
-      xp += 50;}
+      xp += 0;
+      // TODO: Select 2 trappings from 2nd level of career
+    }
   } else {
-      xp += 50;
+      xp += 0;
+      // TODO: Select 2 trappings from 2nd level of career
   }
 const career = CareerAll[CareerN];
 ClassN = career.classIndex;
@@ -2148,12 +2193,15 @@ if ((document.getElementById("reRollCheck").checked == true) ) {
             StatsR[i] = roll2d10();
         }
         await showCustomDialog("New stats: " + StatsR.toString(), ["OK"]);
-        xp += 25;
+        xp += 0;
+        StatsIncrease = distributeStatIncrease(StatsR, career.advances, 3);
     }  else  {
-        xp += 50;
+        xp += 0;
+        StatsIncrease = distributeStatIncrease(StatsR, career.advances, 6);
     }
 } else {
-        xp += 50;
+        xp += 0;
+        StatsIncrease = distributeStatIncrease(StatsR, career.advances, 6);
 }
 /* Advance stats*/
 var sta = career.advances.slice();
@@ -2249,7 +2297,7 @@ StatsTxt += "</tr><tr style='text-align: right'>";
 for (i in StatsAdvance) {
      var star = "";
      if (StatsTalents[i]) { star = "*";}
-    StatsTxt += "<td>" + ( StatsR[i] + StatsBase[i] + StatsTalents[i]  ) + star + "</td>";
+    StatsTxt += "<td>" + ( StatsR[i] + StatsIncrease[i] + StatsBase[i] + StatsTalents[i]  ) + star + "</td>";
 }
 StatsTxt += "</tr><tr style='text-align: right'>";
 for (i in StatsAdvance) {
@@ -2257,7 +2305,7 @@ for (i in StatsAdvance) {
 }
 StatsTxt += "</tr><tr style='text-align: right'>";
 for (i in StatsAdvance) {
-    StatsTxt += "<td>" + ( StatsR[i] + StatsBase[i] + StatsTalents[i] + StatsAdvance[i] ) + "</td>";
+    StatsTxt += "<td>" + ( StatsR[i] + StatsIncrease[i] + StatsBase[i] + StatsTalents[i] + StatsAdvance[i] ) + "</td>";
 }
 StatsTxt += "</tr></table>";
 FateFortuneTxt = "Fate: " + (StatsExtraBase[ST_FATE] + StatsExtraBonus[ST_FATE]) + " Fortune: " + (StatsExtraBase[ST_FORTUNE] + StatsExtraBonus[ST_FORTUNE]);
