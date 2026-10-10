@@ -101,7 +101,7 @@ function createPDF () {
 	win.document.write('<body>');
 	win.document.write(sTable);  // THE TABLE CONTENTS INSIDE THE BODY TAG.
 	win.document.write('</body></html>');
-	win.document.  close ();  // CLOSE THE CURRENT WINDOW.
+	win.document.close ();  // CLOSE THE CURRENT WINDOW.
 	win.  print ();  // PRINT THE CONTENTS.
 }
 async function showCustomDialog(message, buttonLabels = ['Yes', 'No']) {
@@ -572,7 +572,7 @@ const CareerAll = [
     {
         name: "Engineer", classIndex: 0,
         name1st: "Student Engineer",
-        advances: [ST_BS,ST_DEX,ST_INT],
+        advances: [ST_S,ST_DEX,ST_INT],
         social: "Brass 4",
         talents: ["Craftsman (Engineer)","Read/Write","Tinker","Unshakeable"],
         skills: ["Art (Drawing)","Consume Alcohol","Cool","Endurance","Evaluate","Language (Classical)","Lore (Engineering)","Ranged (Engineering)","Research","Trade (Engineer)"],
@@ -582,7 +582,7 @@ const CareerAll = [
     {
         name: "Lawyer", classIndex: 0,
         name1st: "Student Lawyer",
-        advances: [ST_AG,ST_DEX,ST_INT],
+        advances: [ST_I,ST_INT,ST_FEL],
         social: "Brass 4",
         talents: ["Blather","Etiquette (Scholars)","Read/Write","Speedreader"],
         skills: ["Bribery","Charm","Consume Alcohol","Entertain (Storytelling)","Gossip","Intuition","Language (Classical)","Lore (Law)","Lore (Theology)","Research"],
@@ -599,7 +599,7 @@ const CareerAll = [
     },
     {
         name: "Physician", classIndex: 0,
-        advances: [ST_DEX,ST_INT,ST_WP],
+        advances: [ST_DEX,ST_INT,ST_FEL],
         social: "Brass 4",
         talents: ["Bookish","Field Dressing","Read/Write","Strike to Stun"],
         skills: ["Bribery","Cool","Drive","Endurance","Gossip","Heal","Perception","Sleight of Hand"],
@@ -607,7 +607,7 @@ const CareerAll = [
     },
     {
         name: "Priest", classIndex: 0,
-        advances: [ST_T,ST_I,ST_WP],
+        advances: [ST_INT,ST_WP,ST_FEL],
         social: "Brass 2",
         talents: ["Bless (Any one)","Holy Visions","Read/Write","Suave"],
         skills: ["Athletics","Cool","Endurance","Intuition","Lore (Theology)","Perception","Pray","Research"],
@@ -615,7 +615,7 @@ const CareerAll = [
     },
     {
         name: "Scholar", classIndex: 0,
-        advances: [ST_T,ST_INT,ST_WP],
+        advances: [ST_DEX,ST_INT,ST_WP],
         social: "Brass 3",
         talents: ["Carouser","Read/Write","Savvy","Super Numerate"],
         skills: ["Consume Alcohol","Entertain (Storytelling)","Gamble","Gossip","Haggle","Language (Classical)","Lore (Any one)","Research"],
@@ -623,7 +623,7 @@ const CareerAll = [
     },
     {
         name: "Wizard", classIndex: 0,
-        advances: [ST_WS,ST_INT,ST_WP],
+        advances: [ST_I,ST_INT,ST_WP],
         social: "Brass 3",
         talents: ["Aethyric Attunement","Petty Magic","Read/Write","Second Sight"],
         skills: ["Channelling","Dodge","Intuition","Language (Magick)","Lore (Magic)","Melee (Basic)","Melee (Polearm)","Perception"],
@@ -662,7 +662,7 @@ const CareerAll = [
     {
         name: "Investigator", classIndex: 1,
         name1st: "Enquirer",
-        advances: [ST_AG,ST_I,ST_INT],
+        advances: [ST_AG,ST_I,ST_FEL],
         social: "Silver 1",
         talents: ["Alley Cat","Beneath Notice","Read/Write","Sharp"],
         skills: ["Charm","Climb","Cool","Dodge","Gossip","Intuition","Melee (Brawling)","Perception","Stealth (Urban)","Track"],
@@ -672,7 +672,7 @@ const CareerAll = [
     {
         name: "Merchant", classIndex: 1,
         name1st: "Trader",
-        advances: [ST_I,ST_WP,ST_FEL],
+        advances: [ST_AG,ST_INT,ST_FEL],
         social: "Silver 2",
         talents: ["Blather","Dealmaker","Read/Write","Suave"],
         skills: ["Animal Care","Bribery","Charm Animal","Consume Alcohol","Drive","Evaluate","Gossip","Haggle","Intuition","Navigation"],
@@ -681,7 +681,7 @@ const CareerAll = [
     },
     {
         name: "Rat Catcher", classIndex: 1,
-        advances: [ST_WS,ST_BS,ST_WP],
+        advances: [ST_WS,ST_T,ST_DEX],
         social: "Brass 2",
         talents: ["Night Vision","Resistant (Disease)","Strike Mighty Blow","Strike to Stun"],
         skills: ["Athletics","Animal Training (Dog)","Charm Animal","Consume Alcohol","Endurance","Melee (Basic)","Ranged (Sling)","Stealth (Underground or Urban)"],
@@ -689,7 +689,7 @@ const CareerAll = [
     },
     {
         name: "Townsman", classIndex: 1,
-        advances: [ST_I,ST_INT,ST_FEL],
+        advances: [ST_S,ST_INT,ST_FEL],
         social: "Silver 1",
         talents: ["Alley Cat","Beneath Notice","Etiquette (Servants)","Sturdy"],
         skills: ["Charm","Climb","Consume Alcohol","Drive","Dodge","Gamble","Gossip","Haggle"],
@@ -697,7 +697,7 @@ const CareerAll = [
     },
     {
         name: "Watchman", classIndex: 1,
-        advances: [ST_WS,ST_S,ST_FEL],
+        advances: [ST_WS,ST_S,ST_I],
         social: "Brass 3",
         talents: ["Drilled","Hardy","Strike to Stun","Tenacious"],
         skills: ["Athletics","Climb","Consume Alcohol","Dodge","Endurance","Gamble","Melee (Basic)","Perception"],
@@ -736,7 +736,7 @@ const CareerAll = [
     {
         name: "Envoy", classIndex: 2,
         name1st: "Herald",
-        advances: [ST_T,ST_I,ST_FEL],
+        advances: [ST_T,ST_INT,ST_FEL],
         social: "Silver 2",
         talents: ["Blather","Etiquette (Nobles)","Read/Write","Suave"],
         skills: ["Art (Writing)","Athletics","Charm","Dodge","Drive","Endurance","Haggle","Lore (Heraldry)","Lore (Politics)","Ride (Horse)"],
@@ -746,7 +746,7 @@ const CareerAll = [
     {
         name: "Noble", classIndex: 2,
         name1st: "Scion",
-        advances: [ST_WS,ST_AG,ST_DEX],
+        advances: [ST_WS,ST_AG,ST_FEL],
         social: "Gold 1",
         talents: ["Etiquette (Nobles)","Luck","Noble Blood","Read/Write"],
         skills: ["Consume Alcohol","Gamble","Gossip","Intimidate","Language (Classical)","Leadership","Lore (Heraldry)","Melee (Fencing)","Perform (Dancing)","Ride (Horse)"],
@@ -755,7 +755,7 @@ const CareerAll = [
     },
     {
         name: "Servant", classIndex: 2,
-        advances: [ST_S,ST_T,ST_I],
+        advances: [ST_S,ST_T,ST_AG],
         social: "Silver 1",
         talents: ["Beneath Notice","Strong Back","Strong-minded","Sturdy"],
         skills: ["Athletics","Climb","Drive","Dodge","Endurance","Intuition","Perception","Stealth (Any one)"],
@@ -763,15 +763,15 @@ const CareerAll = [
     },
     {
         name: "Spy", classIndex: 2,
-        advances: [ST_I,ST_WP,ST_FEL],
-        social: "Brass 3",
+        advances: [ST_I,ST_AG,ST_FEL],
+        social: "Brass 4",
         talents: ["Blather","Carouser","Gregarious","Shadow"],
         skills: ["Bribery","Charm","Cool","Gamble","Gossip","Haggle","Perception","Stealth (Any one)"],
         trappings: "Charcoal Stick, Sling Bag with 2 different sets of clothing and Hooded Cloak"
     },
     {
         name: "Warden", classIndex: 2,
-        advances: [ST_S,ST_T,ST_WP],
+        advances: [ST_T,ST_I,ST_INT],
         social: "Silver 1",
         talents: ["Menacing","Night Vision","Sharp","Strike to Stun"],
         skills: ["Athletics","Charm Animal","Consume Alcohol","Cool","Endurance","Intuition","Perception","Trade (Any one)"],
@@ -790,7 +790,7 @@ const CareerAll = [
     {
         name: "Hedge Witch", classIndex: 3,
         name1st: "Hedge Apprentice",
-        advances: [ST_T,ST_AG,ST_DEX],
+        advances: [ST_I,ST_DEX,ST_INT],
         social: "Brass 1",
         talents: ["Craftsman (Herbalist)","Petty Magic","Read/Write","Second Sight"],
         skills: ["Channelling (Magick)","Charm","Cool","Intuition","Language (Magick)","Lore (Folklore)","Lore (Herbs)","Lore (Theology)","Outdoor Survival","Trade (Herbalist)"],
@@ -800,7 +800,7 @@ const CareerAll = [
     {
         name: "Herbalist", classIndex: 3,
         name1st: "Herb Gatherer",
-        advances: [ST_T,ST_AG,ST_I],
+        advances: [ST_AG,ST_DEX,ST_INT],
         social: "Brass 1",
         talents: ["Craftsman (Herbalist)","Hardy","Orientation","Striding Gait (Any one)"],
         skills: ["Athletics","Climb","Endurance","Heal","Lore (Herbs)","Outdoor Survival","Perception","Swim","Trade (Herbalist)","Trade (Poisoner)"],
@@ -810,7 +810,7 @@ const CareerAll = [
     {
         name: "Hunter", classIndex: 3,
         name1st: "Trapper",
-        advances: [ST_S,ST_T,ST_DEX],
+        advances: [ST_I,ST_AG,ST_INT],
         social: "Brass 2",
         talents: ["Hardy","Rover","Striding Gait (All)","Trapper"],
         skills: ["Animal Care","Athletics","Charm Animal","Climb","Endurance","Outdoor Survival","Perception","Set Trap","Stealth (Rural)","Track"],
@@ -820,7 +820,7 @@ const CareerAll = [
     {
         name: "Miner", classIndex: 3,
         name1st: "Prospector",
-        advances: [ST_S,ST_T,ST_WP],
+        advances: [ST_S,ST_T,ST_I],
         social: "Brass 2",
         talents: ["Robust","Striding Gait (Rocky)","Strong Back","Tenacious"],
         skills: ["Climb","Cool","Endurance","Gossip","Lore (Local)","Melee (Basic)","Melee (Two-handed)","Outdoor Survival","Perception","Secret Signs (Vagabond)"],
@@ -830,7 +830,7 @@ const CareerAll = [
     {
         name: "Mystic", classIndex: 3,
         name1st: "Fortune Teller",
-        advances: [ST_AG,ST_DEX,ST_FEL],
+        advances: [ST_I,ST_DEX,ST_FEL],
         social: "Brass 1",
         talents: ["Holy Visions","Luck","Second Sight","Suave"],
         skills: ["Bribery","Charm","Dodge","Entertain (Fortunetelling)","Gossip","Intuition","Lore (Astrology)","Lore (Theology)","Perception","Sleight of Hand"],
@@ -847,7 +847,7 @@ const CareerAll = [
     },
     {
         name: "Villager", classIndex: 3,
-        advances: [ST_S,ST_T,ST_I],
+        advances: [ST_S,ST_T,ST_AG],
         social: "Brass 2",
         talents: ["Rover","Strong Back","Strong-minded","Stone Soup"],
         skills: ["Animal Care","Athletics","Consume Alcohol","Endurance","Gossip","Melee (Brawling)","Lore (Local)","Outdoor Survival"],
@@ -866,7 +866,7 @@ const CareerAll = [
     {
         name: "Coachman", classIndex: 4,
         name1st: "Postilion",
-        advances: [ST_BS,ST_T,ST_WP],
+        advances: [ST_T,ST_AG,ST_WP],
         social: "Silver 1",
         talents: ["Animal Affinity","Combat Aware","Seasoned Traveller","Tenacious"],
         skills: ["Animal Care","Charm Animal","Climb","Drive","Endurance","Gossip","Melee (Basic)","Perception","Play (Horn)","Ride (Horse)"],
@@ -876,7 +876,7 @@ const CareerAll = [
     {
         name: "Entertainer", classIndex: 4,
         name1st: "Busker",
-        advances: [ST_I,ST_DEX,ST_FEL],
+        advances: [ST_AG,ST_DEX,ST_FEL],
         social: "Brass 3",
         talents: ["Attractive","Mimic","Perfect Pitch","Suave"],
         skills: ["Athletics","Charm","Consume Alcohol","Dodge","Entertain (Any one)","Gossip","Haggle","Perform (Any one)","Play (Any one)","Sleight of Hand"],
@@ -886,7 +886,7 @@ const CareerAll = [
     {
         name: "Flagellant", classIndex: 4,
         name1st: "Penitent",
-        advances: [ST_WS,ST_S,ST_T],
+        advances: [ST_WS,ST_T,ST_WP],
         social: "Brass 0",
         talents: ["Berserk Charge","Flagellant","Frenzy","Stone Soup"],
         skills: ["Athletics","Cool","Dodge","Endurance","Heal","Intimidate","Intuition","Lore (Sigmar)","Melee (Flail)","Outdoor Survival"],
@@ -905,7 +905,7 @@ const CareerAll = [
     },
     {
         name: "Pedlar", classIndex: 4,
-        advances: [ST_T,ST_DEX,ST_WP],
+        advances: [ST_T,ST_AG,ST_FEL],
         social: "Brass 1",
         talents: ["Fisherman","Flee!","Rover","Tinker"],
         skills: ["Charm","Endurance","Entertain (Storytelling)","Gossip","Haggle","Intuition","Outdoor Survival","Stealth (Rural or Urban)"],
@@ -913,7 +913,7 @@ const CareerAll = [
     },
     {
         name: "Roadwarden", classIndex: 4,
-        advances: [ST_BS,ST_T,ST_AG],
+        advances: [ST_WS,ST_T,ST_I],
         social: "Brass 5",
         talents: ["Coolheaded","Embezzle","Marksman","Numismatics"],
         skills: ["Bribery","Consume Alcohol","Gamble","Gossip","Haggle","Melee (Basic)","Perception","Ranged (Crossbow)"],
@@ -921,7 +921,7 @@ const CareerAll = [
     },
     {
         name: "Witch Hunter", classIndex: 4,
-        advances: [ST_T,ST_AG,ST_WP],
+        advances: [ST_WS,ST_I,ST_WP],
         social: "Silver 1",
         talents: ["Coolheaded","Menacing","Read/Write","Resolute"],
         skills: ["Charm","Consume Alcohol","Heal","Intimidate","Intuition","Lore (Torture)","Melee (Basic)","Perception"],
@@ -939,7 +939,7 @@ const CareerAll = [
     },
     {
         name: "Pilot", classIndex: 5,
-        advances: [ST_WS,ST_T,ST_AG],
+        advances: [ST_S,ST_I,ST_INT],
         social: "Brass 4",
         talents: ["Fisherman","Night Vision","Orientation","Waterman"],
         skills: ["Consume Alcohol","Gossip","Intuition","Lore (Local)","Lore (Riverways)","Perception","Row","Swim"],
@@ -947,7 +947,7 @@ const CareerAll = [
     },
     {
         name: "Riverwarden", classIndex: 5,
-        advances: [ST_BS,ST_S,ST_FEL],
+        advances: [ST_WS,ST_S,ST_FEL],
         social: "Silver 1",
         talents: ["Fisherman","Gregarious","Strider (Marshes)","Strong Swimmer"],
         skills: ["Athletics","Dodge","Endurance","Melee (Basic)","Perception","Row","Sail","Swim"],
@@ -955,7 +955,7 @@ const CareerAll = [
     },
     {
         name: "Riverwoman", classIndex: 5,
-        advances: [ST_T,ST_I,ST_DEX],
+        advances: [ST_T,ST_AG,ST_DEX],
         social: "Brass 2",
         talents: ["Strong Swimmer","Strong Back","Very Strong","Waterman"],
         skills: ["Athletics","Consume Alcohol","Dodge","Endurance","Gossip","Outdoor Survival","Row","Swim"],
@@ -963,7 +963,7 @@ const CareerAll = [
     },
     {
         name: "Sailor", classIndex: 5,
-        advances: [ST_I,ST_DEX,ST_FEL],
+        advances: [ST_S,ST_AG,ST_DEX],
         social: "Silver 1",
         talents: ["Fisherman","Strider (Coastal)","Strong Back","Strong Swimmer"],
         skills: ["Climb","Consume Alcohol","Gamble","Gossip","Row","Melee (Brawling)","Sail","Swim"],
@@ -971,7 +971,7 @@ const CareerAll = [
     },
     {
         name: "Smuggler", classIndex: 5,
-        advances: [ST_I,ST_DEX,ST_WP],
+        advances: [ST_S,ST_I,ST_AG],
         social: "Brass 2",
         talents: ["Criminal","Fisherman","Strider (Marshes)","Strong Back"],
         skills: ["Athletics","Bribery","Cool","Consume Alcohol","Row","Sail","Stealth (Rural or Urban)","Swim"],
@@ -979,7 +979,7 @@ const CareerAll = [
     },
     {
         name: "Stevedore", classIndex: 5,
-        advances: [ST_WS,ST_T,ST_AG],
+        advances: [ST_S,ST_T,ST_AG],
         social: "Brass 3",
         talents: ["Dirty Fighting","Strong Back","Sturdy","Very Strong"],
         skills: ["Athletics","Climb","Consume Alcohol","Dodge","Endurance","Gossip","Melee (Basic)","Swim"],
@@ -1006,7 +1006,7 @@ const CareerAll = [
     {
         name: "Fence", classIndex: 6,
         name1st: "Broker",
-        advances: [ST_AG,ST_I,ST_FEL],
+        advances: [ST_I,ST_INT,ST_FEL],
         social: "Brass 5",
         talents: ["Cardsharp","Criminal","Gregarious","Numismatics"],
         skills: ["Bribery","Charm","Consume Alcohol","Evaluate","Gamble","Gossip","Haggle","Lore (Local)","Melee (Basic)","Stealth (Urban)"],
@@ -1016,7 +1016,7 @@ const CareerAll = [
     {
         name: "Grave Robber", classIndex: 6,
         name1st: "Penny Thief",
-        advances: [ST_S,ST_AG,ST_WP],
+        advances: [ST_S,ST_I,ST_AG],
         social: "Brass 2",
         talents: ["Alley Cat","Criminal","Flee!","Strong Back"],
         skills: ["Athletics","Climb","Consume Alcohol","Cool","Dodge","Endurance","Gossip","Melee (Basic)","Perception","Stealth (Any one)"],
@@ -1026,7 +1026,7 @@ const CareerAll = [
     {
         name: "Knave", classIndex: 6,
         name1st: "Hustler",
-        advances: [ST_I,ST_DEX,ST_FEL],
+        advances: [ST_I,ST_INT,ST_FEL],
         social: "Brass 2",
         talents: ["Attractive","Blather","Criminal","Gregarious"],
         skills: ["Bribery","Charm","Consume Alcohol","Entertain (Any one)","Gamble","Gossip","Haggle","Intuition","Lore (Local)","Stealth (Urban)"],
@@ -1035,7 +1035,7 @@ const CareerAll = [
     },
     {
         name: "Outlaw", classIndex: 6,
-        advances: [ST_WS,ST_S,ST_T],
+        advances: [ST_WS,ST_S,ST_AG],
         social: "Brass 1",
         talents: ["Combat Aware","Criminal","Rover","Flee!"],
         skills: ["Athletics","Consume Alcohol","Cool","Endurance","Gamble","Intimidate","Melee (Basic)","Outdoor Survival"],
@@ -1043,7 +1043,7 @@ const CareerAll = [
     },
     {
         name: "Racketeer", classIndex: 6,
-        advances: [ST_AG,ST_I,ST_WP],
+        advances: [ST_WS,ST_S,ST_T],
         social: "Brass 1",
         talents: ["Criminal","Etiquette (Criminals)","Menacing","Strike Mighty Blow"],
         skills: ["Athletics","Climb","Cool","Dodge","Endurance","Intuition","Perception","Stealth (Urban)"],
@@ -1051,7 +1051,7 @@ const CareerAll = [
     },
     {
         name: "Thief", classIndex: 6,
-        advances: [ST_WS,ST_S,ST_T],
+        advances: [ST_S,ST_AG,ST_DEX],
         social: "Brass 3",
         talents: ["Alley Cat","Criminal","Etiquette (Criminals)","Flee!"],
         skills: ["Consume Alcohol","Cool","Dodge","Endurance","Intimidate","Lore (Local)","Melee (Brawling)","Stealth (Urban)"],
@@ -1059,7 +1059,7 @@ const CareerAll = [
     },
     {
         name: "Witch", classIndex: 6,
-        advances: [ST_WS,ST_T,ST_WP],
+        advances: [ST_I,ST_INT,ST_WP],
         social: "Brass 1",
         talents: ["Criminal","Menacing","Petty Magic","Instinctive Diction"],
         skills: ["Channelling","Cool","Endurance","Gossip","Intimidate","Language (Magick)","Sleight of Hand","Stealth (Rural)"],
@@ -1078,7 +1078,7 @@ const CareerAll = [
     {
         name: "Guard", classIndex: 7,
         name1st: "Sentry",
-        advances: [ST_WS,ST_T,ST_I],
+        advances: [ST_WS,ST_S,ST_I],
         social: "Brass 5",
         talents: ["Dicer","Etiquette (Servants)","Robust","Strike to Stun"],
         skills: ["Consume Alcohol","Cool","Entertain (Storytelling)","Gamble","Gossip","Intimidate","Intuition","Melee (Basic)","Melee (Brawling)","Perception"],
@@ -1088,7 +1088,7 @@ const CareerAll = [
     {
         name: "Knight", classIndex: 7,
         name1st: "Squire",
-        advances: [ST_S,ST_AG,ST_I],
+        advances: [ST_WS,ST_S,ST_AG],
         social: "Silver 3",
         talents: ["Etiquette (Nobles, or Soldiers)","Noble Blood","Strike Mighty Blow","Warrior Born"],
         skills: ["Animal Care","Athletics","Charm Animal","Cool","Heal","Lore (Heraldry)","Melee (Basic)","Melee (Cavalry)","Ride (Horse)","Trade (Farrier)"],
@@ -1105,15 +1105,15 @@ const CareerAll = [
     },
     {
         name: "Protagonist", classIndex: 7,
-        advances: [ST_S,ST_T,ST_I],
+        advances: [ST_WS,ST_S,ST_T],
         social: "Brass 2",
-        talents: ["In-fighter","Dirty Fighting","Menacing","Warrior Born"],
+        talents: ["Criminal","In-fighter","Dirty Fighting","Menacing"],
         skills: ["Athletics","Dodge","Endurance","Entertain (Taunt)","Gossip","Haggle","Intimidate","Melee (Any one)",""],
         trappings: "Brass Knuckles, Hood or Mask, Leather Jack"
     },
     {
         name: "Soldier", classIndex: 7,
-        advances: [ST_WS,ST_S,ST_WP],
+        advances: [ST_WS,ST_BS,ST_S],
         social: "Brass 2",
         talents: ["Diceman","Marksman","Strong Back","Warrior Born"],
         skills: ["Athletics","Climb","Cool","Dodge","Endurance","Language (Battle)","Melee (Basic)","Play (Drum or Fife)"],
@@ -1121,7 +1121,7 @@ const CareerAll = [
     },
     {
         name: "Slayer", classIndex: 7,
-        advances: [ST_WS,ST_T,ST_WP],
+        advances: [ST_WS,ST_S,ST_WP],
         social: "Silver 1",
         talents: ["Duel Wielder","Fearless (Everything)","Frenzy","Slayer"],
         skills: ["Consume Alcohol","Cool","Dodge","Endurance","Gamble","Heal","Lore (Trolls)","Melee (Basic)"],
@@ -1579,7 +1579,7 @@ var dataTalents = [["Accurate Shot","BSB","+1 dmg on all ranged weapons."],
 ["Cool Headed","1","Permanent +5 to starting Willpower."],
 ["Crack the whip","DexB","Drive / Ride; Fleeing/running animal +1 Movement with whip."],
 ["Craftsman (Trade)","DexB","Trade; Add trade skill or -5xp cost to career"],
-["Criminal","None) Take money as income."],
+["Criminal","None","Take money as income."],
 ["Deadeye Shot","1","Don't reverse die for location, pick."],
 ["Dealmaker","FelB","Haggle Reduce or increase price 10%."],
 ["Detect Artefact","IntB","Intuition test determines if item is magical."],
