@@ -188,6 +188,16 @@ const ST_M = 1;
 const ST_FATE = 2;
 const ST_FORTUNE = 3;
 
+function selectExtraTrappings(trappings, count, random = Math.random) {
+    const available = trappings.split(",").map(item => item.trim()).filter(Boolean);
+    const selected = [];
+    while (selected.length < count && available.length > 0) {
+        const index = Math.floor(random() * available.length);
+        selected.push(available.splice(index, 1)[0]);
+    }
+    return selected.join(", ");
+}
+
 function distributeStatIncrease(rolls, careerStats, points, random = Math.random) {
     const increases = rolls.map(() => 0);
     if (careerStats.length === 0) return increases;
@@ -546,14 +556,14 @@ const SpeciesAll = [
 var Sex = 0;
 var ClassN;
 const ClassAll = [
-    { name: "Academic", trappings: "Clothing, Dagger, Pouch, Sling Bag containing Writing Kit and 1d10 sheets of Parchment" },
-    { name: "Burgher", trappings: "Cloak, Clothing, Dagger, Hat, Pouch, Sling Bag containing Lunch" },
-    { name: "Courtier", trappings: "Fine Clothing, Dagger, Pouch containing Tweezers, Ear Pick and a Comb" },
-    { name: "Peasant", trappings: "Cloak, Clothing, Dagger, Pouch, Sling Bag containing Rations (1 day)" },
-    { name: "Ranger", trappings: "Cloak, Clothing, Dagger, Pouch, Backpack containing Tinderbox, Blanket, Rations (1 day)" },
-    { name: "Riverfolk", trappings: "Cloak, Clothing, Dagger, Pouch, Sling Bag containing a Flask of Spirits" },
-    { name: "Rogue", trappings: "Clothing, Dagger, Pouch, Sling Bag containing 2 Candles, 1d10 Matches, a Hood or Mask" },
-    { name: "Warrior", trappings: "Clothing, Hand Weapon, Dagger, Pouch" }
+    { name: "Academic", trappings: "Clothing, Dagger, Pouch, Sling Bag containing Writing Kit and 1d10 sheets of Parchment", trappings2nd: "" },
+    { name: "Burgher", trappings: "Cloak, Clothing, Dagger, Hat, Pouch, Sling Bag containing Lunch", trappings2nd: "" },
+    { name: "Courtier", trappings: "Fine Clothing, Dagger, Pouch containing Tweezers, Ear Pick and a Comb", trappings2nd: "" },
+    { name: "Peasant", trappings: "Cloak, Clothing, Dagger, Pouch, Sling Bag containing Rations (1 day)", trappings2nd: "" },
+    { name: "Ranger", trappings: "Cloak, Clothing, Dagger, Pouch, Backpack containing Tinderbox, Blanket, Rations (1 day)", trappings2nd: "" },
+    { name: "Riverfolk", trappings: "Cloak, Clothing, Dagger, Pouch, Sling Bag containing a Flask of Spirits", trappings2nd: "" },
+    { name: "Rogue", trappings: "Clothing, Dagger, Pouch, Sling Bag containing 2 Candles, 1d10 Matches, a Hood or Mask", trappings2nd: "" },
+    { name: "Warrior", trappings: "Clothing, Hand Weapon, Dagger, Pouch", trappings2nd: "" }
 ];
 var CareerN;
 var CareerName;
@@ -595,7 +605,8 @@ const CareerAll = [
         social: "Brass 1",
         talents: ["Bless (Any one)","Stone Soup","Panhandle","Read/Write"],
         skills: ["Art (Calligraphy)","Cool","Endurance","Entertain (Storyteller)","Gossip","Heal","Lore (Theology)","Pray"],
-        trappings: "Religious Symbol, Robes"
+        trappings: "Religious Symbol, Robes",
+        trappings2nd: ""
     },
     {
         name: "Physician", classIndex: 0,
@@ -603,7 +614,8 @@ const CareerAll = [
         social: "Brass 4",
         talents: ["Bookish","Field Dressing","Read/Write","Strike to Stun"],
         skills: ["Bribery","Cool","Drive","Endurance","Gossip","Heal","Perception","Sleight of Hand"],
-        trappings: "Bandages, Healing Draught"
+        trappings: "Bandages, Healing Draught",
+        trappings2nd: ""
     },
     {
         name: "Priest", classIndex: 0,
@@ -611,7 +623,8 @@ const CareerAll = [
         social: "Brass 2",
         talents: ["Bless (Any one)","Holy Visions","Read/Write","Suave"],
         skills: ["Athletics","Cool","Endurance","Intuition","Lore (Theology)","Perception","Pray","Research"],
-        trappings: "Religious Symbol, Robes"
+        trappings: "Religious Symbol, Robes",
+        trappings2nd: ""
     },
     {
         name: "Scholar", classIndex: 0,
@@ -619,7 +632,8 @@ const CareerAll = [
         social: "Brass 3",
         talents: ["Carouser","Read/Write","Savvy","Super Numerate"],
         skills: ["Consume Alcohol","Entertain (Storytelling)","Gamble","Gossip","Haggle","Language (Classical)","Lore (Any one)","Research"],
-        trappings: "Alcohol, <a href='https://pacomiscelaneousstuff.blogspot.com/2020/02/wfrp4-random-book-generator.html'>Book</a>, Opinions, Writing Kit"
+        trappings: "Alcohol, <a href='https://pacomiscelaneousstuff.blogspot.com/2020/02/wfrp4-random-book-generator.html'>Book</a>, Opinions, Writing Kit",
+        trappings2nd: ""
     },
     {
         name: "Wizard", classIndex: 0,
@@ -627,7 +641,8 @@ const CareerAll = [
         social: "Brass 3",
         talents: ["Aethyric Attunement","Petty Magic","Read/Write","Second Sight"],
         skills: ["Channelling","Dodge","Intuition","Language (Magick)","Lore (Magic)","Melee (Basic)","Melee (Polearm)","Perception"],
-        trappings: "<a href='https://pacomiscelaneousstuff.blogspot.com/2024/10/wfrp-random-grimoire-generation.html'>Grimoire</a>, Quarterstaff"
+        trappings: "<a href='https://pacomiscelaneousstuff.blogspot.com/2024/10/wfrp-random-grimoire-generation.html'>Grimoire</a>, Quarterstaff",
+        trappings2nd: ""
     },
     {
         name: "Agitator", classIndex: 1,
@@ -685,7 +700,8 @@ const CareerAll = [
         social: "Brass 2",
         talents: ["Night Vision","Resistant (Disease)","Strike Mighty Blow","Strike to Stun"],
         skills: ["Athletics","Animal Training (Dog)","Charm Animal","Consume Alcohol","Endurance","Melee (Basic)","Ranged (Sling)","Stealth (Underground or Urban)"],
-        trappings: "Sling with Ammunition, Sack, <a href='https://pacomiscelaneousstuff.blogspot.com/2020/03/wfrp-5th-edition-random-dog-companion.html'>Small but Vicious Dog</a>"
+        trappings: "Sling with Ammunition, Sack, <a href='https://pacomiscelaneousstuff.blogspot.com/2020/03/wfrp-5th-edition-random-dog-companion.html'>Small but Vicious Dog</a>",
+        trappings2nd: ""
     },
     {
         name: "Townsman", classIndex: 1,
@@ -693,7 +709,8 @@ const CareerAll = [
         social: "Silver 1",
         talents: ["Alley Cat","Beneath Notice","Etiquette (Servants)","Sturdy"],
         skills: ["Charm","Climb","Consume Alcohol","Drive","Dodge","Gamble","Gossip","Haggle"],
-        trappings: "Lodgings, Sturdy Boots"
+        trappings: "Lodgings, Sturdy Boots",
+        trappings2nd: ""
     },
     {
         name: "Watchman", classIndex: 1,
@@ -701,7 +718,8 @@ const CareerAll = [
         social: "Brass 3",
         talents: ["Drilled","Hardy","Strike to Stun","Tenacious"],
         skills: ["Athletics","Climb","Consume Alcohol","Dodge","Endurance","Gamble","Melee (Basic)","Perception"],
-        trappings: "Hand Weapon, Leather Jack, Uniform"
+        trappings: "Hand Weapon, Leather Jack, Uniform",
+        trappings2nd: ""
     },
     {
         name: "Adviser", classIndex: 2,
@@ -759,7 +777,8 @@ const CareerAll = [
         social: "Silver 1",
         talents: ["Beneath Notice","Strong Back","Strong-minded","Sturdy"],
         skills: ["Athletics","Climb","Drive","Dodge","Endurance","Intuition","Perception","Stealth (Any one)"],
-        trappings: "Floor Brush"
+        trappings: "Floor Brush",
+        trappings2nd: ""
     },
     {
         name: "Spy", classIndex: 2,
@@ -767,7 +786,8 @@ const CareerAll = [
         social: "Brass 4",
         talents: ["Blather","Carouser","Gregarious","Shadow"],
         skills: ["Bribery","Charm","Cool","Gamble","Gossip","Haggle","Perception","Stealth (Any one)"],
-        trappings: "Charcoal Stick, Sling Bag with 2 different sets of clothing and Hooded Cloak"
+        trappings: "Charcoal Stick, Sling Bag with 2 different sets of clothing and Hooded Cloak",
+        trappings2nd: ""
     },
     {
         name: "Warden", classIndex: 2,
@@ -775,7 +795,8 @@ const CareerAll = [
         social: "Silver 1",
         talents: ["Menacing","Night Vision","Sharp","Strike to Stun"],
         skills: ["Athletics","Charm Animal","Consume Alcohol","Cool","Endurance","Intuition","Perception","Trade (Any one)"],
-        trappings: "Keys, Lantern, Lamp Oil, Livery"
+        trappings: "Keys, Lantern, Lamp Oil, Livery",
+        trappings2nd: ""
     },
     {
         name: "Bailiff", classIndex: 3,
@@ -843,7 +864,8 @@ const CareerAll = [
         social: "Brass 3",
         talents: ["Orientation","Rover","Sharp","Strider (Any one)"],
         skills: ["Charm Animal","Climb","Endurance","Gossip","Lore (Local)","Melee (Basic)","Outdoor Survival","Perception"],
-        trappings: "Hand Weapon, Leather Jack, Sturdy Boots and Cloak, Rope"
+        trappings: "Hand Weapon, Leather Jack, Sturdy Boots and Cloak, Rope",
+        trappings2nd: ""
     },
     {
         name: "Villager", classIndex: 3,
@@ -851,7 +873,8 @@ const CareerAll = [
         social: "Brass 2",
         talents: ["Rover","Strong Back","Strong-minded","Stone Soup"],
         skills: ["Animal Care","Athletics","Consume Alcohol","Endurance","Gossip","Melee (Brawling)","Lore (Local)","Outdoor Survival"],
-        trappings: "None"
+        trappings: "None",
+        trappings2nd: ""
     },
     {
         name: "Bounty Hunter", classIndex: 4,
@@ -909,7 +932,8 @@ const CareerAll = [
         social: "Brass 1",
         talents: ["Fisherman","Flee!","Rover","Tinker"],
         skills: ["Charm","Endurance","Entertain (Storytelling)","Gossip","Haggle","Intuition","Outdoor Survival","Stealth (Rural or Urban)"],
-        trappings: "Backpack, Bedroll, Goods worth 2d10 brass, Tent"
+        trappings: "Backpack, Bedroll, Goods worth 2d10 brass, Tent",
+        trappings2nd: ""
     },
     {
         name: "Roadwarden", classIndex: 4,
@@ -917,7 +941,8 @@ const CareerAll = [
         social: "Brass 5",
         talents: ["Coolheaded","Embezzle","Marksman","Numismatics"],
         skills: ["Bribery","Consume Alcohol","Gamble","Gossip","Haggle","Melee (Basic)","Perception","Ranged (Crossbow)"],
-        trappings: "Crossbow with 10 Bolts, Leather Jack"
+        trappings: "Crossbow with 10 Bolts, Leather Jack",
+        trappings2nd: ""
     },
     {
         name: "Witch Hunter", classIndex: 4,
@@ -925,7 +950,8 @@ const CareerAll = [
         social: "Silver 1",
         talents: ["Coolheaded","Menacing","Read/Write","Resolute"],
         skills: ["Charm","Consume Alcohol","Heal","Intimidate","Intuition","Lore (Torture)","Melee (Basic)","Perception"],
-        trappings: "Hand Weapon, Instruments of Torture"
+        trappings: "Hand Weapon, Instruments of Torture",
+        trappings2nd: ""
     },
     {
         name: "Boatman", classIndex: 5,
@@ -943,7 +969,8 @@ const CareerAll = [
         social: "Brass 4",
         talents: ["Fisherman","Night Vision","Orientation","Waterman"],
         skills: ["Consume Alcohol","Gossip","Intuition","Lore (Local)","Lore (Riverways)","Perception","Row","Swim"],
-        trappings: "Hand Weapon (Boat Hook), Storm Lantern and Oil"
+        trappings: "Hand Weapon (Boat Hook), Storm Lantern and Oil",
+        trappings2nd: ""
     },
     {
         name: "Riverwarden", classIndex: 5,
@@ -951,7 +978,8 @@ const CareerAll = [
         social: "Silver 1",
         talents: ["Fisherman","Gregarious","Strider (Marshes)","Strong Swimmer"],
         skills: ["Athletics","Dodge","Endurance","Melee (Basic)","Perception","Row","Sail","Swim"],
-        trappings: "Hand Weapon (Sword), Leather Jack, Uniform"
+        trappings: "Hand Weapon (Sword), Leather Jack, Uniform",
+        trappings2nd: ""
     },
     {
         name: "Riverwoman", classIndex: 5,
@@ -959,7 +987,8 @@ const CareerAll = [
         social: "Brass 2",
         talents: ["Strong Swimmer","Strong Back","Very Strong","Waterman"],
         skills: ["Athletics","Consume Alcohol","Dodge","Endurance","Gossip","Outdoor Survival","Row","Swim"],
-        trappings: "Bucket, Fishing Rod and Bait, Leather Leggings"
+        trappings: "Bucket, Fishing Rod and Bait, Leather Leggings",
+        trappings2nd: ""
     },
     {
         name: "Sailor", classIndex: 5,
@@ -967,7 +996,8 @@ const CareerAll = [
         social: "Silver 1",
         talents: ["Fisherman","Strider (Coastal)","Strong Back","Strong Swimmer"],
         skills: ["Climb","Consume Alcohol","Gamble","Gossip","Row","Melee (Brawling)","Sail","Swim"],
-        trappings: "Bucket, Brush, Mop"
+        trappings: "Bucket, Brush, Mop",
+        trappings2nd: ""
     },
     {
         name: "Smuggler", classIndex: 5,
@@ -975,7 +1005,8 @@ const CareerAll = [
         social: "Brass 2",
         talents: ["Criminal","Fisherman","Strider (Marshes)","Strong Back"],
         skills: ["Athletics","Bribery","Cool","Consume Alcohol","Row","Sail","Stealth (Rural or Urban)","Swim"],
-        trappings: "Large Sack, Mask or Scarves, Tinderbox, Storm Lantern and Oil"
+        trappings: "Large Sack, Mask or Scarves, Tinderbox, Storm Lantern and Oil",
+        trappings2nd: ""
     },
     {
         name: "Stevedore", classIndex: 5,
@@ -983,7 +1014,8 @@ const CareerAll = [
         social: "Brass 3",
         talents: ["Dirty Fighting","Strong Back","Sturdy","Very Strong"],
         skills: ["Athletics","Climb","Consume Alcohol","Dodge","Endurance","Gossip","Melee (Basic)","Swim"],
-        trappings: "Hand Weapon (Boat Hook), Leather Gloves"
+        trappings: "Hand Weapon (Boat Hook), Leather Gloves",
+        trappings2nd: ""
     },
     {
         name: "Wrecker", classIndex: 5,
@@ -991,7 +1023,8 @@ const CareerAll = [
         social: "Brass 2",
         talents: ["Break and Enter","Criminal","Fisherman","Strong Back"],
         skills: ["Climb","Consume Alcohol","Dodge","Endurance","Row","Melee (Basic)","Outdoor Survival","Swim"],
-        trappings: "Crowbar, Large Sack, Leather Gloves"
+        trappings: "Crowbar, Large Sack, Leather Gloves",
+        trappings2nd: ""
     },
     {
         name: "Charlatan", classIndex: 6,
@@ -1039,7 +1072,8 @@ const CareerAll = [
         social: "Brass 1",
         talents: ["Combat Aware","Criminal","Rover","Flee!"],
         skills: ["Athletics","Consume Alcohol","Cool","Endurance","Gamble","Intimidate","Melee (Basic)","Outdoor Survival"],
-        trappings: "Bedroll, Hand Weapon, Leather Jerkin, Tinderbox"
+        trappings: "Bedroll, Hand Weapon, Leather Jerkin, Tinderbox",
+        trappings2nd: ""
     },
     {
         name: "Racketeer", classIndex: 6,
@@ -1047,7 +1081,8 @@ const CareerAll = [
         social: "Brass 1",
         talents: ["Criminal","Etiquette (Criminals)","Menacing","Strike Mighty Blow"],
         skills: ["Athletics","Climb","Cool","Dodge","Endurance","Intuition","Perception","Stealth (Urban)"],
-        trappings: "Crowbar, Leather Jerkin, Sack"
+        trappings: "Crowbar, Leather Jerkin, Sack",
+        trappings2nd: ""
     },
     {
         name: "Thief", classIndex: 6,
@@ -1055,7 +1090,8 @@ const CareerAll = [
         social: "Brass 3",
         talents: ["Alley Cat","Criminal","Etiquette (Criminals)","Flee!"],
         skills: ["Consume Alcohol","Cool","Dodge","Endurance","Intimidate","Lore (Local)","Melee (Brawling)","Stealth (Urban)"],
-        trappings: "Brass Knuckles, Leather Jack"
+        trappings: "Brass Knuckles, Leather Jack",
+        trappings2nd: ""
     },
     {
         name: "Witch", classIndex: 6,
@@ -1063,7 +1099,8 @@ const CareerAll = [
         social: "Brass 1",
         talents: ["Criminal","Menacing","Petty Magic","Instinctive Diction"],
         skills: ["Channelling","Cool","Endurance","Gossip","Intimidate","Language (Magick)","Sleight of Hand","Stealth (Rural)"],
-        trappings: "Candles, Chalk, Doll, Pins"
+        trappings: "Candles, Chalk, Doll, Pins",
+        trappings2nd: ""
     },
     {
         name: "Cavalryman", classIndex: 7,
@@ -1101,7 +1138,8 @@ const CareerAll = [
         social: "Brass 4",
         talents: ["Dirty Fighting","In-fighter","Iron Jaw","Reversal"],
         skills: ["Athletics","Cool","Dodge","Endurance","Gamble","Intimidate","Melee (Any one)","Melee (Brawling)"],
-        trappings: "Bandages, Brass Knuckles, Hand Weapon, Leather Jack"
+        trappings: "Bandages, Brass Knuckles, Hand Weapon, Leather Jack",
+        trappings2nd: ""
     },
     {
         name: "Protagonist", classIndex: 7,
@@ -1109,7 +1147,8 @@ const CareerAll = [
         social: "Brass 2",
         talents: ["Criminal","In-fighter","Dirty Fighting","Menacing"],
         skills: ["Athletics","Dodge","Endurance","Entertain (Taunt)","Gossip","Haggle","Intimidate","Melee (Any one)",""],
-        trappings: "Brass Knuckles, Hood or Mask, Leather Jack"
+        trappings: "Brass Knuckles, Hood or Mask, Leather Jack",
+        trappings2nd: ""
     },
     {
         name: "Soldier", classIndex: 7,
@@ -1117,7 +1156,8 @@ const CareerAll = [
         social: "Brass 2",
         talents: ["Diceman","Marksman","Strong Back","Warrior Born"],
         skills: ["Athletics","Climb","Cool","Dodge","Endurance","Language (Battle)","Melee (Basic)","Play (Drum or Fife)"],
-        trappings: "Axe, Flask of Spirits, Shame, Tattoos"
+        trappings: "Axe, Flask of Spirits, Shame, Tattoos",
+        trappings2nd: ""
     },
     {
         name: "Slayer", classIndex: 7,
@@ -1125,7 +1165,8 @@ const CareerAll = [
         social: "Silver 1",
         talents: ["Duel Wielder","Fearless (Everything)","Frenzy","Slayer"],
         skills: ["Consume Alcohol","Cool","Dodge","Endurance","Gamble","Heal","Lore (Trolls)","Melee (Basic)"],
-        trappings: "Hand Weapon (Sword), Leather Armor, Uniform"
+        trappings: "Hand Weapon (Sword), Leather Armor, Uniform",
+        trappings2nd: ""
     },
     {
         name: "Warrior Priest", classIndex: 7,
@@ -1133,7 +1174,8 @@ const CareerAll = [
         social: "Brass 2",
         talents: ["Bless (Any one)","Etiquette (Cultists)","Read/Write","Strong-minded"],
         skills: ["Cool","Dodge","Endurance","Heal","Leadership","Lore (Theology)","Melee (Any one)","Pray"],
-        trappings: "<a href='https://pacomiscelaneousstuff.blogspot.com/2020/02/wfrp4-random-book-generator.html'>Book (Religion)</a>, Leather Jerkin, Religious Symbol, Robes, Weapon (Any one)"
+        trappings: "<a href='https://pacomiscelaneousstuff.blogspot.com/2020/02/wfrp4-random-book-generator.html'>Book (Religion)</a>, Leather Jerkin, Religious Symbol, Robes, Weapon (Any one)",
+        trappings2nd: ""
     }
 ];
 var CareerSpecies = [];
@@ -1162,6 +1204,8 @@ var TalentTxt ="";
 var TalentNames = [];
 var TalentValues = [];
 var TalentCareer = [];
+var extraTrappings = 0;
+
 const TalentRandom = [
     { range: [1, 2], name: "Acute Sense (Sight)" },
     { range: [3, 5], name: "Ambidextrous" },
@@ -2221,18 +2265,18 @@ if ((document.getElementById("careerCheck").checked == true) ) {
                 CareerN = CareerSpecies.findIndex((val) => val >= newCareerRolls[selectedIndex]);
                 CareerName = newCareerOptions[selectedIndex];
                 xp += 0; // Smaller XP bonus
-                // TODO: Select 1 trapping from 2nd level of career
+                extraTrappings = 1;
             }
     } else {
       xp += 0;
-      // TODO: Select 2 trappings from 2nd level of career
+      extraTrappings = 2;
     }} else {
       xp += 0;
-      // TODO: Select 2 trappings from 2nd level of career
+      extraTrappings = 2;
     }
   } else {
       xp += 0;
-      // TODO: Select 2 trappings from 2nd level of career
+      extraTrappings = 2;
   }
 const career = CareerAll[CareerN];
 ClassN = career.classIndex;
@@ -2329,7 +2373,11 @@ SkillValues = SkillNamesValue[1].slice(0);
 SkillCareer = SkillNamesValue[2].slice(0);
 
 console.log(SkillNames);
-var Trapping = rollTrappings(characterClass.trappings + ", " + career.trappings);
+var ExtraTrapping = "";
+if (extraTrappings > 0) {
+    ExtraTrapping = selectExtraTrappings(career.trappings2nd, extraTrappings);
+}
+var Trapping = rollTrappings([characterClass.trappings, career.trappings, ExtraTrapping].filter(Boolean).join(", "));
 var Money = rollMoney(career.social);
 /* Generate the final strings */
 CareerTxt ="(" + characterClass.name + ") " + CareerName + ", Social Level "+ career.social ;
