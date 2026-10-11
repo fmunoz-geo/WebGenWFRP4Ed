@@ -596,53 +596,58 @@ const CareerAll = [
         social: "Brass 4",
         talents: ["Blather","Etiquette (Scholars)","Read/Write","Speedreader"],
         skills: ["Bribery","Charm","Consume Alcohol","Entertain (Storytelling)","Gossip","Intuition","Language (Classical)","Lore (Law)","Lore (Theology)","Research"],
-        trappings: "Book (Law), Magnifying Glass",
+        trappings: "<a href='https://pacomiscelaneousstuff.blogspot.com/2020/02/wfrp4-random-book-generator.html'>Book (Law)</a>, Magnifying Glass",
         trappings2nd: "Court Robes, Guild Licence, Writing Kit"
     },
     {
         name: "Nun", classIndex: 0,
+        name1st: "Novice",
         advances: [ST_DEX,ST_INT,ST_FEL],
         social: "Brass 1",
-        talents: ["Bless (Any one)","Stone Soup","Panhandle","Read/Write"],
-        skills: ["Art (Calligraphy)","Cool","Endurance","Entertain (Storyteller)","Gossip","Heal","Lore (Theology)","Pray"],
+        talents: ["Bless (Any One)","Holy Visions","Panhandle","Read/Write"],
+        skills: ["Art (Calligraphy)","Charm","Cool","Endurance","Heal","Language (Classical)","Lore (Theology)","Outdoor Survival","Pray","Trade (Brewer)"],
         trappings: "Religious Symbol, Robes",
-        trappings2nd: ""
+        trappings2nd: "<a href='https://pacomiscelaneousstuff.blogspot.com/2020/02/wfrp4-random-book-generator.html'>Book (Religion)</a>, Religious Relic"
     },
     {
         name: "Physician", classIndex: 0,
+        name1st: "Physician’s Apprentice",
         advances: [ST_DEX,ST_INT,ST_FEL],
         social: "Brass 4",
-        talents: ["Bookish","Field Dressing","Read/Write","Strike to Stun"],
-        skills: ["Bribery","Cool","Drive","Endurance","Gossip","Heal","Perception","Sleight of Hand"],
-        trappings: "Bandages, Healing Draught",
-        trappings2nd: ""
+        talents: ["Bookish","Craftsman (Barber)","Field Dressing","Read/Write"],
+        skills: ["Charm","Consume Alcohol","Cool","Endurance","Gossip","Heal","Language (Classical)","Lore (Medicine)","Research","Trade (Barber)"],
+        trappings: "Bandages, Vitality Draught",
+        trappings2nd: "<a href='https://pacomiscelaneousstuff.blogspot.com/2020/02/wfrp4-random-book-generator.html'>Book (Medicine)</a>, Guild Licence, Trade Tools (Physician)"
     },
     {
         name: "Priest", classIndex: 0,
+        name1st: "Initiate",
         advances: [ST_INT,ST_WP,ST_FEL],
         social: "Brass 2",
-        talents: ["Bless (Any one)","Holy Visions","Read/Write","Suave"],
-        skills: ["Athletics","Cool","Endurance","Intuition","Lore (Theology)","Perception","Pray","Research"],
+        talents: ["Bless (Any One)","Holy Visions","Read/Write","Suave"],
+        skills: ["Charm","Cool","Endurance","Entertain (Storytelling)","Heal","Intuition","Language (Classical)","Lore (Theology)","Pray","Research"],
         trappings: "Religious Symbol, Robes",
-        trappings2nd: ""
+        trappings2nd: "<a href='https://pacomiscelaneousstuff.blogspot.com/2020/02/wfrp4-random-book-generator.html'>Book (Religion)</a>, Ceremonial Robes"
     },
     {
         name: "Scholar", classIndex: 0,
+        name1st: "Student",
         advances: [ST_DEX,ST_INT,ST_WP],
         social: "Brass 3",
-        talents: ["Carouser","Read/Write","Savvy","Super Numerate"],
-        skills: ["Consume Alcohol","Entertain (Storytelling)","Gamble","Gossip","Haggle","Language (Classical)","Lore (Any one)","Research"],
-        trappings: "Alcohol, <a href='https://pacomiscelaneousstuff.blogspot.com/2020/02/wfrp4-random-book-generator.html'>Book</a>, Opinions, Writing Kit",
-        trappings2nd: ""
+        talents: ["Bookish","Etiquette (Scholars)","Read/Write","Savvy"],
+        skills: ["Art (Writing)","Consume Alcohol","Cool","Entertain (Storytelling)","Evaluate","Gamble","Gossip","Language (Classical)","Lore (Any One)","Research"],
+        trappings: "Alcohol, <a href='https://pacomiscelaneousstuff.blogspot.com/2020/02/wfrp4-random-book-generator.html'>Book</a>",
+        trappings2nd: "Access to a Library, Degree"
     },
     {
         name: "Wizard", classIndex: 0,
+        name1st: "Wizard’s Apprentice",
         advances: [ST_I,ST_INT,ST_WP],
         social: "Brass 3",
         talents: ["Aethyric Attunement","Petty Magic","Read/Write","Second Sight"],
-        skills: ["Channelling","Dodge","Intuition","Language (Magick)","Lore (Magic)","Melee (Basic)","Melee (Polearm)","Perception"],
+        skills: ["Channelling (Any Colour)","Cool","Gossip","Language (Classical)","Language (Magick)","Lore (Any One)","Lore (Magic)","Melee (Polearm)","Perception","Research"],
         trappings: "<a href='https://pacomiscelaneousstuff.blogspot.com/2024/10/wfrp-random-grimoire-generation.html'>Grimoire</a>, Quarterstaff",
-        trappings2nd: ""
+        trappings2nd: "Enchanted Staff, Magic Licence, Robes"
     },
     {
         name: "Agitator", classIndex: 1,
@@ -696,30 +701,33 @@ const CareerAll = [
     },
     {
         name: "Rat Catcher", classIndex: 1,
+        name1st: "Rat Hunter",
         advances: [ST_WS,ST_T,ST_DEX],
-        social: "Brass 2",
-        talents: ["Night Vision","Resistant (Disease)","Strike Mighty Blow","Strike to Stun"],
-        skills: ["Athletics","Animal Training (Dog)","Charm Animal","Consume Alcohol","Endurance","Melee (Basic)","Ranged (Sling)","Stealth (Underground or Urban)"],
-        trappings: "Sling with Ammunition, Sack, <a href='https://pacomiscelaneousstuff.blogspot.com/2020/03/wfrp-5th-edition-random-dog-companion.html'>Small but Vicious Dog</a>",
-        trappings2nd: ""
+        social: "Brass 3",
+        talents: ["Enclosed Fighter","Night Vision","Resistant (Disease)","Trapper"],
+        skills: ["Animal Care","Animal Training (Dog)","Charm Animal","Endurance","Haggle","Melee (Basic)","Perception","Set Trap","Stealth (Underground)","Stealth (Urban)"],
+        trappings: "Hand Weapon, Sack, Small Animal Traps, <a href='https://pacomiscelaneousstuff.blogspot.com/2020/03/wfrp-4th-edition-random-dog-companion.html'>Small but Vicious Dog</a>",
+        trappings2nd: "Pole for Dead Rats, Rat Poison"
     },
     {
         name: "Townsman", classIndex: 1,
+        name1st: "Clerk",
         advances: [ST_S,ST_INT,ST_FEL],
-        social: "Silver 1",
-        talents: ["Alley Cat","Beneath Notice","Etiquette (Servants)","Sturdy"],
-        skills: ["Charm","Climb","Consume Alcohol","Drive","Dodge","Gamble","Gossip","Haggle"],
-        trappings: "Lodgings, Sturdy Boots",
-        trappings2nd: ""
+        social: "Brass 5",
+        talents: ["Dealmaker","Embezzle","Read/Write","Speedreader"],
+        skills: ["Charm","Consume Alcohol","Evaluate","Gamble","Gossip","Haggle","Intuition","Lore (Local)","Research","Secret Signs (Guilder)"],
+        trappings: "Lodgings",
+        trappings2nd: "Modest Shop"
     },
     {
         name: "Watchman", classIndex: 1,
+        name1st: "Watch Recruit",
         advances: [ST_WS,ST_S,ST_I],
         social: "Brass 3",
-        talents: ["Drilled","Hardy","Strike to Stun","Tenacious"],
-        skills: ["Athletics","Climb","Consume Alcohol","Dodge","Endurance","Gamble","Melee (Basic)","Perception"],
+        talents: ["Criminal","Drilled","Sprinter","Strike to Stun"],
+        skills: ["Athletics","Consume Alcohol","Cool","Dodge","Endurance","Gamble","Gossip","Intimidate","Melee (Basic)","Perception"],
         trappings: "Hand Weapon, Leather Jack, Uniform",
-        trappings2nd: ""
+        trappings2nd: "Copper Badge, Lamp Oil, Lantern and Pole"
     },
     {
         name: "Adviser", classIndex: 2,
@@ -769,34 +777,37 @@ const CareerAll = [
         talents: ["Etiquette (Nobles)","Luck","Noble Blood","Read/Write"],
         skills: ["Consume Alcohol","Gamble","Gossip","Intimidate","Language (Classical)","Leadership","Lore (Heraldry)","Melee (Fencing)","Perform (Dancing)","Ride (Horse)"],
         trappings: "Courtly Garb, Foil or Hand Mirror, Velvet Cloak, Jewellery worth 3d10 GC, Personal Servant",
-        trappings2nd: "Coach or Riding Horse, 4 Household Servants, Jewellery worth 50 GC, Main-gauche or Pistol with 10 Shots, Quality Courtly Garb"
+        trappings2nd: "Coach or <a href='https://pacomiscelaneousstuff.blogspot.com/2020/03/wfrp-4th-edition-random-horse-companion.html'>Riding Horse</a>, 4 Household Servants, Jewellery worth 50 GC, Main-gauche or Pistol with 10 Shots, Quality Courtly Garb"
     },
     {
         name: "Servant", classIndex: 2,
+        name1st: "Menial",
         advances: [ST_S,ST_T,ST_AG],
-        social: "Silver 1",
-        talents: ["Beneath Notice","Strong Back","Strong-minded","Sturdy"],
-        skills: ["Athletics","Climb","Drive","Dodge","Endurance","Intuition","Perception","Stealth (Any one)"],
+        social: "Brass 3",
+        talents: ["Beneath Notice","Etiquette (Servants)","Strong Back","Tenacious"],
+        skills: ["Animal Care","Athletics","Climb","Consume Alcohol","Dodge","Endurance","Gossip","Haggle","Intuition","Stealth (Any One)"],
         trappings: "Floor Brush",
-        trappings2nd: ""
+        trappings2nd: "Livery"
     },
     {
         name: "Spy", classIndex: 2,
+        name1st: "Informer",
         advances: [ST_I,ST_AG,ST_FEL],
         social: "Brass 4",
-        talents: ["Blather","Carouser","Gregarious","Shadow"],
-        skills: ["Bribery","Charm","Cool","Gamble","Gossip","Haggle","Perception","Stealth (Any one)"],
-        trappings: "Charcoal Stick, Sling Bag with 2 different sets of clothing and Hooded Cloak",
-        trappings2nd: ""
+        talents: ["Beneath Notice","Etiquette (Any One)","Gregarious","Read/Write"],
+        skills: ["Bribery","Charm","Consume Alcohol","Cool","Gamble","Gossip","Intuition","Melee (Basic)","Perception","Stealth (Any One)"],
+        trappings: "Charcoal Stick, Sling Bag containing 2 different sets of Clothing and Hooded Cloak",
+        trappings2nd: "Disguise Kit, Informer, Telescope"
     },
     {
         name: "Warden", classIndex: 2,
+        name1st: "Custodian",
         advances: [ST_T,ST_I,ST_INT],
-        social: "Silver 1",
-        talents: ["Menacing","Night Vision","Sharp","Strike to Stun"],
-        skills: ["Athletics","Charm Animal","Consume Alcohol","Cool","Endurance","Intuition","Perception","Trade (Any one)"],
-        trappings: "Keys, Lantern, Lamp Oil, Livery",
-        trappings2nd: ""
+        social: "Brass 4",
+        talents: ["Animal Affinity","Etiquette (Servants)","Night Vision","Sharp"],
+        skills: ["Animal Care","Athletics","Charm Animal","Consume Alcohol","Cool","Endurance","Evaluate","Intuition","Lore (Local)","Perception"],
+        trappings: "Keys, Lamp Oil, Lantern, Livery",
+        trappings2nd: "Bow with 10 Arrows or Hand Weapon, Leather Jack, <a href='https://pacomiscelaneousstuff.blogspot.com/2020/03/wfrp-4th-edition-random-horse-companion.html'>Riding Horse</a>"
     },
     {
         name: "Bailiff", classIndex: 3,
@@ -836,7 +847,7 @@ const CareerAll = [
         talents: ["Hardy","Rover","Striding Gait (All)","Trapper"],
         skills: ["Animal Care","Athletics","Charm Animal","Climb","Endurance","Outdoor Survival","Perception","Set Trap","Stealth (Rural)","Track"],
         trappings: "Hand Weapon (Axe), Selection of Animal Traps, Sturdy Boots and Cloak",
-        trappings2nd: "Hunting Dog, Ranged Weapon (Any One), Spear"
+        trappings2nd: "<a href='https://pacomiscelaneousstuff.blogspot.com/2020/03/wfrp-4th-edition-random-dog-companion.html'>Hunting Dog</a>, Ranged Weapon (Any One), Spear"
     },
     {
         name: "Miner", classIndex: 3,
@@ -860,21 +871,23 @@ const CareerAll = [
     },
     {
         name: "Scout", classIndex: 3,
+        name1st: "Guide",
         advances: [ST_T,ST_AG,ST_I],
         social: "Brass 3",
-        talents: ["Orientation","Rover","Sharp","Strider (Any one)"],
-        skills: ["Charm Animal","Climb","Endurance","Gossip","Lore (Local)","Melee (Basic)","Outdoor Survival","Perception"],
+        talents: ["Orientation","Night Vision","Rover","Striding Gait (All)"],
+        skills: ["Athletics","Climb","Endurance","Gossip","Lore (Local)","Melee (Basic)","Navigation","Outdoor Survival","Perception","Stealth (Rural)"],
         trappings: "Hand Weapon, Leather Jack, Sturdy Boots and Cloak, Rope",
-        trappings2nd: ""
+        trappings2nd: "Bow with 10 Arrows or Crossbow with 10 Bolts or Sling with 10 Lead Bullets, Mail Shirt"
     },
     {
         name: "Villager", classIndex: 3,
+        name1st: "Peasant",
         advances: [ST_S,ST_T,ST_AG],
         social: "Brass 2",
-        talents: ["Rover","Strong Back","Strong-minded","Stone Soup"],
-        skills: ["Animal Care","Athletics","Consume Alcohol","Endurance","Gossip","Melee (Brawling)","Lore (Local)","Outdoor Survival"],
+        talents: ["Hardy","Stone Soup","Strong Back","Tenacious"],
+        skills: ["Animal Care","Athletics","Charm Animal","Consume Alcohol","Dodge","Endurance","Gossip","Lore (Local)","Melee (Brawling)","Outdoor Survival"],
         trappings: "None",
-        trappings2nd: ""
+        trappings2nd: "Hand Weapon (Axe), Lasso or Sling with 10 Stone Bullets, Leather Jerkin, Trade Tools (as Trade)"
     },
     {
         name: "Bounty Hunter", classIndex: 4,
@@ -924,34 +937,37 @@ const CareerAll = [
         talents: ["Criminal","Flee!","Fleet-footed","Sprinter"],
         skills: ["Athletics","Climb","Cool","Dodge","Endurance","Haggle","Melee (Basic)","Navigation","Perception","Secret Signs (Ranger or Thief)"],
         trappings: "Scroll Case",
-        trappings2nd: "Hand Weapon, Leather Jack, Riding Horse"
+        trappings2nd: "Hand Weapon, Leather Jack, <a href='https://pacomiscelaneousstuff.blogspot.com/2020/03/wfrp-4th-edition-random-horse-companion.html'>Riding Horse</a>"
     },
     {
         name: "Pedlar", classIndex: 4,
+        name1st: "Vagabond",
         advances: [ST_T,ST_AG,ST_FEL],
         social: "Brass 1",
-        talents: ["Fisherman","Flee!","Rover","Tinker"],
-        skills: ["Charm","Endurance","Entertain (Storytelling)","Gossip","Haggle","Intuition","Outdoor Survival","Stealth (Rural or Urban)"],
-        trappings: "Backpack, Bedroll, Goods worth 2d10 brass, Tent",
-        trappings2nd: ""
+        talents: ["Flee!","Gregarious","Stone Soup","Striding Gait (Any One)"],
+        skills: ["Athletics","Charm","Endurance","Entertain (Storytelling)","Gossip","Haggle","Navigation","Outdoor Survival","Secret Signs (Vagabond)","Stealth (Rural)"],
+        trappings: "Basket, Blanket, Goods worth 2d10 Pennies, Small Tent",
+        trappings2nd: "Backpack or Handcart, Bedroll, Goods worth 8d20 Pennies, Pots and Pans, Trade Tools (Tinker)"
     },
     {
         name: "Roadwarden", classIndex: 4,
+        name1st: "Toll Keeper",
         advances: [ST_WS,ST_T,ST_I],
         social: "Brass 5",
         talents: ["Coolheaded","Embezzle","Marksman","Numismatics"],
-        skills: ["Bribery","Consume Alcohol","Gamble","Gossip","Haggle","Melee (Basic)","Perception","Ranged (Crossbow)"],
-        trappings: "Crossbow with 10 Bolts, Leather Jack",
-        trappings2nd: ""
+        skills: ["Consume Alcohol","Cool","Evaluate","Gamble","Gossip","Intimidate","Intuition","Melee (Basic)","Perception","Ranged (Crossbow)"],
+        trappings: "Crossbow with 10 Bolts, Hand Weapon, Leather Jack",
+        trappings2nd: "<a href='https://pacomiscelaneousstuff.blogspot.com/2020/03/wfrp-4th-edition-random-horse-companion.html'>Light Warhorse</a>, Mail Shirt, Pistol with 10 Shots, Rope"
     },
     {
         name: "Witch Hunter", classIndex: 4,
+        name1st: "Interrogator",
         advances: [ST_WS,ST_I,ST_WP],
         social: "Silver 1",
-        talents: ["Coolheaded","Menacing","Read/Write","Resolute"],
-        skills: ["Charm","Consume Alcohol","Heal","Intimidate","Intuition","Lore (Torture)","Melee (Basic)","Perception"],
+        talents: ["Coolheaded","Menacing","Read/Write","Strike to Stun"],
+        skills: ["Athletics","Cool","Dodge","Gossip","Heal","Intimidate","Intuition","Lore (Witches)","Melee (Brawling)","Perception"],
         trappings: "Hand Weapon, Instruments of Torture",
-        trappings2nd: ""
+        trappings2nd: "Crossbow with 10 Bolts or Pistol with 10 Shots, Hat, Leather Jack, <a href='https://pacomiscelaneousstuff.blogspot.com/2020/03/wfrp-4th-edition-random-horse-companion.html'>Riding Horse</a>, Rope, Sword"
     },
     {
         name: "Boatman", classIndex: 5,
@@ -965,66 +981,73 @@ const CareerAll = [
     },
     {
         name: "Pilot", classIndex: 5,
+        name1st: "Riverguide",
         advances: [ST_S,ST_I,ST_INT],
         social: "Brass 4",
-        talents: ["Fisherman","Night Vision","Orientation","Waterman"],
-        skills: ["Consume Alcohol","Gossip","Intuition","Lore (Local)","Lore (Riverways)","Perception","Row","Swim"],
-        trappings: "Hand Weapon (Boat Hook), Storm Lantern and Oil",
-        trappings2nd: ""
+        talents: ["Fisherman","Orientation","River Guide","Waterman"],
+        skills: ["Consume Alcohol","Gossip","Intuition","Lore (Local)","Lore (Riverways)","Navigation","Outdoor Survival","Perception","Row","Swim"],
+        trappings: "Hand Weapon (Boat Hook)",
+        trappings2nd: "Leather Jerkin, Rope, Rowboat"
     },
     {
         name: "Riverwarden", classIndex: 5,
+        name1st: "River Recruit",
         advances: [ST_WS,ST_S,ST_FEL],
-        social: "Silver 1",
-        talents: ["Fisherman","Gregarious","Strider (Marshes)","Strong Swimmer"],
-        skills: ["Athletics","Dodge","Endurance","Melee (Basic)","Perception","Row","Sail","Swim"],
-        trappings: "Hand Weapon (Sword), Leather Jack, Uniform",
-        trappings2nd: ""
+        social: "Brass 4",
+        talents: ["Strong Back","Strong Swimmer","Very Strong","Waterman"],
+        skills: ["Athletics","Consume Alcohol","Cool","Dodge","Endurance","Melee (Basic)","Perception","Row","Sail","Swim"],
+        trappings: "Hand Weapon, Leather Jack, Uniform",
+        trappings2nd: "Lantern and Oil, Pistol with 10 Shots, Shield"
     },
     {
         name: "Riverwoman", classIndex: 5,
+        name1st: "Greenfish",
         advances: [ST_T,ST_AG,ST_DEX],
         social: "Brass 2",
-        talents: ["Strong Swimmer","Strong Back","Very Strong","Waterman"],
-        skills: ["Athletics","Consume Alcohol","Dodge","Endurance","Gossip","Outdoor Survival","Row","Swim"],
+        talents: ["Fisherman","Gregarious","Striding Gait (Wetland)","Strong Swimmer"],
+        skills: ["Athletics","Consume Alcohol","Dodge","Endurance","Gossip","Lore (Local)","Outdoor Survival","Row","Stealth (Rural)","Swim"],
         trappings: "Bucket, Fishing Rod and Bait, Leather Leggings",
-        trappings2nd: ""
+        trappings2nd: "Eel Trap, Leather Jerkin, Net, Spear"
     },
     {
         name: "Sailor", classIndex: 5,
+        name1st: "Landsman",
         advances: [ST_S,ST_AG,ST_DEX],
-        social: "Silver 1",
-        talents: ["Fisherman","Strider (Coastal)","Strong Back","Strong Swimmer"],
-        skills: ["Climb","Consume Alcohol","Gamble","Gossip","Row","Melee (Brawling)","Sail","Swim"],
-        trappings: "Bucket, Brush, Mop",
-        trappings2nd: ""
+        social: "Brass 4",
+        talents: ["Sea Legs","Striding Gait (Coastal)","Strong Back","Strong Swimmer"],
+        skills: ["Athletics","Climb","Consume Alcohol","Cool","Endurance","Gamble","Melee (Brawling)","Row","Sail","Swim"],
+        trappings: "Brush, Bucket, Mop",
+        trappings2nd: "Hand Weapon (Boat Hook), Leather Jerkin"
     },
     {
         name: "Smuggler", classIndex: 5,
+        name1st: "River Runner",
         advances: [ST_S,ST_I,ST_AG],
-        social: "Brass 2",
-        talents: ["Criminal","Fisherman","Strider (Marshes)","Strong Back"],
-        skills: ["Athletics","Bribery","Cool","Consume Alcohol","Row","Sail","Stealth (Rural or Urban)","Swim"],
-        trappings: "Large Sack, Mask or Scarves, Tinderbox, Storm Lantern and Oil",
-        trappings2nd: ""
+        social: "Brass 4",
+        talents: ["Criminal","Fisherman","Striding Gait (Wetland)","Strong Back"],
+        skills: ["Athletics","Consume Alcohol","Cool","Endurance","Lore (Local)","Perception","Row","Sail","Stealth (Rural or Urban)","Swim"],
+        trappings: "Large Sack, Mask or Scarves, Storm Lantern and Oil, Tinderbox",
+        trappings2nd: "2 Barrels, Hand Weapon, Rowboat"
     },
     {
         name: "Stevedore", classIndex: 5,
+        name1st: "Dockhand",
         advances: [ST_S,ST_T,ST_AG],
         social: "Brass 3",
-        talents: ["Dirty Fighting","Strong Back","Sturdy","Very Strong"],
-        skills: ["Athletics","Climb","Consume Alcohol","Dodge","Endurance","Gossip","Melee (Basic)","Swim"],
+        talents: ["Dirty Fighting","Strong Back","Sturdy","Tenacious"],
+        skills: ["Athletics","Climb","Consume Alcohol","Dodge","Endurance","Gossip","Intimidate","Melee (Basic)","Melee (Brawling)","Swim"],
         trappings: "Hand Weapon (Boat Hook), Leather Gloves",
-        trappings2nd: ""
+        trappings2nd: "Guild Licence, Leather Jerkin, Pipe and Tobacco, Porter Cap"
     },
     {
         name: "Wrecker", classIndex: 5,
+        name1st: "Cargo Scavenger",
         advances: [ST_WS,ST_S,ST_AG],
         social: "Brass 2",
-        talents: ["Break and Enter","Criminal","Fisherman","Strong Back"],
-        skills: ["Climb","Consume Alcohol","Dodge","Endurance","Row","Melee (Basic)","Outdoor Survival","Swim"],
+        talents: ["Break and Enter","Criminal","Flee!","Rover"],
+        skills: ["Climb","Consume Alcohol","Dodge","Endurance","Melee (Basic)","Outdoor Survival","Pick Lock","Row","Stealth (Rural)","Swim"],
         trappings: "Crowbar, Large Sack, Leather Gloves",
-        trappings2nd: ""
+        trappings2nd: "Hand Weapon (Boat Hook), Leather Jack, Storm Lantern and Oil"
     },
     {
         name: "Charlatan", classIndex: 6,
@@ -1068,39 +1091,43 @@ const CareerAll = [
     },
     {
         name: "Outlaw", classIndex: 6,
+        name1st: "Brigand",
         advances: [ST_WS,ST_S,ST_AG],
-        social: "Brass 1",
-        talents: ["Combat Aware","Criminal","Rover","Flee!"],
-        skills: ["Athletics","Consume Alcohol","Cool","Endurance","Gamble","Intimidate","Melee (Basic)","Outdoor Survival"],
+        social: "Brass 3",
+        talents: ["Criminal","Menacing","Rover","Very Resilient"],
+        skills: ["Athletics","Cool","Dodge","Endurance","Gamble","Intimidate","Melee (Basic)","Outdoor Survival","Perception","Stealth (Rural)"],
         trappings: "Bedroll, Hand Weapon, Leather Jerkin, Tinderbox",
-        trappings2nd: ""
+        trappings2nd: "Bow with 10 Arrows or Crossbow with 10 Bolts or Shield, Tent"
     },
     {
         name: "Racketeer", classIndex: 6,
+        name1st: "Thug",
         advances: [ST_WS,ST_S,ST_T],
-        social: "Brass 1",
-        talents: ["Criminal","Etiquette (Criminals)","Menacing","Strike Mighty Blow"],
-        skills: ["Athletics","Climb","Cool","Dodge","Endurance","Intuition","Perception","Stealth (Urban)"],
-        trappings: "Crowbar, Leather Jerkin, Sack",
-        trappings2nd: ""
+        social: "Brass 3",
+        talents: ["Break and Enter","Criminal","Dirty Fighting","Menacing"],
+        skills: ["Consume Alcohol","Cool","Dodge","Endurance","Gamble","Intimidate","Lore (Local)","Melee (Basic)","Melee (Brawling)","Stealth (Urban)"],
+        trappings: "Hand Weapon, Knuckledusters, Leather Jack",
+        trappings2nd: "Hat, Mail Shirt"
     },
     {
         name: "Thief", classIndex: 6,
+        name1st: "Prowler",
         advances: [ST_S,ST_AG,ST_DEX],
         social: "Brass 3",
-        talents: ["Alley Cat","Criminal","Etiquette (Criminals)","Flee!"],
-        skills: ["Consume Alcohol","Cool","Dodge","Endurance","Intimidate","Lore (Local)","Melee (Brawling)","Stealth (Urban)"],
-        trappings: "Brass Knuckles, Leather Jack",
-        trappings2nd: ""
+        talents: ["Alley Cat","Criminal","Fast Hands","Flee!"],
+        skills: ["Athletics","Climb","Cool","Dodge","Intimidate","Melee (Basic)","Perception","Pick Lock","Sleight of Hand","Stealth (Urban)"],
+        trappings: "Crowbar, Leather Jerkin, Sack",
+        trappings2nd: "Fence Contact, Rope, Trade Tools (Thief)"
     },
     {
         name: "Witch", classIndex: 6,
+        name1st: "Dabbler",
         advances: [ST_I,ST_INT,ST_WP],
-        social: "Brass 1",
-        talents: ["Criminal","Menacing","Petty Magic","Instinctive Diction"],
-        skills: ["Channelling","Cool","Endurance","Gossip","Intimidate","Language (Magick)","Sleight of Hand","Stealth (Rural)"],
-        trappings: "Candles, Chalk, Doll, Pins",
-        trappings2nd: ""
+        social: "Brass 3",
+        talents: ["Instinctive Diction","Petty Magic","Read/Write","Second Sight"],
+        skills: ["Channelling (Magick)","Charm","Cool","Gossip","Heal","Language (Magick)","Perception","Research","Stealth (Rural or Urban)","Trade (Herbalist)"],
+        trappings: "Notes Stuffed in Locked Drawer, Writing Kit",
+        trappings2nd: "<a href='https://pacomiscelaneousstuff.blogspot.com/2024/10/wfrp-random-grimoire-generation.html'>Grimoire</a>, Hand Weapon or Quarterstaff"
     },
     {
         name: "Cavalryman", classIndex: 7,
@@ -1109,7 +1136,7 @@ const CareerAll = [
         social: "Silver 3",
         talents: ["Combat Aware","Dual Wielder","Lightning Reflexes","Roughrider"],
         skills: ["Animal Care","Charm Animal","Consume Alcohol","Cool","Language (Battle)","Melee (Cavalry)","Outdoor Survival","Perception","Ranged (Blackpowder or Bow)","Ride (Horse)"],
-        trappings: "Bow with 10 Arrows or Pistol with 10 Shots, Leather Jack, Light Warhorse",
+        trappings: "Bow with 10 Arrows or Pistol with 10 Shots, Leather Jack, <a href='https://pacomiscelaneousstuff.blogspot.com/2020/03/wfrp-4th-edition-random-horse-companion.html'>Light Warhorse</a>",
         trappings2nd: "Breastplate, Open Helm"
     },
     {
@@ -1129,53 +1156,58 @@ const CareerAll = [
         social: "Silver 3",
         talents: ["Etiquette (Nobles, or Soldiers)","Noble Blood","Strike Mighty Blow","Warrior Born"],
         skills: ["Animal Care","Athletics","Charm Animal","Cool","Heal","Lore (Heraldry)","Melee (Basic)","Melee (Cavalry)","Ride (Horse)","Trade (Farrier)"],
-        trappings: "Leather Jack, Mail Shirt, Riding Horse, Shield, Trade Tools (Farrier)",
-        trappings2nd: "Destrier, Melee Weapon (Any), Lance, Plate Armour, Sword"
+        trappings: "Leather Jack, Mail Shirt, <a href='https://pacomiscelaneousstuff.blogspot.com/2020/03/wfrp-4th-edition-random-horse-companion.html'>Riding Horse</a>, Shield, Trade Tools (Farrier)",
+        trappings2nd: "<a href='https://pacomiscelaneousstuff.blogspot.com/2020/03/wfrp-4th-edition-random-horse-companion.html'>Destrier</a>, Melee Weapon (Any), Lance, Plate Armour, Sword"
     },
     {
         name: "Pit Fighter", classIndex: 7,
+        name1st: "Pugilist",
         advances: [ST_WS,ST_S,ST_T],
         social: "Brass 4",
-        talents: ["Dirty Fighting","In-fighter","Iron Jaw","Reversal"],
-        skills: ["Athletics","Cool","Dodge","Endurance","Gamble","Intimidate","Melee (Any one)","Melee (Brawling)"],
-        trappings: "Bandages, Brass Knuckles, Hand Weapon, Leather Jack",
-        trappings2nd: ""
+        talents: ["Dirty Fighting","Enclosed Fighter","In-fighter","Iron Jaw"],
+        skills: ["Athletics","Consume Alcohol","Cool","Dodge","Endurance","Entertain (Taunt)","Gamble","Intimidate","Melee (Any One)","Melee (Brawling)"],
+        trappings: "Bandages, Knuckledusters, Leather Jack",
+        trappings2nd: "Flail or Great Weapon, Net or Whip, Shield"
     },
     {
         name: "Protagonist", classIndex: 7,
+        name1st: "Braggart",
         advances: [ST_WS,ST_S,ST_T],
-        social: "Brass 2",
-        talents: ["Criminal","In-fighter","Dirty Fighting","Menacing"],
-        skills: ["Athletics","Dodge","Endurance","Entertain (Taunt)","Gossip","Haggle","Intimidate","Melee (Any one)",""],
-        trappings: "Brass Knuckles, Hood or Mask, Leather Jack",
-        trappings2nd: ""
+        social: "Brass 3",
+        talents: ["Criminal","Dirty Fighting","In-fighter","Menacing"],
+        skills: ["Athletics","Consume Alcohol","Cool","Dodge","Endurance","Entertain (Taunt)","Gossip","Intimidate","Melee (Basic)","Melee (Brawling)"],
+        trappings: "Hood or Mask, Knuckledusters, Leather Jack",
+        trappings2nd: "Mail Shirt, <a href='https://pacomiscelaneousstuff.blogspot.com/2020/03/wfrp-4th-edition-random-horse-companion.html'>Riding Horse</a>, Shield"
     },
     {
         name: "Soldier", classIndex: 7,
+        name1st: "Recruit",
         advances: [ST_WS,ST_BS,ST_S],
-        social: "Brass 2",
-        talents: ["Diceman","Marksman","Strong Back","Warrior Born"],
-        skills: ["Athletics","Climb","Cool","Dodge","Endurance","Language (Battle)","Melee (Basic)","Play (Drum or Fife)"],
-        trappings: "Axe, Flask of Spirits, Shame, Tattoos",
-        trappings2nd: ""
+        social: "Brass 5",
+        talents: ["Drilled","Etiquette (Soldiers)","Strong Back","Warrior Born"],
+        skills: ["Athletics","Climb","Cool","Dodge","Endurance","Gamble","Language (Battle)","Melee (Any One)","Melee (Basic)","Ranged (Any One)"],
+        trappings: "Leather Jack, Uniform, Weapon (Crossbow, Handgun, Halberd, Spear, or Sword)",
+        trappings2nd: "Breastplate, Helmet, Weapon (Any)"
     },
     {
         name: "Slayer", classIndex: 7,
+        name1st: "Troll Slayer",
         advances: [ST_WS,ST_S,ST_WP],
-        social: "Silver 1",
-        talents: ["Duel Wielder","Fearless (Everything)","Frenzy","Slayer"],
-        skills: ["Consume Alcohol","Cool","Dodge","Endurance","Gamble","Heal","Lore (Trolls)","Melee (Basic)"],
-        trappings: "Hand Weapon (Sword), Leather Armor, Uniform",
-        trappings2nd: ""
+        social: "Brass 2",
+        talents: ["Dual Wielder","Fearless (Everything)","Frenzy","Slayer"],
+        skills: ["Athletics","Consume Alcohol","Cool","Dodge","Endurance","Heal","Language (Battle)","Lore (Trolls)","Melee (Basic)","Play (Horn)"],
+        trappings: "Flask of Spirits, Hand Weapon (Dwarf Axe), Tattoos",
+        trappings2nd: "Great Weapon (Dwarf Greataxe)"
     },
     {
         name: "Warrior Priest", classIndex: 7,
+        name1st: "Neophyte",
         advances: [ST_WS,ST_WP,ST_FEL],
         social: "Brass 2",
-        talents: ["Bless (Any one)","Etiquette (Cultists)","Read/Write","Strong-minded"],
-        skills: ["Cool","Dodge","Endurance","Heal","Leadership","Lore (Theology)","Melee (Any one)","Pray"],
-        trappings: "<a href='https://pacomiscelaneousstuff.blogspot.com/2020/02/wfrp4-random-book-generator.html'>Book (Religion)</a>, Leather Jerkin, Religious Symbol, Robes, Weapon (Any one)",
-        trappings2nd: ""
+        talents: ["Bless (Any One)","Etiquette (Cultists)","Holy Visions","Read/Write"],
+        skills: ["Athletics","Cool","Dodge","Endurance","Heal","Language (Classical)","Leadership","Lore (Theology)","Melee (Any One)","Pray"],
+        trappings: "<a href='https://pacomiscelaneousstuff.blogspot.com/2020/02/wfrp4-random-book-generator.html'>Book (Religion)</a>, Melee Weapon (Any), Leather Jerkin, Religious Symbol, Robes",
+        trappings2nd: "Breastplate, Weapon (Any)"
     }
 ];
 var CareerSpecies = [];
