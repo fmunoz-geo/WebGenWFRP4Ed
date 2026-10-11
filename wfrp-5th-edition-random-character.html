@@ -2348,7 +2348,8 @@ if (StatsExtraBonus[ST_FORTUNE] > 1
     && extraTrappings === 2) {
     StatsExtraBonus[ST_FATE] += 1;
 }
-/* Advance stats*/
+/* Free starting stat advances are disabled in 5th edition.
+   Keep the allocation code for future use; StatsAdvance remains available.
 var sta = career.advances.slice();
 var randadvChoice = [ [5,0,0],
 [4,1,0],
@@ -2360,6 +2361,7 @@ for (i = 0; i < 3; i += 1) {
     var statrand = Math.floor(Math.random() * sta.length);
     StatsAdvance [  sta.splice (statrand , 1) ] = randAdv[i];
 }
+*/
 var ski = career.skills.slice();
 var randskiChoice =  [
 [5,5,5,5,5,5,5,5,0,0],
@@ -2541,7 +2543,7 @@ If you need a more dangerous set you might check my <a href="https://pacomiscela
 You can also create the loot carried by them using my <a href="https://pacomiscelaneousstuff.blogspot.com/2019/08/treasure-generator.html">Random Treasure Generator</a>.<br>
 To have a more detailed Old Worlders you can use the list of my <a href="https://pacomiscelaneousstuff.blogspot.com/2018/09/generic-npc-stats-for-5th-edition.html">Generic NPCs stats for 5th edition</a>.<br>
 </p>
-<p id="Acknowledgements"><a href="https://github.com/fmunoz-geo/WebGenWFRP4Ed">Code: Francisco Mu&ntilde;oz 2018-2025.</a>
+<p id="Acknowledgements"><a href="https://github.com/fmunoz-geo/WebGenWFRP4Ed">Code: Francisco Mu&ntilde;oz 2018-2026.</a>
 <br>Skill advance selection and misc data: Jay Alexander Hafner 2018
 <br>Skill description: Ryan Graham 2018
 <br>Core character creation: <a href="https://www.drivethrurpg.com/product/248284/Warhammer-Fantasy-Roleplay-Fourth-Edition-Rulebook?affiliate_id=91369">Warhammer Fantasy Roleplay Fourth Edition Rulebook</a>
