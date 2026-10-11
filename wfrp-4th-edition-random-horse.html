@@ -6,6 +6,10 @@ td, th {
   padding: 1px;
   text-align: center;
 }
+th.career-stat {
+  background-color: #444;
+  color: white;
+}
 </style>
 <script>
 //<![CDATA[
@@ -554,7 +558,7 @@ var TraitStartRouncey = ["Amble", "Bestial", "Night Vision", "Size (Large)", "Sk
 
   StatsTxt = "<table><tr>";
   for (i in StatsName) {
-    StatsTxt += "<th><B>" + StatsName[i] + "</B></th>";
+    StatsTxt += "<th" + (StatsAdvance[i] > 0 ? " class='career-stat'" : "") + "><B>" + StatsName[i] + "</B></th>";
   }
 
   StatsTxt += "</tr><tr style='text-align: right'>";
