@@ -61,6 +61,10 @@ th {
 .custom-dialog-buttons button:hover {
   background-color: #45a049;
 }
+th.career-stat {
+  background-color: #444;
+  color: white;
+}
 </style>
 <head><title>WFRP 4th Edition Random character</title>
 <script>
@@ -1955,7 +1959,7 @@ if (DoomingTxt != "") {
 };
 StatsTxt = "<table><tr>";
 for (i in StatsName) {
-    StatsTxt += "<th><B>" + StatsName[i] +"</B></th>";
+    StatsTxt += "<th" + (StatsCareer[i] ? " class='career-stat'" : "") + "><B>" + StatsName[i] + "</B></th>";
 }
 StatsTxt += "</tr><tr style='text-align: right'>";
 for (i in StatsAdvance) {
