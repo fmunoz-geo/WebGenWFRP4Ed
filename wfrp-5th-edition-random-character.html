@@ -2343,6 +2343,11 @@ if ((document.getElementById("reRollCheck").checked == true) ) {
         xp += 0;
         StatsIncrease = distributeStatIncrease(StatsR, career.advances, 6);
 }
+if (StatsExtraBonus[ST_FORTUNE] > 1
+    && StatsIncrease.reduce((sum, increase) => sum + increase, 0) === 6
+    && extraTrappings === 2) {
+    StatsExtraBonus[ST_FATE] += 1;
+}
 /* Advance stats*/
 var sta = career.advances.slice();
 var randadvChoice = [ [5,0,0],
