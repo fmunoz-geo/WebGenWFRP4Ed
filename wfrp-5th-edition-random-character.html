@@ -174,6 +174,7 @@ async function showSelectionDialog(options, title) {
 }
 // ["WS","BS","S","T","I","AG","DEX","INT","WP","FEL","M","W"];
 const StatsName = ["WS","BS","S","T","Ag","I","Dex","Int","WP","Fel"];
+const StatsFullName = ["Weapon Skill", "Ballistic Skill", "Strength", "Toughness", "Agility", "Initiative", "Dexterity", "Intelligence", "Willpower", "Fellowship"];
 const StatsBonusName = ["WSB","BSB","SB","TB","AgB","IB","DexB","IntB","WPB","FelB"];
 // Indices for StatsName, StatsBase, StatsBonus, StatsAdvance, StatsTalents, StatsR.
 const ST_WS = 0;
@@ -191,6 +192,33 @@ const ST_W = 0;
 const ST_M = 1;
 const ST_FATE = 2;
 const ST_FORTUNE = 3;
+
+async function rearrangeCharacteristics(rolls, characterContext) {
+    const available = rolls.slice();
+    const assigned = [];
+    for (let index = 0; index < StatsName.length; index++) {
+        const choice = await showSelectionDialog(available.map(String),
+            `${characterContext} — Assign ${StatsFullName[index]} (${StatsName[index]}): remaining rolls ${available.join(", ")}`);
+        assigned.push(available.splice(choice, 1)[0]);
+    }
+    return assigned;
+}
+
+async function splitCharacteristicPoints(characterContext) {
+    let remaining = 100;
+    const assigned = [];
+    for (let index = 0; index < StatsName.length; index++) {
+        const unassigned = StatsName.length - index - 1;
+        // Reserve at least 5 per remaining characteristic, and ensure all 100 points can be spent.
+        const options = [5, 10, 15].filter(value =>
+            remaining - value >= unassigned * 5 && remaining - value <= unassigned * 15);
+        const choice = await showSelectionDialog(options.map(String),
+            `${characterContext} — Assign ${StatsFullName[index]} (${StatsName[index]}): ${remaining} points available`);
+        assigned.push(options[choice]);
+        remaining -= options[choice];
+    }
+    return assigned;
+}
 
 function selectExtraTrappings(trappings, count, random = Math.random) {
     const available = trappings.split(",").map(item => item.trim()).filter(Boolean);
@@ -1823,8 +1851,15 @@ async function parseInicialTalent(TalentArray) {
 			}
 			TalentArray[x] = Talents[ch];
 		  }
+     }
+     // Resolve choices first so random rolls cannot duplicate a later starting talent.
+     for (x in TalentArray) {
           if (TalentArray[x] == "Random") {
-               TalentArray[x] = randomTalent();
+               let rolledTalent;
+               do {
+                    rolledTalent = randomTalent();
+               } while (TalentArray.includes(rolledTalent));
+               TalentArray[x] = rolledTalent;
           }
      }
      return TalentArray;
@@ -2327,14 +2362,24 @@ for (i in StatsR) {
 }
 if ((document.getElementById("reRollCheck").checked == true) ) {
     refreshCharacterDisplay ();
-    const keepCurrentStats = await showCustomDialog("Keep current stats: " + StatsR.toString());
+    const characterContext = `${SpeciesTxt} ${CareerName}`;
+    const keepCurrentStats = await showCustomDialog(`${characterContext} — Keep current stats: ${StatsR.toString()}`);
     if (keepCurrentStats) {
-        for (i in StatsR) {
-            StatsR[i] = roll2d10();
+        const method = await showSelectionDialog([
+            "Rearrange current rolls (+3 career characteristic points)",
+            "Reroll and rearrange (no characteristic increases)",
+            "Split 100 points (no characteristic increases)"
+        ], `${characterContext} — Choose how to assign your Characteristics:`);
+        if (method === 2) {
+            StatsR = await splitCharacteristicPoints(characterContext);
+        } else {
+            if (method === 1) {
+                StatsR = StatsR.map(() => roll2d10());
+            }
+            StatsR = await rearrangeCharacteristics(StatsR, characterContext);
         }
-        await showCustomDialog("New stats: " + StatsR.toString(), ["OK"]);
         xp += 0;
-        StatsIncrease = distributeStatIncrease(StatsR, career.advances, 3);
+        StatsIncrease = distributeStatIncrease(StatsR, career.advances, method === 0 ? 3 : 0);
     }  else  {
         xp += 0;
         StatsIncrease = distributeStatIncrease(StatsR, career.advances, 6);
@@ -2434,7 +2479,9 @@ for (i = 0; i < SkillNames.length ; i += 1) {
 }
 for (i = 0; i < TalentNames.length ; i += 1) {
     var MouseOverTxt = getMouseOverText (TalentNames[i],mouseoverTalents);
-     TalentTxt += "<span title = '" + MouseOverTxt + "'>" + TalentNames[i] + ":" + TalentValues[i] + "/" + getTalentMax(TalentNames[i]) + "</span>; ";
+    const talentMax = getTalentMax(TalentNames[i]);
+    const talentLevel = talentMax === 1 ? "" : ":" + TalentValues[i] + "/" + talentMax;
+    TalentTxt += "<span title = '" + MouseOverTxt + "'>" + TalentNames[i] + talentLevel + "</span>; ";
 }
 if (DoomingTxt != "") {
  TalentTxt += "<br><B>Dooming:</B> "+ DoomingTxt;
