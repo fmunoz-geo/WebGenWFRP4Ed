@@ -267,10 +267,12 @@ async function generateChar(SpeciesChoice) {
 "use strict";
 var Name = "";
 var NameTxt = "";
-var extraXP = parseInt(document.getElementById("extraXPInput").value) || 0; // Get extra XP value, default to 0 if empty or invalid
+var extraXP = Math.max(0, parseInt(document.getElementById("extraXPInput").value) || 0);
 var xp = 0;
 xp += extraXP; // Add the extra XP to the total XP
 var xpSpend = 0;
+const purchasedTalents = [];
+const purchasedSkillAdvances = new Map();
 var XpTxt = "";
 var SpeciesTxt ="";
 var PhysicalTxt = "";
@@ -1269,6 +1271,7 @@ var TalentNames = [];
 var TalentValues = [];
 var TalentCareer = [];
 var extraTrappings = 0;
+var ImprovementsTxt  = "";
 
 const TalentRandom = [
     { range: [1, 2], name: "Acute Sense (Sight)" },
@@ -2224,6 +2227,7 @@ function refreshCharacterDisplay () {
     document.getElementById("fatefortuneB").innerHTML = FateFortuneTxt;
     document.getElementById("talentsB").innerHTML = TalentTxt;
     document.getElementById("trappingsB").innerHTML = TrappingTxt;
+    document.getElementById("ImprovementsB").innerHTML = ImprovementsTxt;
 }
 /*------ Start Rolling--------*/
 refreshCharacterDisplay ();
@@ -2388,11 +2392,7 @@ if ((document.getElementById("reRollCheck").checked == true) ) {
         xp += 0;
         StatsIncrease = distributeStatIncrease(StatsR, career.advances, 6);
 }
-if (StatsExtraBonus[ST_FORTUNE] > 1
-    && StatsIncrease.reduce((sum, increase) => sum + increase, 0) === 6
-    && extraTrappings === 2) {
-    StatsExtraBonus[ST_FATE] += 1;
-}
+
 /* Free starting stat advances are disabled in 5th edition.
    Keep the allocation code for future use; StatsAdvance remains available.
 var sta = career.advances.slice();
@@ -2430,6 +2430,12 @@ console.log(SkillNames);
 TalentNames.push( await selectCareerTalent(career) );
 TalentValues.push(1);
 TalentCareer.push(1);
+// Include career skills that received no starting advances.
+for (const skill of ski) {
+    SkillNames.push(skill);
+    SkillValues.push(0);
+    SkillCareer.push(1);
+}
 StatsTalents = parseTalent2Stats(TalentNames);
 var ExtraSkills = addSkillsFromTalents(TalentNames, SkillNames, SkillValues, SkillCareer)
 SkillNames = ExtraSkills[0];
@@ -2445,6 +2451,82 @@ var TalentNamesValue = dedupeNameValue(TalentNames, TalentValues, TalentCareer )
 TalentNames = TalentNamesValue[0].slice(0);
 TalentValues = TalentNamesValue[1].slice(0);
 TalentCareer = TalentNamesValue[2].slice(0);
+var SkillNamesValue = dedupeNameValue(SkillNames, SkillValues, SkillCareer);
+SkillNames = SkillNamesValue[0].slice(0);
+SkillValues = SkillNamesValue[1].slice(0);
+SkillCareer = SkillNamesValue[2].slice(0);
+
+/* Spend available XP on a random affordable improvement, then rebuild the list. */
+const statAdvanceCosts = [125, 175, 250];
+const skillAdvanceCosts = [50, 75, 100, 150];
+const careerTalentOptions = [...new Set(career.talents)];
+function ownsCareerTalent(talent) {
+    return TalentNames.some(owned => owned === talent
+        || (/\((any one|as trade|all)\)/i.test(talent)
+            && normalizeTalentName(owned) === normalizeTalentName(talent)));
+}
+function listAffordableImprovements() {
+    const availableXP = xp - xpSpend;
+    const options = [];
+    for (const index of career.advances) {
+        const cost = statAdvanceCosts[StatsAdvance[index] / 5];
+        if (cost !== undefined && cost <= availableXP) {
+            options.push({ type: "stat", index, cost,
+                label: StatsName[index] + " advances to +" + (StatsAdvance[index] + 5) });
+        }
+    }
+    SkillNames.forEach((name, index) => {
+        const cost = skillAdvanceCosts[SkillValues[index] / 5];
+        if (SkillCareer[index] > 0 && cost !== undefined && cost <= availableXP) {
+            options.push({ type: "skill", index, cost,
+                label: name + " to +" + (SkillValues[index] + 5) });
+        }
+    });
+    if (availableXP >= 100) {
+        for (const talent of careerTalentOptions) {
+            if (!ownsCareerTalent(talent)) {
+                options.push({ type: "talent", talent, cost: 100, label: talent });
+            }
+        }
+    }
+    console.log("Available XP:", availableXP, "Affordable options:", options.map(option => option.label + " (" + option.cost + " XP)"));
+    return options;
+}
+while (true) {
+    const options = listAffordableImprovements();
+    if (options.length === 0) break;
+    console.log("Affordable XP improvements:", options.map(option => option.label + " (" + option.cost + " XP)"));
+    const selected = options[Math.floor(Math.random() * options.length)];
+    if (selected.type === "stat") {
+        StatsAdvance[selected.index] += 5;
+    } else if (selected.type === "skill") {
+        SkillValues[selected.index] += 5;
+        const name = SkillNames[selected.index];
+        purchasedSkillAdvances.set(name, (purchasedSkillAdvances.get(name) || 0) + 5);
+    } else {
+        const [talent] = await parseTalentAny([selected.talent]);
+        TalentNames.push(talent);
+        TalentValues.push(1);
+        TalentCareer.push(1);
+        purchasedTalents.push(talent);
+        // Apply skills granted by this talent without repeating existing talent effects.
+        const extraSkills = addSkillsFromTalents([talent], [], [], []);
+        const names = await parseSkillAny(await parseOrParenthesis(extraSkills[0]));
+        names.forEach((name, index) => {
+            const existing = SkillNames.indexOf(name);
+            if (existing >= 0) {
+                SkillCareer[existing] = Math.max(SkillCareer[existing], extraSkills[2][index]);
+            } else {
+                SkillNames.push(name);
+                SkillValues.push(extraSkills[1][index]);
+                SkillCareer.push(extraSkills[2][index]);
+            }
+        });
+    }
+    xpSpend += selected.cost;
+    console.log("Purchased:", selected.label, "XP remaining:", xp - xpSpend);
+}
+StatsTalents = parseTalent2Stats(TalentNames);
 /* After getting talents we check if we are an human noble or have nobleblood*/
 /* Noble surname */
 if (species.nobleSurnameSuffixes && ((CareerName == "Noble") || (TalentNames.includes("Noble Blood")))) {
@@ -2454,11 +2536,6 @@ if (species.nobleSurnameSuffixes && ((CareerName == "Noble") || (TalentNames.inc
 if (TalentNames.includes("Doomed")) {
  DoomingTxt = DoomingsAll[Math.floor(Math.random() * DoomingsAll.length)];
 };
-
-var SkillNamesValue = dedupeNameValue(SkillNames, SkillValues, SkillCareer );
-SkillNames = SkillNamesValue[0].slice(0);
-SkillValues = SkillNamesValue[1].slice(0);
-SkillCareer = SkillNamesValue[2].slice(0);
 
 console.log(SkillNames);
 var ExtraTrapping = "";
@@ -2470,6 +2547,7 @@ var Money = rollMoney(career.social);
 /* Generate the final strings */
 CareerTxt ="(" + characterClass.name + ") " + CareerName + ", Social Level "+ career.social ;
 XpTxt = "<b>XP:</b> " + (xp - xpSpend) + "/" + xp;
+XpTxt += " (spent: " + xpSpend + ")";
 for (i = 0; i < SkillNames.length ; i += 1) {
     var MouseOverTxt = getMouseOverText (SkillNames[i],mouseoverSkills);
     var openITag = SkillCareer[i] > 0 ? "<i>" : "";
@@ -2506,8 +2584,40 @@ for (i in StatsAdvance) {
     StatsTxt += "<td>" + ( StatsR[i] + StatsIncrease[i] + StatsBase[i] + StatsTalents[i] + StatsAdvance[i] ) + "</td>";
 }
 StatsTxt += "</tr></table>";
+
+if (StatsExtraBonus[ST_FORTUNE] > 0
+    && StatsIncrease.reduce((sum, increase) => sum + increase, 0) === 6
+    && extraTrappings === 2) {
+    StatsExtraBonus[ST_FATE] += 1;
+}
+
 FateFortuneTxt = "Fate: " + (StatsExtraBase[ST_FATE] + StatsExtraBonus[ST_FATE]) + " Fortune: " + (StatsExtraBase[ST_FORTUNE] + StatsExtraBonus[ST_FORTUNE]);
 TrappingTxt = Trapping + ".<br>" + Money;
+const improvements = [];
+if (StatsExtraBonus[ST_FORTUNE] > 0) {
+    improvements.push("+" + StatsExtraBonus[ST_FORTUNE] + " Fortune");
+}
+if (extraTrappings > 0) {
+    improvements.push(extraTrappings + " additional trapping" + (extraTrappings === 1 ? "" : "s"));
+}
+StatsIncrease.forEach((increase, index) => {
+    if (increase > 0) {
+        improvements.push(StatsName[index] + " +" + increase);
+    }
+});
+if (StatsExtraBonus[ST_FATE] > 0) {
+    improvements.push("+" + StatsExtraBonus[ST_FATE] + " Fate");
+}
+StatsAdvance.forEach((advance, index) => {
+    if (advance > 0) improvements.push(StatsName[index] + " advances +" + advance);
+});
+for (const [skill, advance] of purchasedSkillAdvances) {
+    improvements.push(skill + " advances +" + advance + " (total +" + SkillValues[SkillNames.indexOf(skill)] + ")");
+}
+for (const talent of purchasedTalents) {
+    improvements.push("New talent: " + talent);
+}
+ImprovementsTxt  = improvements.join("; ");
 /* Put all shit in the screen */
 refreshCharacterDisplay ();
 return 1;
@@ -2566,6 +2676,8 @@ Extra XP </td><td> <input type="number" id="extraXPInput" min="0" placeholder="E
 <p id="talentsB"></p>
 <h3>Trappings</h3>
 <p id="trappingsB"></p>
+<h3>Improvements and advances</h3>
+<p id="ImprovementsB"></p>
 </div>
 <input type="button" value="Create PDF" 
   id="btPrint" onclick ="createPDF()" />
