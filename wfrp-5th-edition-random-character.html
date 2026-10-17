@@ -173,8 +173,9 @@ async function showSelectionDialog(options, title) {
   });
 }
 // ["WS","BS","S","T","I","AG","DEX","INT","WP","FEL","M","W"];
-const StatsName = ["WS","BS","S","T","Ag","I","Dex","Int","WP","Fel"];
-const StatsBonusName = ["WSB","BSB","SB","TB","AgB","IB","DexB","IntB","WPB","FelB"];
+const StatsName = ["WS","BS","S","T","I","Ag","Dex","Int","WP","Fel"];
+const StatsFullName = ["Weapon Skill", "Ballistic Skill", "Strength", "Toughness", "Initiative", "Agility", "Dexterity", "Intelligence", "Willpower", "Fellowship"];
+const StatsBonusName = ["WSB","BSB","SB","TB","IB","AgB","DexB","IntB","WPB","FelB"];
 // Indices for StatsName, StatsBase, StatsBonus, StatsAdvance, StatsTalents, StatsR.
 const ST_WS = 0;
 const ST_BS = 1;
@@ -191,6 +192,33 @@ const ST_W = 0;
 const ST_M = 1;
 const ST_FATE = 2;
 const ST_FORTUNE = 3;
+
+async function rearrangeCharacteristics(rolls, characterContext) {
+    const available = rolls.slice();
+    const assigned = [];
+    for (let index = 0; index < StatsName.length; index++) {
+        const choice = await showSelectionDialog(available.map(String),
+            `${characterContext} — Assign ${StatsFullName[index]} (${StatsName[index]}): remaining rolls ${available.join(", ")}`);
+        assigned.push(available.splice(choice, 1)[0]);
+    }
+    return assigned;
+}
+
+async function splitCharacteristicPoints(characterContext) {
+    let remaining = 100;
+    const assigned = [];
+    for (let index = 0; index < StatsName.length; index++) {
+        const unassigned = StatsName.length - index - 1;
+        // Reserve at least 5 per remaining characteristic, and ensure all 100 points can be spent.
+        const options = [5, 10, 15].filter(value =>
+            remaining - value >= unassigned * 5 && remaining - value <= unassigned * 15);
+        const choice = await showSelectionDialog(options.map(String),
+            `${characterContext} — Assign ${StatsFullName[index]} (${StatsName[index]}): ${remaining} points available`);
+        assigned.push(options[choice]);
+        remaining -= options[choice];
+    }
+    return assigned;
+}
 
 function selectExtraTrappings(trappings, count, random = Math.random) {
     const available = trappings.split(",").map(item => item.trim()).filter(Boolean);
@@ -239,10 +267,12 @@ async function generateChar(SpeciesChoice) {
 "use strict";
 var Name = "";
 var NameTxt = "";
-var extraXP = parseInt(document.getElementById("extraXPInput").value) || 0; // Get extra XP value, default to 0 if empty or invalid
+var extraXP = Math.max(0, parseInt(document.getElementById("extraXPInput").value) || 0);
 var xp = 0;
 xp += extraXP; // Add the extra XP to the total XP
 var xpSpend = 0;
+const purchasedTalents = [];
+const purchasedSkillAdvances = new Map();
 var XpTxt = "";
 var SpeciesTxt ="";
 var PhysicalTxt = "";
@@ -1241,6 +1271,7 @@ var TalentNames = [];
 var TalentValues = [];
 var TalentCareer = [];
 var extraTrappings = 0;
+var ImprovementsTxt  = "";
 
 const TalentRandom = [
     { range: [1, 2], name: "Acute Sense (Sight)" },
@@ -1823,8 +1854,15 @@ async function parseInicialTalent(TalentArray) {
 			}
 			TalentArray[x] = Talents[ch];
 		  }
+     }
+     // Resolve choices first so random rolls cannot duplicate a later starting talent.
+     for (x in TalentArray) {
           if (TalentArray[x] == "Random") {
-               TalentArray[x] = randomTalent();
+               let rolledTalent;
+               do {
+                    rolledTalent = randomTalent();
+               } while (TalentArray.includes(rolledTalent));
+               TalentArray[x] = rolledTalent;
           }
      }
      return TalentArray;
@@ -2189,6 +2227,7 @@ function refreshCharacterDisplay () {
     document.getElementById("fatefortuneB").innerHTML = FateFortuneTxt;
     document.getElementById("talentsB").innerHTML = TalentTxt;
     document.getElementById("trappingsB").innerHTML = TrappingTxt;
+    document.getElementById("ImprovementsB").innerHTML = ImprovementsTxt;
 }
 /*------ Start Rolling--------*/
 refreshCharacterDisplay ();
@@ -2327,14 +2366,24 @@ for (i in StatsR) {
 }
 if ((document.getElementById("reRollCheck").checked == true) ) {
     refreshCharacterDisplay ();
-    const keepCurrentStats = await showCustomDialog("Keep current stats: " + StatsR.toString());
+    const characterContext = `${SpeciesTxt} ${CareerName}`;
+    const keepCurrentStats = await showCustomDialog(`${characterContext} — Keep current stats: ${StatsR.toString()}`);
     if (keepCurrentStats) {
-        for (i in StatsR) {
-            StatsR[i] = roll2d10();
+        const method = await showSelectionDialog([
+            "Rearrange current rolls (+3 career characteristic points)",
+            "Reroll and rearrange (no characteristic increases)",
+            "Split 100 points (no characteristic increases)"
+        ], `${characterContext} — Choose how to assign your Characteristics:`);
+        if (method === 2) {
+            StatsR = await splitCharacteristicPoints(characterContext);
+        } else {
+            if (method === 1) {
+                StatsR = StatsR.map(() => roll2d10());
+            }
+            StatsR = await rearrangeCharacteristics(StatsR, characterContext);
         }
-        await showCustomDialog("New stats: " + StatsR.toString(), ["OK"]);
         xp += 0;
-        StatsIncrease = distributeStatIncrease(StatsR, career.advances, 3);
+        StatsIncrease = distributeStatIncrease(StatsR, career.advances, method === 0 ? 3 : 0);
     }  else  {
         xp += 0;
         StatsIncrease = distributeStatIncrease(StatsR, career.advances, 6);
@@ -2343,11 +2392,7 @@ if ((document.getElementById("reRollCheck").checked == true) ) {
         xp += 0;
         StatsIncrease = distributeStatIncrease(StatsR, career.advances, 6);
 }
-if (StatsExtraBonus[ST_FORTUNE] > 1
-    && StatsIncrease.reduce((sum, increase) => sum + increase, 0) === 6
-    && extraTrappings === 2) {
-    StatsExtraBonus[ST_FATE] += 1;
-}
+
 /* Free starting stat advances are disabled in 5th edition.
    Keep the allocation code for future use; StatsAdvance remains available.
 var sta = career.advances.slice();
@@ -2385,6 +2430,12 @@ console.log(SkillNames);
 TalentNames.push( await selectCareerTalent(career) );
 TalentValues.push(1);
 TalentCareer.push(1);
+// Include career skills that received no starting advances.
+for (const skill of ski) {
+    SkillNames.push(skill);
+    SkillValues.push(0);
+    SkillCareer.push(1);
+}
 StatsTalents = parseTalent2Stats(TalentNames);
 var ExtraSkills = addSkillsFromTalents(TalentNames, SkillNames, SkillValues, SkillCareer)
 SkillNames = ExtraSkills[0];
@@ -2400,6 +2451,82 @@ var TalentNamesValue = dedupeNameValue(TalentNames, TalentValues, TalentCareer )
 TalentNames = TalentNamesValue[0].slice(0);
 TalentValues = TalentNamesValue[1].slice(0);
 TalentCareer = TalentNamesValue[2].slice(0);
+var SkillNamesValue = dedupeNameValue(SkillNames, SkillValues, SkillCareer);
+SkillNames = SkillNamesValue[0].slice(0);
+SkillValues = SkillNamesValue[1].slice(0);
+SkillCareer = SkillNamesValue[2].slice(0);
+
+/* Spend available XP on a random affordable improvement, then rebuild the list. */
+const statAdvanceCosts = [125, 175, 250];
+const skillAdvanceCosts = [50, 75, 100, 150];
+const careerTalentOptions = [...new Set(career.talents)];
+function ownsCareerTalent(talent) {
+    return TalentNames.some(owned => owned === talent
+        || (/\((any one|as trade|all)\)/i.test(talent)
+            && normalizeTalentName(owned) === normalizeTalentName(talent)));
+}
+function listAffordableImprovements() {
+    const availableXP = xp - xpSpend;
+    const options = [];
+    for (const index of career.advances) {
+        const cost = statAdvanceCosts[StatsAdvance[index] / 5];
+        if (cost !== undefined && cost <= availableXP) {
+            options.push({ type: "stat", index, cost,
+                label: StatsName[index] + " advances to +" + (StatsAdvance[index] + 5) });
+        }
+    }
+    SkillNames.forEach((name, index) => {
+        const cost = skillAdvanceCosts[SkillValues[index] / 5];
+        if (SkillCareer[index] > 0 && cost !== undefined && cost <= availableXP) {
+            options.push({ type: "skill", index, cost,
+                label: name + " to +" + (SkillValues[index] + 5) });
+        }
+    });
+    if (availableXP >= 100) {
+        for (const talent of careerTalentOptions) {
+            if (!ownsCareerTalent(talent)) {
+                options.push({ type: "talent", talent, cost: 100, label: talent });
+            }
+        }
+    }
+    console.log("Available XP:", availableXP, "Affordable options:", options.map(option => option.label + " (" + option.cost + " XP)"));
+    return options;
+}
+while (true) {
+    const options = listAffordableImprovements();
+    if (options.length === 0) break;
+    console.log("Affordable XP improvements:", options.map(option => option.label + " (" + option.cost + " XP)"));
+    const selected = options[Math.floor(Math.random() * options.length)];
+    if (selected.type === "stat") {
+        StatsAdvance[selected.index] += 5;
+    } else if (selected.type === "skill") {
+        SkillValues[selected.index] += 5;
+        const name = SkillNames[selected.index];
+        purchasedSkillAdvances.set(name, (purchasedSkillAdvances.get(name) || 0) + 5);
+    } else {
+        const [talent] = await parseTalentAny([selected.talent]);
+        TalentNames.push(talent);
+        TalentValues.push(1);
+        TalentCareer.push(1);
+        purchasedTalents.push(talent);
+        // Apply skills granted by this talent without repeating existing talent effects.
+        const extraSkills = addSkillsFromTalents([talent], [], [], []);
+        const names = await parseSkillAny(await parseOrParenthesis(extraSkills[0]));
+        names.forEach((name, index) => {
+            const existing = SkillNames.indexOf(name);
+            if (existing >= 0) {
+                SkillCareer[existing] = Math.max(SkillCareer[existing], extraSkills[2][index]);
+            } else {
+                SkillNames.push(name);
+                SkillValues.push(extraSkills[1][index]);
+                SkillCareer.push(extraSkills[2][index]);
+            }
+        });
+    }
+    xpSpend += selected.cost;
+    console.log("Purchased:", selected.label, "XP remaining:", xp - xpSpend);
+}
+StatsTalents = parseTalent2Stats(TalentNames);
 /* After getting talents we check if we are an human noble or have nobleblood*/
 /* Noble surname */
 if (species.nobleSurnameSuffixes && ((CareerName == "Noble") || (TalentNames.includes("Noble Blood")))) {
@@ -2409,11 +2536,6 @@ if (species.nobleSurnameSuffixes && ((CareerName == "Noble") || (TalentNames.inc
 if (TalentNames.includes("Doomed")) {
  DoomingTxt = DoomingsAll[Math.floor(Math.random() * DoomingsAll.length)];
 };
-
-var SkillNamesValue = dedupeNameValue(SkillNames, SkillValues, SkillCareer );
-SkillNames = SkillNamesValue[0].slice(0);
-SkillValues = SkillNamesValue[1].slice(0);
-SkillCareer = SkillNamesValue[2].slice(0);
 
 console.log(SkillNames);
 var ExtraTrapping = "";
@@ -2425,6 +2547,7 @@ var Money = rollMoney(career.social);
 /* Generate the final strings */
 CareerTxt ="(" + characterClass.name + ") " + CareerName + ", Social Level "+ career.social ;
 XpTxt = "<b>XP:</b> " + (xp - xpSpend) + "/" + xp;
+XpTxt += " (spent: " + xpSpend + ")";
 for (i = 0; i < SkillNames.length ; i += 1) {
     var MouseOverTxt = getMouseOverText (SkillNames[i],mouseoverSkills);
     var openITag = SkillCareer[i] > 0 ? "<i>" : "";
@@ -2434,7 +2557,9 @@ for (i = 0; i < SkillNames.length ; i += 1) {
 }
 for (i = 0; i < TalentNames.length ; i += 1) {
     var MouseOverTxt = getMouseOverText (TalentNames[i],mouseoverTalents);
-     TalentTxt += "<span title = '" + MouseOverTxt + "'>" + TalentNames[i] + ":" + TalentValues[i] + "/" + getTalentMax(TalentNames[i]) + "</span>; ";
+    const talentMax = getTalentMax(TalentNames[i]);
+    const talentLevel = talentMax === 1 ? "" : ":" + TalentValues[i] + "/" + talentMax;
+    TalentTxt += "<span title = '" + MouseOverTxt + "'>" + TalentNames[i] + talentLevel + "</span>; ";
 }
 if (DoomingTxt != "") {
  TalentTxt += "<br><B>Dooming:</B> "+ DoomingTxt;
@@ -2459,8 +2584,40 @@ for (i in StatsAdvance) {
     StatsTxt += "<td>" + ( StatsR[i] + StatsIncrease[i] + StatsBase[i] + StatsTalents[i] + StatsAdvance[i] ) + "</td>";
 }
 StatsTxt += "</tr></table>";
+
+if (StatsExtraBonus[ST_FORTUNE] > 0
+    && StatsIncrease.reduce((sum, increase) => sum + increase, 0) === 6
+    && extraTrappings === 2) {
+    StatsExtraBonus[ST_FATE] += 1;
+}
+
 FateFortuneTxt = "Fate: " + (StatsExtraBase[ST_FATE] + StatsExtraBonus[ST_FATE]) + " Fortune: " + (StatsExtraBase[ST_FORTUNE] + StatsExtraBonus[ST_FORTUNE]);
 TrappingTxt = Trapping + ".<br>" + Money;
+const improvements = [];
+if (StatsExtraBonus[ST_FORTUNE] > 0) {
+    improvements.push("+" + StatsExtraBonus[ST_FORTUNE] + " Fortune");
+}
+if (extraTrappings > 0) {
+    improvements.push(extraTrappings + " additional trapping" + (extraTrappings === 1 ? "" : "s"));
+}
+StatsIncrease.forEach((increase, index) => {
+    if (increase > 0) {
+        improvements.push(StatsName[index] + " +" + increase);
+    }
+});
+if (StatsExtraBonus[ST_FATE] > 0) {
+    improvements.push("+" + StatsExtraBonus[ST_FATE] + " Fate");
+}
+StatsAdvance.forEach((advance, index) => {
+    if (advance > 0) improvements.push(StatsName[index] + " advances +" + advance);
+});
+for (const [skill, advance] of purchasedSkillAdvances) {
+    improvements.push(skill + " advances +" + advance + " (total +" + SkillValues[SkillNames.indexOf(skill)] + ")");
+}
+for (const talent of purchasedTalents) {
+    improvements.push("New talent: " + talent);
+}
+ImprovementsTxt  = improvements.join("; ");
 /* Put all shit in the screen */
 refreshCharacterDisplay ();
 return 1;
@@ -2519,6 +2676,8 @@ Extra XP </td><td> <input type="number" id="extraXPInput" min="0" placeholder="E
 <p id="talentsB"></p>
 <h3>Trappings</h3>
 <p id="trappingsB"></p>
+<h3>Improvements and advances</h3>
+<p id="ImprovementsB"></p>
 </div>
 <input type="button" value="Create PDF" 
   id="btPrint" onclick ="createPDF()" />
@@ -2538,17 +2697,18 @@ Extra XP </td><td> <input type="number" id="extraXPInput" min="0" placeholder="E
   </div>
 </div>
 <p id="Links">
-To generate simpler NPCS like the ones you might meet in a <a href="https://pacomiscelaneousstuff.blogspot.com/2020/03/wfrp-inn-generator.html">tavern</a> check my <a href="https://pacomiscelaneousstuff.blogspot.com/2019/08/npc-generator.html">NPC Generator</a> to create Merchants, Scholar, Soldiers and similar citizens that could be found in an <a href="https://pacomiscelaneousstuff.blogspot.com/2020/03/wfrp-inn-generator.html">inn</a> or belonging to a <a href="https://pacomiscelaneousstuff.blogspot.com/2020/09/wfrp-5th-edition-npc-cults.html">cult</a>.<br>
+To generate simpler NPCS like the ones you might meet in a <a href="https://pacomiscelaneousstuff.blogspot.com/2020/03/wfrp-inn-generator.html">tavern</a> check my <a href="https://pacomiscelaneousstuff.blogspot.com/2019/08/npc-generator.html">NPC Generator</a> to create Merchants, Scholar, Soldiers and similar citizens that could be found in an <a href="https://pacomiscelaneousstuff.blogspot.com/2020/03/wfrp-inn-generator.html">inn</a> or belonging to a <a href="https://pacomiscelaneousstuff.blogspot.com/2020/09/wfrp-4th-edition-npc-cults.html">cult</a>.<br>
 If you need a more dangerous set you might check my <a href="https://pacomiscelaneousstuff.blogspot.com/2019/08/monster-generator.html">Monster Generator</a> to create Mutants, Orcs, Goblins or worse.<br>
 You can also create the loot carried by them using my <a href="https://pacomiscelaneousstuff.blogspot.com/2019/08/treasure-generator.html">Random Treasure Generator</a>.<br>
-To have a more detailed Old Worlders you can use the list of my <a href="https://pacomiscelaneousstuff.blogspot.com/2018/09/generic-npc-stats-for-5th-edition.html">Generic NPCs stats for 5th edition</a>.<br>
+To have a more detailed Old Worlders you can use the list of my <a href="https://pacomiscelaneousstuff.blogspot.com/2018/09/generic-npc-stats-for-4th-edition.html">Generic NPCs stats for 4th edition</a>.<br>
 </p>
 <p id="Acknowledgements"><a href="https://github.com/fmunoz-geo/WebGenWFRP4Ed">Code: Francisco Mu&ntilde;oz 2018-2026.</a>
 <br>Skill advance selection and misc data: Jay Alexander Hafner 2018
 <br>Skill description: Ryan Graham 2018
-<br>Core character creation: <a href="https://www.drivethrurpg.com/product/248284/Warhammer-Fantasy-Roleplay-Fourth-Edition-Rulebook?affiliate_id=91369">Warhammer Fantasy Roleplay Fourth Edition Rulebook</a>
+<br>Core character creation: <a href="https://www.drivethrurpg.com/en/product/545405/warhammer-fantasy-roleplay-fifth-edition-rulebook?affiliate_id=91369">Warhammer Fantasy Roleplay Fifth Edition Rulebook</a>
+<br>Old 4th edition: <a href="https://www.drivethrurpg.com/product/248284/Warhammer-Fantasy-Roleplay-Fourth-Edition-Rulebook?affiliate_id=91369">Warhammer Fantasy Roleplay Fourth Edition Rulebook</a>
 <br>Dooming List: <a href="http://www.bindslet.dk/rpg/wfrpdoom.html">http://www.bindslet.dk/rpg/wfrpdoom.html</a>
 <br>Dooming List: <a href="https://www.drivethrurpg.com/product/63678/Warhammer-Fantasy-Roleplay-2nd-Edition-Tome-of-Salvation?affiliate_id=91369">WFRP 2nd Edition - Tome of Salvation</a>
-<br>Game: Games Worshop and Cubicle 7</p>
+<br>Game: Games Worshop and <a href="https://cubicle7games.com/">Cubicle 7</a></p>
 </body>
 </html>
