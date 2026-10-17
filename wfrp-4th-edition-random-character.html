@@ -901,19 +901,19 @@ const CareerAll = [
     },
     {
         name: "Soldier", classIndex: 7,
-        advances: [ST_WS,ST_S,ST_WP],
-        social: "Brass 2",
+        advances: [ST_WS,ST_T,ST_WP],
+        social: "Silver 1",
         talents: ["Diceman","Marksman","Strong Back","Warrior Born"],
         skills: ["Athletics","Climb","Cool","Dodge","Endurance","Language (Battle)","Melee (Basic)","Play (Drum or Fife)"],
-        trappings: "Axe, Flask of Spirits, Shame, Tattoos"
+        trappings: "Hand Weapon (Sword), Leather Armor, Uniform"
     },
     {
         name: "Troll Slayer", classIndex: 7,
-        advances: [ST_WS,ST_T,ST_WP],
-        social: "Silver 1",
+        advances: [ST_WS,ST_S,ST_WP],
+        social: "Brass 2",
         talents: ["Duel Wielder","Fearless (Everything)","Frenzy","Slayer"],
         skills: ["Consume Alcohol","Cool","Dodge","Endurance","Gamble","Heal","Lore (Trolls)","Melee (Basic)"],
-        trappings: "Hand Weapon (Sword), Leather Armor, Uniform"
+        trappings: "Axe, Flask of Spirits, Shame, Tattoos"
     },
     {
         name: "Warrior Priest", classIndex: 7,
@@ -2120,8 +2120,11 @@ if ((document.getElementById("careerCheck").checked == true) ) {
             const selectedIndex = await showSelectionDialog([...newCareerOptions, "Pick from full list"], "Select career:");
             if (selectedIndex === newCareerOptions.length) {
                 // Full career list selection
-                const fullCareerIndex = await showSelectionDialog(CareerAll.map(career => career.name), "Select career:");
-                CareerN = fullCareerIndex;
+                const availableCareers = CareerAll
+                    .map((career, index) => ({ career, index }))
+                    .filter(({ index }) => CareerSpecies[index] !== -1);
+                const fullCareerIndex = await showSelectionDialog(availableCareers.map(({ career }) => career.name), "Select career:");
+                CareerN = availableCareers[fullCareerIndex].index;
                 CareerName = CareerAll[CareerN].name;
                 xp += 0; // No XP bonus
             } else {
