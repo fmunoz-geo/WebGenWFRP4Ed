@@ -1735,6 +1735,27 @@ function parseTalent2Stats (TalentArray) {
     }
     return stat;
 }
+async function matchCraftsmanToTrade(TalentArray, SkillArray) {
+    const trades = [...new Set(SkillArray
+        .map(skill => /^Trade \(([^)]+)\)$/.exec(skill))
+        .filter(match => match && match[1] !== "Any one")
+        .map(match => match[1]))];
+    if (trades.length === 0) return TalentArray;
+
+    for (let index = 0; index < TalentArray.length; index++) {
+        if (TalentArray[index] !== "Craftsman (Any one)") continue;
+        let trade;
+        if (trades.length > 1 && document.getElementById("choiceCheck").checked) {
+            const choice = await showSelectionDialog(trades, "Select Craftsman specialisation from your Trade skills:");
+            trade = trades[choice];
+        } else {
+            trade = randPick(trades);
+        }
+        TalentArray[index] = `Craftsman (${trade})`;
+    }
+    return TalentArray;
+}
+
 async function parseTalentAny(TalentArray) {
     for (let x = 0; x < TalentArray.length; x++) {
         if (TalentArray[x].indexOf("(Any one)") > -1) {
@@ -2232,11 +2253,14 @@ TalentNames.push( await selectCareerTalent(career) );
 TalentValues.push(1);
 TalentCareer.push(1);
 StatsTalents = parseTalent2Stats(TalentNames);
+SkillNames = await parseOrParenthesis(SkillNames);
+SkillNames = await parseSkillAny(SkillNames);
+TalentNames = await matchCraftsmanToTrade(TalentNames, SkillNames);
+TalentNames = await parseTalentAny(TalentNames);
 var ExtraSkills = addSkillsFromTalents(TalentNames, SkillNames, SkillValues, SkillCareer)
 SkillNames = ExtraSkills[0];
 SkillValues = ExtraSkills[1];
 SkillCareer = ExtraSkills[2];
-TalentNames = await parseTalentAny(TalentNames);
 SkillNames = await parseOrParenthesis(SkillNames);
 SkillNames = SkillNames.slice(0)
 console.log(SkillNames);
