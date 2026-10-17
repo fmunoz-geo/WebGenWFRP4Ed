@@ -228,8 +228,166 @@ xp += extraXP; // Add the extra XP to the total XP
 var xpSpend = 0;
 var XpTxt = "";
 var SpeciesTxt ="";
+var PhysicalTxt = "";
 var SpeciesN;
-var SpeciesAll = ["Halfling (Core Book)","Halfling Clan Ashfield","Halfling Clan Brambledom","Halfling Clan Brandysnap","Halfling Clan Hayfoot","Halfling Clan Hollyfoot","Halfling Clan Hayfoot-Hollyfoot","Halfling Clan Lostpockets","Halfling Clan Lowhaven","Halfling Clan Rumster","Halfling Clan Skelfsider","Halfling Clan Thorncobble","Halfling Clan Tumbleberry"];
+const SpeciesAll = [
+    {
+        id: 1, name: "Halfling (Core Book)",
+        physical: {
+            ageBase: 15, ageDice: 5, heightBase: 37, heightDice: 1,
+            eyeColours: ["Light Grey", "Grey", "Pale Blue", "Blue", "Green", "Hazel", "Brown", "Copper", "Dark Brown"],
+            hairColours: ["Grey", "Flaxen", "Russet", "Honey", "Chestnut", "Ginger", "Mustard", "Almond", "Chocolate", "Liquorice"]
+        },
+        stats: [10,30,10,20,20,20,30,20,30,30],
+        extraStats: [ 0, 3, 0, 2, 3],
+        skills: ["Charm", "Consume Alcohol", "Dodge", "Gamble", "Haggle", "Intuition", "Language (Mootish)", "Lore (Reikland)", "Perception", "Sleight of Hand", "Stealth (Any one)", "Trade (Cook)"],
+        talents: ["Acute Sense (Taste)", "Night Vision", "Resistance (Chaos)", "Small", "Random", "Random"]
+    },
+    {
+        id: 2, name: "Halfling Clan Ashfield",
+        physical: {
+            ageBase: 15, ageDice: 5, heightBase: 37, heightDice: 1,
+            eyeColours: ["Light Grey", "Grey", "Pale Blue", "Blue", "Green", "Hazel", "Brown", "Copper", "Dark Brown"],
+            hairColours: ["Grey", "Flaxen", "Russet", "Honey", "Chestnut", "Ginger", "Mustard", "Almond", "Chocolate", "Liquorice"]
+        },
+        stats: [10,30,10,20,20,20,30,20,30,30],
+        extraStats: [ 0, 3, 0, 2, 3],
+        skills: ["Charm", "Consume Alcohol", "Dodge", "Lore (Reikland)", "Perception", "Sleight of Hand", "Stealth (Any one)", "Trade (Cook)", "Cool", "Intuition", "Language (Mootish)", "Ranged (Any one)"],
+        talents: ["Acute Sense (Taste)", "Night Vision", "Resistance (Chaos)", "Small", "Acute Sense (Sight) or Etiquette (Soldiers)", "Random"]
+    },
+    {
+        id: 3, name: "Halfling Clan Brambledom",
+        physical: {
+            ageBase: 15, ageDice: 5, heightBase: 37, heightDice: 1,
+            eyeColours: ["Light Grey", "Grey", "Pale Blue", "Blue", "Green", "Hazel", "Brown", "Copper", "Dark Brown"],
+            hairColours: ["Grey", "Flaxen", "Russet", "Honey", "Chestnut", "Ginger", "Mustard", "Almond", "Chocolate", "Liquorice"]
+        },
+        stats: [10,30,10,20,20,20,30,20,30,30],
+        extraStats: [ 0, 3, 0, 2, 3],
+        skills: ["Charm", "Consume Alcohol", "Dodge", "Lore (Reikland)", "Perception", "Sleight of Hand", "Stealth (Any one)", "Trade (Cook)", "Language (Mootish)", "Navigation", "Outdoor Survival", "Swim"],
+        talents: ["Acute Sense (Taste)", "Night Vision", "Resistance (Chaos)", "Small", "Gregarious or Seasoned Traveller", "Random"]
+    },
+    {
+        id: 4, name: "Halfling Clan Brandysnap",
+        physical: {
+            ageBase: 15, ageDice: 5, heightBase: 37, heightDice: 1,
+            eyeColours: ["Light Grey", "Grey", "Pale Blue", "Blue", "Green", "Hazel", "Brown", "Copper", "Dark Brown"],
+            hairColours: ["Grey", "Flaxen", "Russet", "Honey", "Chestnut", "Ginger", "Mustard", "Almond", "Chocolate", "Liquorice"]
+        },
+        stats: [10,30,10,20,20,20,30,20,30,30],
+        extraStats: [ 0, 3, 0, 2, 3],
+        skills: ["Charm", "Consume Alcohol", "Dodge", "Lore (Reikland)", "Perception", "Sleight of Hand", "Stealth (Any one)", "Trade (Cook)", "Animal Care",  "Gamble",  "Language (Mootish)", "Lore (Herbs)"],
+        talents: ["Acute Sense (Taste)", "Night Vision", "Resistance (Chaos)", "Small", "Craftsman (Farmer) or Sturdy", "Random"]
+    },
+    {
+        id: 5, name: "Halfling Clan Hayfoot",
+        physical: {
+            ageBase: 15, ageDice: 5, heightBase: 37, heightDice: 1,
+            eyeColours: ["Light Grey", "Grey", "Pale Blue", "Blue", "Green", "Hazel", "Brown", "Copper", "Dark Brown"],
+            hairColours: ["Grey", "Flaxen", "Russet", "Honey", "Chestnut", "Ginger", "Mustard", "Almond", "Chocolate", "Liquorice"]
+        },
+        stats: [10,30,10,20,20,20,30,20,30,30],
+        extraStats: [ 0, 3, 0, 2, 3],
+        skills: ["Charm", "Consume Alcohol", "Dodge", "Lore (Reikland)", "Perception", "Sleight of Hand", "Stealth (Any one)", "Trade (Cook)", "Gamble",  "Haggle",  "Evaluate",  "Language (Mootish)"],
+        talents: ["Acute Sense (Taste)", "Night Vision", "Resistance (Chaos)", "Small", "Dealmaker or Etiquette (Guilders)", "Random"]
+    },
+    {
+        id: 6, name: "Halfling Clan Hollyfoot",
+        physical: {
+            ageBase: 15, ageDice: 5, heightBase: 37, heightDice: 1,
+            eyeColours: ["Light Grey", "Grey", "Pale Blue", "Blue", "Green", "Hazel", "Brown", "Copper", "Dark Brown"],
+            hairColours: ["Grey", "Flaxen", "Russet", "Honey", "Chestnut", "Ginger", "Mustard", "Almond", "Chocolate", "Liquorice"]
+        },
+        stats: [10,30,10,20,20,20,30,20,30,30],
+        extraStats: [ 0, 3, 0, 2, 3],
+        skills: ["Charm", "Consume Alcohol", "Dodge", "Lore (Reikland)", "Perception", "Sleight of Hand", "Stealth (Any one)", "Trade (Cook)", "Evaluate",  "Haggle",  "Language (Mootish)", "Trade (Any one)"],
+        talents: ["Acute Sense (Taste)", "Night Vision", "Resistance (Chaos)", "Small", "Craftsman (Any one) or Nimble-Fingered", "Random"]
+    },
+    {
+        id: 7, name: "Halfling Clan Hayfoot-Hollyfoot",
+        physical: {
+            ageBase: 15, ageDice: 5, heightBase: 37, heightDice: 1,
+            eyeColours: ["Light Grey", "Grey", "Pale Blue", "Blue", "Green", "Hazel", "Brown", "Copper", "Dark Brown"],
+            hairColours: ["Grey", "Flaxen", "Russet", "Honey", "Chestnut", "Ginger", "Mustard", "Almond", "Chocolate", "Liquorice"]
+        },
+        stats: [10,30,10,20,20,20,30,20,30,30],
+        extraStats: [ 0, 3, 0, 2, 3],
+        skills: ["Charm", "Consume Alcohol", "Dodge", "Lore (Reikland)", "Perception",	 "Sleight of Hand", "Stealth (Any one)", "Trade (Cook)", "Bribery",  "Haggle",  "Gossip",  "Language (Mootish)"],
+        talents: ["Acute Sense (Taste)", "Night Vision", "Resistance (Chaos)", "Small", "Argumentative or Numismatics", "Random"]
+    },
+    {
+        id: 8, name: "Halfling Clan Lostpockets",
+        physical: {
+            ageBase: 15, ageDice: 5, heightBase: 37, heightDice: 1,
+            eyeColours: ["Light Grey", "Grey", "Pale Blue", "Blue", "Green", "Hazel", "Brown", "Copper", "Dark Brown"],
+            hairColours: ["Grey", "Flaxen", "Russet", "Honey", "Chestnut", "Ginger", "Mustard", "Almond", "Chocolate", "Liquorice"]
+        },
+        stats: [10,30,10,20,20,20,30,20,30,30],
+        extraStats: [ 0, 3, 0, 2, 3],
+        skills: ["Charm", "Consume Alcohol", "Dodge", "Lore (Reikland)", "Perception", "Sleight of Hand", "Stealth (Any one)", "Trade (Cook)", "Endurance", "Gamble",  "Gossip",  "Intuition"],
+        talents: ["Acute Sense (Taste)", "Night Vision", "Resistance (Chaos)", "Small", "Hardy or Stone Soup", "Random"]
+    },
+    {
+        id: 9, name: "Halfling Clan Lowhaven",
+        physical: {
+            ageBase: 15, ageDice: 5, heightBase: 37, heightDice: 1,
+            eyeColours: ["Light Grey", "Grey", "Pale Blue", "Blue", "Green", "Hazel", "Brown", "Copper", "Dark Brown"],
+            hairColours: ["Grey", "Flaxen", "Russet", "Honey", "Chestnut", "Ginger", "Mustard", "Almond", "Chocolate", "Liquorice"]
+        },
+        stats: [10,30,10,20,20,20,30,20,30,30],
+        extraStats: [ 0, 3, 0, 2, 3],
+        skills: ["Charm", "Consume Alcohol", "Dodge", "Lore (Reikland)", "Perception", "Sleight of Hand", "Stealth (Any one)", "Trade (Cook)", "Bribery",  "Haggle",  "Intimidate",  "Language (Mootish)"],
+        talents: ["Acute Sense (Taste)", "Night Vision", "Resistance (Chaos)", "Small", "Criminal or Etiquette (Criminals) or Etiquette (Guilders)", "Random"]
+    },
+    {
+        id: 10, name: "Halfling Clan Rumster",
+        physical: {
+            ageBase: 15, ageDice: 5, heightBase: 37, heightDice: 1,
+            eyeColours: ["Light Grey", "Grey", "Pale Blue", "Blue", "Green", "Hazel", "Brown", "Copper", "Dark Brown"],
+            hairColours: ["Grey", "Flaxen", "Russet", "Honey", "Chestnut", "Ginger", "Mustard", "Almond", "Chocolate", "Liquorice"]
+        },
+        stats: [10,30,10,20,20,20,30,20,30,30],
+        extraStats: [ 0, 3, 0, 2, 3],
+        skills: ["Charm", "Consume Alcohol", "Dodge", "Lore (Reikland)", "Perception", "Sleight of Hand", "Stealth (Any one)", "Trade (Cook)", "Endurance",  "Gossip",  "Haggle",  "Language (Mootish)"],
+        talents: ["Acute Sense (Taste)", "Night Vision", "Resistance (Chaos)", "Small", "Craftsman (Cook) or Dealmaker", "Random"]
+    },
+    {
+        id: 11, name: "Halfling Clan Skelfsider",
+        physical: {
+            ageBase: 15, ageDice: 5, heightBase: 37, heightDice: 1,
+            eyeColours: ["Light Grey", "Grey", "Pale Blue", "Blue", "Green", "Hazel", "Brown", "Copper", "Dark Brown"],
+            hairColours: ["Grey", "Flaxen", "Russet", "Honey", "Chestnut", "Ginger", "Mustard", "Almond", "Chocolate", "Liquorice"]
+        },
+        stats: [10,30,10,20,20,20,30,20,30,30],
+        extraStats: [ 0, 3, 0, 2, 3],
+        skills: ["Charm", "Consume Alcohol", "Dodge", "Lore (Reikland)", "Perception", "Sleight of Hand", "Stealth (Any one)", "Trade (Cook)", "Endurance",  "Gamble",  "Gossip", "Language (Mootish)"],
+        talents: ["Acute Sense (Taste)", "Night Vision", "Resistance (Chaos)", "Small", "Beneath Notice or Etiquette (Servants)", "Random"]
+    },
+    {
+        id: 12, name: "Halfling Clan Thorncobble",
+        physical: {
+            ageBase: 15, ageDice: 5, heightBase: 37, heightDice: 1,
+            eyeColours: ["Light Grey", "Grey", "Pale Blue", "Blue", "Green", "Hazel", "Brown", "Copper", "Dark Brown"],
+            hairColours: ["Grey", "Flaxen", "Russet", "Honey", "Chestnut", "Ginger", "Mustard", "Almond", "Chocolate", "Liquorice"]
+        },
+        stats: [10,30,10,20,20,20,30,20,30,30],
+        extraStats: [ 0, 3, 0, 2, 3],
+        skills: ["Charm", "Consume Alcohol", "Dodge", "Lore (Reikland)", "Perception", "Sleight of Hand", "Stealth (Any one)", "Trade (Cook)", "Gossip",  "Leadership",  "Lore (Heraldry)", "Language (Mootish)"],
+        talents: ["Acute Sense (Taste)", "Night Vision", "Resistance (Chaos)", "Small", "Read/Write or Etiquette (Nobles) or Etiquette (Scholars)", "Random"]
+    },
+    {
+        id: 13, name: "Halfling Clan Tumbleberry",
+        physical: {
+            ageBase: 15, ageDice: 5, heightBase: 37, heightDice: 1,
+            eyeColours: ["Light Grey", "Grey", "Pale Blue", "Blue", "Green", "Hazel", "Brown", "Copper", "Dark Brown"],
+            hairColours: ["Grey", "Flaxen", "Russet", "Honey", "Chestnut", "Ginger", "Mustard", "Almond", "Chocolate", "Liquorice"]
+        },
+        stats: [10,30,10,20,20,20,30,20,30,30],
+        extraStats: [ 0, 3, 0, 2, 3],
+        skills: ["Charm", "Consume Alcohol", "Dodge", "Lore (Reikland)", "Perception", "Sleight of Hand", "Stealth (Any one)", "Trade (Cook)", "Gossip",  "Haggle",  "Lore (Any)", "Language (Mootish)"],
+        talents: ["Acute Sense (Taste)", "Night Vision", "Resistance (Chaos)", "Small", "Read/Write or Etiquette (Burghers) or Etiquette (Guilders)", "Random"]
+    }
+];
 var Sex = 0;
 var NamesHalflingMale = ["Alton","Ander","Cade","Corrin", "Eldon", "Errich,",
 "Finnan", "Garret", "Lindal", "Lyle", "Merrie", "Milo", "Osborn", "Perrin",
@@ -792,224 +950,65 @@ var CareerTxt ="";
 
 var StatsTxt = "";
 var StatsR = [0,0,0,0,0,0,0,0,0,0];
-var StatsHalfling = [10,30,10,20,20,20,30,20,30,30];
-var StatsAll = [StatsHalfling];
+
+
 var StatsCareer = [0,0,0,0,0,0,0,0,0,0];
 var StatsAdvance = [0,0,0,0,0,0,0,0,0,0];
 var StatsBase = [0,0,0,0,0,0,0,0,0,0];
 var StatsTalents  = [0,0,0,0,0,0,0,0,0,0];
 var FateResilienceTxt = "";
 var StatsExtraName = ["W","M","Fate","Resilience", "Extra"];
-var StatsExtraHalfling = [ 0, 3, 0, 2, 3];
-var StatsExtraAll = [StatsExtraHalfling];
+
+
 var StatsExtraBase = [ 0, 0, 0, 0, 0 ];
 var StatsExtra = [ 0, 0, 0, 0, 0 ];
-var SkillStartHalfling = ["Charm",
-"Consume Alcohol",
-"Dodge",
-"Gamble",
-"Haggle",
-"Intuition",
-"Language (Mootish)",
-"Lore (Reikland)",
-"Perception",
-"Sleight of Hand",
-"Stealth (Any one)",
-"Trade (Cook)"];
 
-var SkillStartAshfield = ["Charm",
-"Consume Alcohol",
-"Dodge",
-"Lore (Reikland)",
-"Perception",
-"Sleight of Hand",
-"Stealth (Any one)",
-"Trade (Cook)",
-"Cool",
-"Intuition",
-"Language (Mootish)",
-"Ranged (Any one)"];
 
-var SkillStartBranbledown = ["Charm",
-"Consume Alcohol",
-"Dodge",
-"Lore (Reikland)",
-"Perception",
-"Sleight of Hand",
-"Stealth (Any one)",
-"Trade (Cook)",
-"Language (Mootish)",
-"Navigation",
-"Outdoor Survival",
-"Swim"];
 
-var SkillStartBrandysnap = ["Charm",
-"Consume Alcohol",
-"Dodge",
-"Lore (Reikland)",
-"Perception",
-"Sleight of Hand",
-"Stealth (Any one)",
-"Trade (Cook)",
-"Animal Care", 
-"Gamble", 
-"Language (Mootish)",
-"Lore (Herbs)"];
 
-var SkillStartHayfoot = ["Charm",
-"Consume Alcohol",
-"Dodge",
-"Lore (Reikland)",
-"Perception",
-"Sleight of Hand",
-"Stealth (Any one)",
-"Trade (Cook)",
-"Gamble", 
-"Haggle", 
-"Evaluate", 
-"Language (Mootish)"];
 
-var SkillStartHollyfoot = ["Charm",
-"Consume Alcohol",
-"Dodge",
-"Lore (Reikland)",
-"Perception",
-"Sleight of Hand",
-"Stealth (Any one)",
-"Trade (Cook)",
-"Evaluate", 
-"Haggle", 
-"Language (Mootish)",
-"Trade (Any one)"];
 
-var SkillStartHayfootHollyfoot = ["Charm",
-"Consume Alcohol",
-"Dodge",
-"Lore (Reikland)",
-"Perception",	
-"Sleight of Hand",
-"Stealth (Any one)",
-"Trade (Cook)",
-"Bribery", 
-"Haggle", 
-"Gossip", 
-"Language (Mootish)"];
 
-var SkillStartLostpockets = ["Charm",
-"Consume Alcohol",
-"Dodge",
-"Lore (Reikland)",
-"Perception",
-"Sleight of Hand",
-"Stealth (Any one)",
-"Trade (Cook)",
-"Endurance",
-"Gamble", 
-"Gossip", 
-"Intuition"];
 
-var SkillStartLowhaven = ["Charm",
-"Consume Alcohol",
-"Dodge",
-"Lore (Reikland)",
-"Perception",
-"Sleight of Hand",
-"Stealth (Any one)",
-"Trade (Cook)",
-"Bribery", 
-"Haggle", 
-"Intimidate", 
-"Language (Mootish)"];
 
-var SkillStartRumster = ["Charm",
-"Consume Alcohol",
-"Dodge",
-"Lore (Reikland)",
-"Perception",
-"Sleight of Hand",
-"Stealth (Any one)",
-"Trade (Cook)",
-"Endurance", 
-"Gossip", 
-"Haggle", 
-"Language (Mootish)"];
 
-var SkillStartSkelfsider = ["Charm",
-"Consume Alcohol",
-"Dodge",
-"Lore (Reikland)",
-"Perception",
-"Sleight of Hand",
-"Stealth (Any one)",
-"Trade (Cook)",
-"Endurance", 
-"Gamble", 
-"Gossip",
-"Language (Mootish)"];
 
-var SkillStartThorncobble = ["Charm",
-"Consume Alcohol",
-"Dodge",
-"Lore (Reikland)",
-"Perception",
-"Sleight of Hand",
-"Stealth (Any one)",
-"Trade (Cook)",
-"Gossip", 
-"Leadership", 
-"Lore (Heraldry)",
-"Language (Mootish)"];
 
-var SkillStartTumbleberry = ["Charm",
-"Consume Alcohol",
-"Dodge",
-"Lore (Reikland)",
-"Perception",
-"Sleight of Hand",
-"Stealth (Any one)",
-"Trade (Cook)",
-"Gossip", 
-"Haggle", 
-"Lore (Any)",
-"Language (Mootish)"];
 
-var SkillStartAll = [SkillStartHalfling,
-SkillStartAshfield,SkillStartBranbledown,SkillStartBrandysnap,SkillStartHayfoot,SkillStartHollyfoot,SkillStartHayfootHollyfoot, 
-SkillStartLostpockets,SkillStartLowhaven, SkillStartRumster, SkillStartSkelfsider,SkillStartThorncobble, SkillStartTumbleberry
-];
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 var SkillTxt ="";
 var SkillStart;
 var SkillNames = [];
 var SkillValues = [];
 var SkillCareer = [];
-var TalentStartHalfling = ["Acute Sense (Taste)", "Night Vision", "Resistance (Chaos)", "Small", "Random", "Random"];
-var TalentStartAshfield = ["Acute Sense (Taste)", "Night Vision", "Resistance (Chaos)", "Small", "Acute Sense (Sight) or Etiquette (Soldiers)", "Random"];
-var TalentStartBrambledown = ["Acute Sense (Taste)", "Night Vision", "Resistance (Chaos)", "Small", "Gregarious or Seasoned Traveller", "Random"];
-var TalentStartBrandysnap = ["Acute Sense (Taste)", "Night Vision", "Resistance (Chaos)", "Small", "Craftsman (Farmer) or Sturdy", "Random"];
-var TalentStartHayfoot = ["Acute Sense (Taste)", "Night Vision", "Resistance (Chaos)", "Small", "Dealmaker or Etiquette (Guilders)", "Random"];
-var TalentStartHollyfoot = ["Acute Sense (Taste)", "Night Vision", "Resistance (Chaos)", "Small", "Craftsman (Any one) or Nimble-Fingered", "Random"];
-var TalentStartHayfootHollyfoot = ["Acute Sense (Taste)", "Night Vision", "Resistance (Chaos)", "Small", "Argumentative or Numismatics", "Random"];
-var TalentStartLostpockets = ["Acute Sense (Taste)", "Night Vision", "Resistance (Chaos)", "Small", "Hardy or Stone Soup", "Random"];
-var TalentStartLowhaven = ["Acute Sense (Taste)", "Night Vision", "Resistance (Chaos)", "Small", "Criminal or Etiquette (Criminals) or Etiquette (Guilders)", "Random"];
-var TalentStartRumster = ["Acute Sense (Taste)", "Night Vision", "Resistance (Chaos)", "Small", "Craftsman (Cook) or Dealmaker", "Random"];
-var TalentStartSkelfsider = ["Acute Sense (Taste)", "Night Vision", "Resistance (Chaos)", "Small", "Beneath Notice or Etiquette (Servants)", "Random"];
-var TalentStartThorncobble = ["Acute Sense (Taste)", "Night Vision", "Resistance (Chaos)", "Small", "Read/Write or Etiquette (Nobles) or Etiquette (Scholars)", "Random"];
-var TalentStartTumbleberry = ["Acute Sense (Taste)", "Night Vision", "Resistance (Chaos)", "Small", "Read/Write or Etiquette (Burghers) or Etiquette (Guilders)", "Random"];
 
-var TalentStartAll = [TalentStartHalfling,
-TalentStartAshfield,
-TalentStartBrambledown,
-TalentStartBrandysnap,
-TalentStartHayfoot,
-TalentStartHollyfoot,
-TalentStartHayfootHollyfoot,
-TalentStartLostpockets,
-TalentStartLowhaven,
-TalentStartRumster,
-TalentStartSkelfsider,
-TalentStartThorncobble,
-TalentStartTumbleberry
- ];
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 var TalentTxt ="";
 var TalentNames = [];
 var TalentValues = [];
@@ -1954,6 +1953,7 @@ function getTalentMax(talentName) {
 function refreshCharacterDisplay () {
     document.getElementById("nameB").innerHTML = NameTxt;
     document.getElementById("speciesB").innerHTML = SpeciesTxt;
+    document.getElementById("physicalB").innerHTML = PhysicalTxt;
     document.getElementById("careerB").innerHTML = CareerTxt;
     document.getElementById("xpB").innerHTML = XpTxt;
     document.getElementById("statsB").innerHTML = StatsTxt;
@@ -1978,7 +1978,15 @@ if  (SpeciesChoice>0) {
     xp += 0;
 }
 console.log(SpeciesN);
-SpeciesTxt = SpeciesAll[ SpeciesN - 1 ];
+const species = SpeciesAll[SpeciesN - 1];
+SpeciesTxt = species.name;
+const physical = species.physical;
+const age = physical.ageBase + rollXd10(physical.ageDice);
+const height = physical.heightBase + rollXd10(physical.heightDice);
+PhysicalTxt = "<b>Age:</b> " + age + " years; <b>Height:</b> "
+    + Math.floor(height / 12) + "&prime;" + (height % 12) + "&Prime;"
+    + "; <b>Eye colour:</b> " + randPick(physical.eyeColours)
+    + "; <b>Hair colour:</b> " + randPick(physical.hairColours);
 console.log(SpeciesTxt);
 Sex = Math.floor(Math.random() * 2);
 var NamesSpecies = NamesAll[Sex][0]; /*Same names for all*/
@@ -1990,7 +1998,7 @@ if ((SpeciesN > 1) && (Math.random() > 0.8) ){
 };
 NameTxt = NamesSpecies[ Math.floor(Math.random() * NamesSpecies.length) ] + " " 
     + HyphenatedSurname +  SurnamesSpecies[ Math.floor(Math.random() * SurnamesSpecies.length) ] ;
-SkillStart = SkillStartAll[ SpeciesN - 1 ];
+SkillStart = species.skills.slice();
 console.log(SkillStart);
 for (i = 0; i < 6; i += 1) {
     const skillPoints = i < 3 ? 5 : 3; // Determine skill points based on `i`
@@ -2012,7 +2020,7 @@ for (i = 0; i < 6; i += 1) {
 }
 console.log(SkillStart);
 console.log(SkillNames);
-TalentNames = TalentStartAll [ SpeciesN - 1 ];
+TalentNames = species.talents.slice();
 TalentNames = await parseInicialTalent (TalentNames);
 TalentValues = Array(TalentNames.length).fill(1);
 TalentCareer = Array(TalentNames.length).fill(0);
@@ -2073,8 +2081,8 @@ ClassN = career.classIndex;
 StatsCareer[ career.advances[0] ] = 1;
 StatsCareer[ career.advances[1] ] = 1;
 StatsCareer[ career.advances[2] ] = 1;
-StatsBase = StatsAll [ 0 ];
-StatsExtraBase = StatsExtraAll [ 0 ];
+StatsBase = species.stats.slice();
+StatsExtraBase = species.extraStats.slice();
 for (i in StatsR) {
      StatsR[i] = roll2d10();
 }
@@ -2267,6 +2275,7 @@ Extra XP </td><td> <input type="number" id="extraXPInput" min="0" placeholder="E
 </td><td>
 <h3><span title='One of the playable species of the Old World'>Species</span></h3>
 <p id="speciesB">.</p>
+<p id="physicalB"></p>
 </td></tr>
 </table>
 <table><tr><td>

@@ -228,8 +228,82 @@ xp += extraXP; // Add the extra XP to the total XP
 var xpSpend = 0;
 var XpTxt = "";
 var SpeciesTxt ="";
+var PhysicalTxt = "";
 var SpeciesN;
-var SpeciesAll = ["Human","Dwarf","Halfling","High Elf","Wood Elf","Gnome"];
+const SpeciesAll = [
+    {
+        id: 1, name: "Human",
+        physical: {
+            ageBase: 14, ageDice: 2, heightBase: 57, heightDice: 2,
+            eyeColours: ["Ice Blue", "Green", "Pale Blue", "Blue", "Pale Grey", "Grey", "Brown", "Hazel", "Dark Brown", "Black"],
+            hairColours: ["White Blond", "Golden Blond", "Red Blond", "Golden Brown", "Light Brown", "Dark Brown", "Black", "Auburn", "Red", "Grey"]
+        },
+        stats: [20,20,20,20,20,20,20,20,20,20,20],
+        extraStats: [ 0, 4, 2, 1, 3],
+        skills: ["Animal Care", "Charm",  "Cool", "Evaluate", "Gossip","Haggle", "Language (Bretonnian)", "Language (Wastelander)",  "Leadership", "Lore (Reikland)", "Melee (Basic)",  "Ranged (Bow)"],
+        talents: ["Doomed","Savvy or Suave","Random","Random","Random" ]
+    },
+    {
+        id: 2, name: "Dwarf",
+        physical: {
+            ageBase: 15, ageDice: 10, heightBase: 51, heightDice: 1,
+            eyeColours: ["Coal", "Lead", "Steel", "Blue", "Earth Brown", "Bronze", "Hazel", "Green", "Copper", "Gold"],
+            hairColours: ["White", "Grey", "Pale Blond", "Golden", "Copper", "Bronze", "Brown", "Dark Brown", "Reddish Brown", "Black"]
+        },
+        stats: [30,20,20,30,10,20,30,20,40,10],
+        extraStats: [ 0, 3, 0, 2, 2],
+        skills: ["Consume Alcohol", "Cool", "Endurance", "Entertain (Storytelling)", "Evaluate", "Intimidate", "Language (Khazalid)", "Lore (Dwarfs)", "Lore (Geology)", "Lore (Metallurgy)", "Melee (Basic)", "Trade (Any one)"],
+        talents: ["Magic Resistance","Night Vision","Read/Write or Relentless","Resolute or Strong-Minded","Sturdy"]
+    },
+    {
+        id: 3, name: "Halfling",
+        physical: {
+            ageBase: 15, ageDice: 5, heightBase: 37, heightDice: 1,
+            eyeColours: ["Light Grey", "Grey", "Pale Blue", "Blue", "Green", "Hazel", "Brown", "Copper", "Dark Brown"],
+            hairColours: ["Grey", "Flaxen", "Russet", "Honey", "Chestnut", "Ginger", "Mustard", "Almond", "Chocolate", "Liquorice"]
+        },
+        stats: [10,30,10,20,20,20,30,20,30,30],
+        extraStats: [ 0, 3, 0, 2, 3],
+        skills: ["Charm", "Consume Alcohol", "Dodge", "Gamble", "Haggle", "Intuition", "Language (Mootish)", "Lore (Reikland)", "Perception", "Sleight of Hand", "Stealth (Any one)", "Trade (Cook)"],
+        talents: ["Acute Sense (Taste)", "Night Vision", "Resistance (Chaos)", "Small", "Random", "Random"]
+    },
+    {
+        id: 4, name: "High Elf",
+        physical: {
+            ageBase: 30, ageDice: 10, heightBase: 71, heightDice: 1,
+            eyeColours: ["Jet", "Amethyst", "Aquamarine", "Sapphire", "Turquoise", "Emerald", "Amber", "Copper", "Citrine", "Gold"],
+            hairColours: ["Silver", "White", "Pale Blond", "Blond", "Yellow Blond", "Copper Blond", "Red Blond", "Auburn", "Red", "Black"]
+        },
+        stats: [30,30,20,20,30,40,30,30,30,20],
+        extraStats: [ 0, 5, 0, 0, 2],
+        skills: ["Cool", "Entertain (Sing)", "Evaluate", "Language (Eltharin)", "Leadership", "Melee (Basic)", "Navigation", "Perception", "Play (Any one)", "Ranged (Bow)", "Sail", "Swim"],
+        talents: ["Acute Sense (Vision)", "Coolheaded or Savvy", "Night Vision", "Second Sight or Sixth Sense", "Read/Write"]
+    },
+    {
+        id: 5, name: "Wood Elf",
+        physical: {
+            ageBase: 30, ageDice: 10, heightBase: 71, heightDice: 1,
+            eyeColours: ["Ivory", "Charcoal", "Ivy Green", "Mossy Green", "Chestnut", "Dark Brown", "Tan", "Sandy Brown", "Violet"],
+            hairColours: ["Birch Silver", "Ash Blond", "Rose Gold", "Honey Blond", "Brown", "Mahogany Brown", "Dark Brown", "Sienna", "Ebony", "BlueBlack"]
+        },
+        stats: [30,30,20,20,30,40,30,30,30,20],
+        extraStats: [ 0, 5, 0, 0, 2],
+        skills: ["Athletics", "Climb", "Endurance", "Entertain (Sing)", "Intimidate", "Language (Eltharin)", "Melee (Basic)", "Outdoor Survival", "Perception", "Ranged (Bow)", "Stealth (Rural)", "Track"],
+        talents: ["Acute Sense (Vision)", "Hardy or Second Sight", "Night Vision", "Read/Write or Very Resilient", "Rover"]
+    },
+    {
+        id: 6, name: "Gnome",
+        physical: {
+            ageBase: 20, ageDice: 10, heightBase: 40, heightDice: 1,
+            eyeColours: ["Pale Blue", "Blue", "Deep Blue", "Turquoise", "Pale Green", "Hazel", "Pale Brown", "Brown", "Dark Brown", "Violet"],
+            hairColours: ["Black", "Dark Brown", "Auburn", "Brown", "Light Brown", "Ginger", "Red Blond", "Golden Blond", "White Blond", "White"]
+        },
+        stats: [20,10,10,15,30,30,30,30,40,15],
+        extraStats: [ 0, 3, 2, 0, 2],
+        skills: ["Channeling (Ulgu)", "Charm", "Consume Alcohol", "Dodge", "Entertain (Any one)", "Gossip", "Haggle", "Language (Ghassally)", "Language (Magick)", "Language (Wastelander)", "Outdoor Survival", "Stealth (Any one)"],
+        talents: ["Beneath Notice or Suffuse with Ulgu", "Luck or Mimic", "Night Vision", "Fisherman or Read/Write", "Second Sight or Sixth Sense", "Small"]
+    }
+];
 var Sex = 0;
 var NamesHumanMale = ["Armin", "Adolf", "Adolphus", "Albrecht", "Alexander", "Aldred", "Alfred",
 "Anders", "Anton", "Axel", "Bernard", "Bernd", "Bert", "Boris", "Bruno", 
@@ -955,119 +1029,48 @@ var CareerTxt ="";
 
 var StatsTxt = "";
 var StatsR = [0,0,0,0,0,0,0,0,0,0];
-var StatsHuman = [20,20,20,20,20,20,20,20,20,20,20];
-var StatsDwarf = [30,20,20,30,10,20,30,20,40,10];
-var StatsHalfling = [10,30,10,20,20,20,30,20,30,30];
-var StatsHElf = [30,30,20,20,30,40,30,30,30,20];
-var StatsWElf = [30,30,20,20,30,40,30,30,30,20];
-var StatsGnome = [20,10,10,15,30,30,30,30,40,15];
-var StatsAll = [StatsHuman, StatsDwarf, StatsHalfling, StatsHElf, StatsWElf, StatsGnome];
+
+
+
+
+
+
+
 var StatsCareer = [0,0,0,0,0,0,0,0,0,0];
 var StatsAdvance = [0,0,0,0,0,0,0,0,0,0];
 var StatsBase = [0,0,0,0,0,0,0,0,0,0];
 var StatsTalents  = [0,0,0,0,0,0,0,0,0,0];
 var FateResilienceTxt = "";
 var StatsExtraName = ["W","M","Fate","Resilience", "Extra"];
-var StatsExtraHuman = [ 0, 4, 2, 1, 3];
-var StatsExtraDwarf = [ 0, 3, 0, 2, 2];
-var StatsExtraHalfling = [ 0, 3, 0, 2, 3];
-var StatsExtraHElf = [ 0, 5, 0, 0, 2];
-var StatsExtraWElf  = [ 0, 5, 0, 0, 2];
-var StatsExtraGnome  = [ 0, 3, 2, 0, 2];
-var StatsExtraAll = [StatsExtraHuman, StatsExtraDwarf, StatsExtraHalfling, StatsExtraHElf, StatsExtraWElf, StatsExtraGnome];
+
+
+
+
+
+
+
 var StatsExtraBase = [ 0, 0, 0, 0, 0 ];
 var StatsExtra = [ 0, 0, 0, 0, 0 ];
-var SkillStartHuman= ["Animal Care",
-"Charm", 
-"Cool",
-"Evaluate",
-"Gossip","Haggle",
-"Language (Bretonnian)",
-"Language (Wastelander)", 
-"Leadership",
-"Lore (Reikland)",
-"Melee (Basic)", 
-"Ranged (Bow)"];
-var SkillStartDwarf = ["Consume Alcohol",
-"Cool",
-"Endurance",
-"Entertain (Storytelling)",
-"Evaluate",
-"Intimidate",
-"Language (Khazalid)",
-"Lore (Dwarfs)",
-"Lore (Geology)",
-"Lore (Metallurgy)",
-"Melee (Basic)",
-"Trade (Any one)"];
-var SkillStartHalfling = ["Charm",
-"Consume Alcohol",
-"Dodge",
-"Gamble",
-"Haggle",
-"Intuition",
-"Language (Mootish)",
-"Lore (Reikland)",
-"Perception",
-"Sleight of Hand",
-"Stealth (Any one)",
-"Trade (Cook)"];
-var SkillStartHElf = ["Cool",
-"Entertain (Sing)",
-"Evaluate",
-"Language (Eltharin)",
-"Leadership",
-"Melee (Basic)",
-"Navigation",
-"Perception",
-"Play (Any one)",
-"Ranged (Bow)",
-"Sail",
-"Swim"];
-var SkillStartWElf = ["Athletics",
-"Climb",
-"Endurance",
-"Entertain (Sing)",
-"Intimidate",
-"Language (Eltharin)",
-"Melee (Basic)",
-"Outdoor Survival",
-"Perception",
-"Ranged (Bow)",
-"Stealth (Rural)",
-"Track"];
-var SkillStartGnome = ["Channeling (Ulgu)",
-"Charm",
-"Consume Alcohol",
-"Dodge",
-"Entertain (Any one)",
-"Gossip",
-"Haggle",
-"Language (Ghassally)",
-"Language (Magick)",
-"Language (Wastelander)",
-"Outdoor Survival",
-"Stealth (Any one)"];
-var SkillStartAll = [SkillStartHuman, 
- SkillStartDwarf, SkillStartHalfling, 
- SkillStartHElf, SkillStartWElf, 
- SkillStartGnome];
+
+
+
+
+
+
+
 var SkillTxt ="";
 var SkillStart;
 var SkillNames = [];
 var SkillValues = [];
 var SkillCareer = [];
 
-var TalentStartHuman = ["Doomed","Savvy or Suave","Random","Random","Random" ];
-var TalentStartDwarf = ["Magic Resistance","Night Vision","Read/Write or Relentless","Resolute or Strong-Minded","Sturdy"];
-var TalentStartHalfling = ["Acute Sense (Taste)", "Night Vision", "Resistance (Chaos)", "Small", "Random", "Random"];
-var TalentStartHElf = ["Acute Sense (Vision)", "Coolheaded or Savvy", "Night Vision", "Second Sight or Sixth Sense", "Read/Write"];
-var TalentStartWElf = ["Acute Sense (Vision)", "Hardy or Second Sight", "Night Vision", "Read/Write or Very Resilient", "Rover"];
-var TalentStartGnome = ["Beneath Notice or Suffuse with Ulgu", "Luck or Mimic", "Night Vision", "Fisherman or Read/Write", "Second Sight or Sixth Sense", "Small"];
-var TalentStartAll = [TalentStartHuman,
- TalentStartDwarf,TalentStartHalfling,
- TalentStartHElf,TalentStartWElf,
- TalentStartGnome];
+
+
+
+
+
+
+
 var TalentTxt ="";
 var TalentNames = [];
 var TalentValues = [];
@@ -2012,6 +2015,7 @@ function getTalentMax(talentName) {
 function refreshCharacterDisplay () {
     document.getElementById("nameB").innerHTML = NameTxt;
     document.getElementById("speciesB").innerHTML = SpeciesTxt;
+    document.getElementById("physicalB").innerHTML = PhysicalTxt;
     document.getElementById("careerB").innerHTML = CareerTxt;
     document.getElementById("xpB").innerHTML = XpTxt;
     document.getElementById("statsB").innerHTML = StatsTxt;
@@ -2044,7 +2048,15 @@ if  (SpeciesChoice>0) {
     xp += 20;
 }
 console.log(SpeciesN);
-SpeciesTxt = SpeciesAll[ SpeciesN - 1 ];
+const species = SpeciesAll[SpeciesN - 1];
+SpeciesTxt = species.name;
+const physical = species.physical;
+const age = physical.ageBase + rollXd10(physical.ageDice);
+const height = physical.heightBase + rollXd10(physical.heightDice);
+PhysicalTxt = "<b>Age:</b> " + age + " years; <b>Height:</b> "
+    + Math.floor(height / 12) + "&prime;" + (height % 12) + "&Prime;"
+    + "; <b>Eye colour:</b> " + randPick(physical.eyeColours)
+    + "; <b>Hair colour:</b> " + randPick(physical.hairColours);
 console.log(SpeciesTxt);
 Sex = Math.floor(Math.random() * 2);
 var NamesSpecies = NamesAll[Sex][SpeciesN - 1 ];
@@ -2061,7 +2073,7 @@ if ((SpeciesN == 2) && (Math.random() > .5)) {
 }
 NameTxt = NamesSpecies[ Math.floor(Math.random() * NamesSpecies.length) ] + " " 
     +  SurnamesSpecies[ Math.floor(Math.random() * SurnamesSpecies.length) ] ;
-SkillStart = SkillStartAll[ SpeciesN - 1 ];
+SkillStart = species.skills.slice();
 console.log(SkillStart);
 for (i = 0; i < 6; i += 1) {
     const skillPoints = i < 3 ? 5 : 3; // Determine skill points based on `i`
@@ -2083,7 +2095,7 @@ for (i = 0; i < 6; i += 1) {
 }
 console.log(SkillStart);
 console.log(SkillNames);
-TalentNames = TalentStartAll [ SpeciesN - 1 ];
+TalentNames = species.talents.slice();
 TalentNames = await parseInicialTalent (TalentNames);
 TalentValues = Array(TalentNames.length).fill(1);
 TalentCareer = Array(TalentNames.length).fill(0);
@@ -2144,8 +2156,8 @@ ClassN = career.classIndex;
 StatsCareer[ career.advances[0] ] = 1;
 StatsCareer[ career.advances[1] ] = 1;
 StatsCareer[ career.advances[2] ] = 1;
-StatsBase = StatsAll [ SpeciesN - 1 ];
-StatsExtraBase = StatsExtraAll [ SpeciesN - 1 ];
+StatsBase = species.stats.slice();
+StatsExtraBase = species.extraStats.slice();
 for (i in StatsR) {
      StatsR[i] = roll2d10();
 }
@@ -2328,6 +2340,7 @@ Extra XP </td><td> <input type="number" id="extraXPInput" min="0" placeholder="E
 </td><td>
 <h3><span title='One of the playable species of the Old World'>Species</span></h3>
 <p id="speciesB">.</p>
+<p id="physicalB"></p>
 </td></tr>
 </table>
 <table><tr><td>
