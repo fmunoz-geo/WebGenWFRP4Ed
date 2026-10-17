@@ -30,7 +30,7 @@ function roll1d100(){
 "use strict";
  return Math.floor(Math.random() * 100) + 1;
 }
-// ["WS","BS","S","T","I","AG","DEX","INT","WP","FEL","M","W"];
+// ["WS","BS","S","T","I","Ag","Dex","Int","WP","Fel","M","W"];
 const ST_WS = 0;
 const ST_BS = 1;
 const ST_S = 2;
@@ -43,6 +43,7 @@ const ST_WP = 8;
 const ST_FEL = 9;
 const ST_M = 10;
 const ST_W = 11;
+const StatsFullName = ["Weapon Skill", "Ballistic Skill", "Strength", "Toughness", "Initiative", "Agility", "Dexterity", "Intelligence", "Willpower", "Fellowship", "Move", "Wounds"];
 
 function generateNPC(SpeciesChoice) {
 "use strict";
@@ -59,7 +60,7 @@ var Sex = 0;
 
 
 var StatsTxt = "";
-var StatsName = ["WS","BS","S","T","I","AG","DEX","INT","WP","FEL","M","W"];
+var StatsName = ["WS","BS","S","T","I","Ag","Dex","Int","WP","Fel","M","W"];
 var StatsR =      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0];
 var StatsMenfish = [20,10,10,10,20,15,20,15,20,5,4,0];
 var StatsSnakemen = [30,20,25,35,10,30,20,20,35,15,3,0];
@@ -205,7 +206,7 @@ function parseNamesAny (NamesArray,AnyNames) {
 
 function parseTrait2Stats (TraitArray) {
     var x;
-    /* var StatsName = [0"WS",1"BS",2"S",3"T",4"I",5"AG",6"DEX",7"INT",8"WP",9"FEL",10 "M",11 "W"]; */
+    /* var StatsName = [0"WS",1"BS",2"S",3"T",4"I",5"Ag",6"Dex",7"Int",8"WP",9"Fel",10 "M",11 "W"]; */
     var stat = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     for (x in TraitArray) {
         console.log(TraitArray[x]); 
@@ -349,7 +350,7 @@ function parseTrait2Stats (TraitArray) {
 
 function parseTrait2Skills (TraitArray) {
     var x;
-    /* var StatsName = [0"WS",1"BS",2"S",3"T",4"I",5"AG",6"DEX",7"INT",8"WP",9"FEL",10 "M",11 "W"]; */
+    /* var StatsName = [0"WS",1"BS",2"S",3"T",4"I",5"Ag",6"Dex",7"Int",8"WP",9"Fel",10 "M",11 "W"]; */
  /* [1, "Athletics",2],*/
     var skills = [];
     for (x in TraitArray) {
@@ -597,7 +598,7 @@ Add Skills: </td><td><input type="checkbox" id="addSkills">
 <h3>Traits</h3>
 <p id="traitsB"></p>
 
-<p id="Acknowledgements"><a href="https://github.com/fmunoz-geo/WebGenWFRP4Ed">Code: Francisco Mu&ntilde;oz 2019-2021.</a>
+<p id="Acknowledgements"><a href="https://github.com/fmunoz-geo/WebGenWFRP4Ed">Code: Francisco Mu&ntilde;oz 2019-2026.</a>
 <br>Monster Stats: <a href="https://graemedavis.wordpress.com/">Graeme Davis Blog</a>.
 <br>Inspiration: <a href="http://www.windsofchaos.com/wp-content/uploads/encroachment/html/generator-random-treasure-01.html">Encroatchment of Chaos, Treasure Generator by Dave Graffam</a>.
 <br>Inspiration: <a href="http://orteil.dashnet.org/randomgen/?gen=https://pastebin.com/raw/JcxC8pMx">WFRP 4e Equipment Generator</a>.
