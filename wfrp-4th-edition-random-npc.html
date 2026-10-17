@@ -30,7 +30,7 @@ function roll1d100(){
 "use strict";
  return Math.floor(Math.random() * 100) + 1;
 }
-// ["WS","BS","S","T","I","AG","DEX","INT","WP","FEL","M","W"];
+// ["WS","BS","S","T","I","Ag","Dex","Int","WP","Fel","M","W"];
 const ST_WS = 0;
 const ST_BS = 1;
 const ST_S = 2;
@@ -43,6 +43,7 @@ const ST_WP = 8;
 const ST_FEL = 9;
 const ST_M = 10;
 const ST_W = 11;
+const StatsFullName = ["Weapon Skill", "Ballistic Skill", "Strength", "Toughness", "Initiative", "Agility", "Dexterity", "Intelligence", "Willpower", "Fellowship", "Move", "Wounds"];
 
 function generateNPC(SpeciesChoice) {
 "use strict";
@@ -231,7 +232,7 @@ var SurnameSuffixDwarvenFemale = ["sdottir","sdottir","sdottir","sniz"];
 var SurnameSuffixDwarvenAll = [SurnameSuffixDwarvenMale, SurnameSuffixDwarvenFemale];
 
 var StatsTxt = "";
-var StatsName = ["WS","BS","S","T","I","AG","DEX","INT","WP","FEL","M","W"];
+var StatsName = ["WS","BS","S","T","I","Ag","Dex","Int","WP","Fel","M","W"];
 var StatsR =      [0,0,0,0,0,0,0,0,0,0,0,0];
 var StatsHuman = [20,20,20,20,20,20,20,20,20,20,4,0];
 var StatsDwarf = [30,20,20,30,10,20,30,20,40,10,3,0];
@@ -283,7 +284,7 @@ var CareerSkill = [
 ["Stealh", "Melee (Basic)", "Ranged","Intimidate", "Bribery"]
 ];
 /*
-var StatsName = ["WS"0,"BS"1,"S"2,"T"3,"AG"4,"I"5,"DEX"6,"INT"7,"WP"8,"FEL"9,"M","W"];
+var StatsName = ["WS"0,"BS"1,"S"2,"T"3,"I"4,"Ag"5,"Dex"6,"Int"7,"WP"8,"Fel"9,"M","W"];
 */
 var CareerSkilStats = [
 [ST_FEL, ST_INT, ST_FEL, ST_FEL],
@@ -455,7 +456,7 @@ function rollMoney (SocialString) {
 
 function parseTrait2Stats (TraitArray) {
     var x;
-    /* var StatsName = [0"WS",1"BS",2"S",3"T",4"I",5"AG",6"DEX",7"INT",8"WP",9"FEL",10 "M",11 "W"]; */
+    /* var StatsName = [0"WS",1"BS",2"S",3"T",4"I",5"Ag",6"Dex",7"Int",8"WP",9"Fel",10 "M",11 "W"]; */
     var stat = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     for (x in TraitArray) {
         //console.log(TraitArray[x]); 
@@ -883,7 +884,7 @@ You can also create the loot carried by them using my <a href="https://pacomisce
 <h3>Description</h3>
 <p id="descriptionB"></p>
 
-<p id="Acknowledgements"><a href="https://github.com/fmunoz-geo/WebGenWFRP4Ed">Code: Francisco Mu&ntilde;oz 2019-2020.</a>
+<p id="Acknowledgements"><a href="https://github.com/fmunoz-geo/WebGenWFRP4Ed">Code: Francisco Mu&ntilde;oz 2019-2026.</a>
 <br>Inspiration: <a href="http://www.windsofchaos.com/wp-content/uploads/encroachment/html/generator-random-treasure-01.html">Encroatchment of Chaos, Treasure Generator by Dave Graffam</a>.
 <br>Inspiration: <a href="http://orteil.dashnet.org/randomgen/?gen=https://pastebin.com/raw/JcxC8pMx">WFRP 4e Equipment Generator</a>.
 <br>Inspiration: <a href="http://www.grimnirstavern.com">Grimnir's Tavern, Random NPC Generator for WFRP 4e</a>.
