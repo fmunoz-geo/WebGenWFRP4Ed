@@ -1990,10 +1990,10 @@ SpeciesTxt = species.name;
 const physical = species.physical;
 const age = physical.ageBase + rollXd10(physical.ageDice);
 const height = physical.heightBase + rollXd10(physical.heightDice);
-PhysicalTxt = "<b>Age:</b> " + age + " years; <b>Height:</b> "
+PhysicalTxt = "<b>Age:</b> " + age + " years <b>Height:</b> "
     + Math.floor(height / 12) + "&prime;" + (height % 12) + "&Prime;"
-    + "; <b>Eye colour:</b> " + randPick(physical.eyeColours)
-    + "; <b>Hair colour:</b> " + randPick(physical.hairColours);
+    + " <b>Eye colour:</b> " + randPick(physical.eyeColours)
+    + " <b>Hair colour:</b> " + randPick(physical.hairColours);
 console.log(SpeciesTxt);
 Sex = Math.floor(Math.random() * 2);
 var NamesSpecies = NamesAll[Sex][SpeciesN - 1 ];
@@ -2279,9 +2279,9 @@ Extra XP </td><td> <input type="number" id="extraXPInput" min="0" placeholder="E
 </td><td>
 <h3><span title='One of the playable species of the Old World'>Species</span></h3>
 <p id="speciesB">.</p>
-<p id="physicalB"></p>
 </td></tr>
 </table>
+<p id="physicalB"></p>
 <table><tr><td>
 <h3><span title='Your Class determines your general place in society'>Class</span> and <span title='Your Career determines your current job and Status'>Career</span></h3>
 <p id="careerB">.</p>
