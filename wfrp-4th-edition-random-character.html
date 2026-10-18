@@ -195,7 +195,7 @@ async function rearrangeCharacteristics(rolls, characterContext) {
     const assigned = [];
     for (let index = 0; index < StatsName.length; index++) {
         const choice = await showSelectionDialog(available.map(String),
-            `${characterContext} — Assign ${StatsFullName[index]} (${StatsName[index]}): remaining rolls ${available.join(", ")}`);
+            `${characterContext} &#8212; Assign ${StatsFullName[index]} (${StatsName[index]}): remaining rolls ${available.join(", ")}`);
         assigned.push(available.splice(choice, 1)[0]);
     }
     return assigned;
@@ -210,7 +210,7 @@ async function splitCharacteristicPoints(characterContext) {
         const options = [5, 10, 15].filter(value =>
             remaining - value >= unassigned * 5 && remaining - value <= unassigned * 15);
         const choice = await showSelectionDialog(options.map(String),
-            `${characterContext} — Assign ${StatsFullName[index]} (${StatsName[index]}): ${remaining} points available`);
+            `${characterContext} &#8212; Assign ${StatsFullName[index]} (${StatsName[index]}): ${remaining} points available`);
         assigned.push(options[choice]);
         remaining -= options[choice];
     }
@@ -2185,13 +2185,13 @@ for (i in StatsR) {
 if ((document.getElementById("reRollCheck").checked == true) ) {
     refreshCharacterDisplay ();
     const characterContext = `${SpeciesTxt} ${CareerName}`;
-    const keepCurrentStats = await showCustomDialog(`${characterContext} — Keep current stats for +50 XP: ${StatsR.toString()}`);
+    const keepCurrentStats = await showCustomDialog(`${characterContext} &#8212; Keep current stats for +50 XP: ${StatsR.toString()}`);
     if (keepCurrentStats) {
         const method = await showSelectionDialog([
             "Rearrange current rolls (+25 XP)",
             "Reroll and rearrange (+0 XP)",
             "Split 100 points (+0 XP)"
-        ], `${characterContext} — Choose how to assign your Characteristics:`);
+        ], `${characterContext} &#8212; Choose how to assign your Characteristics:`);
         if (method === 2) {
             StatsR = await splitCharacteristicPoints(characterContext);
         } else {

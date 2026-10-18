@@ -273,7 +273,7 @@ var TraitDescription = [
 ["Skeletal Remains","Only after these creature's bones have been spread around for 1 AP are they forever Slain!."],
 ["Sniveling Whelp","These creatures can only use 2 AP during combat."],
 ["Soul Jar","These creatures cannot be permanently Slain! unless the fetish or phylactery which houses their soul is destroyed. However, they can be forced to remain in hibernation and left unconscious if a jar of salt is poured into their mouths."],
-["Spore-splosion","When these creatures attack, it cannot be Dodged or Parried – it may only be Resisted with a successful Toughness Test. If a foe fails this Toughness Test, they are exposed to Orx-molt."],
+["Spore-splosion","When these creatures attack, it cannot be Dodged or Parried &#8211; it may only be Resisted with a successful Toughness Test. If a foe fails this Toughness Test, they are exposed to Orx-molt."],
 ["Squabble Among Themselves","When these creatures suffer from Fear or Terror, they must succeed at a Resolve Test when their Turn starts or else attack their own allies. They can Resist every Turn thereafter."],
 ["Steely Fortitude","These creatures always succeed at Resolve Tests and cannot be Intimidated."],
 ["Swallow Whole","When these creatures make a successful Chokehold, they deal Damage as a bare-handed weapon and force a foe to Resist with a Toughness Test or be Swallowed. While Swallowed, the foe cannot use any Actions, but can attempt to Resist again at the beginning of their Turn to escape. Foes who attempt to Resist must flip the results to fail their Skill Test."],
@@ -618,7 +618,7 @@ var TaintOfChaos = [
 ["Zoological Mutation",""]
 ];
 
-var GeneralistSpells = ["Ã†gis",
+var GeneralistSpells = ["Ã&#8224;gis",
 "Anoint Weapon",
 "Bewitched",
 "Cack-handed Grasp",
@@ -789,12 +789,12 @@ function parseTrait2Stats (TraitArray) {
    case "Shotgun Bang!":
    case "Blam!Blam!":
    case "Point Blank":
-                weapons.push("<B>Flintlock Pistol</B>: SR% . Distance (ranged 7 yards) . Load (3 AP) • Damage (5) . Gunpowder, Volatile");
+                weapons.push("<B>Flintlock Pistol</B>: SR% . Distance (ranged 7 yards) . Load (3 AP) &#8226; Damage (5) . Gunpowder, Volatile");
     			Trappings.push("<B>Flintlock Pistol</B>");
     			Trappings.push("Gunpowder & shot (6)");
     			break;
 		case "Wytch-science":
-					//weapons.push("<B>Flintlock pistol</B>: SR% . Distance (ranged 7 yards) . Load (3 AP) â€¢ Damage (5) . Gunpowder, Volatile");
+					//weapons.push("<B>Flintlock pistol</B>: SR% . Distance (ranged 7 yards) . Load (3 AP) â&#8364;&#162; Damage (5) . Gunpowder, Volatile");
 					if(Math.random() < 0.66) {
 						weapons.push("<B>Wytchfyre Pistol</B>:");
 						weapons.push("<B>Wytchfyre Pistol</B>:");
@@ -854,7 +854,7 @@ function parseTrait2Stats (TraitArray) {
 					WeaponsSimple.push("<B>Splitting maul</B>");
 					WeaponsSimple.push("<B>Scythe</B>");
 					WeaponsMartial.push("<B>Pole cleaver</B>");
-					WeaponsMartial.push("<B>ZweihÃ¤nder</B>");
+					WeaponsMartial.push("<B>ZweihÃ&#164;nder</B>");
                 break;
    case "Foul Mutation":  /*Ugly hack*/
     for (i =0;i<RiskN;i++) {
