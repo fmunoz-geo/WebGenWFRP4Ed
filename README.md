@@ -7,4 +7,3 @@ everything for you or allow you a few simple selections (Race, Reroll or simple 
 The blog entry that has it online is:
 
 https://pacomiscelaneousstuff.blogspot.com/2018/08/wfrp-4th-edition-random-character.html
-
