@@ -41,47 +41,130 @@ var DiseaseSymptoms = [
 [
  ["Blight",            "Pass a daily Very Easy (+60) Endurance Test or die. No treatment.", ["Deadly"],["Death","Blight"]],
  ["Blight (Moderate)", "Pass a daily Easy (+40) Endurance Test or die. No treatment.", ["Deadly"],["Death","Blight"]],
- ["Blight (Severe)",   "Pass a daily Average (+20) Endurance Test or die. No treatment.", ["Deadly"],["Death","Blight"]]
+ ["Blight (Severe)",   "Pass a daily Average (+20) Endurance Test or die. No treatment.", ["Deadly","Final"],["Death","Blight","Plague"]]
 ],
 [ 
-["Buboes",            "-10 Physical Tests. Lance Buboes with Heal Test to remove.", ["Inflamation"],["Buboes","Inflamation"]]
+["Buboes",            "-10 Physical Tests (and -10 Fel if can be seen). Lance Buboes with Heal Tests to remove.", ["Inflamation"],["Buboes","Inflamation"], "Get $MUCUS buboes in the $BODYPART"]
 ],
 [ 
  ["Convulsions",       "-10 Physical Tests ", ["Twitchy"],["Movements","Palsy"]],
- ["Convulsions (Moderate)",       "-20 Physical Tests ",["Twitchy"],["Movements","Palsy","Dance"]],
- ["Convulsions (Severe)",       "Incapacited", ["Twitchy"],["Movements","Prostration","Palsy","Dance"]]
+ ["Convulsions (Moderate)",       "-20 Physical Tests.",["Twitchy"],["Movements","Palsy","Dance"]],
+ ["Convulsions (Severe)",       "Incapacited, need to be tied down.", ["Twitchy"],["Movements","Prostration","Palsy","Dance"]]
 ],
 [ 
-["Coughs and Sneezes","Expread to others, test once per hour of exposure. No treatment.",["Coughting"],["Lung","Cough","Croup"]]
+["Coughs and Sneezes","Spread to others, test once per hour of exposure. No treatment.",["Coughting"],["Lung","Cough","Croup"],"Get $MUCUS Mucus."]
 ],
 [ 
- ["Fever",             "-10 Physical Tests.",["Hot"],["Chills","Fever"]],
+ ["Fever",             "-10 Physical and Fellowship Tests.",["Hot"],["Chills","Fever"]],
  ["Fever (Severe)",             "Unconcious Condition.",["Hot"],["Chills","Fever","Ague","Prostration"]]
 ],
 [
- ["Flux",              ".", ["Icky"],["Guts","Trots"]],
- ["Flux (Moderate)",              ".", ["Icky"],["Guts","Trots"]],
- ["Flux (Severe)",              ".", ["Icky"],["Guts","Trots","Complaint"]]
+ ["Flux",              "Once per session you have TB rounds to go.", ["Icky"],["Guts","Trots"]],
+ ["Flux (Moderate)",              "Twice per session you have TB rounds to go.", ["Icky"],["Guts","Trots"]],
+ ["Flux (Severe)",              "Thrice per session you have TB rounds to go. Lose 1 Wound each time.", ["Icky"],["Guts","Trots","Complaint"],"Get $MUCUS bowel movements."]
 ],
 [ 
-["Gangrene",          ".",["Rotting"],[]]
+["Gangrene",          "Roll body part to start rotting. Miss TB Endurance(+20) Average Test and lose use. Need to be amputated.",["Rotting","Wasting","Putrid"],["Rot","Decay","Putrescence"]]
 ],
 [ 
- ["Lingering (Easy)",         "Add extra duration.", ["Lingering"],["Lingering"]],
- ["Lingering (Challenging)",         "Add extra duration.", ["Lingering"],["Lingering"]]
+ ["Lingering (Easy)",         "Add extra duration. Roll Endurance, fail adds +d10 days or worse.", ["Lingering","Sustained","Lengthy"],[]],
+ ["Lingering (Average)",         "Add extra duration. Roll Endurance, fail adds +d10 days or worse.", ["Lingering","Sustained","Lengthy"],[]],
+ ["Lingering (Challenging)",         "Add extra duration. Roll Endurance, fail adds +d10 days or worse.", ["Lingering","Sustained","Lengthy"],[]]
 ],
 [ 
- ["Malaise",           ".", ["Sad"],["Sadness","Touch"]]
+ ["Malaise",           "Take a Fatigued condition, only removed at the end of the illness.", ["Chill"],["Sadness","Touch"]]
 ],
 [ 
-["Nausea",            ".", ["Dizzy"],["Dizziness","Vomit","Vertigo"]]
+["Nausea",            "Failing a Physical test gives you a Stunned condition.", ["Dizzy"],["Dizziness","Vomit","Vertigo"]]
 ],
 [
- ["Pox",               ".", ["Red"],["Spots"]]
+ ["Pox",               "-10 Fellowship tests, can leave scars from scratching.", ["Red"],["Spots","Pimples"],"Get $POX marks on the $BODYPART skin."]
 ],
-[ ["Wound" ,             ".", ["Bledding"],["Wound"]]
+[ ["Wounded" ,             "Not able to heal one wound. Test daily Endurance (+20) Easy Test or gain Festering Wound.", ["Bledding"],["Wound"]]
 ]
 ];
+
+  
+var COLOUR = [
+["purple"],
+["red"],
+["blue"],
+["white"],
+["dark gray"],
+["yellow"],
+["tan"],
+["green"],
+["brown"],
+["brownish"],
+["greenish"]
+];
+
+var MUCUS = [
+["$COLOUR"],
+["$COLOUR"],
+["foamy"],
+["slightly glowing"],
+["bloody"]
+]; 
+var POX = [
+["$COLOUR"],
+["$COLOUR"],
+["weeping"],
+["strange shaped"],
+["stripe-like"]
+];
+
+var BODYPART = [
+["armpits and groin"],
+["face"],
+["torso"],
+["back and shoulders"],
+["hands and feet"],
+["all body"],
+["all body"]
+];
+  
+var ALLSTRINGS = [
+["$COLOUR",COLOUR],
+["$MUCUS",MUCUS],
+["$BODYPART",BODYPART],
+["$POX",POX]
+];
+
+  
+function removedoublespaces (str) {
+"use strict";
+ str = str.replace(/ +(?= )/g,'');
+ str = str.replace(/ \./g,'.');
+ return str;
+};
+
+function aanmanagement( str) {
+"use strict";
+ var strnew = str.replace(/\b(a)\s([aeiou])/ig,'$1n $2');
+ strnew = strnew.replace(/\b(a)\s<I>([aeiou])/ig,'$1n <I>$2');
+ return strnew;
+};
+
+
+function parsequalities(originalString) {
+ var notdone = 1;
+ while (notdone) {
+  notdone = 0;
+  for(var i=0; i < ALLSTRINGS.length; i++){
+    var lookingfor = ALLSTRINGS[i][0];
+    var strings =  ALLSTRINGS[i][1];
+    var randomnumber =  Math.floor(Math.random() * strings.length) ;
+    var replacement =  strings[ randomnumber ][0];
+    if (originalString.includes(lookingfor) == true) { 
+     notdone = 1;
+    };
+    var originalString = originalString.replace( lookingfor , replacement);
+   };
+  };
+     var parsedString = aanmanagement(removedoublespaces(originalString));
+    return [ parsedString ];
+};
 
 function getSymptom (DiseaseSymptomsLocal) {
  var Symptom = [];
@@ -91,6 +174,7 @@ function getSymptom (DiseaseSymptomsLocal) {
  DiseaseSymptomsLocal.splice(SymptomPick, 1);
  return [Symptom,DiseaseSymptomsLocal];
 };
+
 function getName (SAdjetive,SName) {
  var Names = DiseaseNames.concat ( SName );
  var Adjetives = DiseaseAdjetive.concat ( SAdjetive );
@@ -100,17 +184,31 @@ function getName (SAdjetive,SName) {
 
 function randomDisease(DiseaseType){
  var SymptomsCopy = DiseaseSymptoms.slice();
+ var NumberOfSymptoms = Math.floor(Math.random() * 3) + 2;
+ var SymptomArray = [];
+ var SymptomAdjetive = [];
+ var SymptomName = [];
+
+ var SymptomTxt = "";
+ for (var i = 0; i < NumberOfSymptoms; i++) {
  var Symptom = getSymptom (SymptomsCopy);
- var Symptom2 = getSymptom (Symptom[1]);
- var Symptom3 = getSymptom (Symptom2[1]);
- var DiseaseName = getName (Symptom[0][2].concat(Symptom2[0][2]), Symptom[0][3].concat(Symptom2[0][3]));
+ SymptomsCopy = Symptom[1];
+ SymptomArray.push(Symptom[0]);
+ SymptomAdjetive = SymptomName.concat(Symptom[0][2]);
+ SymptomName = SymptomName.concat(Symptom[0][3]);
+ SymptomTxt = SymptomTxt + "<li>" + SymptomArray[i][0] +  ": " + SymptomArray[i][1];
+ if (Symptom[0].length > 4 && Math.random() > 0.5 )  SymptomTxt = SymptomTxt + " " + parsequalities(Symptom[0][4]);
+ SymptomTxt = SymptomTxt + "</li>";
+ }
+ 
+ var DiseaseName = getName (SymptomAdjetive,SymptomName);
  
  var Disease = 
  "<b>Name:</b>" + DiseaseName +  "<br>" +
  "Contraction: " + DiseaseContraction[ Math.floor(Math.random() * DiseaseContraction.length)] + "<br>" +
  "Incubation:" + DiseaseIncubation[ Math.floor(Math.random() * DiseaseIncubation.length)] + "<br>" +
  "Duration:" + DiseaseDuration[ Math.floor(Math.random() * DiseaseDuration.length)] + "<br>" +
- "Symptoms:" + Symptom[0][0] + ", " + Symptom2[0][0] + ", " + Symptom3[0][0];
+ "Symptoms:<ul>" + SymptomTxt +"</ul>";
  return Disease;
 };
 
@@ -125,7 +223,7 @@ function generateDisease( bt ) {
  document.getElementById("amountInput").value = amount;
   for(j=0; j < 15; j++){
   document.getElementById("Disease"+(j+1)).innerHTML = " ";
-  };
+ };
   
  for(j=0; j < amount; j++){
  var Diseases = randomDisease(bt);
@@ -142,7 +240,9 @@ function generateDisease( bt ) {
 <body>
  <h1>Generate Random Disease</h1>
  <h2>WFRP Random Disease with Symptoms</h2>
- <p>From natural illness to Nurgle's Blessings, passing by Poxes created by the unclean skavens.
+ <p>From natural illness to Nurgle's Blessings, passing by Poxes created by the unclean skavens.<br>
+ You can read the disease and syptoms rules in the pages 188-189 from 
+ <a href="https://www.drivethrurpg.com/product/248284/Warhammer-Fantasy-Roleplay-Fourth-Edition-Rulebook?affiliate_id=91369">Warhammer Fantasy Roleplay Fourth Edition Rulebook</a>
  </p>
 
  <button type="button" onclick="generateDisease(-1)">Random Disease!</button> <label>Amount : <input type="text" maxlength="2" value= "5" size="2" id="amountInput"/></label><br>
@@ -162,7 +262,12 @@ function generateDisease( bt ) {
  <p id="Disease13"></p>
  <p id="Disease14"></p>
  <p id="Disease15"></p>
-
+ <div class="separator" style="clear: both;"><a href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjiEAU_yHpybidcmveWGAvkCz7ydy9v7TAEwDWIj8ubwLGS2WGJv_8m0AKhHdqa9nmAZl66wwnDBJjpRFm2Jk-UQ-RkAwwRbIiH4Y8bblcK_4VjgnVl_WTzwSbudW2wGxpVOA2iB2vcJrTq/s2048/IMG_20210124_121818_201.jpg" style="display: block; padding: 1em 0; text-align: center; "><img alt="" border="0" width="200" data-original-height="1276" data-original-width="2048" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjiEAU_yHpybidcmveWGAvkCz7ydy9v7TAEwDWIj8ubwLGS2WGJv_8m0AKhHdqa9nmAZl66wwnDBJjpRFm2Jk-UQ-RkAwwRbIiH4Y8bblcK_4VjgnVl_WTzwSbudW2wGxpVOA2iB2vcJrTq/s200/IMG_20210124_121818_201.jpg"/></a></div>
+<p id="Acknowledgements"><a href="https://github.com/fmunoz-geo/WebGenWFRP4Ed">Code: Francisco Mu&ntilde;oz 2019-2026.</a>
+<br>Inspiration: <a href="https://www.reddit.com/r/warhammerfantasyrpg/comments/l18esl/6_lustrian_dieases_suggstions_welcone/">6 Lustrian Diseases! by u/PitFiendWithBigTits</a>
+<br>Game: Games Worshop and Cubicle 7
+<br>Other random generators: <a href="https://randroll.com/archive/warhammer-fantasy-roleplay-generators-guide/">https://randroll.com/archive/warhammer-fantasy-roleplay-generators-guide/</a>
+</p>
+  
 </body>
-</html>
 </html>

@@ -198,7 +198,7 @@ async function rearrangeCharacteristics(rolls, characterContext) {
     const assigned = [];
     for (let index = 0; index < StatsName.length; index++) {
         const choice = await showSelectionDialog(available.map(String),
-            `${characterContext} — Assign ${StatsFullName[index]} (${StatsName[index]}): remaining rolls ${available.join(", ")}`);
+            `${characterContext} &#8212; Assign ${StatsFullName[index]} (${StatsName[index]}): remaining rolls ${available.join(", ")}`);
         assigned.push(available.splice(choice, 1)[0]);
     }
     return assigned;
@@ -213,7 +213,7 @@ async function splitCharacteristicPoints(characterContext) {
         const options = [5, 10, 15].filter(value =>
             remaining - value >= unassigned * 5 && remaining - value <= unassigned * 15);
         const choice = await showSelectionDialog(options.map(String),
-            `${characterContext} — Assign ${StatsFullName[index]} (${StatsName[index]}): ${remaining} points available`);
+            `${characterContext} &#8212; Assign ${StatsFullName[index]} (${StatsName[index]}): ${remaining} points available`);
         assigned.push(options[choice]);
         remaining -= options[choice];
     }
@@ -645,7 +645,7 @@ const CareerAll = [
     },
     {
         name: "Physician", classIndex: 0,
-        name1st: "Physician’s Apprentice",
+        name1st: "Physician&#8217;s Apprentice",
         advances: [ST_DEX,ST_INT,ST_FEL],
         social: "Brass 4",
         talents: ["Bookish","Craftsman (Barber)","Field Dressing","Read/Write"],
@@ -675,7 +675,7 @@ const CareerAll = [
     },
     {
         name: "Wizard", classIndex: 0,
-        name1st: "Wizard’s Apprentice",
+        name1st: "Wizard&#8217;s Apprentice",
         advances: [ST_I,ST_INT,ST_WP],
         social: "Brass 3",
         talents: ["Aethyric Attunement","Petty Magic","Read/Write","Second Sight"],
@@ -891,7 +891,7 @@ const CareerAll = [
         talents: ["Robust","Striding Gait (Rocky)","Strong Back","Tenacious"],
         skills: ["Climb","Cool","Endurance","Gossip","Lore (Local)","Melee (Basic)","Melee (Two-handed)","Outdoor Survival","Perception","Secret Signs (Vagabond)"],
         trappings: "Charcoal Stick, Crude Map, Great Weapon (Two-handed Pick), Hand Weapon (Pick), Pan, Spade",
-        trappings2nd: "Davrich Lamp, Lamp Oil, Leather Jack, Open Helm (Miner’s Helm)"
+        trappings2nd: "Davrich Lamp, Lamp Oil, Leather Jack, Open Helm (Miner&#8217;s Helm)"
     },
     {
         name: "Mystic", classIndex: 3,
@@ -2370,13 +2370,13 @@ for (i in StatsR) {
 if ((document.getElementById("reRollCheck").checked == true) ) {
     refreshCharacterDisplay ();
     const characterContext = `${SpeciesTxt} ${CareerName}`;
-    const keepCurrentStats = await showCustomDialog(`${characterContext} — Keep current stats: ${StatsR.toString()}`);
+    const keepCurrentStats = await showCustomDialog(`${characterContext} &#8212; Keep current stats: ${StatsR.toString()}`);
     if (keepCurrentStats) {
         const method = await showSelectionDialog([
             "Rearrange current rolls (+3 career characteristic points)",
             "Reroll and rearrange (no characteristic increases)",
             "Split 100 points (no characteristic increases)"
-        ], `${characterContext} — Choose how to assign your Characteristics:`);
+        ], `${characterContext} &#8212; Choose how to assign your Characteristics:`);
         if (method === 2) {
             StatsR = await splitCharacteristicPoints(characterContext);
         } else {

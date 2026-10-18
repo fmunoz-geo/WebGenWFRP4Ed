@@ -6,6 +6,7 @@ from html.parser import HTMLParser
 import json
 import os
 from pathlib import Path
+import re
 import sys
 import time
 from urllib.error import HTTPError, URLError
@@ -56,7 +57,9 @@ def extract_post_body(html):
 
 
 def normalize(html):
-    return html.replace("\r\n", "\n").replace("\r", "\n")
+    html = html.replace("\r\n", "\n").replace("\r", "\n")
+    # Blogger comments out the document's leading HTML doctype.
+    return re.sub(r"\A(\s*)<!--DOCTYPE html-->", r"\1<!DOCTYPE html>", html)
 
 
 def fetch_html(url):
@@ -118,7 +121,7 @@ def main(argv=None):
     for result in results:
         detail = result.get("message", result["status"]).replace("|", "\\|").replace("\n", " ")
         summary.append(f"| {result['file']} | {detail} |")
-    summary.extend(["", "Only line endings are normalized; all other HTML and whitespace must match exactly.",
+    summary.extend(["", "Line endings and Blogger's commented-out leading HTML doctype are normalized; all other HTML and whitespace must match exactly.",
                     "Download the blogger-html-comparison artifact for results and per-file diffs.", ""])
     report = "\n".join(summary)
     (args.output / "summary.md").write_text(report, encoding="utf-8")

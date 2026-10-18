@@ -25,6 +25,18 @@ class PostBodyTests(unittest.TestCase):
     def test_boundary_whitespace_is_preserved(self):
         self.assertEqual(check.extract_post_body(wrap('\n x \n')), '\n x \n')
 
+    def test_blogger_doctype_is_equivalent(self):
+        self.assertEqual(check.normalize('<!--DOCTYPE html-->\r\n<html>'),
+                         check.normalize('<!DOCTYPE html>\n<html>'))
+        self.assertEqual(check.normalize('\n<!--DOCTYPE html-->'), '\n<!DOCTYPE html>')
+
+    def test_doctype_normalization_preserves_other_differences(self):
+        script = '<script>const example="<!--DOCTYPE html-->";</script>'
+        self.assertEqual(check.normalize(script), script)
+        self.assertEqual(check.normalize('<!--other comment-->'), '<!--other comment-->')
+        self.assertNotEqual(check.normalize('\n<!--DOCTYPE html-->'),
+                            check.normalize('<!DOCTYPE html>'))
+
     def test_compare_match_diff_and_fetch_error(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
