@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="es">
-<head><title>WFRP 4a Edición Tesoros Aleatorios</title>
+<head><title>Generador de tesoros para WFRP 4a Edición</title>
 <script>
 
 var Availability = [
-"Common",
-"Scarce",
-"Rare",
-"Exotic"
+"Común",
+"Escaso",
+"Raro",
+"Exótico"
 ];
 
 var FUR = [
@@ -74,8 +74,8 @@ var METALTRIMS = [
 ];
 
 var METALFITTING = [
-["dorado", 10],
-["dorado", 10],
+["metal dorado", 10],
+["metal dorado", 10],
 ["latón", 0],
 ["latón", 0],
 ["acero", 0],
@@ -614,8 +614,8 @@ var SHAPE = [
 ["el símbolo del cometa de dos colas usado por $FOLLOWERS de Sigmar",20],
 ["el símbolo del cometa de dos colas usado por $FOLLOWERS de Sigmar",20],
 ["el símbolo del martillo usado por $FOLLOWERS de Sigmar",20],
-["el símbolo de la 'U' usado por$FOLLOWERS de Ulric",20],
-["el símbolo de la cabeza de lobo usado por$FOLLOWERS de Ulric",20],
+["el símbolo de la 'U' usado por $FOLLOWERS de Ulric",20],
+["el símbolo de la cabeza de lobo usado por $FOLLOWERS de Ulric",20],
 ["una corona de cinco puntas reconocida como el símbolo de Manaan",15],
 ["simbolos en 'X' reconocidos por $FOLLOWERS de Ranald",10],
 ["un corazón", 10],
@@ -736,8 +736,8 @@ var FENCING = [
 
 var GOODQUALITY = [
 ["<I>fine</I>", 0],
-["<I>durable</I>", 0],
-["<I>practical</I>", 0],
+["<I>duradero</I>", 0],
+["<I>práctico</I>", 0],
 ["<I>lightweight</I>", 0]
 ];
 
@@ -1036,7 +1036,7 @@ var TreasureClothing = [
 ["Una $MAYBEFINE $MINORMOD capa de $FUR.", 13, 1, 1],
 ["Una $MAYBEFINE capa $FCOLOUR con ribetes en $TRIMMING.", 12, 1, 1],
 ["Una $MINORMOD capa $FCOLOUR.", 10, 1, 1],
-["Una $MAYBEFINE capa $FCOLOUR. It has a $JEWELSTRING para atarla.", 10, 1, 1],
+["Una $MAYBEFINE capa $FCOLOUR. Tiene $JEWELSTRING para atarla.", 10, 1, 1],
 ["Una $MAYBEFINE capa $FCOLOUR $EMBROIDED con forma de $SHAPE.", 10, 1, 1],
 ["Una <I>ugly</I> capa $FCOLOUR.", 5, 1, 1],
 ["Una <I>shoddy</I> capa $FCOLOUR $FBADCLOTH.", 5, 1, 1],
@@ -1174,7 +1174,7 @@ var TreasureOthers = [
 ["Un <I>fine</i> peine de plata $DECORATION", 20/12, 0, 1],
 
 ["Un $MAYBECOLOUR case containing $TRADETOOLS.",60,1,3],
-["Un $MAYBECOLOUR elegante case containing $TRADETOOLS. All of it of good quality y of <I>practical</I> nature. It bears a $METALFITTING plaque the $CITY's guild sign.",120,1,3],
+["Un $MAYBECOLOUR elegante case containing $TRADETOOLS. All of it of good quality y of <I>práctico</I> nature. It bears a $METALFITTING plaque the $CITY's guild sign.",120,1,3],
 
 ["Un frasco $MAYBECOLOUR con cataplasma hecha con Faxtoryll (o quizás no).", 15, 0, 4],
 ["Un Healing Draught (o no) en una $MINORMOD botella de cristal $FMAYBECOLOUR.", 10, 0, 2],
@@ -1208,9 +1208,9 @@ var TreasureOthers = [
 
 ["Un juego de "+(roll=(roll1d10()+1))+" velas $FMAYBECOLOUR atadas con un cordel $MAYBECOLOUR.", roll/12, 0],
 ["Un manojo de "+(roll=(roll1d10()+1))+" antorchas.", roll*4/12, Math.floor(roll/2)],
-["Una linterna $METALFITTING.", 12, 1, 1],
-["Un $METALFITTING farol.", 20, 1, 2],
-["Un <I>durable</I> farol de $METALFITTING .", 40, 1, 3],
+["Una linterna de $METALFITTING.", 12, 1, 1],
+["Un farol de.", 20, 1, 2],
+["Un farol <I>duradero</I> de $METALFITTING .", 40, 1, 3],
 ["Un $METALFITTING lampara Davrich usada para minería.", 40, 1, 3],
 ["Una pequeña caja de $ANYMATERIAL con "+(roll=(roll1d10()+1))+ " cerillas de azufre.", roll + 0.25, 0, 1]
 ];
@@ -1222,7 +1222,7 @@ var TreasureWeapons = [
 ["Un $GOODWEAPONPREFIX $GOODQUALITY $HANDWEAPON. Tiene un $POMMELHANDLE.", 40, 1, 1],
 ["Un $BADQUALITY $HANDWEAPON.", 10, 1, 1],
 
-["Un $GOODWEAPONPREFIX <I>practical</I> y <I>durable</I> dwarven $HANDWEAPON $DWARFDECORATION.", 80, 1, 1],
+["Un $GOODWEAPONPREFIX <I>práctico</I> y <I>duradero</I> dwarven $HANDWEAPON $DWARFDECORATION.", 80, 1, 1],
 
 ["Un $NEUTRALWEAPONPREFIX $MINORMOD $HANDWEAPON.", 20, 1, 1],
 ["Un $MINORMOD $HANDWEAPON $DECORATION.", 20, 1, 1],
@@ -1232,42 +1232,42 @@ var TreasureWeapons = [
 
 ["Un $NEUTRALWEAPONPREFIX $MINORMOD $SWORD.", 20, 1, 1],
 ["Un $MINORMOD $SWORD $DECORATION.", 20, 1, 1],
-["Un $MINORMOD $SWORD $DECORATION. It has a $POMMELHILTSCABBARD.", 20, 1, 1],
-["Un $GOODQUALITY $SWORD $GOODBLADEDECO. It has a $POMMELHILTSCABBARD.", 40, 1, 1],
+["Un $MINORMOD $SWORD $DECORATION. Tiene $POMMELHILTSCABBARD.", 20, 1, 1],
+["Un $GOODQUALITY $SWORD $GOODBLADEDECO. Tiene $POMMELHILTSCABBARD.", 40, 1, 1],
 ["Un $BADBLADEDECO $BADQUALITY $SWORD.", 10, 1, 1],
 
 ["Un $GOODWEAPONPREFIX <I>fine</I> y <I>lightweight</I> elven leaf-shaped longsword $ELFDECORATION.", 80, 1, 1],
 
 ["Un $NEUTRALWEAPONPREFIX $MINORMOD $DAGGER.", 16, 0, 1],
 ["Un $MINORMOD $DAGGER $DECORATION.", 16, 0, 1],
-["Un $MINORMOD $DAGGER $DECORATION. It has a $POMMELHILTSCABBARD.", 16, 0, 1],
-["Un $GOODQUALITY $DAGGER $GOODBLADEDECO. It has a $POMMELHILTSCABBARD.", 32, 0, 1],
+["Un $MINORMOD $DAGGER $DECORATION. Tiene $POMMELHILTSCABBARD.", 16, 0, 1],
+["Un $GOODQUALITY $DAGGER $GOODBLADEDECO. Tiene $POMMELHILTSCABBARD.", 32, 0, 1],
 ["Un $BADBLADEDECO $BADQUALITY $DAGGER.", 8, 0, 1],
 
 
 ["Un $MINORMOD cuchillo. More an eating utensil than a weapon.", 8, 0, 1],
 ["Un $MINORMOD cuchillo de queso. Esta $WRITING con la Edelpilzen town's Cheese Maker Guild sign.", 8, 0, 1],
-["Un $GOODWEAPONPREFIX <I>practical</I> utility cuchillo. A good cutting tool con un $WOODMATERIAL handle.", 16, 0, 1],
+["Un $GOODWEAPONPREFIX <I>práctico</I> utility cuchillo. A good cutting tool con un $WOODMATERIAL handle.", 16, 0, 1],
 ["Un <I>bulky</I> corto cuchillo de carnicero con un mango de $WOODMATERIAL reforzado.", 4, 0, 1],
 
 
 ["Un $NEUTRALWEAPONPREFIX $MINORMOD $FENCING.", 100, 1, 2],
 ["Un $MINORMOD $FENCING $DECORATION.", 100, 1, 2],
-["Un $MINORMOD $FENCING $DECORATION. It has a $POMMELHILTSCABBARD.", 100, 1, 2],
-["Un $GOODQUALITY $FENCING $GOODBLADEDECO. It has a $POMMELHILTSCABBARD.", 200, 1, 2],
+["Un $MINORMOD $FENCING $DECORATION. Tiene $POMMELHILTSCABBARD.", 100, 1, 2],
+["Un $GOODQUALITY $FENCING $GOODBLADEDECO. Tiene $POMMELHILTSCABBARD.", 200, 1, 2],
 ["Un $BADBLADEDECO $BADQUALITY $FENCING.", 50, 1, 2],
 
 
 ["Un $NEUTRALWEAPONPREFIX $MINORMOD Zweihander.", 200, 3, 2],
 ["Un $MINORMOD Zweihander $DECORATION.", 200, 3, 2],
-["Un $MINORMOD Zweihander $DECORATION. It has a $POMMELHILTSCABBARD.", 200, 3, 2],
-["Un $GOODQUALITY Zweihander $GOODBLADEDECO. It has a $POMMELHILTSCABBARD.", 400, 3, 2],
+["Un $MINORMOD Zweihander $DECORATION. Tiene $POMMELHILTSCABBARD.", 200, 3, 2],
+["Un $GOODQUALITY Zweihander $GOODBLADEDECO. Tiene $POMMELHILTSCABBARD.", 400, 3, 2],
 ["Un $BADBLADEDECO $BADQUALITY Zweihander.", 100, 3, 2],
 
 ["Un $NEUTRALWEAPONPREFIX $MINORMOD Great Axe.", 80, 3, 2],
 ["Un $MINORMOD Great Axe $DECORATION.", 80, 3, 2],
-["Un $MINORMOD Great Axe $DECORATION. It has a $POMMELHANDLE.", 80, 3, 2],
-["Un $GOODWEAPONPREFIX $GOODQUALITY Great Axe $GOODBLADEDECO. It has a $POMMELHANDLE.", 160, 3, 2],
+["Un $MINORMOD Great Axe $DECORATION. Tiene $POMMELHANDLE.", 80, 3, 2],
+["Un $GOODWEAPONPREFIX $GOODQUALITY Great Axe $GOODBLADEDECO. Tiene $POMMELHANDLE.", 160, 3, 2],
 ["Un $BADBLADEDECO $BADQUALITY Great Axe.", 40, 3, 2],
 
 ["Un $NEUTRALWEAPONPREFIX $MINORMOD Quater Staff con $DANGLING tied to its $METALFITTING tip.", 3, 2, 1],
@@ -1359,7 +1359,7 @@ var TreasureArmour = [
 ["Un $GOODQUALITY juego de brazales de metal $DECORATION.",320,3, 3],
 
 ["Un casco abierto.",40, 1, 1],
-["Un <I>durable</I> casco abierto reforzado.",80, 1, 1],
+["Un <I>duradero</I> casco abierto reforzado.",80, 1, 1],
 ["Un casquete de cuero $MAYBECOLOUR y un pot helmet $WRITING de guardia con the $CITY crest.",48, 2, 1],
 ["Un $MAYBEFINE casco abierto $DECORATION.",40, 1, 1],
 ["Un casco.",60,2, 3],
@@ -1416,7 +1416,7 @@ var TreasureDocuments = [
 ["Un libro $MAYBESIZE $MAYBECOLOUR de ingeniería general.", 60, 1, 2],
 ["Un libro $MAYBESIZE $MAYBECOLOUR de construcción e ingeniería.", 60, 1, 2],
 ["Un libro $MAYBESIZE $MAYBECOLOUR de leyes.", 300, 1, 4],
-["Un <I>practical</I> libro $MAYBESIZE $MAYBECOLOUR de texto de leyes de $PLACE.", 600, 1, 4],
+["Un <I>práctico</I> libro $MAYBESIZE $MAYBECOLOUR de texto de leyes de $PLACE.", 600, 1, 4],
 ["Un libro $MAYBESIZE $MAYBECOLOUR de magia. Su posesión puede ser legalmente problemática.", 400, 1, 4],
 ["Un libro $MAYBESIZE $MAYBECOLOUR de medicina, detallando enfermedades.", 300, 1, 3],
 ["Un libro $MAYBESIZE $MAYBECOLOUR de anatomía y medicina.", 300, 1, 3],

@@ -7,6 +7,10 @@ td, th {
   text-align: center;
 }
 </style>
+<style media='print' type='text/css'>
+  #header-wrapper, #header, .header, #sidebar-wrapper, .sidebar, #footer-wrapper, #footer, .date-header, .post-meta-data, .comment-link, .comment-footer, #blog-pager, #backlinks-container, #navbar-section, .subscribe_notice, .noprint, #noprint {display: none;}
+  #main-wrapper {width: 95%}
+</style>
 <script>
 //<![CDATA[
 function roll1d10(){
@@ -1175,6 +1179,7 @@ return 1;
 </head>
 <body>
     <h1>Generate Zweihander Monsters</h1>
+<div id="noprint">
 <p>
  This is a simple <a href="https://www.drivethrurpg.com/product/210516/ZWEIHANDER-Grim--Perilous-RPG-Revised-Core-Rulebook?affiliate_id=91369">Zweihander RPG</a> Monster generator.
  It uses the mechanisms from its Chaos supplement <a href="https://www.drivethrurpg.com/product/252787/MAIN-GAUCHE-Grim--Perilous-Supplement?affiliate_id=91369">Main Gauche</a>.<br>
@@ -1210,6 +1215,7 @@ return 1;
   <input type="radio" name="Notch" id="Notch" value="3"> (Unique)
   <input type="radio" name="Notch" id="Notch" value="-1" checked="checked" > Random
 </form>
+</div>
 <br>
 <h3><p id="speciessexcarredB"></p></h3>
 <h3>Attributes</h3>
