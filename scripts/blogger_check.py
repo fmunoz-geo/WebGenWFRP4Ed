@@ -58,8 +58,11 @@ def extract_post_body(html):
 
 def normalize(html):
     html = html.replace("\r\n", "\n").replace("\r", "\n")
-    # Blogger comments out the document's leading HTML doctype.
-    return re.sub(r"\A(\s*)<!--DOCTYPE html-->", r"\1<!DOCTYPE html>", html)
+    # Blogger comments out the doctype and adds whitespace before it.
+    return re.sub(
+        r"\A[ \t\n]*(?:<!--\s*DOCTYPE\s+html\s*-->|<!DOCTYPE\s+html\s*>)",
+        "<!DOCTYPE html>", html, flags=re.IGNORECASE,
+    )
 
 
 def fetch_html(url):
@@ -79,6 +82,9 @@ def fetch_html(url):
 def compare_entry(filename, entry, root, output):
     result = {"file": filename, "url": entry.get("url", ""), "status": "error"}
     try:
+        diff_path = output / (filename.replace("/", "__").replace("\\", "__") + ".diff")
+        # Do not leave an old mismatch report when a page now matches or fails to fetch.
+        diff_path.unlink(missing_ok=True)
         source_path = (root / filename).resolve()
         if not source_path.is_relative_to(root.resolve()):
             raise ValueError("Source path is outside repository")
@@ -90,7 +96,6 @@ def compare_entry(filename, entry, root, output):
             result["status"] = "match"
         else:
             result["status"] = "different"
-            diff_path = output / (filename.replace("/", "__").replace("\\", "__") + ".diff")
             diff = "".join(difflib.unified_diff(
                 published.splitlines(keepends=True), source.splitlines(keepends=True),
                 fromfile="Blogger: " + result["url"], tofile="Source: " + filename,
@@ -121,7 +126,7 @@ def main(argv=None):
     for result in results:
         detail = result.get("message", result["status"]).replace("|", "\\|").replace("\n", " ")
         summary.append(f"| {result['file']} | {detail} |")
-    summary.extend(["", "Line endings and Blogger's commented-out leading HTML doctype are normalized; all other HTML and whitespace must match exactly.",
+    summary.extend(["", "Line endings, the leading HTML doctype, and whitespace before that doctype are normalized; all other HTML and whitespace must match exactly.",
                     "Download the blogger-html-comparison artifact for results and per-file diffs.", ""])
     report = "\n".join(summary)
     (args.output / "summary.md").write_text(report, encoding="utf-8")

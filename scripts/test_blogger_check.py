@@ -28,14 +28,27 @@ class PostBodyTests(unittest.TestCase):
     def test_blogger_doctype_is_equivalent(self):
         self.assertEqual(check.normalize('<!--DOCTYPE html-->\r\n<html>'),
                          check.normalize('<!DOCTYPE html>\n<html>'))
-        self.assertEqual(check.normalize('\n<!--DOCTYPE html-->'), '\n<!DOCTYPE html>')
+        self.assertEqual(check.normalize('\n<!--DOCTYPE html-->'), '<!DOCTYPE html>')
+        self.assertEqual(check.normalize('\n \t<!--doctype HTML-->\n<html>'),
+                         check.normalize('<!DOCTYPE html>\n<html>'))
 
     def test_doctype_normalization_preserves_other_differences(self):
         script = '<script>const example="<!--DOCTYPE html-->";</script>'
         self.assertEqual(check.normalize(script), script)
         self.assertEqual(check.normalize('<!--other comment-->'), '<!--other comment-->')
-        self.assertNotEqual(check.normalize('\n<!--DOCTYPE html-->'),
-                            check.normalize('<!DOCTYPE html>'))
+        self.assertNotEqual(check.normalize('<!DOCTYPE html>\n\n<html>'),
+                            check.normalize('<!DOCTYPE html>\n<html>'))
+
+    def test_doctype_only_difference_matches_and_removes_stale_diff(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / 'source.html').write_text('<!DOCTYPE html>\n<html></html>')
+            stale = root / 'source.html.diff'
+            stale.write_text('old mismatch')
+            with patch.object(check, 'fetch_html', return_value=wrap('\n<!--DOCTYPE html-->\n<html></html>')):
+                result = check.compare_entry('source.html', {'url': 'https://example.com/post'}, root, root)
+            self.assertEqual(result['status'], 'match')
+            self.assertFalse(stale.exists())
 
     def test_compare_match_diff_and_fetch_error(self):
         with tempfile.TemporaryDirectory() as directory:
